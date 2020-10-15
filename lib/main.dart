@@ -6,10 +6,33 @@ import 'package:piiprent/screens/candidate_jobs_screen.dart';
 import 'package:piiprent/screens/candidate_profile_screen.dart';
 import 'package:piiprent/screens/candidate_timesheets_screen.dart';
 import 'package:piiprent/screens/forgot_password_screen.dart';
+import 'package:piiprent/services/industry_service.dart';
+import 'package:piiprent/services/login_service.dart';
+import 'package:provider/provider.dart';
 
 import 'package:piiprent/screens/login_screen.dart';
 
-void main() => runApp(MyApp());
+class Counter with ChangeNotifier {
+  int _count = 0;
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners();
+  }
+}
+
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<IndustryService>(create: (_) => IndustryService()),
+        // Provider<LoginService>(create: (_) => LoginService())
+      ],
+      child: MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   @override

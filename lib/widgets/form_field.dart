@@ -9,7 +9,6 @@ class Field extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(initialValue);
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: TextFormField(

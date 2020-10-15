@@ -40,7 +40,6 @@ class _StarsState extends State<Stars> {
 
   @override
   Widget build(BuildContext context) {
-    print(_active);
     return Row(
       children: [
         _buildStar(1),

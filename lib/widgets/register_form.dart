@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/screens/candidate_home_screen.dart';
+import 'package:piiprent/services/industry_service.dart';
+// import 'package:piiprent/services/login_service.dart';
+import 'package:piiprent/widgets/dynamic_dropdown.dart';
 import 'package:piiprent/widgets/form_field.dart';
+import 'package:provider/provider.dart';
 
 class RegisterForm extends StatefulWidget {
+  // final LoginService loginService = LoginService();
+  final IndustryService industryService = IndustryService();
+
   @override
   _RegisterFormState createState() => _RegisterFormState();
 }
@@ -23,6 +30,8 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    IndustryService industryService = Provider.of<IndustryService>(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18.0),
       child: Form(
@@ -60,8 +69,10 @@ class _RegisterFormState extends State<RegisterForm> {
                 });
               },
             ),
-            Field(
+            DynamicDropdown(
               label: 'Industries',
+              future: industryService.getIndustries,
+              onChange: (id) => print(id),
             ),
             Field(
               label: 'Skills',
