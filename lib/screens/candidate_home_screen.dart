@@ -4,7 +4,6 @@ import 'package:piiprent/widgets/candidate_drawer.dart';
 import 'package:piiprent/widgets/home_calendar.dart';
 import 'package:piiprent/widgets/home_screen_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class CandidateHomeScreen extends StatefulWidget {
   @override

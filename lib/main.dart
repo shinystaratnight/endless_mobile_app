@@ -5,6 +5,10 @@ import 'package:piiprent/screens/candidate_job_offers_screen.dart';
 import 'package:piiprent/screens/candidate_jobs_screen.dart';
 import 'package:piiprent/screens/candidate_profile_screen.dart';
 import 'package:piiprent/screens/candidate_timesheets_screen.dart';
+import 'package:piiprent/screens/client_home_screen.dart';
+import 'package:piiprent/screens/client_jobs_screen.dart';
+import 'package:piiprent/screens/client_profile_screen.dart';
+import 'package:piiprent/screens/client_timesheets_screen.dart';
 import 'package:piiprent/screens/forgot_password_screen.dart';
 import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/services/login_service.dart';
@@ -55,6 +59,11 @@ class MyApp extends StatelessWidget {
               CandidateTimesheetsScreen(),
           '/candidate_profile': (BuildContext context) =>
               CandidateProfileScreen(),
+          '/client_home': (BuildContext context) => ClientHomeScreen(),
+          '/client_profile': (BuildContext context) => ClientProfileScreen(),
+          '/client_jobs': (BuildContext context) => ClientJobsScreen(),
+          '/client_timesheets': (BuildContext context) =>
+              ClientTimesheetsScreen(),
           '/forgot_password': (BuildContext context) => ForgotPasswordScreen(),
         },
         home: LoginScreen());

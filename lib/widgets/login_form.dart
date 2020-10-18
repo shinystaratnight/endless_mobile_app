@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/screens/candidate_home_screen.dart';
+import 'package:piiprent/screens/client_home_screen.dart';
 import 'package:piiprent/widgets/form_field.dart';
 
 class LoginForm extends StatefulWidget {
@@ -43,7 +44,7 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => CandidateHomeScreen(),
+                    builder: (context) => ClientHomeScreen(),
                   ),
                 );
               },

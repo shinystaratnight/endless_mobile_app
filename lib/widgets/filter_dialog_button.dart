@@ -12,7 +12,7 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: _showDialog,
-      child: Icon(Icons.find_replace),
+      child: Icon(Icons.filter_list),
     );
   }
 
