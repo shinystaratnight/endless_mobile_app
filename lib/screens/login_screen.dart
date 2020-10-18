@@ -20,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           decoration: BoxDecoration(
-            color: active ? Colors.blueAccent : Colors.white,
+            color: active ? Colors.blue : Colors.white,
             borderRadius: BorderRadius.all(
               Radius.circular(35),
             ),
@@ -28,7 +28,9 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Text(
             title,
             style: TextStyle(
-                color: active ? Colors.white : Colors.grey[700], fontSize: 16),
+              color: active ? Colors.white : Colors.grey[700],
+              fontSize: 16,
+            ),
           ),
         ),
       ),
@@ -39,57 +41,42 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: PageContainer(
-            child: Container(
-              child: Column(
-                children: [
-                  SizedBox(height: 45.0),
-                  Image.asset('images/company_banner.png'),
-                  SizedBox(
-                    height: 45.0,
+      body: SingleChildScrollView(
+        child: PageContainer(
+          child: Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 45.0),
+                  child: Image.asset('images/company_banner.png'),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(35),
+                    ),
+                    border: Border.all(
+                      color: Colors.grey[700],
+                    ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(35),
+                  child: Row(
+                    children: [
+                      _buildPageButton(_activeForm == 'login', 'Login',
+                          () => setState(() => _activeForm = 'login')),
+                      SizedBox(
+                        width: 10,
                       ),
-                      border: Border.all(
-                          width: 1,
-                          color: Colors.grey[700],
-                          style: BorderStyle.solid),
-                    ),
-                    child: Row(
-                      children: [
-                        _buildPageButton(_activeForm == 'login', 'Login', () {
-                          setState(() {
-                            _activeForm = 'login';
-                          });
-                        }),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        _buildPageButton(_activeForm == 'register', 'Sign Up',
-                            () {
-                          setState(() {
-                            _activeForm = 'register';
-                          });
-                        })
-                      ],
-                    ),
+                      _buildPageButton(_activeForm == 'register', 'Sign Up',
+                          () => setState(() => _activeForm = 'register'))
+                    ],
                   ),
-                  _activeForm == 'login'
-                      ? LoginForm(
-                          onRegister: () {
-                            setState(() {
-                              _activeForm = 'register';
-                            });
-                          },
-                        )
-                      : RegisterForm(),
-                ],
-              ),
+                ),
+                _activeForm == 'login'
+                    ? LoginForm(
+                        onRegister: () =>
+                            setState(() => _activeForm = 'register'))
+                    : RegisterForm(),
+              ],
             ),
           ),
         ),

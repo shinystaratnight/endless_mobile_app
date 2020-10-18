@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/services/login_service.dart';
+import 'package:provider/provider.dart';
 
 class CandidateDrawer extends StatelessWidget {
   final TextStyle _textStyle = TextStyle(fontSize: 18, color: Colors.blue);
 
   @override
   Widget build(BuildContext context) {
+    LoginService loginService = Provider.of<LoginService>(context);
+
     return Drawer(
       child: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -20,10 +24,13 @@ class CandidateDrawer extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage('https://picsum.photos/200/300'),
-                    ),
+                    image: loginService.user.picture != null
+                        ? DecorationImage(
+                            fit: BoxFit.cover,
+                            image:
+                                NetworkImage(loginService.user.userAvatarUrl()),
+                          )
+                        : null,
                   ),
                 ),
               ),
@@ -70,7 +77,9 @@ class CandidateDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Logout', style: _textStyle),
-              onTap: () => Navigator.pushNamed(context, '/'),
+              onTap: () => {
+                if (loginService.logout()) {Navigator.pushNamed(context, '/')}
+              },
             ),
             Divider(
               color: Colors.grey[300],

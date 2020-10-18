@@ -8,8 +8,8 @@ class PageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20.0),
-      child: this.child,
+      padding: const EdgeInsets.all(20.0),
+      child: child,
     );
   }
 }

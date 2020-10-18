@@ -16,22 +16,12 @@ import 'package:provider/provider.dart';
 
 import 'package:piiprent/screens/login_screen.dart';
 
-class Counter with ChangeNotifier {
-  int _count = 0;
-  int get count => _count;
-
-  void increment() {
-    _count++;
-    notifyListeners();
-  }
-}
-
 void main() {
   runApp(
     MultiProvider(
       providers: [
         Provider<IndustryService>(create: (_) => IndustryService()),
-        // Provider<LoginService>(create: (_) => LoginService())
+        Provider<LoginService>(create: (_) => LoginService())
       ],
       child: MyApp(),
     ),
@@ -42,30 +32,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Piiprent',
-        theme: new ThemeData(
-            accentColor: Colors.blueAccent,
-            scaffoldBackgroundColor: Colors.grey[100],
-            textTheme: GoogleFonts.sourceSansProTextTheme(
-                Theme.of(context).textTheme)),
-        debugShowCheckedModeBanner: false,
-        routes: <String, WidgetBuilder>{
-          '/login': (BuildContext context) => LoginScreen(),
-          '/candidate_home': (BuildContext context) => CandidateHomeScreen(),
-          '/candidate_jobs': (BuildContext context) => CandidateJobsScreen(),
-          '/candidate_job_offers': (BuildContext context) =>
-              CandidateJobOffersScreen(),
-          '/candidate_timesheets': (BuildContext context) =>
-              CandidateTimesheetsScreen(),
-          '/candidate_profile': (BuildContext context) =>
-              CandidateProfileScreen(),
-          '/client_home': (BuildContext context) => ClientHomeScreen(),
-          '/client_profile': (BuildContext context) => ClientProfileScreen(),
-          '/client_jobs': (BuildContext context) => ClientJobsScreen(),
-          '/client_timesheets': (BuildContext context) =>
-              ClientTimesheetsScreen(),
-          '/forgot_password': (BuildContext context) => ForgotPasswordScreen(),
-        },
-        home: LoginScreen());
+      title: 'Piiprent',
+      theme: new ThemeData(
+        accentColor: Colors.blueAccent,
+        scaffoldBackgroundColor: Colors.grey[100],
+        textTheme:
+            GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
+      ),
+      debugShowCheckedModeBanner: false,
+      routes: <String, WidgetBuilder>{
+        '/login': (BuildContext context) => LoginScreen(),
+        '/candidate_home': (BuildContext context) => CandidateHomeScreen(),
+        '/candidate_jobs': (BuildContext context) => CandidateJobsScreen(),
+        '/candidate_job_offers': (BuildContext context) =>
+            CandidateJobOffersScreen(),
+        '/candidate_timesheets': (BuildContext context) =>
+            CandidateTimesheetsScreen(),
+        '/candidate_profile': (BuildContext context) =>
+            CandidateProfileScreen(),
+        '/client_home': (BuildContext context) => ClientHomeScreen(),
+        '/client_profile': (BuildContext context) => ClientProfileScreen(),
+        '/client_jobs': (BuildContext context) => ClientJobsScreen(),
+        '/client_timesheets': (BuildContext context) =>
+            ClientTimesheetsScreen(),
+        '/forgot_password': (BuildContext context) => ForgotPasswordScreen(),
+      },
+      home: LoginScreen(),
+    );
   }
 }
