@@ -14,7 +14,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CandidateDrawer(),
+      drawer: CandidateDrawer(dashboard: true),
       appBar: getCandidateAppBar('Home', context),
       body: SingleChildScrollView(
         child: PageContainer(
@@ -25,10 +25,10 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                   Expanded(
                       flex: 1,
                       child: HomeScreenButton(
-                        color: Colors.blueAccent,
+                        color: Colors.blue[700],
                         icon: Icon(
                           Icons.person,
-                          color: Colors.blueAccent,
+                          color: Colors.blue[700],
                         ),
                         path: '/candidate_profile',
                         text: 'Profile',
@@ -36,10 +36,10 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                   Expanded(
                       flex: 1,
                       child: HomeScreenButton(
-                        color: Colors.orangeAccent,
+                        color: Colors.orange[700],
                         icon: Icon(
                           Icons.local_offer,
-                          color: Colors.orangeAccent,
+                          color: Colors.orange[700],
                         ),
                         path: '/candidate_job_offers',
                         text: 'Job Offers',
@@ -51,10 +51,10 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                   Expanded(
                     flex: 1,
                     child: HomeScreenButton(
-                      color: Colors.yellowAccent,
+                      color: Colors.amber[700],
                       icon: Icon(
                         Icons.business_center,
-                        color: Colors.yellowAccent,
+                        color: Colors.amber[700],
                       ),
                       path: '/candidate_jobs',
                       text: 'Jobs',
@@ -63,10 +63,10 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                   Expanded(
                     flex: 1,
                     child: HomeScreenButton(
-                      color: Colors.greenAccent,
+                      color: Colors.green[700],
                       icon: Icon(
                         Icons.query_builder,
-                        color: Colors.greenAccent,
+                        color: Colors.green[700],
                       ),
                       path: '/candidate_timesheets',
                       text: 'Timesheets',

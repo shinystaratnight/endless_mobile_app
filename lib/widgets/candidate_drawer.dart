@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 
 class CandidateDrawer extends StatelessWidget {
   final TextStyle _textStyle = TextStyle(fontSize: 18, color: Colors.blue);
+  final bool dashboard;
+
+  CandidateDrawer({this.dashboard = false});
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +37,19 @@ class CandidateDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-              decoration: BoxDecoration(
-                  // color: Colors.blue,
-                  ),
             ),
-            ListTile(
-              title: Text('Dashboard', style: _textStyle),
-              onTap: () => Navigator.pushNamed(context, '/candidate_home'),
-            ),
-            Divider(
-              color: Colors.grey[300],
-            ),
+            !dashboard
+                ? ListTile(
+                    title: Text('Dashboard', style: _textStyle),
+                    onTap: () =>
+                        Navigator.pushNamed(context, '/candidate_home'),
+                  )
+                : SizedBox(),
+            !dashboard
+                ? Divider(
+                    color: Colors.grey[300],
+                  )
+                : SizedBox(),
             ListTile(
               title: Text('Profile', style: _textStyle),
               onTap: () => Navigator.pushNamed(context, '/candidate_profile'),

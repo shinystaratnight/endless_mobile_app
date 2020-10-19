@@ -6,7 +6,7 @@ import 'package:piiprent/models/industry_model.dart';
 import 'package:piiprent/services/api_service.dart';
 
 class IndustryService {
-  final ApiService apiService = ApiService();
+  final ApiService apiService = ApiService.create();
 
   Future<List<Industry>> getIndustries() async {
     Map<String, dynamic> params = {

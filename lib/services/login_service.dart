@@ -9,7 +9,7 @@ import 'package:piiprent/models/user_model.dart';
 import 'package:piiprent/services/api_service.dart';
 
 class LoginService {
-  final ApiService apiService = ApiService();
+  final ApiService apiService = ApiService.create();
   User user;
 
   Future<Role> login(String username, String password) async {

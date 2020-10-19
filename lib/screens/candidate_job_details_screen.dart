@@ -10,8 +10,19 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class CandidateJobDetailsScreen extends StatefulWidget {
   final String position;
   final String company;
+  final String longitude;
+  final String lantitude;
+  final DateTime date;
+  final String clientContact;
 
-  CandidateJobDetailsScreen({this.position, this.company});
+  CandidateJobDetailsScreen({
+    this.position,
+    this.company,
+    this.longitude,
+    this.lantitude,
+    this.date,
+    this.clientContact,
+  });
 
   @override
   _CandidateJobDetailsScreenState createState() =>
@@ -20,11 +31,6 @@ class CandidateJobDetailsScreen extends StatefulWidget {
 
 class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
   Completer<GoogleMapController> _controller = Completer();
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
 
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
@@ -38,7 +44,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
       appBar: getCandidateAppBar('Job', context),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -52,7 +58,10 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               ),
               Text(
                 widget.company,
-                style: TextStyle(fontSize: 18.0, color: Colors.grey[500]),
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.grey[500],
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -63,14 +72,17 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               SizedBox(
                 height: 15.0,
               ),
-              DetailsRecord(label: 'Site Supervisor', value: 'Client contact'),
+              DetailsRecord(
+                label: 'Site Supervisor',
+                value: widget.clientContact,
+              ),
               DetailsRecord(
                 label: 'Shift Date',
-                value: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                value: DateFormat('dd/MM/yyyy').format(widget.date),
               ),
               DetailsRecord(
                 label: 'Shift Starting Time',
-                value: DateFormat.jm().format(DateTime.now()),
+                value: DateFormat.jm().format(widget.date),
               ),
               DetailsRecord(label: 'Note', value: ''),
               SizedBox(
@@ -85,7 +97,13 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 height: 350.0,
                 child: GoogleMap(
                   mapType: MapType.hybrid,
-                  initialCameraPosition: _kGooglePlex,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      double.parse(widget.lantitude),
+                      double.parse(widget.longitude),
+                    ),
+                    zoom: 14.4746,
+                  ),
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
                   },

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/models/job_offer_model.dart';
+import 'package:piiprent/services/job_offer_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/job_card.dart';
 import 'package:piiprent/widgets/timesheet_card.dart';
+import 'package:provider/provider.dart';
 
 class CandidateNotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    JobOfferService jobOfferService = Provider.of<JobOfferService>(context);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -37,23 +42,47 @@ class CandidateNotificationScreen extends StatelessWidget {
               showNotification: false),
           body: TabBarView(
             children: [
-              ListView.builder(
-                itemCount: 20,
-                padding: EdgeInsets.all(10.0),
-                itemBuilder: (context, index) => Column(
-                  children: [
-                    JobCard(
-                      company: 'Some Company',
-                      date: DateTime.parse('2020-03-17T12:00:00+02:00'),
-                      location: 'Some Location',
-                      position: 'Some Position',
-                      offer: true,
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    )
-                  ],
-                ),
+              FutureBuilder(
+                future: jobOfferService.getCandidateJobOffers(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    List<JobOffer> data = snapshot.data;
+
+                    return ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        JobOffer offer = data[index];
+
+                        return Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: JobCard(
+                            company: offer.company,
+                            date: offer.datetime,
+                            location: offer.location,
+                            position: offer.position,
+                            id: offer.id,
+                            longitude: offer.longitude,
+                            latitude: offer.latitude,
+                            clientContact: offer.clientContact,
+                            offer: true,
+                          ),
+                        );
+                      },
+                    );
+                  }
+
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+
+                    return Container(
+                      child: Text('Something went wrong!'),
+                    );
+                  }
+
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
               ListView.builder(
                 itemCount: 20,

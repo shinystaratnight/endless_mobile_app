@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/models/auth_model.dart';
 
+ApiService instance;
+
 class ApiService {
   final String _baseUrl = 'api.r3sourcer.com';
   Auth _auth;
@@ -17,9 +19,23 @@ class ApiService {
     return this._auth;
   }
 
+  ApiService();
+
+  factory ApiService.create() {
+    if (instance != null) {
+      return instance;
+    } else {
+      instance = ApiService();
+      return instance;
+    }
+  }
+
   Future get({String path, Map<String, dynamic> params}) async {
     Uri uri = _createURI(path, params);
-    Map<String, String> headers = {};
+    Map<String, String> headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
     _updateByToken(headers);
 
     return await http.get(uri, headers: headers);
@@ -48,8 +64,11 @@ class ApiService {
   }
 
   void _updateByToken(headers) {
-    if (this.auth != null) {
-      headers.addAll({HttpHeaders.authorizationHeader: 'Bearer $this.token'});
+    print(auth);
+    if (auth != null) {
+      headers.addAll(
+          {HttpHeaders.authorizationHeader: 'JWT ${auth.access_token_jwt}'});
+      print(headers);
     }
   }
 }

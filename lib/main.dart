@@ -11,6 +11,8 @@ import 'package:piiprent/screens/client_profile_screen.dart';
 import 'package:piiprent/screens/client_timesheets_screen.dart';
 import 'package:piiprent/screens/forgot_password_screen.dart';
 import 'package:piiprent/services/industry_service.dart';
+import 'package:piiprent/services/job_offer_service.dart';
+import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +23,9 @@ void main() {
     MultiProvider(
       providers: [
         Provider<IndustryService>(create: (_) => IndustryService()),
-        Provider<LoginService>(create: (_) => LoginService())
+        Provider<LoginService>(create: (_) => LoginService()),
+        Provider<JobOfferService>(create: (_) => JobOfferService()),
+        Provider<JobService>(create: (_) => JobService())
       ],
       child: MyApp(),
     ),

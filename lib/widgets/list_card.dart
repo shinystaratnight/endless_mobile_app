@@ -34,7 +34,7 @@ class ListCard extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.blueAccent,
+                    color: Colors.blue,
                     borderRadius: BorderRadius.all(
                       Radius.circular(10.0),
                     ),
