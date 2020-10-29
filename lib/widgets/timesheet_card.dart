@@ -9,22 +9,25 @@ class TimesheetCard extends StatelessWidget {
   final String position;
   final String clientContact;
   final String address;
+  final String jobsite;
   final DateTime shiftDate;
   final DateTime shiftStart;
   final DateTime shiftEnd;
   final DateTime breakStart;
   final DateTime breakEnd;
 
-  TimesheetCard(
-      {this.company,
-      this.position,
-      this.clientContact,
-      this.address,
-      this.shiftDate,
-      this.shiftStart,
-      this.shiftEnd,
-      this.breakStart,
-      this.breakEnd});
+  TimesheetCard({
+    this.company,
+    this.position,
+    this.clientContact,
+    this.address,
+    this.jobsite,
+    this.shiftDate,
+    this.shiftStart,
+    this.shiftEnd,
+    this.breakStart,
+    this.breakEnd,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,14 @@ class TimesheetCard extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => CandidateTimesheetDetailsScreen(
             position: position,
+            jobsite: jobsite,
+            clientContact: clientContact,
+            address: address,
+            shiftDate: shiftDate,
+            shiftStart: shiftStart,
+            shiftEnd: shiftEnd,
+            breakStart: breakStart,
+            breakEnd: breakEnd,
           ),
         ),
       ),

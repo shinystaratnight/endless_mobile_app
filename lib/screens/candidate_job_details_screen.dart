@@ -33,10 +33,11 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
   Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+    bearing: 192.8334901395799,
+    target: LatLng(37.43296265331129, -122.08832357078792),
+    tilt: 59.440717697143555,
+    zoom: 6,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +96,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               ),
               SizedBox(
                 height: 350.0,
+                width: 20.0,
                 child: GoogleMap(
                   mapType: MapType.hybrid,
                   initialCameraPosition: CameraPosition(
@@ -102,7 +104,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                       double.parse(widget.lantitude),
                       double.parse(widget.longitude),
                     ),
-                    zoom: 14.4746,
+                    zoom: 4.0,
                   ),
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
@@ -113,11 +115,11 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: Text('To the lake!'),
-        icon: Icon(Icons.directions_boat),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: _goToTheLake,
+      //   label: Text('To the lake!'),
+      //   icon: Icon(Icons.directions_boat),
+      // ),
     );
   }
 

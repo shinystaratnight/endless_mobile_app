@@ -14,6 +14,7 @@ import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/services/job_offer_service.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/services/login_service.dart';
+import 'package:piiprent/services/timesheet_service.dart';
 import 'package:provider/provider.dart';
 
 import 'package:piiprent/screens/login_screen.dart';
@@ -25,7 +26,8 @@ void main() {
         Provider<IndustryService>(create: (_) => IndustryService()),
         Provider<LoginService>(create: (_) => LoginService()),
         Provider<JobOfferService>(create: (_) => JobOfferService()),
-        Provider<JobService>(create: (_) => JobService())
+        Provider<JobService>(create: (_) => JobService()),
+        Provider<TimesheetService>(create: (_) => TimesheetService())
       ],
       child: MyApp(),
     ),
