@@ -37,7 +37,7 @@ class _CandidateTimesheetDetailsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getCandidateAppBar('Timesheet', context),
+      appBar: getCandidateAppBar('Timesheet', context, showNotification: false),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(10.0),

@@ -5,6 +5,8 @@ import 'package:piiprent/screens/candidate_home_screen.dart';
 import 'package:piiprent/screens/client_home_screen.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/form_field.dart';
+import 'package:piiprent/widgets/form_message.dart';
+import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
@@ -19,7 +21,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   String _username;
   String _password;
-  String _formError = '';
+  String _formError;
   bool _fetching = false;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -33,6 +35,7 @@ class _LoginFormState extends State<LoginForm> {
 
     setState(() {
       _fetching = true;
+      _formError = null;
     });
 
     try {
@@ -92,33 +95,14 @@ class _LoginFormState extends State<LoginForm> {
                 _password = value;
               },
             ),
-            Container(
-              child: Text(
-                _formError,
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
+            FormMessage(type: MessageType.Error, message: _formError),
             SizedBox(
               height: 16,
             ),
-            RaisedButton(
-              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.blue[200],
-              disabledTextColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              onPressed: _fetching
-                  ? null
-                  : () {
-                      _onLogin(loginService);
-                    },
-              child: Text(
-                'Login',
-                style: TextStyle(fontSize: 16),
-              ),
+            FormSubmitButton(
+              disabled: _fetching,
+              onPressed: () => _onLogin(loginService),
+              label: 'Login',
             ),
             SizedBox(
               height: 10,

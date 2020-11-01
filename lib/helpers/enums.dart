@@ -3,6 +3,11 @@ enum Role {
   Client,
 }
 
+enum MessageType {
+  Success,
+  Error,
+}
+
 Map<String, String> language = {
   'EN': 'en',
   'EE': 'ee',

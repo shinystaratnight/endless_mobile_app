@@ -1,22 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:piiprent/widgets/form_field.dart';
+import 'package:piiprent/widgets/filter_dialog.dart';
 
 class FilterDialogButton extends StatefulWidget {
+  final DateTime from;
+  final DateTime to;
+
+  FilterDialogButton({
+    this.from,
+    this.to,
+  });
+
   @override
   _FilterDialogButtonState createState() => _FilterDialogButtonState();
 }
 
 class _FilterDialogButtonState extends State<FilterDialogButton> {
+  DateTime _from;
+  DateTime _to;
+
+  @override
+  void initState() {
+    _from = widget.from != null ? widget.from : null;
+    _to = widget.to != null ? widget.to : null;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: _showDialog,
-      child: Icon(Icons.filter_list),
+      child: Icon(
+        Icons.filter_list,
+        color: Colors.blue,
+      ),
+      backgroundColor: Colors.white,
     );
   }
 
-  _buildButton() {}
+  // _setToday() {
+  //   setState(() {
+  //     _from = DateTime.now();
+  //     _to = DateTime.now();
+  //   });
+  // }
 
   _showDialog() {
     showDialog(
@@ -38,86 +65,12 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
           ),
         ],
         title: Text('Choose Dates'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  RaisedButton(
-                    color: Colors.blueAccent,
-                    onPressed: () {},
-                    child: Text('Today', style: TextStyle(color: Colors.white)),
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  RaisedButton(
-                    color: Colors.blueAccent,
-                    onPressed: () {},
-                    child: Text('Yesterday',
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  RaisedButton(
-                    color: Colors.blueAccent,
-                    onPressed: () {},
-                    child: Text('This week',
-                        style: TextStyle(color: Colors.white)),
-                  )
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  RaisedButton(
-                    color: Colors.blueAccent,
-                    onPressed: () {},
-                    child: Text('Last week',
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  RaisedButton(
-                    color: Colors.blueAccent,
-                    onPressed: () {},
-                    child: Text('This month',
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  RaisedButton(
-                    color: Colors.blueAccent,
-                    onPressed: () {},
-                    child: Text('Last month',
-                        style: TextStyle(color: Colors.white)),
-                  )
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Field(
-                    label: 'From',
-                  ),
-                ),
-                Expanded(
-                  child: Field(
-                    label: 'To',
-                  ),
-                )
-              ],
-            ),
-          ],
+        contentPadding: const EdgeInsets.all(8.0),
+        titlePadding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
         ),
+        content: FilterDialog(),
       ),
     );
   }
