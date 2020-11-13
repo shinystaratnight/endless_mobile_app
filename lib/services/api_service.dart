@@ -35,6 +35,8 @@ class ApiService {
     Map<String, String> headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      // TODO: check this for getting industries or skills
+      'Origin': 'laviin.r3sourcer.com'
     };
     _updateByToken(headers);
 
