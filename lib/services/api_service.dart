@@ -2,12 +2,13 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:piiprent/constants.dart';
 import 'package:piiprent/models/auth_model.dart';
 
 ApiService instance;
 
 class ApiService {
-  final String _baseUrl = 'api.r3sourcer.com';
+  final String _baseUrl = apiUrl.replaceAll('https://', '');
   Auth _auth;
   final Map<String, dynamic> _emptyMap = Map();
 

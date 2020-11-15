@@ -6,10 +6,14 @@ import 'package:piiprent/services/api_service.dart';
 class JobService {
   final ApiService apiService = ApiService.create();
 
-  Future getCandidateJobs() async {
+  Future getCandidateJobs(query) async {
     Map<String, dynamic> params = {
       'status': '1',
     };
+
+    if (query != null) {
+      params = {...params, ...query};
+    }
 
     http.Response res =
         await apiService.get(path: '/hr/joboffers-candidate/', params: params);
@@ -20,7 +24,7 @@ class JobService {
       List<JobOffer> jobs =
           results.map((dynamic el) => JobOffer.fromJson(el)).toList();
 
-      return jobs;
+      return {"list": jobs, "count": body['count']};
     } else {
       throw Exception('Failed to load Job Offers');
     }
