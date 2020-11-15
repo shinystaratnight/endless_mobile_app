@@ -83,7 +83,9 @@ class CandidateDrawer extends StatelessWidget {
             ListTile(
               title: Text('Logout', style: _textStyle),
               onTap: () => {
-                if (loginService.logout()) {Navigator.pushNamed(context, '/')}
+                loginService
+                    .logout()
+                    .then((bool success) => Navigator.pushNamed(context, '/'))
               },
             ),
             Divider(

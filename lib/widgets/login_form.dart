@@ -69,6 +69,23 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     LoginService loginService = Provider.of<LoginService>(context);
 
+    loginService.getUser().then((Role role) {
+      if (role == Role.Candidate) {
+        print('here');
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => CandidateHomeScreen(),
+          ),
+        );
+      } else if (role == Role.Client) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ClientHomeScreen(),
+          ),
+        );
+      }
+    });
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Form(

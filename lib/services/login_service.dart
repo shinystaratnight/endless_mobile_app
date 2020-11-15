@@ -4,13 +4,17 @@ import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/jwt_decode.dart';
 import 'package:piiprent/models/auth_model.dart';
-import 'package:piiprent/models/industry_model.dart';
 import 'package:piiprent/models/user_model.dart';
 import 'package:piiprent/services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
   final ApiService apiService = ApiService.create();
-  User user;
+  User _user;
+
+  get user {
+    return _user;
+  }
 
   Future<Role> login(String username, String password) async {
     Map<String, dynamic> body = {
@@ -36,17 +40,39 @@ class LoginService {
 
       Auth auth = Auth.fromJson(json.decode(res.body));
       apiService.auth = auth;
-      var payload = parseJwtPayLoad(auth.access_token_jwt);
-      user = User.fromTokenPayload(payload);
 
-      return user.type;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('auth', res.body);
+
+      var payload = parseJwtPayLoad(auth.access_token_jwt);
+      _user = User.fromTokenPayload(payload);
+
+      return _user.type;
     } catch (e) {
       throw e;
     }
   }
 
-  bool logout() {
-    user = null;
+  Future<Role> getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String authEncoded = (prefs.getString('auth') ?? '');
+
+    if (authEncoded != '') {
+      Auth auth = Auth.fromJson(json.decode(authEncoded));
+      apiService.auth = auth;
+      var payload = parseJwtPayLoad(auth.access_token_jwt);
+      _user = User.fromTokenPayload(payload);
+
+      return _user.type;
+    } else {
+      return null;
+    }
+  }
+
+  Future<bool> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    _user = null;
     apiService.auth = null;
     return true;
   }

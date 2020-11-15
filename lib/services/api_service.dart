@@ -66,7 +66,6 @@ class ApiService {
   }
 
   void _updateByToken(headers) {
-    print(auth);
     if (auth != null) {
       headers.addAll(
           {HttpHeaders.authorizationHeader: 'JWT ${auth.access_token_jwt}'});
