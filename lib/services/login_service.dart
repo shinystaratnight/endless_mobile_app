@@ -28,8 +28,6 @@ class LoginService {
       http.Response res =
           await apiService.post(path: '/oauth2/token/', body: body);
 
-      print(res.body);
-
       if (res.statusCode == 400) {
         throw 'Invalid credentials given.';
       }

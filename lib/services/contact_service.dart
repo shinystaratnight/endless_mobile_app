@@ -17,8 +17,6 @@ class ContactService {
 
       return true;
     } else {
-      print(res);
-
       throw Exception("User with this email doesn't exist");
     }
   }

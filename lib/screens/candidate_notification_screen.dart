@@ -75,8 +75,6 @@ class CandidateNotificationScreen extends StatelessWidget {
                 }
 
                 if (snapshot.hasError) {
-                  print(snapshot.error);
-
                   return Container(
                     child: Text('Something went wrong!'),
                   );
@@ -98,8 +96,6 @@ class CandidateNotificationScreen extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       Timesheet timesheet = data[index];
 
-                      print(timesheet.position);
-
                       return Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: TimesheetCard(
@@ -120,8 +116,6 @@ class CandidateNotificationScreen extends StatelessWidget {
                 }
 
                 if (snapshot.hasError) {
-                  print(snapshot.error);
-
                   return Container(
                     child: Text('Something went wrong!'),
                   );

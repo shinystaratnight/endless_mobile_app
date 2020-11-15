@@ -118,8 +118,6 @@ class _RegisterFormState extends State<RegisterForm> {
                 ? FutureBuilder(
                     future: industryService.getSkills(_industry),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      print('here');
-
                       if (snapshot.connectionState == ConnectionState.active ||
                           snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
@@ -129,8 +127,6 @@ class _RegisterFormState extends State<RegisterForm> {
 
                       if (snapshot.hasData) {
                         List<Skill> data = snapshot.data;
-                        print(data);
-
                         return FormSelect(
                           multiple: true,
                           title: 'Skills',

@@ -18,8 +18,6 @@ class _DynamicDropdownState extends State<DynamicDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.future);
-
     return Container(
       child: Column(
         children: [

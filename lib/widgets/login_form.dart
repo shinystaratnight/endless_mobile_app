@@ -71,7 +71,6 @@ class _LoginFormState extends State<LoginForm> {
 
     loginService.getUser().then((Role role) {
       if (role == Role.Candidate) {
-        print('here');
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CandidateHomeScreen(),

@@ -11,6 +11,8 @@ class Field extends StatefulWidget {
   final initialValue;
   final bool datepicker;
   final bool readOnly;
+  final Function onChanged;
+  final Stream setStream;
 
   Field({
     this.label,
@@ -22,6 +24,8 @@ class Field extends StatefulWidget {
     this.type = TextInputType.text,
     this.datepicker = false,
     this.readOnly = false,
+    this.onChanged,
+    this.setStream,
   });
 
   @override
@@ -34,12 +38,26 @@ class _FieldState extends State<Field> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    myController.text = widget.initialValue;
-    if (widget.datepicker && widget.initialValue != null) {
-      _date = DateTime.parse(widget.initialValue);
+    _setValue(widget.initialValue);
+
+    if (widget.setStream != null) {
+      widget.setStream.listen((event) {
+        _setValue(event);
+      });
     }
+
     super.initState();
+  }
+
+  _setValue(dynamic value) {
+    if (widget.datepicker && value != null) {
+      setState(() {
+        _date = value;
+        myController.text = DateFormat('dd/MM/yyyy').format(value);
+      });
+    } else {
+      myController.text = value;
+    }
   }
 
   @override
@@ -49,6 +67,7 @@ class _FieldState extends State<Field> {
       child: TextFormField(
         controller: myController,
         decoration: InputDecoration(labelText: widget.label),
+        onChanged: widget.onChanged,
         onTap: widget.datepicker
             ? () {
                 showDatePicker(
@@ -57,17 +76,20 @@ class _FieldState extends State<Field> {
                   firstDate: DateTime(1900),
                   lastDate: DateTime.now(),
                 ).then((date) {
-                  setState(() {
-                    myController.text = DateFormat('dd/MM/yyyy').format(date);
+                  if (date != null) {
                     setState(() {
-                      _date = date;
+                      setState(() {
+                        myController.text =
+                            DateFormat('dd/MM/yyyy').format(date);
+                        _date = date;
+                        widget.onChanged(date);
+                      });
                     });
-                  });
+                  }
                 });
               }
             : widget.onFocus,
         validator: widget.validator,
-        // initialValue: widget.initialValue,
         obscureText: widget.obscureText,
         keyboardType: widget.type,
         onSaved: widget.onSaved,

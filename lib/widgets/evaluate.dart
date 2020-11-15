@@ -27,7 +27,6 @@ class _EvaluateState extends State<Evaluate> {
 
   @override
   void initState() {
-    print(widget.score);
     _scoreMap = [];
     for (var i = 0; i < 5; i++) {
       _scoreMap.add(i < widget.score);

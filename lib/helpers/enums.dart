@@ -8,6 +8,11 @@ enum MessageType {
   Error,
 }
 
+enum FilterDialogResult {
+  Submit,
+  Clear,
+}
+
 Map<String, String> language = {
   'EN': 'en',
   'EE': 'ee',

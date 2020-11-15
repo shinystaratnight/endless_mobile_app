@@ -43,8 +43,6 @@ class CandidateJobsScreen extends StatelessWidget {
           }
 
           if (snapshot.hasError) {
-            print(snapshot.error);
-
             return Container(
               child: Text('Something went wrong!'),
             );

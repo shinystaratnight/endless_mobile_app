@@ -84,7 +84,9 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Job')),
-      floatingActionButton: FilterDialogButton(),
+      floatingActionButton: FilterDialogButton(
+        onClose: (_) {},
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(10.0),

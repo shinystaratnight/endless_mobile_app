@@ -122,7 +122,6 @@ class _FormSelectState extends State<FormSelect> {
 
   @override
   Widget build(BuildContext context) {
-    print(_data);
     return Column(
       children: [
         Container(

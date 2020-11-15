@@ -15,7 +15,11 @@ class CandidateTimesheetsScreen extends StatelessWidget {
     return Scaffold(
       appBar: getCandidateAppBar('Timesheets', context),
       drawer: CandidateDrawer(),
-      floatingActionButton: FilterDialogButton(),
+      floatingActionButton: FilterDialogButton(
+        onClose: (data) {
+          print(data);
+        },
+      ),
       body: FutureBuilder(
         future: timesheetService.getCandidateTimesheets(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -26,8 +30,6 @@ class CandidateTimesheetsScreen extends StatelessWidget {
               itemCount: data.length,
               itemBuilder: (BuildContext context, int index) {
                 Timesheet timesheet = data[index];
-
-                print(timesheet.position);
 
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -49,8 +51,6 @@ class CandidateTimesheetsScreen extends StatelessWidget {
           }
 
           if (snapshot.hasError) {
-            print(snapshot.error);
-
             return Container(
               child: Text('Something went wrong!'),
             );

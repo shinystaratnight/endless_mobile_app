@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/widgets/filter_dialog.dart';
 
 class FilterDialogButton extends StatefulWidget {
   final DateTime from;
   final DateTime to;
+  final Function onClose;
 
   FilterDialogButton({
     this.from,
     this.to,
+    @required this.onClose,
   });
 
   @override
@@ -21,8 +24,8 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
 
   @override
   void initState() {
-    _from = widget.from != null ? widget.from : null;
-    _to = widget.to != null ? widget.to : null;
+    _from = widget.from;
+    _to = widget.to;
     super.initState();
   }
 
@@ -38,12 +41,15 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
     );
   }
 
-  // _setToday() {
-  //   setState(() {
-  //     _from = DateTime.now();
-  //     _to = DateTime.now();
-  //   });
-  // }
+  _onClose(dynamic event) {
+    if (event == FilterDialogResult.Submit) {
+      widget.onClose({"from": _from, "to": _to});
+    } else if (event == FilterDialogResult.Clear) {
+      widget.onClose({"from": null, "to": null});
+    } else {
+      widget.onClose({"from": widget.from, "to": widget.to});
+    }
+  }
 
   _showDialog() {
     showDialog(
@@ -52,13 +58,13 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
         actions: [
           RaisedButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(FilterDialogResult.Clear);
             },
             child: Text('Clear'),
           ),
           RaisedButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(FilterDialogResult.Submit);
             },
             color: Colors.blueAccent,
             child: Text('Submit'),
@@ -70,8 +76,17 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
           horizontal: 8.0,
           vertical: 10.0,
         ),
-        content: FilterDialog(),
+        content: FilterDialog(
+          from: _from,
+          to: _to,
+          onChange: (Map<String, DateTime> data) {
+            setState(() {
+              _from = data["from"];
+              _to = data["to"];
+            });
+          },
+        ),
       ),
-    );
+    ).then(_onClose);
   }
 }

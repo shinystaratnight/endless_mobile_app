@@ -40,7 +40,9 @@ class ClientTimesheetsScreen extends StatelessWidget {
               ],
             )),
         drawer: ClientDrawer(),
-        floatingActionButton: FilterDialogButton(),
+        floatingActionButton: FilterDialogButton(
+          onClose: (_) {},
+        ),
         body: TabBarView(
           children: [
             ListView.builder(
