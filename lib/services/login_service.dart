@@ -12,7 +12,7 @@ class LoginService {
   final ApiService apiService = ApiService.create();
   User _user;
 
-  get user {
+  User get user {
     return _user;
   }
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/models/timesheet_model.dart';
+import 'package:piiprent/screens/more_button.dart';
 import 'package:piiprent/services/job_offer_service.dart';
+import 'package:piiprent/services/list_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/job_card.dart';
@@ -13,6 +15,8 @@ class CandidateNotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     JobOfferService jobOfferService = Provider.of<JobOfferService>(context);
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
+    ListService jobOfferlistService =
+        ListService(action: jobOfferService.getCandidateJobOffers);
 
     return DefaultTabController(
       length: 2,
@@ -45,15 +49,28 @@ class CandidateNotificationScreen extends StatelessWidget {
             showNotification: false),
         body: TabBarView(
           children: [
-            FutureBuilder(
-              future: jobOfferService.getCandidateJobOffers(),
+            StreamBuilder(
+              stream: jobOfferlistService.stream,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   List<JobOffer> data = snapshot.data;
 
+                  if (data.length == 0) {
+                    return Center(
+                      child: Text('No Data'),
+                    );
+                  }
+
                   return ListView.builder(
-                    itemCount: data.length,
+                    itemCount: data.length + 1,
                     itemBuilder: (BuildContext context, int index) {
+                      if (index == data.length) {
+                        return MoreButton(
+                          isShow: jobOfferlistService.canFetchMore,
+                          stream: jobOfferlistService.fetchStream,
+                          onPressed: () => jobOfferlistService.fetchMore(),
+                        );
+                      }
                       JobOffer offer = data[index];
 
                       return Padding(
@@ -90,6 +107,12 @@ class CandidateNotificationScreen extends StatelessWidget {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   List<Timesheet> data = snapshot.data;
+
+                  if (data.length == 0) {
+                    return Center(
+                      child: Text('No Data'),
+                    );
+                  }
 
                   return ListView.builder(
                     itemCount: data.length,

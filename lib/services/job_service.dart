@@ -6,7 +6,7 @@ import 'package:piiprent/services/api_service.dart';
 class JobService {
   final ApiService apiService = ApiService.create();
 
-  Future getCandidateJobs(query) async {
+  Future getCandidateJobs([Map<String, dynamic> query]) async {
     Map<String, dynamic> params = {
       'status': '1',
     };

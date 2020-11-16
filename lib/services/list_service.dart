@@ -36,11 +36,12 @@ class ListService {
 
   start() async {
     try {
-      var data = await action({
-        ...params,
+      updateParams({
         "limit": _limit.toString(),
         "offset": _offset.toString(),
       });
+
+      var data = await action(params);
       _count = data['count'];
       _offset = _offset + data['list'].length;
       _data = data['list'];
@@ -54,12 +55,27 @@ class ListService {
     _fetchStreamController.add(true);
 
     try {
+      updateParams({
+        "limit": _limit.toString(),
+        "offset": _offset.toString(),
+      });
       var data = await action(params);
-      _data = [..._data, ...data['list']];
-      _offset = _offset + data['list'].length;
-      _streamController.add(data['list']);
+      data['list'].insertAll(0, _data);
+      _data = data['list'];
+      _offset = _data.length;
+      _streamController.add(_data);
     } catch (e) {
       print(e);
+    }
+  }
+
+  updateParams(Map<String, dynamic> query, [bool reset = false]) {
+    params = {...params, ...query};
+
+    if (reset) {
+      _streamController.add(null);
+      _offset = 0;
+      start();
     }
   }
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/widgets/filter_dialog.dart';
 
 class FilterDialogButton extends StatefulWidget {
-  final DateTime from;
-  final DateTime to;
+  final String from;
+  final String to;
   final Function onClose;
 
   FilterDialogButton({
@@ -24,8 +25,14 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
 
   @override
   void initState() {
-    _from = widget.from;
-    _to = widget.to;
+    if (widget.from != null) {
+      _from = DateTime.parse(widget.from);
+    }
+
+    if (widget.to != null) {
+      _to = DateTime.parse(widget.to);
+    }
+    print('init');
     super.initState();
   }
 
@@ -43,9 +50,16 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
 
   _onClose(dynamic event) {
     if (event == FilterDialogResult.Submit) {
-      widget.onClose({"from": _from, "to": _to});
+      widget.onClose({
+        "from": DateFormat('yyyy-MM-dd').format(_from),
+        "to": DateFormat('yyyy-MM-dd').format(_to),
+      });
     } else if (event == FilterDialogResult.Clear) {
       widget.onClose({"from": null, "to": null});
+      setState(() {
+        _from = null;
+        _to = null;
+      });
     } else {
       widget.onClose({"from": widget.from, "to": widget.to});
     }

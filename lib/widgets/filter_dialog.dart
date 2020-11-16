@@ -175,6 +175,7 @@ class _FilterDialogState extends State<FilterDialog> {
                   child: Field(
                     label: 'From',
                     datepicker: true,
+                    initialValue: widget.from,
                     setStream: _fromStreamController.stream,
                     onChanged: (data) {
                       print(data);
@@ -186,6 +187,7 @@ class _FilterDialogState extends State<FilterDialog> {
                   child: Field(
                     label: 'To',
                     datepicker: true,
+                    initialValue: widget.to,
                     setStream: _toStreamController.stream,
                     onChanged: (data) {
                       _emit(from, data);

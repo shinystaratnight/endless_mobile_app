@@ -26,7 +26,11 @@ class User {
   }
 
   String userAvatarUrl() {
-    return '$apiUrl${picture['origin']}';
+    if (picture['origin'] != null) {
+      return '$apiUrl${picture['origin']}';
+    }
+
+    return null;
   }
 }
 

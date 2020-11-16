@@ -6,8 +6,12 @@ import 'package:piiprent/services/api_service.dart';
 class TimesheetService {
   final ApiService apiService = ApiService.create();
 
-  Future getCandidateTimesheets() async {
+  Future getCandidateTimesheets([Map<String, dynamic> query]) async {
     Map<String, dynamic> params = {};
+
+    if (query != null) {
+      params = {...params, ...query};
+    }
 
     http.Response res =
         await apiService.get(path: '/hr/timesheets-candidate/', params: params);
@@ -18,7 +22,7 @@ class TimesheetService {
       List<Timesheet> timesheets =
           results.map((dynamic el) => Timesheet.fromJson(el)).toList();
 
-      return timesheets;
+      return {"list": timesheets, "count": body["count"]};
     } else {
       throw Exception('Failed to load Timesheets');
     }

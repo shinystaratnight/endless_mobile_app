@@ -27,7 +27,7 @@ class CandidateDrawer extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     shape: BoxShape.circle,
-                    image: loginService.user.picture != null
+                    image: loginService.user.userAvatarUrl() != null
                         ? DecorationImage(
                             fit: BoxFit.cover,
                             image:
