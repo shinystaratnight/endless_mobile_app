@@ -130,7 +130,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         return FormSelect(
                           multiple: true,
                           title: 'Skills',
-                          columns: 2,
+                          columns: 1,
                           options: data.map((Skill el) {
                             return {'value': el.id, 'label': el.name};
                           }).toList(),

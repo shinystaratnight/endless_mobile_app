@@ -16,7 +16,7 @@ class CandidateTimesheetDetailsScreen extends StatefulWidget {
   final DateTime breakEnd;
 
   CandidateTimesheetDetailsScreen({
-    this.position,
+    this.position = '',
     this.jobsite,
     this.clientContact,
     this.address,

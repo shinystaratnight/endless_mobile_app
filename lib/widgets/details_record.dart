@@ -4,7 +4,7 @@ class DetailsRecord extends StatelessWidget {
   final String label;
   final String value;
 
-  DetailsRecord({this.label, this.value});
+  DetailsRecord({this.label, this.value = ''});
 
   @override
   Widget build(BuildContext context) {

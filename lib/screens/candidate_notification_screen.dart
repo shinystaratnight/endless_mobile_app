@@ -28,7 +28,7 @@ class CandidateNotificationScreen extends StatelessWidget {
               Tab(
                 child: Row(
                   children: [
-                    Icon(Icons.school),
+                    Icon(Icons.local_offer),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text('Job Offers'),
@@ -39,7 +39,7 @@ class CandidateNotificationScreen extends StatelessWidget {
               Tab(
                 child: Row(
                   children: [
-                    Icon(Icons.school),
+                    Icon(Icons.query_builder),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text('Timesheets'),

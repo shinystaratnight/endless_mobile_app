@@ -125,7 +125,7 @@ class _FormSelectState extends State<FormSelect> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
           alignment: Alignment.centerLeft,
           child: Text(
             widget.title,
@@ -136,7 +136,7 @@ class _FormSelectState extends State<FormSelect> {
           height: 4.0,
         ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 4.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: _data.map((e) {
