@@ -63,12 +63,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
           children: [
             Field(
               label: 'Email',
-              validator: (String value) {
-                if (isEmail(value)) {
-                  return null;
-                }
-                return 'Please enter a valid email!';
-              },
+              validator: emailValidator,
               onSaved: (String value) {
                 _email = value;
               },

@@ -57,6 +57,19 @@ class ApiService {
     return await http.post(uri, headers: headers, body: bodyEncoded);
   }
 
+  Future put({String path, Map<String, dynamic> body}) async {
+    Uri uri = _createURI(path, _emptyMap);
+    Map<String, String> headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+    _updateByToken(headers);
+
+    String bodyEncoded = json.encode(body);
+
+    return await http.put(uri, headers: headers, body: bodyEncoded);
+  }
+
   Uri _createURI(String path, Map<String, dynamic> params) {
     return Uri(
       scheme: 'https',

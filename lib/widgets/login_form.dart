@@ -92,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           children: [
             Field(
-              label: 'Username / Email Address',
+              label: 'Email Address',
               type: TextInputType.emailAddress,
               validator: emailValidator,
               onSaved: (String value) {

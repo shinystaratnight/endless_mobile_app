@@ -1,4 +1,4 @@
-// import 'dart:convert';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
 
@@ -19,6 +19,32 @@ class ContactService {
       return true;
     } else {
       throw Exception("User with this email doesn't exist");
+    }
+  }
+
+  Future<String> changePassowrd({
+    String oldPass,
+    String newPass,
+    String confirmPass,
+    String id,
+  }) async {
+    var body = {
+      'old_password': oldPass,
+      'password': newPass,
+      'confirm_password': confirmPass,
+    };
+
+    http.Response res = await apiService.put(
+      path: '/core/contacts/$id/change_password/',
+      body: body,
+    );
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(res.body);
+
+      return body['message'];
+    } else {
+      throw Exception("Password was not change");
     }
   }
 

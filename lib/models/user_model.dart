@@ -7,13 +7,16 @@ class User {
   Role type;
   Map<String, dynamic> picture;
   String id;
+  String userId;
 
   User({
     this.name,
     this.email,
     this.type,
     this.picture,
+    // TODO: change name to candidate id
     this.id,
+    this.userId,
   });
 
   factory User.fromTokenPayload(Map<String, dynamic> payload) {
@@ -25,6 +28,7 @@ class User {
       type: getRole(contact['contact_type']),
       picture: contact['picture'],
       id: contact['contact_id'],
+      userId: contact['id'],
     );
   }
 
