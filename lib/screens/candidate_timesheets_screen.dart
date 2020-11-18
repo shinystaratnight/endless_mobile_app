@@ -65,6 +65,8 @@ class CandidateTimesheetsScreen extends StatelessWidget {
                     shiftEnd: timesheet.shiftEnd,
                     breakStart: timesheet.breakStart,
                     breakEnd: timesheet.breakEnd,
+                    status: timesheet.status,
+                    id: timesheet.id,
                   ),
                 );
               },

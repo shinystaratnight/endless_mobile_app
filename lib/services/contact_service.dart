@@ -45,8 +45,6 @@ class ContactService {
       'skill': skills
     };
 
-    print(body);
-
     http.Response res = await apiService.post(
       path: 'core/forms/$formId/submit/',
       body: body,

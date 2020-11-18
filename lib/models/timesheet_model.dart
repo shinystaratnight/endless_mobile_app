@@ -11,6 +11,7 @@ class Timesheet {
   final DateTime shiftEnd;
   final DateTime breakStart;
   final DateTime breakEnd;
+  final int status;
 
   Timesheet({
     this.id,
@@ -23,6 +24,7 @@ class Timesheet {
     this.shiftEnd,
     this.breakStart,
     this.breakEnd,
+    this.status,
   });
 
   factory Timesheet.fromJson(Map<String, dynamic> json) {
@@ -45,6 +47,7 @@ class Timesheet {
       shiftEnd: DateTime.parse(json['shift_ended_at']),
       breakStart: DateTime.parse(json['break_started_at']),
       breakEnd: DateTime.parse(json['break_ended_at']),
+      status: json['status'],
     );
   }
 

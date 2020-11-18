@@ -13,6 +13,11 @@ enum FilterDialogResult {
   Clear,
 }
 
+enum TimesheetStatus {
+  New,
+  PreShiftCheck,
+}
+
 Map<String, String> language = {
   'EN': 'en',
   'EE': 'ee',

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
+import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
+import 'package:provider/provider.dart';
 
 class CandidateTimesheetDetailsScreen extends StatefulWidget {
   final String position;
@@ -14,6 +17,8 @@ class CandidateTimesheetDetailsScreen extends StatefulWidget {
   final DateTime shiftEnd;
   final DateTime breakStart;
   final DateTime breakEnd;
+  final int status;
+  final String id;
 
   CandidateTimesheetDetailsScreen({
     this.position = '',
@@ -25,6 +30,8 @@ class CandidateTimesheetDetailsScreen extends StatefulWidget {
     this.shiftEnd,
     this.breakStart,
     this.breakEnd,
+    this.status,
+    this.id,
   });
 
   @override
@@ -34,8 +41,40 @@ class CandidateTimesheetDetailsScreen extends StatefulWidget {
 
 class _CandidateTimesheetDetailsScreenState
     extends State<CandidateTimesheetDetailsScreen> {
+  bool _updated = false;
+  bool _fetching = false;
+
+  _acceptPreShiftCheck(TimesheetService timesheetService) async {
+    try {
+      setState(() => _fetching = true);
+      bool result = await timesheetService.acceptPreShiftCheck(widget.id);
+
+      setState(() => _updated = result);
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() => _fetching = false);
+    }
+  }
+
+  _declinePreShiftCheck(TimesheetService timesheetService) async {
+    try {
+      setState(() => _fetching = true);
+      bool result = await timesheetService.declinePreShiftCheck(widget.id);
+
+      setState(() => _updated = result);
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() => _fetching = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    TimesheetService timesheetService = Provider.of<TimesheetService>(context);
+
+    print(widget.status);
     return Scaffold(
       appBar: getCandidateAppBar('Timesheet', context, showNotification: false),
       body: SingleChildScrollView(
@@ -89,6 +128,49 @@ class _CandidateTimesheetDetailsScreenState
                 label: 'Address',
                 value: widget.address,
               ),
+              widget.status == 1 && !_updated
+                  ? Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Center(
+                            child: Text(
+                              'Confirm if you are going to work',
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FormSubmitButton(
+                              label: 'Decline',
+                              onPressed: () =>
+                                  _declinePreShiftCheck(timesheetService),
+                              disabled: _fetching,
+                              color: Colors.red[400],
+                            ),
+                            FormSubmitButton(
+                              label: 'Accept',
+                              onPressed: () =>
+                                  _acceptPreShiftCheck(timesheetService),
+                              disabled: _fetching,
+                              color: Colors.green[400],
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : Container(),
+              widget.status == 4 && !_updated
+                  ? FormSubmitButton(
+                      label: 'Submit',
+                      onPressed: () => {},
+                      disabled: true,
+                    )
+                  : Container()
             ],
           ),
         ),

@@ -10,3 +10,11 @@ const Map<String, String> languageMap = {
   'RU': 'ru',
   'FI': 'fi'
 };
+
+const Map<int, String> TimesheetStatus = {
+  0: "New",
+  1: "Pre-Shift check pending",
+  3: "Pre-Shift check failed",
+  4: "Submit pending",
+  7: "Approved",
+};

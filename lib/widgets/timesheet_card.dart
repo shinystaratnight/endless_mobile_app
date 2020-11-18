@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:piiprent/constants.dart';
 import 'package:piiprent/screens/candidate_timesheet_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
@@ -15,6 +16,8 @@ class TimesheetCard extends StatelessWidget {
   final DateTime shiftEnd;
   final DateTime breakStart;
   final DateTime breakEnd;
+  final int status;
+  final String id;
 
   TimesheetCard({
     this.company,
@@ -27,6 +30,8 @@ class TimesheetCard extends StatelessWidget {
     this.shiftEnd,
     this.breakStart,
     this.breakEnd,
+    this.status,
+    this.id,
   });
 
   @override
@@ -44,6 +49,8 @@ class TimesheetCard extends StatelessWidget {
             shiftEnd: shiftEnd,
             breakStart: breakStart,
             breakEnd: breakEnd,
+            status: status,
+            id: id,
           ),
         ),
       ),
@@ -53,6 +60,23 @@ class TimesheetCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(4.0),
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(4.0),
+                  margin: const EdgeInsets.only(bottom: 4.0),
+                  child: Text(
+                    '${TimesheetStatus[status]}',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: status == 3 ? Colors.red[300] : Colors.green[300],
+                    ),
+                  ),
+                ),
                 Text(
                   company,
                   style: TextStyle(fontSize: 22.0, color: Colors.white),
