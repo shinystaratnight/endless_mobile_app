@@ -94,12 +94,7 @@ class _LoginFormState extends State<LoginForm> {
             Field(
               label: 'Username / Email Address',
               type: TextInputType.emailAddress,
-              validator: (String value) {
-                if (isEmail(value)) {
-                  return null;
-                }
-                return 'Please enter a valid email!';
-              },
+              validator: emailValidator,
               onSaved: (String value) {
                 _username = value;
               },

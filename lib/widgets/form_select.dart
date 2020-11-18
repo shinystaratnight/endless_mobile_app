@@ -122,6 +122,8 @@ class _FormSelectState extends State<FormSelect> {
 
   @override
   Widget build(BuildContext context) {
+    bool hasScroll = _data.length > 3 && widget.columns == 1;
+
     return Column(
       children: [
         Container(
@@ -136,22 +138,37 @@ class _FormSelectState extends State<FormSelect> {
           height: 4.0,
         ),
         Container(
-          padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 4.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _data.map((e) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: e.map((e) {
-                  return Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(4.0),
-                      child: _buildOption(e),
-                    ),
-                  );
-                }).toList(),
-              );
-            }).toList(),
+          margin:
+              hasScroll ? const EdgeInsets.symmetric(horizontal: 8.0) : null,
+          padding: hasScroll
+              ? const EdgeInsets.all(4.0)
+              : const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 4.0),
+          decoration: BoxDecoration(
+            border: hasScroll ? Border.all(color: Colors.grey[400]) : null,
+            borderRadius: hasScroll
+                ? BorderRadius.all(
+                    Radius.circular(4.0),
+                  )
+                : null,
+          ),
+          height: hasScroll ? 160 : null,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: _data.map((e) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: e.map((e) {
+                    return Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(4.0),
+                        child: _buildOption(e),
+                      ),
+                    );
+                  }).toList(),
+                );
+              }).toList(),
+            ),
           ),
         ),
       ],

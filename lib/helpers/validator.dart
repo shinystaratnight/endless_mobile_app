@@ -5,3 +5,10 @@ bool isEmail(String value) {
 
   return false;
 }
+
+String emailValidator(String value) {
+  if (isEmail(value)) {
+    return null;
+  }
+  return 'Please enter a valid email!';
+}

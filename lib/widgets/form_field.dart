@@ -78,12 +78,11 @@ class _FieldState extends State<Field> {
                 ).then((date) {
                   if (date != null) {
                     setState(() {
-                      setState(() {
-                        myController.text =
-                            DateFormat('dd/MM/yyyy').format(date);
-                        _date = date;
+                      myController.text = DateFormat('dd/MM/yyyy').format(date);
+                      _date = date;
+                      if (widget.onChanged != null) {
                         widget.onChanged(date);
-                      });
+                      }
                     });
                   }
                 });

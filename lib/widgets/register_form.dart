@@ -1,17 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-// import 'package:intl/intl.dart';
+import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/industry_model.dart';
 import 'package:piiprent/models/skill_model.dart';
-import 'package:piiprent/screens/candidate_home_screen.dart';
+import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/industry_service.dart';
-// import 'package:piiprent/services/login_service.dart';
-// import 'package:piiprent/widgets/dynamic_dropdown.dart';
 import 'package:piiprent/widgets/form_field.dart';
+import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_select.dart';
+import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
 
 class RegisterForm extends StatefulWidget {
-  // final LoginService loginService = LoginService();
   final IndustryService industryService = IndustryService();
 
   @override
@@ -19,12 +21,18 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  String _title;
   String _firstName;
   String _lastName;
   String _email;
   String _phone;
-  DateTime _birthday;
+  String _birthday;
   String _industry;
+  List<dynamic> _skills;
+
+  StreamController _industryStream = StreamController();
+  StreamController _fetchingStream = StreamController();
+  StreamController _errorStream = StreamController();
 
   List<Map<String, dynamic>> titleOptions = [
     {'value': 'Mr.', 'label': 'Mr.'},
@@ -41,14 +49,40 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    // _birthday = DateTime.now();
     super.initState();
+  }
+
+  _register(ContactService contactService) async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    _formKey.currentState.save();
+    _fetchingStream.add(true);
+    _errorStream.add(null);
+
+    try {
+      var result = await contactService.register(
+        birthday: _birthday,
+        email: _email,
+        firstName: _firstName,
+        lastName: _lastName,
+        industry: _industry,
+        phone: _phone,
+        skills: _skills,
+        title: _title,
+      );
+    } catch (e) {
+      _errorStream.add(e.toString());
+    } finally {
+      _fetchingStream.add(false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     IndustryService industryService = Provider.of<IndustryService>(context);
+    ContactService contactService = Provider.of<ContactService>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -68,25 +102,55 @@ class _RegisterFormState extends State<RegisterForm> {
                     columns: 4,
                     options: titleOptions,
                     multiple: false,
+                    onChanged: (String title) {
+                      _title = title;
+                    },
                   ),
                 )
               ],
             ),
             Row(
               children: [
-                Expanded(flex: 2, child: Field(label: 'First name')),
-                Expanded(flex: 2, child: Field(label: 'Last name'))
+                Expanded(
+                  flex: 2,
+                  child: Field(
+                    label: 'First name',
+                    onSaved: (String value) {
+                      _firstName = value;
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Field(
+                    label: 'Last name',
+                    onSaved: (String value) {
+                      _lastName = value;
+                    },
+                  ),
+                )
               ],
             ),
             Field(
               label: 'Email',
+              validator: emailValidator,
+              onSaved: (String value) {
+                _email = value;
+              },
             ),
             Field(
               label: 'Mobile number',
+              initialValue: '+',
+              onSaved: (String value) {
+                _phone = value;
+              },
             ),
             Field(
               label: 'Birthday',
               datepicker: true,
+              onSaved: (String value) {
+                _birthday = value;
+              },
             ),
             FutureBuilder(
               future: industryService.getIndustries(),
@@ -99,9 +163,8 @@ class _RegisterFormState extends State<RegisterForm> {
                     title: 'Industries',
                     columns: 1,
                     onChanged: (String id) {
-                      setState(() {
-                        _industry = id;
-                      });
+                      _industry = id;
+                      _industryStream.add(id);
                     },
                     options: data.map((Industry el) {
                       return {'value': el.id, 'label': el.name};
@@ -114,53 +177,63 @@ class _RegisterFormState extends State<RegisterForm> {
                 );
               },
             ),
-            _industry != null
-                ? FutureBuilder(
-                    future: industryService.getSkills(_industry),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active ||
-                          snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
+            StreamBuilder(
+              stream: _industryStream.stream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Container();
+                }
 
-                      if (snapshot.hasData) {
-                        List<Skill> data = snapshot.data;
-                        return FormSelect(
-                          multiple: true,
-                          title: 'Skills',
-                          columns: 1,
-                          options: data.map((Skill el) {
-                            return {'value': el.id, 'label': el.name};
-                          }).toList(),
-                        );
-                      }
+                String industry = snapshot.data;
 
+                return FutureBuilder(
+                  future: industryService.getSkills(industry),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active ||
+                        snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: CircularProgressIndicator(),
                       );
-                    },
-                  )
-                : SizedBox(),
-            RaisedButton(
-              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-              color: Colors.blue,
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CandidateHomeScreen(),
-                  ),
+                    }
+
+                    if (snapshot.hasData) {
+                      List<Skill> data = snapshot.data;
+                      return FormSelect(
+                        multiple: true,
+                        title: 'Skills',
+                        columns: 1,
+                        onChanged: (List<dynamic> ids) {
+                          _skills = ids;
+                        },
+                        options: data.map((Skill el) {
+                          return {'value': el.id, 'label': el.name};
+                        }).toList(),
+                      );
+                    }
+
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 );
               },
-              child: Text(
-                'Register',
-                style: TextStyle(fontSize: 16),
-              ),
+            ),
+            StreamBuilder(
+              stream: _errorStream.stream,
+              builder: (context, snapshot) {
+                return FormMessage(
+                    type: MessageType.Error, message: snapshot.data);
+              },
+            ),
+            StreamBuilder(
+              stream: _fetchingStream.stream,
+              builder: (context, snapshot) {
+                return FormSubmitButton(
+                  disabled: snapshot.hasData && snapshot.data,
+                  onPressed: () => _register(contactService),
+                  label: 'Register',
+                );
+              },
             ),
           ],
         ),
