@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Stars extends StatefulWidget {
   final bool canEdit;
   final Function onChange;
-  final int active;
+  final num active;
 
   Stars({this.canEdit, this.onChange, this.active = 0});
 
@@ -17,7 +17,11 @@ class _StarsState extends State<Stars> {
   @override
   void initState() {
     super.initState();
-    _active = widget.active;
+    if (widget.active.runtimeType == int) {
+      _active = widget.active;
+    } else {
+      _active = widget.active.floor();
+    }
   }
 
   Widget _buildStar(int index) {

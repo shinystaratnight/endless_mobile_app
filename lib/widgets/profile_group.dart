@@ -48,8 +48,9 @@ class _ProfileGroupState extends State<ProfileGroup> {
                 ),
                 widget.canEdit
                     ? IconButton(
-                        onPressed: widget.onEdit,
-                        icon: Icon(Icons.edit, color: Colors.blueAccent),
+                        // Disabled for now
+                        onPressed: null,
+                        icon: Icon(Icons.edit),
                         iconSize: 22.0,
                       )
                     : SizedBox(),

@@ -6,12 +6,14 @@ class User {
   String email;
   Role type;
   Map<String, dynamic> picture;
+  String id;
 
   User({
     this.name,
     this.email,
     this.type,
     this.picture,
+    this.id,
   });
 
   factory User.fromTokenPayload(Map<String, dynamic> payload) {
@@ -22,6 +24,7 @@ class User {
       email: contact['email'],
       type: getRole(contact['contact_type']),
       picture: contact['picture'],
+      id: contact['contact_id'],
     );
   }
 

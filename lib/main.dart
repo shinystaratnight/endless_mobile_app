@@ -10,6 +10,7 @@ import 'package:piiprent/screens/client_jobs_screen.dart';
 import 'package:piiprent/screens/client_profile_screen.dart';
 import 'package:piiprent/screens/client_timesheets_screen.dart';
 import 'package:piiprent/screens/forgot_password_screen.dart';
+import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/services/job_offer_service.dart';
@@ -29,7 +30,8 @@ void main() {
         Provider<JobOfferService>(create: (_) => JobOfferService()),
         Provider<JobService>(create: (_) => JobService()),
         Provider<TimesheetService>(create: (_) => TimesheetService()),
-        Provider<ContactService>(create: (_) => ContactService())
+        Provider<ContactService>(create: (_) => ContactService()),
+        Provider<CandidateService>(create: (_) => CandidateService()),
       ],
       child: MyApp(),
     ),

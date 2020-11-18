@@ -17,3 +17,19 @@ Map<String, String> generateTranslations(
 
   return result;
 }
+
+String parseAddress(Map<String, dynamic> address) {
+  if (address != null) {
+    return (address['__str__'] as String).replaceAll('\n', ' ');
+  }
+
+  return null;
+}
+
+double doubleParse(dynamic target, [defaultValue = 0.00]) {
+  if (target.runtimeType == String) {
+    return double.parse(target);
+  }
+
+  return defaultValue;
+}
