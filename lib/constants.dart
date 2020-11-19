@@ -1,3 +1,5 @@
+import 'package:piiprent/helpers/enums.dart';
+
 // Laviin
 const String companyId = 'ba3bd324-e8ec-4095-9c14-5ab702fa16c5';
 const String clientId = 'wCGDXWbZFxhULVjnPYMxXkujONUHYHJnlH3mNKNM';
@@ -22,8 +24,11 @@ const Map<String, String> languageMap = {
 const Map<int, String> TimesheetStatus = {
   0: "New",
   1: "Pre-Shift check pending",
+  2: "Pre-Shift check confirmed",
   3: "Pre-Shift check failed",
   4: "Submit pending",
+  5: "Approval pending",
+  6: "Supervisor modified",
   7: "Approved",
 };
 
@@ -32,4 +37,11 @@ const Map<int, String> Residency = {
   2: "Permanent Resident",
   3: "Temporary Resident",
   0: "Unknown",
+};
+
+const Map<TimesheetTime, String> TimesheetTimeKey = {
+  TimesheetTime.Start: 'shift_started_at',
+  TimesheetTime.BreakStart: 'break_started_at',
+  TimesheetTime.BreakEnd: 'break_ended_at',
+  TimesheetTime.End: 'shift_ended_at',
 };

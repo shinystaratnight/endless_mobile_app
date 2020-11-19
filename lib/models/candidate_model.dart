@@ -61,7 +61,6 @@ class Candidate {
       designation = skills[0].skill.name;
     }
 
-    print(json);
     return Candidate(
       id: json['id'],
       averageScore: json['average_score'],

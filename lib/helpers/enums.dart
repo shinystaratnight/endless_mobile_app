@@ -18,6 +18,13 @@ enum TimesheetStatus {
   PreShiftCheck,
 }
 
+enum TimesheetTime {
+  Start,
+  BreakStart,
+  BreakEnd,
+  End,
+}
+
 Map<String, String> language = {
   'EN': 'en',
   'EE': 'ee',

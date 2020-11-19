@@ -89,9 +89,10 @@ class TimesheetService {
   Future<bool> acceptPreShiftCheck(String id) async {
     Map<String, dynamic> body = Map();
 
-    http.Response res = await this
-        .apiService
-        .post(path: 'hr/timesheets/$id/confirm/', body: body);
+    http.Response res = await this.apiService.post(
+          path: 'hr/timesheets/$id/confirm/',
+          body: body,
+        );
 
     if (res.statusCode == 200) {
       return true;
@@ -103,14 +104,37 @@ class TimesheetService {
   Future<bool> declinePreShiftCheck(String id) async {
     Map<String, dynamic> body = Map();
 
-    http.Response res = await this
-        .apiService
-        .post(path: 'hr/timesheets/$id/decline/', body: body);
+    http.Response res = await this.apiService.post(
+          path: 'hr/timesheets/$id/decline/',
+          body: body,
+        );
 
     if (res.statusCode == 200) {
       return true;
     } else {
       throw Exception('Failed to decline Pre-shift check');
+    }
+  }
+
+  Future<bool> submitTimesheet(String id, body) async {
+    Map<String, dynamic> body = Map();
+
+    http.Response res = await this.apiService.put(
+          path: 'hr/timesheets-candidate/$id/submit/',
+          body: body,
+        );
+
+    if (res.statusCode == 200) {
+      // Map<String, dynamic> body = json.decode(res.body);
+      // List<dynamic> results = body['results'];
+      // List<Timesheet> timesheets =
+      //     results.map((dynamic el) => Timesheet.fromJson(el)).toList();
+
+      // return {"list": timesheets, "count": body["count"]};
+
+      return true;
+    } else {
+      throw Exception('Failed to submit Timesheet');
     }
   }
 }

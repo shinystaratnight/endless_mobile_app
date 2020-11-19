@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 class DetailsRecord extends StatelessWidget {
   final String label;
   final String value;
+  final Widget button;
 
-  DetailsRecord({this.label, this.value = ''});
+  DetailsRecord({this.label, this.value = '', this.button});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -18,9 +19,27 @@ class DetailsRecord extends StatelessWidget {
           ),
           Text(':'),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(value),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 8.0,
+                ),
+                Expanded(
+                  child: Row(
+                    children: this.button != null
+                        ? [
+                            Text(value),
+                            SizedBox(width: 8.0),
+                            Expanded(child: this.button)
+                          ]
+                        : [
+                            Expanded(
+                              child: Text(value),
+                            ),
+                          ],
+                  ),
+                )
+              ],
             ),
           ),
         ],
