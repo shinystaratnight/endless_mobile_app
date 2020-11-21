@@ -43,7 +43,6 @@ class _ListPageState<T> extends State<ListPage<T>> {
   @override
   Widget build(BuildContext context) {
     if (_listService == null) {
-      print('empty');
       return Container(
         width: 0,
         height: 0,
@@ -77,7 +76,7 @@ class _ListPageState<T> extends State<ListPage<T>> {
 
               return Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: widget.getChild(instance),
+                child: widget.getChild(instance, _listService.reset),
               );
             },
           );

@@ -31,7 +31,7 @@ class CandidateTimesheetsScreen extends StatelessWidget {
       body: ListPage<Timesheet>(
         action: timesheetService.getCandidateTimesheets,
         updateStream: _updateStream.stream,
-        getChild: (Timesheet instance) {
+        getChild: (Timesheet instance, Function reset) {
           return TimesheetCard(
             company: instance.company,
             position: instance.position,

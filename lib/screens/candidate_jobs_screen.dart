@@ -31,7 +31,7 @@ class CandidateJobsScreen extends StatelessWidget {
       body: ListPage<JobOffer>(
         action: jobService.getCandidateJobs,
         updateStream: _updateStream.stream,
-        getChild: (JobOffer instance) {
+        getChild: (JobOffer instance, Function reset) {
           return JobCard(
             company: instance.company,
             date: instance.datetime,

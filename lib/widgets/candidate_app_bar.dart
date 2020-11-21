@@ -12,23 +12,25 @@ Widget getCandidateAppBar(String title, BuildContext context,
                   builder: (context) => CandidateNotificationScreen())),
               icon: Icon(Icons.announcement),
             ),
-            Positioned(
-              top: 14.0,
-              right: 10.0,
-              child: Container(
-                alignment: Alignment.topRight,
-                height: 10.0,
-                width: 10.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.red[300],
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2.0,
-                  ),
-                ),
-              ),
-            ),
+
+            // TODO: implement showing functionality
+            // Positioned(
+            //   top: 14.0,
+            //   right: 10.0,
+            //   child: Container(
+            //     alignment: Alignment.topRight,
+            //     height: 10.0,
+            //     width: 10.0,
+            //     decoration: BoxDecoration(
+            //       shape: BoxShape.circle,
+            //       color: Colors.red[300],
+            //       border: Border.all(
+            //         color: Colors.white,
+            //         width: 2.0,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ])
         : SizedBox(),
   ], title: Text(title), bottom: tabs != null ? TabBar(tabs: tabs) : null);
