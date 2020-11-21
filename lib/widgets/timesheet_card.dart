@@ -18,6 +18,7 @@ class TimesheetCard extends StatelessWidget {
   final DateTime breakEnd;
   final int status;
   final String id;
+  final Function update;
 
   TimesheetCard({
     this.company,
@@ -32,28 +33,36 @@ class TimesheetCard extends StatelessWidget {
     this.breakEnd,
     this.status,
     this.id,
+    this.update,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => CandidateTimesheetDetailsScreen(
-            position: position,
-            jobsite: jobsite,
-            clientContact: clientContact,
-            address: address,
-            shiftDate: shiftDate,
-            shiftStart: shiftStart,
-            shiftEnd: shiftEnd,
-            breakStart: breakStart,
-            breakEnd: breakEnd,
-            status: status,
-            id: id,
+      onTap: () async {
+        var result = await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => CandidateTimesheetDetailsScreen(
+              position: position,
+              jobsite: jobsite,
+              clientContact: clientContact,
+              address: address,
+              shiftDate: shiftDate,
+              shiftStart: shiftStart,
+              shiftEnd: shiftEnd,
+              breakStart: breakStart,
+              breakEnd: breakEnd,
+              status: status,
+              id: id,
+            ),
           ),
-        ),
-      ),
+        );
+
+        if (result) {
+          update();
+        }
+        print(result);
+      },
       child: ListCard(
         header: Row(
           children: [

@@ -156,7 +156,21 @@ class _CandidateTimesheetDetailsScreenState
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
 
     return Scaffold(
-      appBar: getCandidateAppBar('Timesheet', context, showNotification: false),
+      appBar: getCandidateAppBar(
+        'Timesheet',
+        context,
+        showNotification: false,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.keyboard_arrow_left),
+              onPressed: () {
+                Navigator.pop(context, _updated);
+              },
+            );
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(10.0),
