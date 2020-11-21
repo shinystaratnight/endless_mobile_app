@@ -51,8 +51,8 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
   _onClose(dynamic event) {
     if (event == FilterDialogResult.Submit) {
       widget.onClose({
-        "from": DateFormat('yyyy-MM-dd').format(_from),
-        "to": DateFormat('yyyy-MM-dd').format(_to),
+        "from": _from != null ? DateFormat('yyyy-MM-dd').format(_from) : null,
+        "to": _to != null ? DateFormat('yyyy-MM-dd').format(_to) : null,
       });
     } else if (event == FilterDialogResult.Clear) {
       widget.onClose({"from": null, "to": null});

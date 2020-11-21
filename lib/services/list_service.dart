@@ -31,8 +31,8 @@ class ListService {
     this.action,
     this.params = const <String, dynamic>{},
   }) {
-    start();
     _initParams = params;
+    start();
     _fetchStreamController.add(false);
   }
 
