@@ -55,6 +55,7 @@ class CandidateJobOffersScreen extends StatelessWidget {
                     latitude: offer.latitude,
                     clientContact: offer.clientContact,
                     offer: true,
+                    update: listService.reset,
                   ),
                 );
               },

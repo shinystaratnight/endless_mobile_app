@@ -22,6 +22,10 @@ Widget getCandidateAppBar(String title, BuildContext context,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.red[300],
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2.0,
+                  ),
                 ),
               ),
             ),

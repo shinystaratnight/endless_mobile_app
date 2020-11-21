@@ -50,6 +50,26 @@ class TimesheetService {
     }
   }
 
+  Future<int> getCandidatePreShiftTimesheetsCount() async {
+    Map<String, dynamic> params = {
+      "status": '1',
+      'limit': '-1',
+      'fields': ['id'],
+    };
+
+    http.Response res =
+        await apiService.get(path: '/hr/timesheets-candidate/', params: params);
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(res.body);
+      int count = body['count'];
+
+      return count;
+    } else {
+      throw Exception('Failed to load pre shift timesheets count');
+    }
+  }
+
   Future getCandidateForSubmitTimesheets([Map<String, dynamic> query]) async {
     Map<String, dynamic> params = {'status': '4'};
 
@@ -69,6 +89,26 @@ class TimesheetService {
       return {"list": timesheets, "count": body["count"]};
     } else {
       throw Exception('Failed to load Timesheets');
+    }
+  }
+
+  Future<int> getCandidateForSubmitTimesheetsCount() async {
+    Map<String, dynamic> params = {
+      'status': '4',
+      'limit': '-1',
+      'fields': ['id'],
+    };
+
+    http.Response res =
+        await apiService.get(path: '/hr/timesheets-candidate/', params: params);
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(res.body);
+      int count = body['count'];
+
+      return count;
+    } else {
+      throw Exception('Failed to load submit timesheets count');
     }
   }
 

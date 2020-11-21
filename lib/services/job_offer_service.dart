@@ -30,6 +30,26 @@ class JobOfferService {
     }
   }
 
+  Future<int> getCandidateJobOffersCount() async {
+    Map<String, dynamic> params = {
+      'status': '0',
+      'limit': '-1',
+      'fields': ['id']
+    };
+
+    http.Response res =
+        await apiService.get(path: '/hr/joboffers-candidate/', params: params);
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(res.body);
+      int count = body['count'];
+
+      return count;
+    } else {
+      throw Exception('Failed to load Job Offers Count');
+    }
+  }
+
   Future<bool> accept(String id) async {
     Map<String, dynamic> body = Map();
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/candidate_drawer.dart';
 import 'package:piiprent/widgets/home_calendar.dart';
 import 'package:piiprent/widgets/home_screen_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
+import 'package:provider/provider.dart';
 
 class CandidateHomeScreen extends StatefulWidget {
   @override
@@ -13,6 +15,9 @@ class CandidateHomeScreen extends StatefulWidget {
 class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    NotificationService notificationService =
+        Provider.of<NotificationService>(context);
+
     return Scaffold(
       drawer: CandidateDrawer(dashboard: true),
       appBar: getCandidateAppBar('Home', context),
@@ -23,27 +28,31 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
               Row(
                 children: [
                   Expanded(
-                      flex: 1,
-                      child: HomeScreenButton(
+                    flex: 1,
+                    child: HomeScreenButton(
+                      color: Colors.blue[700],
+                      icon: Icon(
+                        Icons.person,
                         color: Colors.blue[700],
-                        icon: Icon(
-                          Icons.person,
-                          color: Colors.blue[700],
-                        ),
-                        path: '/candidate_profile',
-                        text: 'Profile',
-                      )),
+                      ),
+                      path: '/candidate_profile',
+                      text: 'Profile',
+                    ),
+                  ),
                   Expanded(
-                      flex: 1,
-                      child: HomeScreenButton(
+                    flex: 1,
+                    child: HomeScreenButton(
+                      color: Colors.orange[700],
+                      icon: Icon(
+                        Icons.local_offer,
                         color: Colors.orange[700],
-                        icon: Icon(
-                          Icons.local_offer,
-                          color: Colors.orange[700],
-                        ),
-                        path: '/candidate_job_offers',
-                        text: 'Job Offers',
-                      )),
+                      ),
+                      path: '/candidate_job_offers',
+                      text: 'Job Offers',
+                      stream: notificationService.jobOfferStream,
+                      update: notificationService.checkJobOfferNotifications,
+                    ),
+                  ),
                 ],
               ),
               Row(
@@ -70,6 +79,8 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                       ),
                       path: '/candidate_timesheets',
                       text: 'Timesheets',
+                      stream: notificationService.timesheetStream,
+                      update: notificationService.checkTimesheetNotifications,
                     ),
                   )
                 ],

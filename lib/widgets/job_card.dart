@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/screens/candidate_job_details_screen.dart';
 import 'package:piiprent/services/job_offer_service.dart';
+import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
 import 'package:provider/provider.dart';
 
-class JobCard extends StatelessWidget {
+class JobCard extends StatefulWidget {
   final String company;
   final String position;
   final DateTime date;
@@ -15,6 +16,7 @@ class JobCard extends StatelessWidget {
   final String longitude;
   final String latitude;
   final String clientContact;
+  final Function update;
 
   final bool offer;
 
@@ -28,22 +30,72 @@ class JobCard extends StatelessWidget {
     this.latitude,
     this.clientContact,
     this.offer = false,
+    this.update,
   });
+
+  @override
+  _JobCardState createState() => _JobCardState();
+}
+
+class _JobCardState extends State<JobCard> {
+  bool _fetching = false;
+
+  _acceptJobOffer(JobOfferService jobOfferService,
+      NotificationService notificationService) async {
+    setState(() {
+      _fetching = true;
+    });
+    try {
+      await jobOfferService.accept(widget.id);
+      await notificationService.checkJobOfferNotifications();
+
+      if (widget.update != null) {
+        widget.update();
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        _fetching = false;
+      });
+    }
+  }
+
+  _declineJobOffer(JobOfferService jobOfferService,
+      NotificationService notificationService) async {
+    setState(() {
+      _fetching = true;
+    });
+    try {
+      await jobOfferService.decline(widget.id);
+      await notificationService.checkJobOfferNotifications();
+
+      if (widget.update != null) {
+        widget.update();
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        _fetching = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     JobOfferService jobOfferService = Provider.of<JobOfferService>(context);
+    NotificationService notificationService =
+        Provider.of<NotificationService>(context);
 
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => CandidateJobDetailsScreen(
-            company: company,
-            position: position,
-            longitude: longitude,
-            lantitude: latitude,
-            date: date,
-            clientContact: clientContact,
+            company: widget.company,
+            position: widget.position,
+            longitude: widget.longitude,
+            lantitude: widget.latitude,
+            date: widget.date,
+            clientContact: widget.clientContact,
           ),
         ),
       ),
@@ -52,11 +104,11 @@ class JobCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              company,
+              widget.company,
               style: TextStyle(fontSize: 22.0, color: Colors.white),
             ),
             Text(
-              position,
+              widget.position,
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.white,
@@ -81,7 +133,7 @@ class JobCard extends StatelessWidget {
                         width: 5.0,
                       ),
                       Text(
-                        DateFormat.jm().format(date),
+                        DateFormat.jm().format(widget.date),
                         style: TextStyle(color: Colors.blue),
                       ),
                     ],
@@ -96,7 +148,7 @@ class JobCard extends StatelessWidget {
                         width: 5.0,
                       ),
                       Text(
-                        DateFormat('dd/MM/yyyy').format(date),
+                        DateFormat('dd/MM/yyyy').format(widget.date),
                         style: TextStyle(color: Colors.blue),
                       ),
                     ],
@@ -113,13 +165,13 @@ class JobCard extends StatelessWidget {
                     color: Colors.blue,
                   ),
                   Text(
-                    location,
+                    widget.location,
                     style: TextStyle(color: Colors.blue),
                   ),
                 ],
               ),
             ),
-            offer
+            widget.offer
                 ? Row(
                     children: [
                       Expanded(
@@ -128,9 +180,10 @@ class JobCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border(
                               top: BorderSide(
-                                  width: 1.0,
-                                  color: Colors.blue,
-                                  style: BorderStyle.solid),
+                                width: 1.0,
+                                color: Colors.blue,
+                                style: BorderStyle.solid,
+                              ),
                             ),
                           ),
                           child: Padding(
@@ -139,7 +192,12 @@ class JobCard extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 IconButton(
-                                  onPressed: () => jobOfferService.accept(id),
+                                  onPressed: _fetching
+                                      ? null
+                                      : () => _acceptJobOffer(
+                                            jobOfferService,
+                                            notificationService,
+                                          ),
                                   icon: Icon(Icons.close),
                                   color: Colors.redAccent,
                                 ),
@@ -149,7 +207,12 @@ class JobCard extends StatelessWidget {
                                 IconButton(
                                   icon: Icon(Icons.check),
                                   color: Colors.greenAccent,
-                                  onPressed: () => jobOfferService.decline(id),
+                                  onPressed: _fetching
+                                      ? null
+                                      : () => _declineJobOffer(
+                                            jobOfferService,
+                                            notificationService,
+                                          ),
                                 )
                               ],
                             ),

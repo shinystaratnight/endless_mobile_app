@@ -5,6 +5,7 @@ import 'package:piiprent/constants.dart';
 class ListService {
   final Function action;
   Map<String, dynamic> params;
+  Map<String, dynamic> _initParams;
 
   int _limit = listLimit;
   int _offset = 0;
@@ -31,6 +32,7 @@ class ListService {
     this.params = const <String, dynamic>{},
   }) {
     start();
+    _initParams = params;
     _fetchStreamController.add(false);
   }
 
@@ -77,5 +79,16 @@ class ListService {
       _offset = 0;
       start();
     }
+  }
+
+  reset() {
+    params = _initParams;
+    _offset = 0;
+    _streamController.add(null);
+    start();
+  }
+
+  closeStream() {
+    _streamController.close();
   }
 }
