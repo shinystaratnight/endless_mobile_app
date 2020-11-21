@@ -7,6 +7,14 @@ class AverageScores {
   final double recruitmentScore;
   final double skillScore;
 
+  static final requestFields = [
+    'client_feedback',
+    'reliability',
+    'loyalty',
+    'recruitment_score',
+    'skill_score',
+  ];
+
   AverageScores({
     this.clientFeedback,
     this.reliability,
@@ -20,7 +28,7 @@ class AverageScores {
       clientFeedback: doubleParse(json['client_feedback']),
       reliability: doubleParse(json['reliability']),
       loyality: doubleParse(json['loyalty']),
-      recruitmentScore: doubleParse(json['loyalty']),
+      recruitmentScore: doubleParse(json['recruitment_score']),
       skillScore: doubleParse(json['skill_score']),
     );
   }

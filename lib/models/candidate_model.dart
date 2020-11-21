@@ -25,6 +25,22 @@ class Candidate {
   final DateTime visaExpiryDate;
   final List<CandidateTag> tags;
 
+  static final requestFields = [
+    'id',
+    'average_score',
+    'contact',
+    'skill_list',
+    'height',
+    'weight',
+    'bmi',
+    'candidate_scores',
+    'residency',
+    'nationality',
+    'visa_type',
+    'visa_expiry_date',
+    'tag_list',
+  ];
+
   Candidate({
     this.id,
     this.averageScore,

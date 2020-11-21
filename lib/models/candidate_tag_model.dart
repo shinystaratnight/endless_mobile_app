@@ -4,7 +4,15 @@ class CandidateTag {
   final String id;
   final Tag tag;
 
-  CandidateTag({this.id, this.tag});
+  static final requestFields = [
+    'id',
+    'tag',
+  ];
+
+  CandidateTag({
+    this.id,
+    this.tag,
+  });
 
   factory CandidateTag.fromJson(Map<String, dynamic> json) {
     return CandidateTag(

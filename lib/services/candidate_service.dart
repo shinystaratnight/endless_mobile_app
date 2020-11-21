@@ -9,21 +9,7 @@ class CandidateService {
 
   Future<Candidate> getCandidate(String id) async {
     Map<String, dynamic> params = {
-      'fields': [
-        'id',
-        'average_score',
-        'contact',
-        'skill_list',
-        'height',
-        'weight',
-        'bmi',
-        'candidate_scores',
-        'residency',
-        'nationality',
-        'visa_type',
-        'visa_expiry_date',
-        'tag_list'
-      ],
+      'fields': Candidate.requestFields,
     };
 
     try {

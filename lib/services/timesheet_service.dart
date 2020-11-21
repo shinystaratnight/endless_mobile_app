@@ -7,7 +7,9 @@ class TimesheetService {
   final ApiService apiService = ApiService.create();
 
   Future getCandidateTimesheets([Map<String, dynamic> query]) async {
-    Map<String, dynamic> params = {};
+    Map<String, dynamic> params = {
+      'fields': Timesheet.requestFields,
+    };
 
     if (query != null) {
       params = {...params, ...query};
@@ -29,7 +31,10 @@ class TimesheetService {
   }
 
   Future getCandidatePreShiftTimesheets([Map<String, dynamic> query]) async {
-    Map<String, dynamic> params = {"status": '1'};
+    Map<String, dynamic> params = {
+      "status": '1',
+      'fields': Timesheet.requestFields,
+    };
 
     if (query != null) {
       params = {...params, ...query};
@@ -71,7 +76,10 @@ class TimesheetService {
   }
 
   Future getCandidateForSubmitTimesheets([Map<String, dynamic> query]) async {
-    Map<String, dynamic> params = {'status': '4'};
+    Map<String, dynamic> params = {
+      'status': '4',
+      'fields': Timesheet.requestFields,
+    };
 
     if (query != null) {
       params = {...params, ...query};

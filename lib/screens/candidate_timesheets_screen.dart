@@ -1,86 +1,50 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:piiprent/models/timesheet_model.dart';
-import 'package:piiprent/screens/more_button.dart';
-import 'package:piiprent/services/list_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/candidate_drawer.dart';
 import 'package:piiprent/widgets/filter_dialog_button.dart';
+import 'package:piiprent/widgets/list_page.dart';
 import 'package:piiprent/widgets/timesheet_card.dart';
 import 'package:provider/provider.dart';
 
 class CandidateTimesheetsScreen extends StatelessWidget {
+  final StreamController _updateStream = StreamController();
+
   @override
   Widget build(BuildContext context) {
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
-    ListService listService =
-        ListService(action: timesheetService.getCandidateTimesheets);
 
     return Scaffold(
       appBar: getCandidateAppBar('Timesheets', context),
       drawer: CandidateDrawer(),
       floatingActionButton: FilterDialogButton(
         onClose: (data) {
-          listService.updateParams({
+          _updateStream.add({
             "shift_started_at_0": data['from'],
             "shift_started_at_1": data['to'],
-          }, true);
+          });
         },
       ),
-      body: StreamBuilder(
-        stream: listService.stream,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            List<Timesheet> data = snapshot.data;
-
-            if (data.length == 0) {
-              return Center(
-                child: Text('No Data'),
-              );
-            }
-
-            return ListView.builder(
-              itemCount: data.length + 1,
-              itemBuilder: (BuildContext context, int index) {
-                if (index == data.length) {
-                  return MoreButton(
-                    isShow: listService.canFetchMore,
-                    stream: listService.fetchStream,
-                    onPressed: () => listService.fetchMore(),
-                  );
-                }
-
-                Timesheet timesheet = data[index];
-
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TimesheetCard(
-                    company: timesheet.company,
-                    position: timesheet.position,
-                    clientContact: timesheet.clientContact,
-                    jobsite: timesheet.jobsite,
-                    address: timesheet.address,
-                    shiftDate: timesheet.shiftStart,
-                    shiftStart: timesheet.shiftStart,
-                    shiftEnd: timesheet.shiftEnd,
-                    breakStart: timesheet.breakStart,
-                    breakEnd: timesheet.breakEnd,
-                    status: timesheet.status,
-                    id: timesheet.id,
-                  ),
-                );
-              },
-            );
-          }
-
-          if (snapshot.hasError) {
-            return Container(
-              child: Text('Something went wrong!'),
-            );
-          }
-
-          return Center(
-            child: CircularProgressIndicator(),
+      body: ListPage<Timesheet>(
+        action: timesheetService.getCandidateTimesheets,
+        updateStream: _updateStream.stream,
+        getChild: (Timesheet instance) {
+          return TimesheetCard(
+            company: instance.company,
+            position: instance.position,
+            clientContact: instance.clientContact,
+            jobsite: instance.jobsite,
+            address: instance.address,
+            shiftDate: instance.shiftStart,
+            shiftStart: instance.shiftStart,
+            shiftEnd: instance.shiftEnd,
+            breakStart: instance.breakStart,
+            breakEnd: instance.breakEnd,
+            status: instance.status,
+            id: instance.id,
           );
         },
       ),

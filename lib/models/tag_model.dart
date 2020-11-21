@@ -4,6 +4,12 @@ class Tag {
   final String id;
   final Map<String, String> translations;
 
+  static final requestFields = [
+    'id',
+    'translations',
+    '__str__',
+  ];
+
   Tag({this.id, this.translations});
 
   factory Tag.fromJson(Map<String, dynamic> json) {

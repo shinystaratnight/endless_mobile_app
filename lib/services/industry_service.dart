@@ -12,7 +12,7 @@ class IndustryService {
   Future<List<Industry>> getIndustries() async {
     Map<String, dynamic> params = {
       'limit': '-1',
-      'fields': ['id', '__str__', 'translations'],
+      'fields': Industry.requestFields,
       'company': companyId,
     };
 
@@ -35,9 +35,8 @@ class IndustryService {
 
   Future<List<Skill>> getSkills(String industry) async {
     Map<String, dynamic> params = {
-      'limit': '10',
-      'offset': '0',
-      'fields': ['id', '__str__', 'name'],
+      'limit': '-1',
+      'fields': Skill.requestFields,
       'industry': industry,
     };
 

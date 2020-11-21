@@ -9,6 +9,7 @@ class JobOfferService {
   Future getCandidateJobOffers([Map<String, dynamic> query]) async {
     Map<String, dynamic> params = {
       'status': '0',
+      'fields': JobOffer.requestFields,
     };
 
     if (query != null) {

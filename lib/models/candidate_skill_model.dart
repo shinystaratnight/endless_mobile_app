@@ -5,7 +5,17 @@ class CandidateSkill {
   final int score;
   final Skill skill;
 
-  CandidateSkill({this.id, this.score, this.skill});
+  static final requestFields = [
+    'id',
+    'score',
+    'skill',
+  ];
+
+  CandidateSkill({
+    this.id,
+    this.score,
+    this.skill,
+  });
 
   factory CandidateSkill.fromJson(Map<String, dynamic> json) {
     return CandidateSkill(

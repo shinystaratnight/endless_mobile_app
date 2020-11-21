@@ -4,7 +4,15 @@ class Skill {
   final String id;
   final Map<String, Map<String, String>> translations;
 
-  Skill({this.id, this.translations});
+  static final requestFields = [
+    'id',
+    'name',
+  ];
+
+  Skill({
+    this.id,
+    this.translations,
+  });
 
   factory Skill.fromJson(Map<String, dynamic> json) {
     Map<String, Map<String, String>> translations = {

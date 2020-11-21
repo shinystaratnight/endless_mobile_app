@@ -9,6 +9,13 @@ class JobOffer {
   final String timezone;
   final String clientContact;
 
+  static final requestFields = [
+    'id',
+    'shift',
+    'jobsite_address',
+    'jobsite',
+  ];
+
   JobOffer({
     this.id,
     this.company,

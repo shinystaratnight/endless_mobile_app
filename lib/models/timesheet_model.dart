@@ -13,6 +13,19 @@ class Timesheet {
   final DateTime breakEnd;
   final int status;
 
+  static final requestFields = [
+    'id',
+    'supervisor',
+    'position',
+    'company',
+    'jobsite',
+    'shift_started_at',
+    'shift_ended_at',
+    'break_started_at',
+    'break_ended_at',
+    'status',
+  ];
+
   Timesheet({
     this.id,
     this.clientContact,
