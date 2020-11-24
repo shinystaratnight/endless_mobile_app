@@ -76,7 +76,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
               SizedBox(
                 height: 25.0,
               ),
-              HomeCalendar()
+              HomeCalendar(type: CalendarType.Client)
             ],
           ),
         ),

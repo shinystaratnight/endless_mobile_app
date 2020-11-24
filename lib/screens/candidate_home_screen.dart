@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/candidate_drawer.dart';
@@ -17,6 +18,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   Widget build(BuildContext context) {
     NotificationService notificationService =
         Provider.of<NotificationService>(context);
+    LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(
       drawer: CandidateDrawer(dashboard: true),
@@ -88,7 +90,10 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
               SizedBox(
                 height: 25.0,
               ),
-              HomeCalendar()
+              HomeCalendar(
+                type: CalendarType.Canddate,
+                userId: loginService.user.id,
+              ),
             ],
           ),
         ),
