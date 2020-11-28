@@ -57,13 +57,43 @@ class LoginService {
 
     if (authEncoded != '') {
       Auth auth = Auth.fromJson(json.decode(authEncoded));
-      apiService.auth = auth;
       var payload = parseJwtPayLoad(auth.access_token_jwt);
+      DateTime expireDateTime =
+          DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000);
+
+      if (DateTime.now().isAfter(expireDateTime)) {
+        await logout();
+        return null;
+        // TODO: implement refresh token
+        // var res = await refreshToken(auth);
+      }
+      apiService.auth = auth;
       _user = User.fromTokenPayload(payload);
 
       return _user.type;
     } else {
       return null;
+    }
+  }
+
+  Future refreshToken(Auth auth) async {
+    var payload = parseJwtPayLoad(auth.access_token_jwt);
+    User user = User.fromTokenPayload(payload);
+
+    Map<String, String> body = {
+      'username': user.email,
+      'grant_type': 'refresh_token',
+      'refresh_token': auth.refresh_token,
+      'client_id': clientId,
+    };
+
+    try {
+      http.Response res =
+          await apiService.post(path: '/oauth2/token/', body: body);
+
+      return res;
+    } catch (e) {
+      return false;
     }
   }
 
