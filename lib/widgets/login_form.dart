@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/validator.dart';
+import 'package:piiprent/models/role_model.dart';
 import 'package:piiprent/screens/candidate_home_screen.dart';
 import 'package:piiprent/screens/client_home_screen.dart';
+import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
@@ -26,7 +28,7 @@ class _LoginFormState extends State<LoginForm> {
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  _onLogin(LoginService loginService) async {
+  _onLogin(LoginService loginService, ContactService contactService) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -39,15 +41,19 @@ class _LoginFormState extends State<LoginForm> {
     });
 
     try {
-      Role type = await loginService.login(_username, _password);
+      RoleType type = await loginService.login(_username, _password);
 
-      if (type == Role.Candidate) {
+      if (type == RoleType.Candidate) {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CandidateHomeScreen(),
           ),
         );
-      } else if (type == Role.Client) {
+      } else if (type == RoleType.Client) {
+        List<Role> roles = await contactService.getRoles();
+        roles[0].active = true;
+        loginService.user.roles = roles;
+
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ClientHomeScreen(),
@@ -68,15 +74,16 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     LoginService loginService = Provider.of<LoginService>(context);
+    ContactService contactService = Provider.of<ContactService>(context);
 
-    loginService.getUser().then((Role role) {
-      if (role == Role.Candidate) {
+    loginService.getUser().then((RoleType role) {
+      if (role == RoleType.Candidate) {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CandidateHomeScreen(),
           ),
         );
-      } else if (role == Role.Client) {
+      } else if (role == RoleType.Client) {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ClientHomeScreen(),
@@ -112,7 +119,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             FormSubmitButton(
               disabled: _fetching,
-              onPressed: () => _onLogin(loginService),
+              onPressed: () => _onLogin(loginService, contactService),
               label: 'Login',
             ),
             SizedBox(

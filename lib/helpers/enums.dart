@@ -1,4 +1,4 @@
-enum Role {
+enum RoleType {
   Candidate,
   Client,
 }

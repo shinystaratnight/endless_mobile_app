@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
+import 'package:piiprent/models/role_model.dart';
 
 import 'package:piiprent/services/api_service.dart';
 
@@ -82,6 +83,18 @@ class ContactService {
       return true;
     } else {
       throw Exception("User not registered");
+    }
+  }
+
+  Future getRoles() async {
+    try {
+      http.Response res = await apiService.get(path: '/core/users/roles/');
+
+      Map<String, dynamic> body = json.decode(res.body);
+      List<dynamic> roles = body['roles'];
+      return roles.map((dynamic el) => Role.fromJson(el)).toList();
+    } catch (e) {
+      throw Exception("Failed fetching roles");
     }
   }
 }

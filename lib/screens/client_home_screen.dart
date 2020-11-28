@@ -39,10 +39,6 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     child: HomeScreenButton(
                       color: Colors.orange[700],
                       text: 'Coming soon',
-                      icon: Icon(
-                        Icons.business_center,
-                        color: Colors.white,
-                      ),
                     ),
                   ),
                 ],

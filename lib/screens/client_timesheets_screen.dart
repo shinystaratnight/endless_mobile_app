@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/client_drawer.dart';
 import 'package:piiprent/widgets/client_timesheet_card.dart';
 import 'package:piiprent/widgets/filter_dialog_button.dart';
+import 'package:provider/provider.dart';
 
 class ClientTimesheetsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    TimesheetService timesheetService = Provider.of<TimesheetService>(context);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(

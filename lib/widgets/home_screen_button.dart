@@ -40,25 +40,27 @@ class _HomeScreenButtonState extends State<HomeScreenButton> {
             padding: EdgeInsets.all(15.0),
             child: Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: Offset(0, 2),
+                widget.icon != null
+                    ? Container(
+                        margin: const EdgeInsets.only(right: 10.0),
+                        padding: const EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(25.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 3,
+                              blurRadius: 5,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: widget.icon,
+                      )
+                    : SizedBox(
+                        height: 35.0,
                       ),
-                    ],
-                  ),
-                  child: widget.icon,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
                 Text(widget.text, style: TextStyle(color: Colors.white)),
               ],
             ),

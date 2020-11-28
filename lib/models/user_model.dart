@@ -1,13 +1,15 @@
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/models/role_model.dart';
 
 class User {
   String name;
   String email;
-  Role type;
+  RoleType type;
   Map<String, dynamic> picture;
   String id;
   String userId;
+  List<Role> roles;
 
   User({
     this.name,
@@ -39,14 +41,22 @@ class User {
 
     return null;
   }
+
+  Role get activeRole {
+    if (roles != null) {
+      return roles.firstWhere((element) => element.active);
+    }
+
+    return null;
+  }
 }
 
-Role getRole(String contactType) {
+RoleType getRole(String contactType) {
   switch (contactType) {
     case 'candidate':
-      return Role.Candidate;
+      return RoleType.Candidate;
     case 'client':
-      return Role.Client;
+      return RoleType.Client;
     default:
       throw 'Unknown role';
   }

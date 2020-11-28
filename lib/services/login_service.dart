@@ -16,7 +16,7 @@ class LoginService {
     return _user;
   }
 
-  Future<Role> login(String username, String password) async {
+  Future<RoleType> login(String username, String password) async {
     Map<String, dynamic> body = {
       'client_id': clientId,
       'username': username,
@@ -51,7 +51,7 @@ class LoginService {
     }
   }
 
-  Future<Role> getUser() async {
+  Future<RoleType> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String authEncoded = (prefs.getString('auth') ?? '');
 
