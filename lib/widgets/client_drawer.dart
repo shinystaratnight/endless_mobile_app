@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/services/login_service.dart';
+import 'package:provider/provider.dart';
 
 class ClientDrawer extends StatelessWidget {
   final TextStyle _textStyle = TextStyle(fontSize: 18, color: Colors.blue);
+  final bool dashboard;
+
+  ClientDrawer({this.dashboard = false});
 
   @override
   Widget build(BuildContext context) {
+    LoginService loginService = Provider.of<LoginService>(context);
+
     return Drawer(
       child: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -20,24 +27,28 @@ class ClientDrawer extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage('https://picsum.photos/200/300'),
-                    ),
+                    image: loginService.user.userAvatarUrl() != null
+                        ? DecorationImage(
+                            fit: BoxFit.cover,
+                            image:
+                                NetworkImage(loginService.user.userAvatarUrl()),
+                          )
+                        : null,
                   ),
                 ),
               ),
-              decoration: BoxDecoration(
-                  // color: Colors.blue,
-                  ),
             ),
-            ListTile(
-              title: Text('Dashboard', style: _textStyle),
-              onTap: () => Navigator.pushNamed(context, '/client_home'),
-            ),
-            Divider(
-              color: Colors.grey[300],
-            ),
+            !dashboard
+                ? ListTile(
+                    title: Text('Dashboard', style: _textStyle),
+                    onTap: () => Navigator.pushNamed(context, '/client_home'),
+                  )
+                : SizedBox(),
+            !dashboard
+                ? Divider(
+                    color: Colors.grey[300],
+                  )
+                : SizedBox(),
             ListTile(
               title: Text('Profile', style: _textStyle),
               onTap: () => Navigator.pushNamed(context, '/client_profile'),
@@ -61,7 +72,11 @@ class ClientDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Logout', style: _textStyle),
-              onTap: () => Navigator.pushNamed(context, '/'),
+              onTap: () => {
+                loginService
+                    .logout()
+                    .then((bool success) => Navigator.pushNamed(context, '/'))
+              },
             ),
             Divider(
               color: Colors.grey[300],

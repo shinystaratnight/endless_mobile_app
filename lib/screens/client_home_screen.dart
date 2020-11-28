@@ -13,7 +13,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: ClientDrawer(),
+      drawer: ClientDrawer(
+        dashboard: true,
+      ),
       appBar: AppBar(title: Text('Dashboard')),
       body: SingleChildScrollView(
         child: PageContainer(
