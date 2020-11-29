@@ -29,6 +29,8 @@ class _ListPageState<T> extends State<ListPage<T>> {
 
     if (widget.params == null) {
       params = Map();
+    } else {
+      params = widget.params;
     }
 
     _listService = ListService(action: widget.action, params: params);

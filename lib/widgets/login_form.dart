@@ -44,28 +44,31 @@ class _LoginFormState extends State<LoginForm> {
       RoleType type = await loginService.login(_username, _password);
 
       if (type == RoleType.Candidate) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => CandidateHomeScreen(),
-          ),
-        );
+        Navigator.pushNamed(context, '/candidate_home');
+
+        return;
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => CandidateHomeScreen(context),
+        //   ),
+        // );
       } else if (type == RoleType.Client) {
         List<Role> roles = await contactService.getRoles();
         roles[0].active = true;
         loginService.user.roles = roles;
 
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ClientHomeScreen(),
-          ),
-        );
+        Navigator.pushNamed(context, '/client_home');
+        return;
+
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => ClientHomeScreen(),
+        //   ),
+        // );
       }
     } catch (e) {
       setState(() {
         _formError = e;
-      });
-    } finally {
-      setState(() {
         _fetching = false;
       });
     }

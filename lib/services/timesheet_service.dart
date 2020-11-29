@@ -30,6 +30,54 @@ class TimesheetService {
     }
   }
 
+  Future getUnapprovedTimesheets([Map<String, dynamic> query]) async {
+    Map<String, dynamic> params = {
+      'fields': Timesheet.requestFields,
+    };
+
+    if (query != null) {
+      params = {...params, ...query};
+    }
+
+    http.Response res = await apiService.get(
+        path: '/hr/timesheets/unapproved/', params: params);
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(res.body);
+      List<dynamic> results = body['results'];
+      List<Timesheet> timesheets =
+          results.map((dynamic el) => Timesheet.fromJson(el)).toList();
+
+      return {"list": timesheets, "count": body["count"]};
+    } else {
+      throw Exception('Failed to load unapproved Timesheets');
+    }
+  }
+
+  Future getHistoryTimesheets([Map<String, dynamic> query]) async {
+    Map<String, dynamic> params = {
+      'fields': Timesheet.requestFields,
+    };
+
+    if (query != null) {
+      params = {...params, ...query};
+    }
+
+    http.Response res =
+        await apiService.get(path: '/hr/timesheets/history/', params: params);
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(res.body);
+      List<dynamic> results = body['results'];
+      List<Timesheet> timesheets =
+          results.map((dynamic el) => Timesheet.fromJson(el)).toList();
+
+      return {"list": timesheets, "count": body["count"]};
+    } else {
+      throw Exception('Failed to load approved Timesheets');
+    }
+  }
+
   Future getCandidatePreShiftTimesheets([Map<String, dynamic> query]) async {
     Map<String, dynamic> params = {
       "status": '1',

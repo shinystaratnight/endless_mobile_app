@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/client_drawer.dart';
 import 'package:piiprent/widgets/home_calendar.dart';
 import 'package:piiprent/widgets/home_screen_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
+import 'package:provider/provider.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   @override
@@ -12,6 +14,8 @@ class ClientHomeScreen extends StatefulWidget {
 class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    LoginService loginService = Provider.of<LoginService>(context);
+
     return Scaffold(
       drawer: ClientDrawer(
         dashboard: true,

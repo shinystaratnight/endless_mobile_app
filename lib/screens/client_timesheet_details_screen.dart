@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:piiprent/constants.dart';
+import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/evaluate.dart';
 import 'package:piiprent/widgets/group_title.dart';
 
 class ClientTimesheetDetailsScreen extends StatefulWidget {
-  final String position;
+  final Timesheet timesheet;
 
-  ClientTimesheetDetailsScreen({this.position});
+  ClientTimesheetDetailsScreen({
+    this.timesheet,
+  });
 
   @override
   _ClientTimesheetDetailsScreenState createState() =>
@@ -17,6 +22,24 @@ class ClientTimesheetDetailsScreen extends StatefulWidget {
 
 class _ClientTimesheetDetailsScreenState
     extends State<ClientTimesheetDetailsScreen> {
+  String _shiftStart = TimesheetTimeKey[TimesheetTime.Start];
+  String _breakStart = TimesheetTimeKey[TimesheetTime.BreakStart];
+  String _breakEnd = TimesheetTimeKey[TimesheetTime.BreakEnd];
+  String _shiftEnd = TimesheetTimeKey[TimesheetTime.End];
+
+  Map<String, DateTime> _times = Map();
+
+  @override
+  void initState() {
+    _times = {
+      _shiftStart: widget.timesheet.shiftStart,
+      _breakStart: widget.timesheet.breakStart,
+      _breakEnd: widget.timesheet.breakEnd,
+      _shiftEnd: widget.timesheet.shiftEnd
+    };
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,10 +63,13 @@ class _ClientTimesheetDetailsScreenState
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage('https://picsum.photos/200/300'),
-                      ),
+                      image: widget.timesheet.candidateAvatarUrl != null
+                          ? DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                  widget.timesheet.candidateAvatarUrl),
+                            )
+                          : null,
                     ),
                   ),
                 ],
@@ -52,12 +78,12 @@ class _ClientTimesheetDetailsScreenState
                 height: 15.0,
               ),
               Text(
-                'Mr. Peter Hokke',
+                widget.timesheet.candidateName,
                 style: TextStyle(fontSize: 26.0, color: Colors.blue),
                 textAlign: TextAlign.center,
               ),
               Text(
-                widget.position,
+                widget.timesheet.position,
                 style: TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.center,
               ),
@@ -67,32 +93,37 @@ class _ClientTimesheetDetailsScreenState
               GroupTitle(title: 'Times'),
               DetailsRecord(
                 label: 'Shift Date',
-                value: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                value: DateFormat('dd/MM/yyyy').format(_times[_shiftStart]),
               ),
               DetailsRecord(
                 label: 'Shift Start Time',
-                value: DateFormat.jm().format(DateTime.now()),
+                value: DateFormat.jm().format(_times[_shiftStart]),
               ),
               DetailsRecord(
                 label: 'Break Start Time',
-                value: DateFormat.jm().format(DateTime.now()),
+                value: DateFormat.jm().format(_times[_breakStart]),
               ),
               DetailsRecord(
                 label: 'Break End Time',
-                value: DateFormat.jm().format(DateTime.now()),
+                value: DateFormat.jm().format(_times[_breakEnd]),
               ),
               DetailsRecord(
                 label: 'Shift End Time',
-                value: DateFormat.jm().format(DateTime.now()),
+                value: DateFormat.jm().format(_times[_shiftEnd]),
               ),
               DetailsRecord(
                 label: 'Jobsite',
-                value: 'Smart Builders Ltd - Tartu',
+                value: widget.timesheet.jobsite,
               ),
-              Evaluate(
-                active: false,
-                score: 3,
-              )
+              !widget.timesheet.evaluated
+                  ? Evaluate(
+                      active: true,
+                      score: 1,
+                      onChange: (score) {
+                        print(score);
+                      },
+                    )
+                  : SizedBox(),
             ],
           ),
         ),

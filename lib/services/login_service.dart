@@ -4,12 +4,15 @@ import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/jwt_decode.dart';
 import 'package:piiprent/models/auth_model.dart';
+import 'package:piiprent/models/role_model.dart';
 import 'package:piiprent/models/user_model.dart';
 import 'package:piiprent/services/api_service.dart';
+import 'package:piiprent/services/contact_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
   final ApiService apiService = ApiService.create();
+  final ContactService contactService = ContactService();
   User _user;
 
   User get user {
@@ -69,6 +72,12 @@ class LoginService {
       }
       apiService.auth = auth;
       _user = User.fromTokenPayload(payload);
+
+      if (user.type == RoleType.Client) {
+        List<Role> roles = await contactService.getRoles();
+        roles[0].active = true;
+        user.roles = roles;
+      }
 
       return _user.type;
     } else {

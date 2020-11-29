@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/screens/client_timesheet_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
 
 class ClientTimesheetCard extends StatelessWidget {
-  final String score;
-  final String position;
-  final String candidateContact;
-  final String src;
-  final DateTime shiftDate;
-  final DateTime shiftStart;
-  final DateTime shiftEnd;
-  final DateTime breakStart;
-  final DateTime breakEnd;
+  // final String id;
+  // final String score;
+  // final String position;
+  // final String candidateContact;
+  // final String src;
+  // final String jobsite;
+  // final DateTime shiftDate;
+  // final DateTime shiftStart;
+  // final DateTime shiftEnd;
+  // final DateTime breakStart;
+  // final DateTime breakEnd;
+  // final int status;
+  // final bool signatureScheme;
+  final Timesheet timesheet;
 
-  ClientTimesheetCard(
-      {this.score,
-      this.position,
-      this.candidateContact,
-      this.src,
-      this.shiftDate,
-      this.shiftStart,
-      this.shiftEnd,
-      this.breakStart,
-      this.breakEnd});
+  ClientTimesheetCard({
+    this.timesheet,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class ClientTimesheetCard extends StatelessWidget {
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ClientTimesheetDetailsScreen(
-            position: position,
+            timesheet: timesheet,
           ),
         ),
       ),
@@ -47,10 +46,12 @@ class ClientTimesheetCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage('https://picsum.photos/200/300'),
-                    ),
+                    image: timesheet.candidateAvatarUrl != null
+                        ? DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(timesheet.candidateAvatarUrl),
+                          )
+                        : null,
                   ),
                 ),
               ],
@@ -63,11 +64,11 @@ class ClientTimesheetCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  candidateContact,
+                  timesheet.candidateName,
                   style: TextStyle(fontSize: 22.0, color: Colors.white),
                 ),
                 Text(
-                  'Position - $candidateContact',
+                  'Position - ${timesheet.position}',
                   style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(
@@ -90,19 +91,21 @@ class ClientTimesheetCard extends StatelessWidget {
                         width: 4.0,
                       ),
                       Text(
-                        '4.86',
+                        timesheet.score,
                         style: TextStyle(color: Colors.amber),
                       )
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    '(Signature required)',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
+                timesheet.signatureScheme
+                    ? Container(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          '(Signature required)',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    : SizedBox(),
               ],
             )
           ],
@@ -120,12 +123,12 @@ class ClientTimesheetCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        DateFormat('dd/MM/yyyy').format(shiftDate),
+                        DateFormat('dd/MM/yyyy').format(timesheet.shiftStart),
                         style: TextStyle(color: Colors.blueAccent),
                       ),
                       SizedBox(width: 5.0),
                       Text(
-                        DateFormat.jm().format(shiftStart),
+                        DateFormat.jm().format(timesheet.shiftStart),
                         style: TextStyle(color: Colors.blueAccent),
                       )
                     ],
@@ -144,7 +147,7 @@ class ClientTimesheetCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        DateFormat.jm().format(breakStart),
+                        DateFormat.jm().format(timesheet.breakStart),
                         style: TextStyle(color: Colors.blueAccent),
                       ),
                       SizedBox(width: 5.0),
@@ -154,7 +157,7 @@ class ClientTimesheetCard extends StatelessWidget {
                       ),
                       SizedBox(width: 5.0),
                       Text(
-                        DateFormat.jm().format(breakEnd),
+                        DateFormat.jm().format(timesheet.breakEnd),
                         style: TextStyle(color: Colors.blueAccent),
                       )
                     ],
@@ -174,7 +177,7 @@ class ClientTimesheetCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        DateFormat.jm().format(shiftEnd),
+                        DateFormat.jm().format(timesheet.shiftEnd),
                         style: TextStyle(color: Colors.blueAccent),
                       ),
                     ],
