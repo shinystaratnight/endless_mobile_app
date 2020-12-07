@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:piiprent/services/tracking_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'dart:async';
 
@@ -30,14 +32,11 @@ class CandidateJobDetailsScreen extends StatefulWidget {
 }
 
 class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
-  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController mapController;
 
-  static final CameraPosition _kLake = CameraPosition(
-    bearing: 192.8334901395799,
-    target: LatLng(37.43296265331129, -122.08832357078792),
-    tilt: 59.440717697143555,
-    zoom: 6,
-  );
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,16 +97,22 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 height: 350.0,
                 width: 20.0,
                 child: GoogleMap(
-                  mapType: MapType.hybrid,
+                  onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
                       double.parse(widget.lantitude),
                       double.parse(widget.longitude),
                     ),
-                    zoom: 4.0,
+                    zoom: 13.0,
                   ),
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
+                  markers: {
+                    Marker(
+                      markerId: MarkerId('1'),
+                      position: LatLng(
+                        double.parse(widget.lantitude),
+                        double.parse(widget.longitude),
+                      ),
+                    )
                   },
                 ),
               ),
@@ -121,10 +126,5 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
       //   icon: Icon(Icons.directions_boat),
       // ),
     );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }
