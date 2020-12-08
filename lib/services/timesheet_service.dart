@@ -1,10 +1,44 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/services/api_service.dart';
 
 class TimesheetService {
   final ApiService apiService = ApiService.create();
+
+  Future getActiveTimeheets() async {
+    Map<String, dynamic> params = {
+      'fields': Timesheet.requestFields,
+      'shift_started_at_0': DateFormat('yyyy-MM-dd').format(
+        DateTime.now().subtract(Duration(days: -1)),
+      ),
+    };
+
+    http.Response res =
+        await apiService.get(path: '/hr/timesheets-candidate/', params: params);
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(res.body);
+      List<dynamic> results = body['results'];
+      List<Timesheet> timesheets =
+          results.map((dynamic el) => Timesheet.fromJson(el)).toList();
+
+      return timesheets.map((Timesheet timesheet) {
+        return {
+          'from': timesheet.shiftStart
+              .subtract(Duration(hours: 1))
+              .toUtc()
+              .toString(),
+          'to':
+              timesheet.shiftStart.add(Duration(hours: 15)).toUtc().toString(),
+          'id': timesheet.id,
+        };
+      }).toList();
+    } else {
+      throw Exception('Failed to load Active Timesheets');
+    }
+  }
 
   Future getCandidateTimesheets([Map<String, dynamic> query]) async {
     Map<String, dynamic> params = {

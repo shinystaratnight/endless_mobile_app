@@ -194,7 +194,7 @@ class _JobCardState extends State<JobCard> {
                                 IconButton(
                                   onPressed: _fetching
                                       ? null
-                                      : () => _acceptJobOffer(
+                                      : () => _declineJobOffer(
                                             jobOfferService,
                                             notificationService,
                                           ),
@@ -209,7 +209,7 @@ class _JobCardState extends State<JobCard> {
                                   color: Colors.greenAccent,
                                   onPressed: _fetching
                                       ? null
-                                      : () => _declineJobOffer(
+                                      : () => _acceptJobOffer(
                                             jobOfferService,
                                             notificationService,
                                           ),
