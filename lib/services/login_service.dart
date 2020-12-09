@@ -65,13 +65,25 @@ class LoginService {
           DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000);
 
       if (DateTime.now().isAfter(expireDateTime)) {
-        await logout();
-        return null;
-        // TODO: implement refresh token
-        // var res = await refreshToken(auth);
+        var res = await refreshToken(auth);
+
+        if (res != null) {
+          auth = Auth.fromJson(json.decode(res.body));
+          apiService.auth = auth;
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('auth', res.body);
+
+          var payload = parseJwtPayLoad(auth.access_token_jwt);
+          _user = User.fromTokenPayload(payload);
+        } else {
+          await logout();
+          return null;
+        }
+      } else {
+        apiService.auth = auth;
+        _user = User.fromTokenPayload(payload);
       }
-      apiService.auth = auth;
-      _user = User.fromTokenPayload(payload);
 
       if (user.type == RoleType.Client) {
         List<Role> roles = await contactService.getRoles();
@@ -100,9 +112,13 @@ class LoginService {
       http.Response res =
           await apiService.post(path: '/oauth2/token/', body: body);
 
-      return res;
+      if (res.statusCode == 200) {
+        return res;
+      }
+
+      return null;
     } catch (e) {
-      return false;
+      return null;
     }
   }
 

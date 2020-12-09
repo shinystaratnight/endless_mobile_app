@@ -47,11 +47,6 @@ class _LoginFormState extends State<LoginForm> {
         Navigator.pushNamed(context, '/candidate_home');
 
         return;
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => CandidateHomeScreen(context),
-        //   ),
-        // );
       } else if (type == RoleType.Client) {
         List<Role> roles = await contactService.getRoles();
         roles[0].active = true;
@@ -59,12 +54,6 @@ class _LoginFormState extends State<LoginForm> {
 
         Navigator.pushNamed(context, '/client_home');
         return;
-
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => ClientHomeScreen(),
-        //   ),
-        // );
       }
     } catch (e) {
       setState(() {
