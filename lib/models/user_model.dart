@@ -10,6 +10,7 @@ class User {
   String id;
   String userId;
   List<Role> roles;
+  String candidateId;
 
   User({
     this.name,
@@ -19,6 +20,7 @@ class User {
     // TODO: change name to candidate id
     this.id,
     this.userId,
+    this.candidateId,
   });
 
   factory User.fromTokenPayload(Map<String, dynamic> payload) {
@@ -31,6 +33,7 @@ class User {
       picture: contact['picture'],
       id: contact['contact_id'],
       userId: contact['id'],
+      candidateId: contact['candidate_contact'],
     );
   }
 

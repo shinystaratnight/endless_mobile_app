@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
+import 'package:piiprent/services/tracking_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/candidate_drawer.dart';
 import 'package:piiprent/widgets/home_calendar.dart';
@@ -19,28 +21,92 @@ class CandidateHomeScreen extends StatefulWidget {
 
 class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   TimesheetService _timesheetService = TimesheetService();
+  TrackingService _trackingService = TrackingService();
 
   _getActiveTimesheet() async {
     List<Map<String, dynamic>> activeTimesheets =
         await _timesheetService.getActiveTimeheets();
 
     if (activeTimesheets != null && activeTimesheets.length > 0) {
-      print(activeTimesheets);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('activeTimesheets', json.encode(activeTimesheets));
+
+      return activeTimesheets;
     }
 
-    BackgroundFetch.start();
+    return null;
   }
 
-  _initBackgroundFetch() async {}
+  _onBackgroundFetch(taskId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String activeTimesheetsEncoded =
+        (prefs.getString('activeTimesheets') ?? null);
+
+    if (activeTimesheetsEncoded == null) {
+      return;
+    }
+
+    List<dynamic> activeTimeshseets = json.decode(activeTimesheetsEncoded);
+
+    try {
+      var activeTimesheet = activeTimeshseets.firstWhere((element) {
+        DateTime from = DateTime.parse(element['from']);
+        DateTime to = DateTime.parse(element['to']);
+        DateTime now = DateTime.now().toUtc();
+
+        return now.isAfter(from) && now.isBefore(to);
+      });
+
+      Position position = await _trackingService.getCurrentPosition();
+      _trackingService.sendLocation(position, activeTimesheet['id']);
+    } catch (e) {
+      return null;
+    } finally {
+      BackgroundFetch.finish(taskId);
+    }
+  }
+
+  _initBackgroundFetch(dynamic activeTimesheets) async {
+    if (activeTimesheets == null) {
+      return;
+    }
+
+    BackgroundFetch.configure(
+      BackgroundFetchConfig(
+        minimumFetchInterval: 15,
+        stopOnTerminate: false,
+        enableHeadless: false,
+        requiresBatteryNotLow: false,
+        requiresCharging: false,
+        requiresStorageNotLow: false,
+        requiresDeviceIdle: false,
+        requiredNetworkType: NetworkType.ANY,
+      ),
+      (String taskId) async {
+        // This is the fetch-event callback.
+        print("[BackgroundFetch] Event received $taskId");
+        // IMPORTANT:  You must signal completion of your task or the OS can punish your app
+        // for taking too long in the background.
+        _onBackgroundFetch(taskId);
+      },
+    ).then((int status) {
+      print('[BackgroundFetch] configure success: $status');
+    }).catchError((e) {
+      print('[BackgroundFetch] configure ERROR: $e');
+    });
+
+    BackgroundFetch.start().then((int status) {
+      print('[BackgroundFetch] start success: $status');
+    }).catchError((e) {
+      print('[BackgroundFetch] start FAILURE: $e');
+    });
+  }
 
   @override
   void initState() {
     super.initState();
 
-    _getActiveTimesheet();
-    _initBackgroundFetch();
+    _getActiveTimesheet().then(_initBackgroundFetch);
   }
 
   @override

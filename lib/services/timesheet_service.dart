@@ -11,7 +11,7 @@ class TimesheetService {
     Map<String, dynamic> params = {
       'fields': Timesheet.requestFields,
       'shift_started_at_0': DateFormat('yyyy-MM-dd').format(
-        DateTime.now().subtract(Duration(days: -1)),
+        DateTime.now().subtract(Duration(days: 1)),
       ),
     };
 

@@ -30,6 +30,8 @@
 	<string>13.0</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location when in the background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
