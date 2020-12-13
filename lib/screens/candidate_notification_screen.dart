@@ -79,6 +79,7 @@ class CandidateNotificationScreen extends StatelessWidget {
                   breakEnd: instance.breakEnd,
                   status: instance.status,
                   id: instance.id,
+                  update: reset,
                 );
               },
             )
