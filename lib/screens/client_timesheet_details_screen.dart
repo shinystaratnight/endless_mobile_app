@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/models/timesheet_model.dart';
-import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/evaluate.dart';
 import 'package:piiprent/widgets/group_title.dart';
@@ -26,6 +25,7 @@ class _ClientTimesheetDetailsScreenState
   String _breakStart = TimesheetTimeKey[TimesheetTime.BreakStart];
   String _breakEnd = TimesheetTimeKey[TimesheetTime.BreakEnd];
   String _shiftEnd = TimesheetTimeKey[TimesheetTime.End];
+  bool _updated = false;
 
   Map<String, DateTime> _times = Map();
 
@@ -43,7 +43,19 @@ class _ClientTimesheetDetailsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Timesheet')),
+      appBar: AppBar(
+        title: Text('Timesheet'),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.keyboard_arrow_left),
+              onPressed: () {
+                Navigator.pop(context, _updated);
+              },
+            );
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(10.0),

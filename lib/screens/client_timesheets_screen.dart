@@ -7,8 +7,11 @@ import 'package:piiprent/widgets/client_timesheet_card.dart';
 import 'package:piiprent/widgets/filter_dialog_button.dart';
 import 'package:piiprent/widgets/list_page.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 
 class ClientTimesheetsScreen extends StatelessWidget {
+  final StreamController _updateStream = StreamController.broadcast();
+
   @override
   Widget build(BuildContext context) {
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
@@ -18,103 +21,73 @@ class ClientTimesheetsScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-            title: Text('Timesheets'),
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.query_builder),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text('Unapproved'),
-                      )
-                    ],
-                  ),
+          title: Text('Timesheets'),
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.query_builder),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('Unapproved'),
+                    )
+                  ],
                 ),
-                Tab(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.query_builder),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text('History'),
-                      )
-                    ],
-                  ),
+              ),
+              Tab(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.query_builder),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('History'),
+                    )
+                  ],
                 ),
-              ],
-            )),
+              ),
+            ],
+          ),
+        ),
         drawer: ClientDrawer(),
-        // floatingActionButton: FilterDialogButton(
-        //   onClose: (_) {},
-        // ),
+        floatingActionButton: FilterDialogButton(
+          onClose: (data) {
+            _updateStream.add({
+              'shift_started_at_0': data['from'],
+              'shift_started_at_1': data['to'],
+            });
+          },
+        ),
         body: TabBarView(
           children: [
             ListPage<Timesheet>(
               action: timesheetService.getUnapprovedTimesheets,
+              updateStream: _updateStream.stream,
               params: {
                 'role': loginService.user.activeRole.id,
               },
               getChild: (Timesheet instance, Function reset) {
-                return ClientTimesheetCard(timesheet: instance);
+                return ClientTimesheetCard(
+                  timesheet: instance,
+                  update: reset,
+                );
               },
             ),
             ListPage<Timesheet>(
               action: timesheetService.getHistoryTimesheets,
+              updateStream: _updateStream.stream,
               params: {
                 'role': loginService.user.activeRole.id,
               },
               getChild: (Timesheet instance, Function reset) {
-                return ClientTimesheetCard(timesheet: instance);
+                return ClientTimesheetCard(
+                  timesheet: instance,
+                  update: reset,
+                );
               },
             ),
-            // ListView.builder(
-            //   itemCount: 20,
-            //   padding: EdgeInsets.all(10.0),
-            //   itemBuilder: (context, index) => Column(
-            //     children: [
-            //       ClientTimesheetCard(
-            //         score: '4.8',
-            //         position: 'Brick / blocklayer',
-            //         candidateContact: 'Mr. Peter Hokke',
-            //         src: 'https://picsum.photos/200/300',
-            //         shiftDate: DateTime.now(),
-            //         shiftStart: DateTime.now(),
-            //         shiftEnd: DateTime.now(),
-            //         breakStart: DateTime.now(),
-            //         breakEnd: DateTime.now(),
-            //       ),
-            //       SizedBox(
-            //         height: 20.0,
-            //       )
-            //     ],
-            //   ),
-            // ),
-            // ListView.builder(
-            //   itemCount: 20,
-            //   padding: EdgeInsets.all(10.0),
-            //   itemBuilder: (context, index) => Column(
-            //     children: [
-            //       ClientTimesheetCard(
-            //         score: '4.8',
-            //         position: 'Brick / blocklayer',
-            //         candidateContact: 'Mr. Peter Hokke',
-            //         src: 'https://picsum.photos/200/300',
-            //         shiftDate: DateTime.now(),
-            //         shiftStart: DateTime.now(),
-            //         shiftEnd: DateTime.now(),
-            //         breakStart: DateTime.now(),
-            //         breakEnd: DateTime.now(),
-            //       ),
-            //       SizedBox(
-            //         height: 20.0,
-            //       )
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),

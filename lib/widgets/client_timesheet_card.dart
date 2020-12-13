@@ -6,35 +6,31 @@ import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
 
 class ClientTimesheetCard extends StatelessWidget {
-  // final String id;
-  // final String score;
-  // final String position;
-  // final String candidateContact;
-  // final String src;
-  // final String jobsite;
-  // final DateTime shiftDate;
-  // final DateTime shiftStart;
-  // final DateTime shiftEnd;
-  // final DateTime breakStart;
-  // final DateTime breakEnd;
-  // final int status;
-  // final bool signatureScheme;
   final Timesheet timesheet;
+  final Function update;
 
   ClientTimesheetCard({
     this.timesheet,
+    this.update,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ClientTimesheetDetailsScreen(
-            timesheet: timesheet,
+      onTap: () async {
+        var result = await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ClientTimesheetDetailsScreen(
+              timesheet: timesheet,
+            ),
           ),
-        ),
-      ),
+        );
+
+        if (result) {
+          update();
+        }
+        print(result);
+      },
       child: ListCard(
         header: Row(
           children: [
