@@ -9,7 +9,10 @@ class ClientJobDetailsScreen extends StatefulWidget {
   final String position;
   final String jobsite;
 
-  ClientJobDetailsScreen({this.position, this.jobsite});
+  ClientJobDetailsScreen({
+    this.position,
+    this.jobsite,
+  });
 
   @override
   _ClientJobDetailsScreenState createState() => _ClientJobDetailsScreenState();

@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/models/job_model.dart';
+import 'package:piiprent/services/job_service.dart';
+import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/client_drawer.dart';
 import 'package:piiprent/widgets/client_job_card.dart';
+import 'package:piiprent/widgets/list_page.dart';
+import 'package:provider/provider.dart';
 
 class ClientJobsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    JobService jobService = Provider.of<JobService>(context);
+    LoginService loginService = Provider.of<LoginService>(context);
+
     return Scaffold(
       appBar: AppBar(title: Text('Jobs')),
       drawer: ClientDrawer(),
-      body: ListView.builder(
-        itemCount: 20,
-        padding: EdgeInsets.all(10.0),
-        itemBuilder: (context, index) => Column(
-          children: [
-            ClientJobCard(
-              jobsite: 'Smart Builders Ltd - Tartu',
-              status: 'Confirmed',
-              contact: 'Project Manager Mr. Duncan Pallar',
-              position: 'Brick/blocklayer',
-              today: true,
-              tomorrow: false,
-            ),
-            SizedBox(
-              height: 20.0,
-            )
-          ],
-        ),
+      body: ListPage<Job>(
+        action: jobService.getClientJobs,
+        params: {
+          'role': loginService.user.activeRole.id,
+        },
+        getChild: (Job instance, Function reset) {
+          return ClientJobCard(
+            job: instance,
+          );
+        },
       ),
     );
   }

@@ -1,31 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/models/job_model.dart';
 import 'package:piiprent/screens/client_job_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
 
 class ClientJobCard extends StatelessWidget {
-  final String jobsite;
-  final String contact;
-  final String status;
-  final String position;
-  final bool today;
-  final bool tomorrow;
+  final Job job;
 
-  ClientJobCard(
-      {this.jobsite,
-      this.contact,
-      this.status,
-      this.position,
-      this.today,
-      this.tomorrow});
+  ClientJobCard({
+    this.job,
+  });
 
-  Widget _buildStatus(String label, bool active) {
+  Widget _buildStatus(String label, JobStatus status) {
+    IconData icon;
+    Color color;
+
+    switch (status) {
+      case JobStatus.Unfilled:
+        {
+          icon = Icons.close;
+          color = Colors.red[400];
+          break;
+        }
+      case JobStatus.Fullfilled:
+        {
+          icon = Icons.check_circle;
+          color = Colors.green[400];
+          break;
+        }
+      default:
+        {
+          icon = Icons.remove_circle;
+          color = Colors.grey[400];
+        }
+    }
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 4.0,
+      ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8.0,
+        vertical: 4.0,
+      ),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.blue),
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        border: Border.all(
+          color: Colors.blue,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(4.0),
+        ),
       ),
       child: Row(
         children: [
@@ -41,8 +65,8 @@ class ClientJobCard extends StatelessWidget {
             ),
           ),
           Icon(
-            active ? Icons.check_circle : Icons.remove_circle,
-            color: active ? Colors.green : Colors.grey,
+            icon,
+            color: color,
             size: 20.0,
           ),
         ],
@@ -56,79 +80,98 @@ class ClientJobCard extends StatelessWidget {
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ClientJobDetailsScreen(
-            position: position,
-            jobsite: jobsite,
+            position: job.translations['position']['en'],
+            jobsite: job.jobsite,
           ),
         ),
       ),
       child: ListCard(
         header: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  jobsite,
-                  style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 8.0,
-                ),
-                Text(
-                  contact,
-                  style: TextStyle(fontSize: 16.0, color: Colors.white),
-                )
-              ],
-            ),
             Expanded(
               flex: 1,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 2.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(14.0)),
-                    ),
-                    child: Text(
-                      status,
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.white,
-                      ),
+                  Text(
+                    job.jobsite,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(
                     height: 8.0,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Workers',
-                        style: TextStyle(fontSize: 14.0, color: Colors.white),
-                      ),
-                      Container(
-                        height: 20.0,
-                        width: 20.0,
-                        margin: const EdgeInsets.only(left: 8.0),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(25.0)),
-                        child: Text('2', style: TextStyle(color: Colors.blue)),
-                      )
-                    ],
-                  ),
+                  Text(
+                    job.contact,
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                  )
                 ],
               ),
+            ),
+            Flex(
+              direction: Axis.horizontal,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 2.0,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(14.0),
+                        ),
+                      ),
+                      child: Text(
+                        job.status,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Workers',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Container(
+                          height: 20.0,
+                          width: 20.0,
+                          margin: const EdgeInsets.only(left: 8.0),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          child: Text(
+                            job.workers.toString(),
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                )
+              ],
             ),
           ],
         ),
@@ -139,7 +182,7 @@ class ClientJobCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Position'),
-                  Text(position),
+                  Text(job.translations['position']['en']),
                 ],
               ),
             ),
@@ -149,13 +192,16 @@ class ClientJobCard extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: _buildStatus('Today', today),
+                    child: _buildStatus(
+                      'Today',
+                      job.isFulFilledToday,
+                    ),
                   ),
                   Expanded(
                     flex: 1,
                     child: _buildStatus(
                       'Tomorrow',
-                      tomorrow,
+                      job.isFulfilled,
                     ),
                   )
                 ],
