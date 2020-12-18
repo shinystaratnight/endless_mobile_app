@@ -18,6 +18,9 @@ class Job {
   final int workers;
   final JobStatus isFulfilled;
   final JobStatus isFulFilledToday;
+  final String notes;
+  final DateTime workStartDate;
+  final List<dynamic> tags;
 
   static List<String> requestFields = const [
     'id',
@@ -28,6 +31,10 @@ class Job {
     'workers',
     'is_fulfilled',
     'is_fulfilled_today',
+    'notes',
+    'work_start_date',
+    'default_shift_starting_time',
+    'tags',
   ];
 
   Job({
@@ -39,6 +46,9 @@ class Job {
     this.workers,
     this.isFulfilled,
     this.isFulFilledToday,
+    this.notes,
+    this.workStartDate,
+    this.tags,
   });
 
   factory Job.fromJson(Map<String, dynamic> json) {
@@ -58,6 +68,10 @@ class Job {
       workers: json['workers'],
       isFulfilled: parseStatus(json['is_fulfilled']),
       isFulFilledToday: parseStatus(json['is_fulfilled_today']),
+      notes: json['notes'],
+      workStartDate: DateTime.parse(
+          '${json['work_start_date']}T${json['default_shift_starting_time']}'),
+      tags: json['tags'].map((el) => el['name']).toList(),
     );
   }
 

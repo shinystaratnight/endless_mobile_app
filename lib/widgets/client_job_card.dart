@@ -82,6 +82,11 @@ class ClientJobCard extends StatelessWidget {
           builder: (context) => ClientJobDetailsScreen(
             position: job.translations['position']['en'],
             jobsite: job.jobsite,
+            workStartDate: job.workStartDate,
+            notes: job.notes,
+            tags: job.tags,
+            id: job.id,
+            contact: job.contact,
           ),
         ),
       ),
