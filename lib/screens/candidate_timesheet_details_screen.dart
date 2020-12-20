@@ -182,7 +182,10 @@ class _CandidateTimesheetDetailsScreenState
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(Icons.keyboard_arrow_left),
+              icon: const Icon(
+                Icons.keyboard_arrow_left,
+                size: 36.0,
+              ),
               onPressed: () {
                 Navigator.pop(context, _updated);
               },

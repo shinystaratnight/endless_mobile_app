@@ -20,6 +20,7 @@ class Timesheet {
   final bool evaluated;
   final bool signatureScheme;
   final Map<String, dynamic> supervisorSignature;
+  final int evaluation;
 
   static final requestFields = [
     'id',
@@ -36,6 +37,7 @@ class Timesheet {
     'evaluated',
     'supervisor_signature',
     'time_zone',
+    'evaluation',
   ];
 
   Timesheet({
@@ -55,6 +57,7 @@ class Timesheet {
     this.evaluated,
     this.signatureScheme,
     this.supervisorSignature,
+    this.evaluation,
   });
 
   factory Timesheet.fromJson(Map<String, dynamic> json) {
@@ -90,6 +93,8 @@ class Timesheet {
       evaluated: json['evaluated'],
       signatureScheme: company['supervisor_approved_scheme'] == 'SIGNATURE',
       supervisorSignature: json['supervisor_signature'],
+      evaluation:
+          json['evaluated'] ? json['evaluation']['evaluation_score'] : 1,
     );
   }
 

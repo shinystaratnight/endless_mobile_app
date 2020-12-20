@@ -28,7 +28,7 @@ class ClientTimesheetsScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.query_builder),
+                    Icon(Icons.assignment),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text('Unapproved'),

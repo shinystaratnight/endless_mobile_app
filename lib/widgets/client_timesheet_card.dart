@@ -93,7 +93,7 @@ class ClientTimesheetCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                timesheet.signatureScheme
+                timesheet.signatureScheme && timesheet.status == 5
                     ? Container(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(

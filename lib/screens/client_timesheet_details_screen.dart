@@ -35,6 +35,8 @@ class _ClientTimesheetDetailsScreenState
   bool _updated = false;
   bool _fetching = false;
   bool _changed = false;
+  bool _evaluated = true;
+  int _evaluationScore = 1;
 
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 3,
@@ -57,6 +59,8 @@ class _ClientTimesheetDetailsScreenState
     _controller.addListener(() {
       _signatureStream.add(_controller.isEmpty);
     });
+    _evaluated = widget.timesheet.evaluated;
+    _evaluationScore = widget.timesheet.evaluation;
     super.initState();
   }
 
@@ -87,6 +91,24 @@ class _ClientTimesheetDetailsScreenState
       );
 
       setState(() => _updated = result);
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() => _fetching = false);
+    }
+  }
+
+  _evaluate(TimesheetService timesheetService, int score) async {
+    try {
+      bool result = await timesheetService.evaluate(
+        widget.timesheet.id,
+        score,
+      );
+
+      setState(() {
+        _evaluated = result;
+        _evaluationScore = score;
+      });
     } catch (e) {
       print(e);
     } finally {
@@ -179,11 +201,16 @@ class _ClientTimesheetDetailsScreenState
 
     if (widget.timesheet.signatureScheme && widget.timesheet.status != 5) {
       return Container(
+        margin: const EdgeInsets.only(top: 10.0),
         width: 309,
         height: 149,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.grey[100],
+          color: Colors.white,
+          border: Border.all(
+            width: 1.0,
+            style: BorderStyle.solid,
+          ),
           image: widget.timesheet.signatureUrl != null
               ? DecorationImage(
                   fit: BoxFit.contain,
@@ -209,9 +236,13 @@ class _ClientTimesheetDetailsScreenState
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(Icons.keyboard_arrow_left),
+              icon: const Icon(
+                Icons.keyboard_arrow_left,
+                size: 36.0,
+              ),
               onPressed: () {
-                Navigator.pop(context, _updated);
+                Navigator.pop(context,
+                    _updated || (_evaluated != widget.timesheet.evaluated));
               },
             );
           },
@@ -253,7 +284,7 @@ class _ClientTimesheetDetailsScreenState
               ),
               Text(
                 widget.timesheet.candidateName,
-                style: TextStyle(fontSize: 26.0, color: Colors.blue),
+                style: TextStyle(fontSize: 22.0, color: Colors.blue),
                 textAlign: TextAlign.center,
               ),
               Text(
@@ -313,15 +344,13 @@ class _ClientTimesheetDetailsScreenState
                 label: 'Jobsite',
                 value: widget.timesheet.jobsite,
               ),
-              !widget.timesheet.evaluated
-                  ? Evaluate(
-                      active: true,
-                      score: 1,
-                      onChange: (score) {
-                        print(score);
-                      },
-                    )
-                  : SizedBox(),
+              Evaluate(
+                active: !_evaluated,
+                score: _evaluationScore,
+                onChange: (score) {
+                  _evaluate(timesheetService, score);
+                },
+              ),
               _buildSignatureBlock(),
               widget.timesheet.status == 5 && !_updated
                   ? StreamBuilder(
