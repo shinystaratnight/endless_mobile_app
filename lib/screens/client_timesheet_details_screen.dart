@@ -95,19 +95,19 @@ class _ClientTimesheetDetailsScreenState
           int minutes = time.minute - date.minute;
 
           if (hours > 0) {
-            date = date.add(Duration(hours: hours));
+            date = date.add(Duration(hours: hours.abs()));
           }
 
           if (hours < 0) {
-            date = date.subtract(Duration(hours: hours));
+            date = date.subtract(Duration(hours: hours.abs()));
           }
 
           if (minutes > 0) {
-            date = date.add(Duration(minutes: minutes));
+            date = date.add(Duration(minutes: minutes.abs()));
           }
 
           if (minutes < 0) {
-            date = date.subtract(Duration(minutes: minutes));
+            date = date.subtract(Duration(minutes: minutes.abs()));
           }
 
           _changeTime(
