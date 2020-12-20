@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
+import 'package:piiprent/models/client_contact_model.dart';
 import 'package:piiprent/models/role_model.dart';
 
 import 'package:piiprent/services/api_service.dart';
@@ -93,6 +94,18 @@ class ContactService {
       Map<String, dynamic> body = json.decode(res.body);
       List<dynamic> roles = body['roles'];
       return roles.map((dynamic el) => Role.fromJson(el)).toList();
+    } catch (e) {
+      throw Exception("Failed fetching roles");
+    }
+  }
+
+  Future getCompanyContactDetails(String id) async {
+    try {
+      http.Response res =
+          await apiService.get(path: '/core/companycontacts/$id/');
+
+      Map<String, dynamic> body = json.decode(res.body);
+      return ClientContact.fromJson(body);
     } catch (e) {
       throw Exception("Failed fetching roles");
     }

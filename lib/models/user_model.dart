@@ -17,7 +17,6 @@ class User {
     this.email,
     this.type,
     this.picture,
-    // TODO: change name to candidate id
     this.id,
     this.userId,
     this.candidateId,
