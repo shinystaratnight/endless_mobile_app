@@ -115,7 +115,7 @@ class Timesheet {
 
   String get signatureUrl {
     if (supervisorSignature['origin'] != null) {
-      return supervisorSignature['origin'];
+      return '$apiUrl${supervisorSignature['origin']}';
     }
 
     return null;

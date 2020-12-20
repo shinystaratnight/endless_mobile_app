@@ -33,6 +33,7 @@ dependencies:
   geolocator:
   background_fetch: ^0.6.0
   timezone:
+  signature: ^3.2.0
 
 
   # The following adds the Cupertino Icons font to your application.

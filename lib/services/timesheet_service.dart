@@ -253,43 +253,77 @@ class TimesheetService {
         );
 
     if (res.statusCode == 200) {
-      // Map<String, dynamic> body = json.decode(res.body);
-      // List<dynamic> results = body['results'];
-      // List<Timesheet> timesheets =
-      //     results.map((dynamic el) => Timesheet.fromJson(el)).toList();
-
-      // return {"list": timesheets, "count": body["count"]};
-
       return true;
     } else {
       throw Exception('Failed to submit Timesheet');
     }
   }
 
-  // Future<bool> approveTimesheet(String id, body, bool updated) {}
-  // approve = (id, supervisor_signature) => {
-  //   if (supervisor_signature) {
-  //     return this.api
-  //       .post(`${this.endpoint}${id}/approve_by_signature/`, { supervisor_signature })
-  //       .then(response => response.json());
-  //   } else {
-  //     return this.api
-  //       .put(`${this.endpoint}${id}/approve/`, {})
-  //       .then(response => response.json());
-  //   }
-  // };
+  Future<bool> approveTimesheet(
+    String id,
+    Map<String, dynamic> body,
+    bool updated,
+  ) {
+    if (updated) {
+      return _notAgree(id, body);
+    } else {
+      if (body.containsKey('supervisor_signature')) {
+        return _approveBySignature(id, body['supervisor_signature']);
+      } else {
+        return _approve(id);
+      }
+    }
+  }
 
-  // notAgree = (id, body) => {
-  //   return this.api
-  //     .put(`${this.endpoint}${id}/not_agree/`, body)
-  //     .then(response => response.json());
-  // };
+  Future<bool> evaluate(String id, int score) async {
+    http.Response res = await this.apiService.put(
+      path: '/hr/timesheets/$id/evaluate/',
+      body: {'evaluation_score': score},
+    );
 
-  // evaluate = (id, score) => {
-  //   const body = {evaluation_score: score};
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to evaluate Timesheet');
+    }
+  }
 
-  //   return this.api
-  //     .put(`${this.endpoint}${id}/evaluate/`, body)
-  //     .then(response => response.json());
-  // };
+  Future<bool> _approve(String id) async {
+    http.Response res = await this.apiService.put(
+          path: '/hr/timesheets/$id/approve/',
+          body: Map(),
+        );
+
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to approve Timesheet');
+    }
+  }
+
+  Future<bool> _approveBySignature(String id, String signature) async {
+    http.Response res = await this.apiService.post(
+      path: '/hr/timesheets/$id/approve_by_signature/',
+      body: {'supervisor_signature': signature},
+    );
+
+    if (res.statusCode == 201) {
+      return true;
+    } else {
+      throw Exception('Failed to approve by signature Timesheet');
+    }
+  }
+
+  Future<bool> _notAgree(String id, Map<String, dynamic> body) async {
+    http.Response res = await this.apiService.put(
+          path: '/hr/timesheets/$id/not_agree/',
+          body: body,
+        );
+
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to change timesheet times');
+    }
+  }
 }

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
@@ -9,6 +12,7 @@ import 'package:piiprent/widgets/evaluate.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
 import 'package:provider/provider.dart';
+import 'package:signature/signature.dart';
 
 class ClientTimesheetDetailsScreen extends StatefulWidget {
   final Timesheet timesheet;
@@ -30,6 +34,15 @@ class _ClientTimesheetDetailsScreenState
   String _shiftEnd = TimesheetTimeKey[TimesheetTime.End];
   bool _updated = false;
   bool _fetching = false;
+  bool _changed = false;
+
+  final SignatureController _controller = SignatureController(
+    penStrokeWidth: 3,
+    penColor: Colors.black,
+    exportBackgroundColor: Colors.white,
+  );
+
+  final StreamController _signatureStream = StreamController();
 
   Map<String, DateTime> _times = Map();
 
@@ -41,22 +54,39 @@ class _ClientTimesheetDetailsScreenState
       _breakEnd: widget.timesheet.breakEnd,
       _shiftEnd: widget.timesheet.shiftEnd
     };
+    _controller.addListener(() {
+      _signatureStream.add(_controller.isEmpty);
+    });
     super.initState();
   }
 
   _changeTime(DateTime time, String key) {
     setState(() {
+      _changed = true;
       _times[key] = time;
     });
   }
 
-  _submitForm(TimesheetService timesheetService) async {
+  _submitForm(TimesheetService timesheetService,
+      SignatureController signatureContoller) async {
     try {
       setState(() => _fetching = true);
-      // bool result = await timesheetService.approveTimesheet(
-      //     widget.timesheet.id, _times, _updated);
+      Map<String, String> body =
+          _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
+      final data = await signatureContoller.toPngBytes();
+      String img64 = base64.encode(data);
 
-      // setState(() => _updated = result);
+      if (widget.timesheet.signatureScheme) {
+        body.addAll({'supervisor_signature': img64});
+      }
+
+      bool result = await timesheetService.approveTimesheet(
+        widget.timesheet.id,
+        body,
+        _changed,
+      );
+
+      setState(() => _updated = result);
     } catch (e) {
       print(e);
     } finally {
@@ -117,6 +147,56 @@ class _ClientTimesheetDetailsScreenState
         });
       },
     );
+  }
+
+  Widget _buildSignatureBlock() {
+    if (_updated) {
+      return Container();
+    }
+
+    if (widget.timesheet.signatureScheme && widget.timesheet.status == 5) {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 15.0),
+        child: Column(
+          children: [
+            Signature(
+              controller: _controller,
+              width: 309,
+              height: 149,
+              backgroundColor: Colors.grey[300],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            RaisedButton(
+              onPressed: () => _controller.clear(),
+              child: Text('Clear'),
+            )
+          ],
+        ),
+      );
+    }
+
+    if (widget.timesheet.signatureScheme && widget.timesheet.status != 5) {
+      return Container(
+        width: 309,
+        height: 149,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          image: widget.timesheet.signatureUrl != null
+              ? DecorationImage(
+                  fit: BoxFit.contain,
+                  image: NetworkImage(
+                    widget.timesheet.signatureUrl,
+                  ),
+                )
+              : null,
+        ),
+      );
+    }
+
+    return SizedBox();
   }
 
   @override
@@ -242,11 +322,26 @@ class _ClientTimesheetDetailsScreenState
                       },
                     )
                   : SizedBox(),
+              _buildSignatureBlock(),
               widget.timesheet.status == 5 && !_updated
-                  ? FormSubmitButton(
-                      label: 'Submit',
-                      onPressed: () => _submitForm(timesheetService),
-                      disabled: _fetching,
+                  ? StreamBuilder(
+                      stream: _signatureStream.stream,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        }
+
+                        return FormSubmitButton(
+                          label: 'Submit',
+                          onPressed: () => _submitForm(
+                            timesheetService,
+                            _controller,
+                          ),
+                          disabled: _fetching ||
+                              (widget.timesheet.signatureScheme &&
+                                  snapshot.data),
+                        );
+                      },
                     )
                   : Container()
             ],
