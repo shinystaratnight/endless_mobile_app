@@ -1,5 +1,7 @@
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/functions.dart';
+import 'package:timezone/timezone.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 class Timesheet {
   final String id;
@@ -25,14 +27,15 @@ class Timesheet {
     'position',
     'company',
     'jobsite',
-    'shift_started_at',
-    'shift_ended_at',
-    'break_started_at',
-    'break_ended_at',
+    'shift_started_at_tz',
+    'shift_ended_at_tz',
+    'break_started_at_tz',
+    'break_ended_at_tz',
     'status',
     'job_offer',
     'evaluated',
     'supervisor_signature',
+    'time_zone',
   ];
 
   Timesheet({
@@ -75,10 +78,12 @@ class Timesheet {
       address: (json['jobsite']['address']['__str__'] as String)
           .replaceAll('\n', ' '),
       jobsite: json['jobsite']['__str__'],
-      shiftStart: DateTime.parse(json['shift_started_at']),
-      shiftEnd: DateTime.parse(json['shift_ended_at']),
-      breakStart: DateTime.parse(json['break_started_at']),
-      breakEnd: DateTime.parse(json['break_ended_at']),
+      shiftStart:
+          parseWithTimeZone(json['time_zone'], json['shift_started_at_tz']),
+      shiftEnd: parseWithTimeZone(json['time_zone'], json['shift_ended_at_tz']),
+      breakStart:
+          parseWithTimeZone(json['time_zone'], json['break_started_at_tz']),
+      breakEnd: parseWithTimeZone(json['time_zone'], json['break_ended_at_tz']),
       status: json['status'],
       candidate: candidateContact['contact'],
       score: candidateContact['candidate_scores']['average_score'],
@@ -119,4 +124,10 @@ class Timesheet {
 
 DateTime getDateTime(String date, String time) {
   return DateTime.parse('$date $time');
+}
+
+DateTime parseWithTimeZone(String timezone, String target) {
+  tz.initializeTimeZones();
+
+  return TZDateTime.from(DateTime.parse(target), getLocation(timezone));
 }

@@ -247,8 +247,6 @@ class TimesheetService {
   }
 
   Future<bool> submitTimesheet(String id, body) async {
-    Map<String, dynamic> body = Map();
-
     http.Response res = await this.apiService.put(
           path: 'hr/timesheets-candidate/$id/submit/',
           body: body,
@@ -267,4 +265,31 @@ class TimesheetService {
       throw Exception('Failed to submit Timesheet');
     }
   }
+
+  // Future<bool> approveTimesheet(String id, body, bool updated) {}
+  // approve = (id, supervisor_signature) => {
+  //   if (supervisor_signature) {
+  //     return this.api
+  //       .post(`${this.endpoint}${id}/approve_by_signature/`, { supervisor_signature })
+  //       .then(response => response.json());
+  //   } else {
+  //     return this.api
+  //       .put(`${this.endpoint}${id}/approve/`, {})
+  //       .then(response => response.json());
+  //   }
+  // };
+
+  // notAgree = (id, body) => {
+  //   return this.api
+  //     .put(`${this.endpoint}${id}/not_agree/`, body)
+  //     .then(response => response.json());
+  // };
+
+  // evaluate = (id, score) => {
+  //   const body = {evaluation_score: score};
+
+  //   return this.api
+  //     .put(`${this.endpoint}${id}/evaluate/`, body)
+  //     .then(response => response.json());
+  // };
 }

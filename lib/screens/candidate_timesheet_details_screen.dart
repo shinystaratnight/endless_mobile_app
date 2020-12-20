@@ -99,7 +99,9 @@ class _CandidateTimesheetDetailsScreenState
   _submitForm(TimesheetService timesheetService) async {
     try {
       setState(() => _fetching = true);
-      bool result = await timesheetService.submitTimesheet(widget.id, _times);
+      Map<String, String> body =
+          _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
+      bool result = await timesheetService.submitTimesheet(widget.id, body);
 
       setState(() => _updated = result);
     } catch (e) {
@@ -136,14 +138,27 @@ class _CandidateTimesheetDetailsScreenState
           context: context,
           initialTime: TimeOfDay.fromDateTime(date),
         ).then((time) {
+          int hours = time.hour - date.hour;
+          int minutes = time.minute - date.minute;
+
+          if (hours > 0) {
+            date = date.add(Duration(hours: hours));
+          }
+
+          if (hours < 0) {
+            date = date.subtract(Duration(hours: hours));
+          }
+
+          if (minutes > 0) {
+            date = date.add(Duration(minutes: minutes));
+          }
+
+          if (minutes < 0) {
+            date = date.subtract(Duration(minutes: minutes));
+          }
+
           _changeTime(
-            DateTime(
-              date.year,
-              date.month,
-              date.day,
-              time.hour,
-              time.minute,
-            ),
+            date,
             key,
           );
         });

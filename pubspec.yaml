@@ -32,6 +32,7 @@ dependencies:
   jiffy: ^3.0.1
   geolocator:
   background_fetch: ^0.6.0
+  timezone:
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -3,9 +3,12 @@ import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/models/timesheet_model.dart';
+import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/evaluate.dart';
+import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
+import 'package:provider/provider.dart';
 
 class ClientTimesheetDetailsScreen extends StatefulWidget {
   final Timesheet timesheet;
@@ -26,6 +29,7 @@ class _ClientTimesheetDetailsScreenState
   String _breakEnd = TimesheetTimeKey[TimesheetTime.BreakEnd];
   String _shiftEnd = TimesheetTimeKey[TimesheetTime.End];
   bool _updated = false;
+  bool _fetching = false;
 
   Map<String, DateTime> _times = Map();
 
@@ -40,8 +44,85 @@ class _ClientTimesheetDetailsScreenState
     super.initState();
   }
 
+  _changeTime(DateTime time, String key) {
+    setState(() {
+      _times[key] = time;
+    });
+  }
+
+  _submitForm(TimesheetService timesheetService) async {
+    try {
+      setState(() => _fetching = true);
+      // bool result = await timesheetService.approveTimesheet(
+      //     widget.timesheet.id, _times, _updated);
+
+      // setState(() => _updated = result);
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() => _fetching = false);
+    }
+  }
+
+  Widget _buildChangeButton(DateTime date, String key) {
+    return GestureDetector(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Icon(
+            Icons.edit,
+            size: 18.0,
+            color: Colors.blue,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: Text(
+              'Change',
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 14.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+      onTap: () {
+        showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.fromDateTime(date),
+        ).then((time) {
+          int hours = time.hour - date.hour;
+          int minutes = time.minute - date.minute;
+
+          if (hours > 0) {
+            date = date.add(Duration(hours: hours));
+          }
+
+          if (hours < 0) {
+            date = date.subtract(Duration(hours: hours));
+          }
+
+          if (minutes > 0) {
+            date = date.add(Duration(minutes: minutes));
+          }
+
+          if (minutes < 0) {
+            date = date.subtract(Duration(minutes: minutes));
+          }
+
+          _changeTime(
+            date,
+            key,
+          );
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    TimesheetService timesheetService = Provider.of<TimesheetService>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Timesheet'),
@@ -79,7 +160,8 @@ class _ClientTimesheetDetailsScreenState
                           ? DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                  widget.timesheet.candidateAvatarUrl),
+                                widget.timesheet.candidateAvatarUrl,
+                              ),
                             )
                           : null,
                     ),
@@ -110,18 +192,42 @@ class _ClientTimesheetDetailsScreenState
               DetailsRecord(
                 label: 'Shift Start Time',
                 value: DateFormat.jm().format(_times[_shiftStart]),
+                button: widget.timesheet.status == 5 && !_updated
+                    ? _buildChangeButton(
+                        _times[_shiftStart],
+                        _shiftStart,
+                      )
+                    : null,
               ),
               DetailsRecord(
                 label: 'Break Start Time',
                 value: DateFormat.jm().format(_times[_breakStart]),
+                button: widget.timesheet.status == 5 && !_updated
+                    ? _buildChangeButton(
+                        _times[_breakStart],
+                        _breakStart,
+                      )
+                    : null,
               ),
               DetailsRecord(
                 label: 'Break End Time',
                 value: DateFormat.jm().format(_times[_breakEnd]),
+                button: widget.timesheet.status == 5 && !_updated
+                    ? _buildChangeButton(
+                        _times[_breakEnd],
+                        _breakEnd,
+                      )
+                    : null,
               ),
               DetailsRecord(
                 label: 'Shift End Time',
                 value: DateFormat.jm().format(_times[_shiftEnd]),
+                button: widget.timesheet.status == 5 && !_updated
+                    ? _buildChangeButton(
+                        _times[_shiftEnd],
+                        _shiftEnd,
+                      )
+                    : null,
               ),
               DetailsRecord(
                 label: 'Jobsite',
@@ -136,6 +242,13 @@ class _ClientTimesheetDetailsScreenState
                       },
                     )
                   : SizedBox(),
+              widget.timesheet.status == 5 && !_updated
+                  ? FormSubmitButton(
+                      label: 'Submit',
+                      onPressed: () => _submitForm(timesheetService),
+                      disabled: _fetching,
+                    )
+                  : Container()
             ],
           ),
         ),
