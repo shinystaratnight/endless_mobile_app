@@ -50,8 +50,6 @@ class ClientProfileScreen extends StatelessWidget {
 
           ClientContact contact = snapshot.data;
 
-          print(contact);
-
           return SingleChildScrollView(
             child: PageContainer(
               child: Column(
