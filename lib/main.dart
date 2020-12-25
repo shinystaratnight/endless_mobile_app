@@ -10,6 +10,7 @@ import 'package:piiprent/screens/client_jobs_screen.dart';
 import 'package:piiprent/screens/client_profile_screen.dart';
 import 'package:piiprent/screens/client_timesheets_screen.dart';
 import 'package:piiprent/screens/forgot_password_screen.dart';
+import 'package:piiprent/screens/preview_screen.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/industry_service.dart';
@@ -79,7 +80,7 @@ class MyApp extends StatelessWidget {
             ClientTimesheetsScreen(),
         '/forgot_password': (BuildContext context) => ForgotPasswordScreen(),
       },
-      home: LoginScreen(),
+      home: PreviewScreen(),
     );
   }
 }

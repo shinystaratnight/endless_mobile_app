@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/models/carrier_model.dart';
+import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/candidate_service.dart';
+import 'package:piiprent/services/job_service.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 enum CalendarType {
   Canddate,
@@ -16,10 +19,12 @@ enum CarrrierStatus {
 class HomeCalendar extends StatefulWidget {
   final CalendarType type;
   final String userId;
+  final String role;
 
   HomeCalendar({
     @required this.type,
     this.userId,
+    this.role,
   });
 
   @override
@@ -28,10 +33,16 @@ class HomeCalendar extends StatefulWidget {
 
 class _HomeCalendarState extends State<HomeCalendar> {
   CandidateService _candidateService = CandidateService();
+  JobService _jobService = JobService();
   var _calendarController;
 
   Map<DateTime, List> _candidateUnavailable;
   Map<DateTime, List> _candidateAvailable;
+
+  Map<DateTime, List> _clientFulfilledShifts;
+  Map<DateTime, List> _clientUnfulfilledShifts;
+
+  List<Shift> _shifts;
 
   _initCandidateCalendar() async {
     try {
@@ -59,6 +70,33 @@ class _HomeCalendarState extends State<HomeCalendar> {
     }
   }
 
+  _initClientCalendar() async {
+    try {
+      List<Shift> shifts = await _jobService.getClientShifts({
+        'role': widget.role,
+      });
+
+      _clientFulfilledShifts = {};
+      _clientUnfulfilledShifts = {};
+
+      setState(() {
+        shifts.forEach((Shift el) {
+          if (el.isFulfilled) {
+            _clientFulfilledShifts.addAll({
+              el.datetime: [el]
+            });
+          } else {
+            _clientUnfulfilledShifts.addAll({
+              el.datetime: [el]
+            });
+          }
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -66,6 +104,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
     if (widget.type == CalendarType.Canddate) {
       _initCandidateCalendar();
+    }
+
+    if (widget.type == CalendarType.Client) {
+      _initClientCalendar();
+      _shifts = [];
     }
   }
 
@@ -185,7 +228,10 @@ class _HomeCalendarState extends State<HomeCalendar> {
                 children.add(
                   Positioned(
                     bottom: 2,
-                    child: _buildCircle(radius: 4.0, color: Colors.green[400]),
+                    child: _buildCircle(
+                      radius: 4.0,
+                      color: Colors.green[400],
+                    ),
                   ),
                 );
               }
@@ -194,7 +240,10 @@ class _HomeCalendarState extends State<HomeCalendar> {
                 children.add(
                   Positioned(
                     bottom: 2,
-                    child: _buildCircle(radius: 4.0, color: Colors.red[400]),
+                    child: _buildCircle(
+                      radius: 4.0,
+                      color: Colors.red[400],
+                    ),
                   ),
                 );
               }
@@ -205,6 +254,43 @@ class _HomeCalendarState extends State<HomeCalendar> {
         ),
         _buildCandidateLegend(),
       ],
+    );
+  }
+
+  Widget _buildClientLegend() {
+    var data = [
+      {
+        'color': Colors.green[400],
+        'label': 'Fulfilled',
+      },
+      {
+        'color': Colors.red[400],
+        'label': 'Unfulfilled',
+      }
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      child: Row(
+        children: data
+            .map(
+              (el) => Expanded(
+                child: Row(
+                  children: [
+                    _buildCircle(radius: 8.0, color: el['color']),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    Text(
+                      el['label'],
+                      style: TextStyle(fontSize: 16.0),
+                    )
+                  ],
+                ),
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 
@@ -256,10 +342,138 @@ class _HomeCalendarState extends State<HomeCalendar> {
     );
   }
 
+  Widget _buildTableCell(String text, [Color color = Colors.black]) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      child: Text(
+        text,
+        style: TextStyle(color: color, fontSize: 16.0),
+      ),
+    );
+  }
+
+  Widget _buildTable(List<Shift> data) {
+    if (data.length == 0) {
+      return SizedBox();
+    }
+
+    List<Shift> body = [];
+    body.add(data[0]);
+    data.forEach((shift) => body.add(shift));
+
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 6.0),
+          margin: const EdgeInsets.only(top: 14.0),
+          width: double.infinity,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(color: Colors.blue),
+          child: Text(
+            'Shifts',
+            style: TextStyle(
+              fontSize: 16.0,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        Table(
+          border: TableBorder(
+            horizontalInside: BorderSide(
+              color: Colors.grey,
+            ),
+          ),
+          children: body.asMap().entries.map((e) {
+            int i = e.key;
+            Shift shift = e.value;
+
+            if (i == 0) {
+              return TableRow(
+                decoration: BoxDecoration(color: Colors.grey[200]),
+                children: [
+                  _buildTableCell('Jobsite'),
+                  _buildTableCell('Start Time'),
+                  _buildTableCell('Workers'),
+                  _buildTableCell('Status'),
+                ],
+              );
+            }
+
+            return TableRow(
+              children: [
+                _buildTableCell(shift.jobsite),
+                _buildTableCell(DateFormat.jm().format(shift.datetime)),
+                _buildTableCell(shift.workers.toString()),
+                _buildTableCell(
+                  shift.isFulfilled ? 'Fulfilled' : 'Unfulfilled',
+                  shift.isFulfilled ? Colors.green[400] : Colors.red[400],
+                ),
+              ],
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
   Widget _buildClientCalendar(BuildContext context) {
-    return TableCalendar(
-      calendarController: _calendarController,
-      onDaySelected: (date, events, holidays) {},
+    return Column(
+      children: [
+        TableCalendar(
+          calendarController: _calendarController,
+          events: _clientFulfilledShifts,
+          holidays: _clientUnfulfilledShifts,
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          onDaySelected: (date, List<dynamic> events, List<dynamic> holidays) {
+            print(date);
+            print(events);
+            print(holidays);
+
+            List<Shift> shifts = [];
+            events.forEach((shift) => shifts.add(shift));
+            holidays.forEach((shift) => shifts.add(shift));
+
+            setState(() {
+              _shifts = shifts;
+            });
+          },
+          builders: CalendarBuilders(
+            markersBuilder: (context, date, events, holidays) {
+              final children = <Widget>[];
+
+              if (events.isNotEmpty) {
+                children.add(
+                  Positioned(
+                    bottom: 2,
+                    right: 14,
+                    child: _buildCircle(
+                      radius: 4.0,
+                      color: Colors.green[400],
+                    ),
+                  ),
+                );
+              }
+
+              if (holidays.isNotEmpty) {
+                children.add(
+                  Positioned(
+                    bottom: 2,
+                    left: 14,
+                    child: _buildCircle(
+                      radius: 4.0,
+                      color: Colors.red[400],
+                    ),
+                  ),
+                );
+              }
+
+              return children;
+            },
+          ),
+        ),
+        _buildTable(_shifts),
+        _buildClientLegend(),
+      ],
     );
   }
 

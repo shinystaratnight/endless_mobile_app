@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/api_service.dart';
+import 'package:intl/intl.dart';
 
 class JobService {
   final ApiService apiService = ApiService.create();
@@ -79,6 +80,35 @@ class JobService {
           results.map((dynamic el) => Shift.fromJson(el)).toList();
 
       return {"list": shifts, "count": body['count']};
+    } else {
+      throw Exception('Failed to load Jobs');
+    }
+  }
+
+  Future getClientShifts([Map<String, dynamic> query]) async {
+    Map<String, dynamic> params = {
+      'limit': '-1',
+      'fields': ['date', 'time', 'is_fulfilled'],
+      'date__shift_date_0': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    };
+
+    if (query != null) {
+      params = {...params, ...query};
+    }
+
+    http.Response res = await apiService.get(
+      path: '/hr/shifts/client_contact_shifts/',
+      params: params,
+    );
+
+    if (res.statusCode == 200) {
+      List<dynamic> body = json.decode(res.body);
+      List<Shift> shifts =
+          body.map((dynamic el) => Shift.fromJson(el)).toList();
+
+      print(shifts.length);
+
+      return shifts;
     } else {
       throw Exception('Failed to load Jobs');
     }
