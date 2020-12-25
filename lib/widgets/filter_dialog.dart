@@ -178,7 +178,6 @@ class _FilterDialogState extends State<FilterDialog> {
                     initialValue: widget.from,
                     setStream: _fromStreamController.stream,
                     onChanged: (data) {
-                      print(data);
                       _emit(data, to);
                     },
                   ),

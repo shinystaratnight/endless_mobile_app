@@ -425,10 +425,6 @@ class _HomeCalendarState extends State<HomeCalendar> {
           holidays: _clientUnfulfilledShifts,
           startingDayOfWeek: StartingDayOfWeek.monday,
           onDaySelected: (date, List<dynamic> events, List<dynamic> holidays) {
-            print(date);
-            print(events);
-            print(holidays);
-
             List<Shift> shifts = [];
             events.forEach((shift) => shifts.add(shift));
             holidays.forEach((shift) => shifts.add(shift));

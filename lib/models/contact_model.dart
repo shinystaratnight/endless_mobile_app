@@ -33,7 +33,7 @@ class Contact {
 
   String userAvatarUrl() {
     if (picture['origin'] != null) {
-      return '$apiUrl${picture['origin']}';
+      return picture['origin'];
     }
 
     return null;

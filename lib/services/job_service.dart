@@ -106,8 +106,6 @@ class JobService {
       List<Shift> shifts =
           body.map((dynamic el) => Shift.fromJson(el)).toList();
 
-      print(shifts.length);
-
       return shifts;
     } else {
       throw Exception('Failed to load Jobs');

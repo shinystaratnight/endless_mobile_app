@@ -29,7 +29,6 @@ class ClientTimesheetCard extends StatelessWidget {
         if (result) {
           update();
         }
-        print(result);
       },
       child: ListCard(
         header: Row(

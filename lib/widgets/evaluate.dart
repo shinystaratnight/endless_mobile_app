@@ -23,7 +23,6 @@ class _EvaluateState extends State<Evaluate> {
     return GestureDetector(
       onTap: widget.active
           ? () {
-              print(index);
               widget.onChange(index + 1);
               setState(() {
                 _score = index + 1;

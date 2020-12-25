@@ -32,7 +32,6 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
     if (widget.to != null) {
       _to = DateTime.parse(widget.to);
     }
-    print('init');
     super.initState();
   }
 

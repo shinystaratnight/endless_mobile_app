@@ -157,10 +157,6 @@ class _CandidateTimesheetDetailsScreenState
             date = date.subtract(Duration(minutes: minutes.abs()));
           }
 
-          print(minutes);
-          print(hours);
-          print(date);
-
           _changeTime(
             date,
             key,

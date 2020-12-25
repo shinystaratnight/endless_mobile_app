@@ -104,7 +104,7 @@ class Timesheet {
 
   String get candidateAvatarUrl {
     if (candidate['picture']['origin'] != null) {
-      return '$apiUrl${candidate['picture']['origin']}';
+      return candidate['picture']['origin'];
     }
 
     return null;
