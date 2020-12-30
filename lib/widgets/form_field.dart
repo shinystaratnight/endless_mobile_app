@@ -13,6 +13,7 @@ class Field extends StatefulWidget {
   final bool readOnly;
   final Function onChanged;
   final Stream setStream;
+  final Widget leading;
 
   Field({
     this.label,
@@ -26,6 +27,7 @@ class Field extends StatefulWidget {
     this.readOnly = false,
     this.onChanged,
     this.setStream,
+    this.leading,
   });
 
   @override
@@ -62,43 +64,55 @@ class _FieldState extends State<Field> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: TextFormField(
-        controller: myController,
-        decoration: InputDecoration(labelText: widget.label),
-        onChanged: widget.onChanged,
-        onTap: widget.datepicker
-            ? () {
-                showDatePicker(
-                  context: context,
-                  initialDate: _date,
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime.now(),
-                ).then((date) {
-                  if (date != null) {
-                    setState(() {
-                      myController.text = DateFormat('dd/MM/yyyy').format(date);
-                      _date = date;
-                      if (widget.onChanged != null) {
-                        widget.onChanged(date);
-                      }
-                    });
-                  }
-                });
-              }
-            : widget.onFocus,
-        validator: widget.validator,
-        obscureText: widget.obscureText,
-        keyboardType: widget.type,
-        onSaved: widget.onSaved,
-        readOnly: widget.datepicker || widget.readOnly,
-        style: TextStyle(
-          color: widget.datepicker || widget.readOnly
-              ? Colors.grey[700]
-              : Colors.black,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        widget.leading != null ? widget.leading : SizedBox(),
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: myController,
+              decoration: InputDecoration(
+                labelText: widget.label,
+              ),
+              onChanged: widget.onChanged,
+              onTap: widget.datepicker
+                  ? () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: _date,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                      ).then((date) {
+                        if (date != null) {
+                          setState(() {
+                            myController.text =
+                                DateFormat('dd/MM/yyyy').format(date);
+                            _date = date;
+                            if (widget.onChanged != null) {
+                              widget.onChanged(date);
+                            }
+                          });
+                        }
+                      });
+                    }
+                  : widget.onFocus,
+              validator: widget.validator,
+              obscureText: widget.obscureText,
+              keyboardType: widget.type,
+              onSaved: widget.onSaved,
+              readOnly: widget.datepicker || widget.readOnly,
+              style: TextStyle(
+                color: widget.datepicker || widget.readOnly
+                    ? Colors.grey[700]
+                    : Colors.black,
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 

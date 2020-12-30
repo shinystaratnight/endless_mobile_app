@@ -12,6 +12,7 @@ import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_select.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
+import 'package:flag/flag.dart';
 
 class RegisterForm extends StatefulWidget {
   final IndustryService industryService = IndustryService();
@@ -144,6 +145,22 @@ class _RegisterFormState extends State<RegisterForm> {
               onSaved: (String value) {
                 _phone = value;
               },
+              leading: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[400],
+                      blurRadius: 3,
+                    ),
+                  ],
+                ),
+                margin: const EdgeInsets.only(right: 8.0),
+                child: Flag(
+                  'EE',
+                  height: 16.0,
+                  width: 20.0,
+                ),
+              ),
             ),
             Field(
               label: 'Birthday',
@@ -228,10 +245,13 @@ class _RegisterFormState extends State<RegisterForm> {
             StreamBuilder(
               stream: _fetchingStream.stream,
               builder: (context, snapshot) {
-                return FormSubmitButton(
-                  disabled: snapshot.hasData && snapshot.data,
-                  onPressed: () => _register(contactService),
-                  label: 'Register',
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FormSubmitButton(
+                    disabled: snapshot.hasData && snapshot.data,
+                    onPressed: () => _register(contactService),
+                    label: 'Register',
+                  ),
                 );
               },
             ),

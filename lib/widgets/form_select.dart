@@ -110,7 +110,7 @@ class _FormSelectState extends State<FormSelect> {
                   fontSize: 16.0,
                   color: _value == option || _multipleValue.contains(option)
                       ? Colors.white
-                      : Colors.grey,
+                      : Colors.grey[900],
                 ),
               ),
             ),
