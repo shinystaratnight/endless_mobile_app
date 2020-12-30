@@ -12,3 +12,13 @@ String emailValidator(String value) {
   }
   return 'Please enter a valid email!';
 }
+
+String numberValidator(String value) {
+  try {
+    double.parse(value);
+
+    return null;
+  } catch (e) {
+    return 'Please enter a valid number!';
+  }
+}

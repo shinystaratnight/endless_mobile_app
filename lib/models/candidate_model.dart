@@ -3,6 +3,7 @@ import 'package:piiprent/helpers/functions.dart';
 import 'package:piiprent/models/average_scores_model.dart';
 import 'package:piiprent/models/candidate_skill_model.dart';
 import 'package:piiprent/models/candidate_tag_model.dart';
+import 'package:piiprent/models/contact_model.dart';
 
 class Candidate {
   final String id;
@@ -12,8 +13,8 @@ class Candidate {
   final String designation;
   final String firstName;
   final String lastName;
-  final String height;
-  final String weight;
+  final int height;
+  final int weight;
   final String bmi;
   final DateTime birthday;
   final String email;
@@ -24,6 +25,7 @@ class Candidate {
   final String visaType;
   final DateTime visaExpiryDate;
   final List<CandidateTag> tags;
+  final Contact contact;
 
   static final requestFields = [
     'id',
@@ -61,6 +63,7 @@ class Candidate {
     this.visaType,
     this.visaExpiryDate,
     this.tags,
+    this.contact,
   });
 
   factory Candidate.fromJson(Map<String, dynamic> json) {
@@ -85,8 +88,8 @@ class Candidate {
       designation: designation,
       firstName: contact['first_name'],
       lastName: contact['last_name'],
-      height: json['height'],
-      weight: json['weight'],
+      height: doubleParse(json['height']).floor(),
+      weight: doubleParse(json['weight']).floor(),
       bmi: json['bmi'],
       birthday: contact['birthday'] != null
           ? DateTime.parse(contact['birthday'])
@@ -102,6 +105,7 @@ class Candidate {
           ? DateTime.parse(json['visa_expiry_date'])
           : null,
       tags: tags,
+      contact: Contact.fromJson(json['contact']),
     );
   }
 }

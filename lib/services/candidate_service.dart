@@ -107,4 +107,32 @@ class CandidateService {
       return e;
     }
   }
+
+  Future<bool> updatePersonalDetails({
+    String id,
+    String contactId,
+    int height,
+    int weight,
+  }) async {
+    Map<String, dynamic> body = {
+      'contact': {
+        'id': contactId,
+      },
+      'height': height,
+      'weight': weight,
+    };
+
+    try {
+      http.Response res = await apiService.put(
+          path: '/candidate/candidatecontacts/$id/', body: body);
+
+      if (res.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed update candidate personal details');
+      }
+    } catch (e) {
+      return e;
+    }
+  }
 }

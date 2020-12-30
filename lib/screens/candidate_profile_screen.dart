@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/average_scores_model.dart';
 import 'package:piiprent/models/candidate_model.dart';
 import 'package:piiprent/models/candidate_skill_model.dart';
@@ -8,6 +9,7 @@ import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/form_field.dart';
+import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:piiprent/widgets/profile_group.dart';
 import 'package:piiprent/widgets/score_badge.dart';
@@ -15,7 +17,61 @@ import 'package:piiprent/widgets/stars.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class CandidateProfileScreen extends StatelessWidget {
+class CandidateProfileScreen extends StatefulWidget {
+  @override
+  _CandidateProfileScreenState createState() => _CandidateProfileScreenState();
+}
+
+class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
+  int _heigth;
+  int _weight;
+  bool _fetching = false;
+  dynamic _formError;
+  Map<String, bool> _editMap = {'details': false, 'skills': false};
+  GlobalKey<FormState> _detailsFormKey = GlobalKey<FormState>();
+
+  _onSavePersonalDetails(
+    CandidateService candidateService,
+    Candidate candidate,
+  ) async {
+    String id = candidate.id;
+    String contactId = candidate.contact.id;
+
+    if (!_detailsFormKey.currentState.validate()) {
+      return;
+    }
+
+    _detailsFormKey.currentState.save();
+
+    setState(() {
+      _fetching = true;
+      _formError = null;
+    });
+
+    try {
+      bool result = await candidateService.updatePersonalDetails(
+        id: id,
+        contactId: contactId,
+        height: _heigth == null ? candidate.height : _heigth,
+        weight: _weight == null ? candidate.weight : _weight,
+      );
+
+      if (result) {
+        setState(() {
+          _editMap['details'] = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _formError = e;
+      });
+    } finally {
+      setState(() {
+        _fetching = false;
+      });
+    }
+  }
+
   Widget _listItem({Widget child}) {
     return Container(
       margin: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
@@ -34,12 +90,18 @@ class CandidateProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPersonalDetails(Candidate candidate,
-      [bool edit = false, Function onChange]) {
+  Widget _buildPersonalDetails(
+    Candidate candidate, [
+    bool edit = false,
+    Function onEdit,
+  ]) {
+    CandidateService candidateService = Provider.of<CandidateService>(context);
+
     return ProfileGroup(
       title: 'Personal Details',
-      onEdit: () {},
+      onEdit: onEdit != null ? onEdit : () {},
       canEdit: true,
+      isEditing: edit,
       content: [
         Row(
           children: [
@@ -63,12 +125,20 @@ class CandidateProfileScreen extends StatelessWidget {
           ],
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
               child: Field(
                 label: 'Height',
-                initialValue: candidate.height,
+                type: TextInputType.number,
+                initialValue: candidate.height.toString(),
                 readOnly: !edit,
+                validator: numberValidator,
+                onChanged: (String value) {
+                  setState(() {
+                    _heigth = int.parse(value);
+                  });
+                },
               ),
             ),
             SizedBox(
@@ -77,8 +147,14 @@ class CandidateProfileScreen extends StatelessWidget {
             Expanded(
               child: Field(
                 label: 'Weight',
-                initialValue: candidate.weight,
+                initialValue: candidate.weight.toString(),
                 readOnly: !edit,
+                validator: numberValidator,
+                onChanged: (String value) {
+                  setState(() {
+                    _weight = int.parse(value);
+                  });
+                },
               ),
             ),
           ],
@@ -94,8 +170,19 @@ class CandidateProfileScreen extends StatelessWidget {
           child: Field(
             label: 'Birthday',
             initialValue: DateFormat('dd/MM/yyyy').format(candidate.birthday),
+            readOnly: true,
           ),
         ),
+        edit
+            ? FormSubmitButton(
+                disabled: _fetching,
+                onPressed: () => _onSavePersonalDetails(
+                  candidateService,
+                  candidate,
+                ),
+                label: 'Update',
+              )
+            : SizedBox(),
       ],
     );
   }
@@ -363,7 +450,24 @@ class CandidateProfileScreen extends StatelessWidget {
                   SizedBox(
                     height: 15.0,
                   ),
-                  _buildPersonalDetails(candidate),
+                  Form(
+                    key: _detailsFormKey,
+                    child: _buildPersonalDetails(
+                      candidate,
+                      _editMap['details'],
+                      () {
+                        bool isEdit = _editMap['details'];
+                        print(isEdit);
+                        setState(
+                          () {
+                            _editMap['details'] = !isEdit;
+                            _editMap = _editMap;
+                          },
+                        );
+                        print(!isEdit);
+                      },
+                    ),
+                  ),
                   SizedBox(
                     height: 15.0,
                   ),

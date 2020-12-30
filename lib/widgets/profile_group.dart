@@ -5,8 +5,15 @@ class ProfileGroup extends StatefulWidget {
   final Function onEdit;
   final List<Widget> content;
   final bool canEdit;
+  final bool isEditing;
 
-  ProfileGroup({this.title, this.onEdit, this.content, this.canEdit = false});
+  ProfileGroup({
+    this.title,
+    this.onEdit,
+    this.content,
+    this.canEdit = false,
+    this.isEditing = false,
+  });
 
   @override
   _ProfileGroupState createState() => _ProfileGroupState();
@@ -49,8 +56,13 @@ class _ProfileGroupState extends State<ProfileGroup> {
                 widget.canEdit
                     ? IconButton(
                         // Disabled for now
-                        onPressed: null,
-                        icon: Icon(Icons.edit),
+                        onPressed: widget.onEdit,
+                        icon: Icon(
+                          Icons.edit,
+                          color: widget.isEditing
+                              ? Colors.blue[400]
+                              : Colors.black,
+                        ),
                         iconSize: 22.0,
                       )
                     : SizedBox(),

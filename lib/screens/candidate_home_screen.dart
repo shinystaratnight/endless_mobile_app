@@ -106,7 +106,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   void initState() {
     super.initState();
 
-    _getActiveTimesheet().then(_initBackgroundFetch);
+    // _getActiveTimesheet().then(_initBackgroundFetch);
   }
 
   @override

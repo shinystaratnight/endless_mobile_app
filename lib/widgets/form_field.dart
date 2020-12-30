@@ -8,7 +8,7 @@ class Field extends StatefulWidget {
   final Function onSaved;
   final TextInputType type;
   final bool obscureText;
-  final initialValue;
+  final dynamic initialValue;
   final bool datepicker;
   final bool readOnly;
   final Function onChanged;
@@ -93,6 +93,11 @@ class _FieldState extends State<Field> {
         keyboardType: widget.type,
         onSaved: widget.onSaved,
         readOnly: widget.datepicker || widget.readOnly,
+        style: TextStyle(
+          color: widget.datepicker || widget.readOnly
+              ? Colors.grey[700]
+              : Colors.black,
+        ),
       ),
     );
   }

@@ -32,7 +32,7 @@ class Contact {
   }
 
   String userAvatarUrl() {
-    if (picture['origin'] != null) {
+    if (picture != null && picture['origin'] != null) {
       return picture['origin'];
     }
 

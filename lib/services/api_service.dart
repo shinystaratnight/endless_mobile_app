@@ -70,6 +70,19 @@ class ApiService {
     return await http.put(uri, headers: headers, body: bodyEncoded);
   }
 
+  Future patch({String path, Map<String, dynamic> body}) async {
+    Uri uri = _createURI(path, _emptyMap);
+    Map<String, String> headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+    _updateByToken(headers);
+
+    String bodyEncoded = json.encode(body);
+
+    return await http.patch(uri, headers: headers, body: bodyEncoded);
+  }
+
   Uri _createURI(String path, Map<String, dynamic> params) {
     return Uri(
       scheme: 'https',

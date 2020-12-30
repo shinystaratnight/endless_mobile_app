@@ -23,7 +23,7 @@ String parseAddress(Map<String, dynamic> address) {
     return (address['__str__'] as String).replaceAll('\n', ' ');
   }
 
-  return null;
+  return '';
 }
 
 double doubleParse(dynamic target, [defaultValue = 0.00]) {
