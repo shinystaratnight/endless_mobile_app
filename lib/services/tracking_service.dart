@@ -6,40 +6,36 @@ import 'package:piiprent/models/user_model.dart';
 import 'package:piiprent/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:location/location.dart';
+
+Location location = new Location();
 
 class TrackingService {
   final ApiService apiService = ApiService.create();
 
-  Future<Position> getCurrentPosition() async {
-    try {
-      bool enabled = await Geolocator.isLocationServiceEnabled();
+  Future getCurrentPosition() async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
 
-      if (!enabled) {
-        Geolocator.openLocationSettings();
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
       }
-
-      LocationPermission locationPermission =
-          await Geolocator.checkPermission();
-
-      if (locationPermission == LocationPermission.deniedForever) {
-        return null;
-      }
-
-      if (locationPermission == LocationPermission.denied) {
-        await Geolocator.requestPermission();
-      }
-
-      if (locationPermission == LocationPermission.always ||
-          locationPermission == LocationPermission.whileInUse) {
-        return Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
-      }
-
-      return null;
-    } catch (e) {
-      print(e);
-      return null;
     }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    return _locationData;
   }
 
   Future<bool> sendLocation(Position position, String timesheetId) async {

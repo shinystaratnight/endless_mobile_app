@@ -13,7 +13,7 @@ class ScoreBadge extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(
         vertical: 2.0,
-        horizontal: 4.0,
+        horizontal: 8.0,
       ),
       decoration: BoxDecoration(
         color: Colors.orangeAccent,

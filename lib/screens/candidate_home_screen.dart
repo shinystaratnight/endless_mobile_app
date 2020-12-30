@@ -102,9 +102,18 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
     });
   }
 
+  _getCurrentPosition() async {
+    dynamic position = await _trackingService.getCurrentPosition();
+    print(position);
+  }
+
   @override
   void initState() {
     super.initState();
+
+    // Position position = await _trackingService.getCurrentPosition();
+
+    _getCurrentPosition();
 
     // _getActiveTimesheet().then(_initBackgroundFetch);
   }
