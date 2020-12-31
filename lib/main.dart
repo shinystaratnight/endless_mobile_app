@@ -12,6 +12,7 @@ import 'package:piiprent/screens/client_timesheets_screen.dart';
 import 'package:piiprent/screens/forgot_password_screen.dart';
 import 'package:piiprent/screens/preview_screen.dart';
 import 'package:piiprent/services/candidate_service.dart';
+import 'package:piiprent/services/company_service.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/services/job_offer_service.dart';
@@ -41,6 +42,7 @@ void main() {
         Provider<ContactService>(create: (_) => ContactService()),
         Provider<CandidateService>(create: (_) => CandidateService()),
         Provider<NotificationService>(create: (_) => NotificationService()),
+        Provider<CompanyService>(create: (_) => CompanyService()),
       ],
       child: MyApp(),
     ),

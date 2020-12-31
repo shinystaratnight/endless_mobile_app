@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/industry_model.dart';
+import 'package:piiprent/models/settings_model.dart';
 import 'package:piiprent/models/skill_model.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/industry_service.dart';
@@ -16,6 +17,11 @@ import 'package:flag/flag.dart';
 
 class RegisterForm extends StatefulWidget {
   final IndustryService industryService = IndustryService();
+  final Settings settings;
+
+  RegisterForm({
+    this.settings,
+  });
 
   @override
   _RegisterFormState createState() => _RegisterFormState();
@@ -145,22 +151,24 @@ class _RegisterFormState extends State<RegisterForm> {
               onSaved: (String value) {
                 _phone = value;
               },
-              leading: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[400],
-                      blurRadius: 3,
-                    ),
-                  ],
-                ),
-                margin: const EdgeInsets.only(right: 8.0),
-                child: Flag(
-                  'EE',
-                  height: 16.0,
-                  width: 20.0,
-                ),
-              ),
+              leading: widget.settings != null
+                  ? Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[400],
+                            blurRadius: 3,
+                          ),
+                        ],
+                      ),
+                      margin: const EdgeInsets.only(right: 8.0),
+                      child: Flag(
+                        widget.settings.countryCode,
+                        height: 16.0,
+                        width: 20.0,
+                      ),
+                    )
+                  : SizedBox(),
             ),
             Field(
               label: 'Birthday',

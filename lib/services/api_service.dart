@@ -37,7 +37,7 @@ class ApiService {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       // TODO: check this for getting industries or skills
-      'Origin': 'laviin.r3sourcertest.com'
+      'Origin': origin
     };
     _updateByToken(headers);
 
