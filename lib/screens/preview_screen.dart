@@ -24,6 +24,7 @@ class PreviewScreen extends StatelessWidget {
         height: double.maxFinite,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset('images/company_banner.png'),
             CircularProgressIndicator(),
