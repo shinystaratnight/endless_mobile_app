@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
@@ -12,7 +11,7 @@ import 'package:piiprent/widgets/page_container.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:background_fetch/background_fetch.dart';
+import 'package:background_location/background_location.dart';
 
 class CandidateHomeScreen extends StatefulWidget {
   @override
@@ -37,85 +36,56 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
     return null;
   }
 
-  _onBackgroundFetch(taskId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String activeTimesheetsEncoded =
-        (prefs.getString('activeTimesheets') ?? null);
-
-    if (activeTimesheetsEncoded == null) {
-      return;
-    }
-
-    List<dynamic> activeTimeshseets = json.decode(activeTimesheetsEncoded);
-
-    try {
-      var activeTimesheet = activeTimeshseets.firstWhere((element) {
-        DateTime from = DateTime.parse(element['from']);
-        DateTime to = DateTime.parse(element['to']);
-        DateTime now = DateTime.now().toUtc();
-
-        return now.isAfter(from) && now.isBefore(to);
-      });
-
-      Position position = await _trackingService.getCurrentPosition();
-      _trackingService.sendLocation(position, activeTimesheet['id']);
-    } catch (e) {
-      return null;
-    } finally {
-      BackgroundFetch.finish(taskId);
-    }
-  }
-
-  _initBackgroundFetch(dynamic activeTimesheets) async {
+  _getCurrentPosition(dynamic activeTimesheets) async {
+    print(activeTimesheets);
     if (activeTimesheets == null) {
       return;
     }
 
-    BackgroundFetch.configure(
-      BackgroundFetchConfig(
-        minimumFetchInterval: 15,
-        stopOnTerminate: false,
-        enableHeadless: false,
-        requiresBatteryNotLow: false,
-        requiresCharging: false,
-        requiresStorageNotLow: false,
-        requiresDeviceIdle: false,
-        requiredNetworkType: NetworkType.ANY,
-      ),
-      (String taskId) async {
-        // This is the fetch-event callback.
-        print("[BackgroundFetch] Event received $taskId");
-        // IMPORTANT:  You must signal completion of your task or the OS can punish your app
-        // for taking too long in the background.
-        _onBackgroundFetch(taskId);
+    BackgroundLocation.stopLocationService();
+    BackgroundLocation.getPermissions(
+      onGranted: () {
+        // Start location service here or do something else
+        BackgroundLocation.startLocationService();
+        BackgroundLocation.getLocationUpdates((location) async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String activeTimesheetsEncoded =
+              (prefs.getString('activeTimesheets') ?? null);
+
+          if (activeTimesheetsEncoded == null) {
+            return;
+          }
+
+          List<dynamic> activeTimeshseets =
+              json.decode(activeTimesheetsEncoded);
+
+          try {
+            var activeTimesheet = activeTimeshseets.firstWhere((element) {
+              DateTime from = DateTime.parse(element['from']);
+              DateTime to = DateTime.parse(element['to']);
+              DateTime now = DateTime.now().toUtc();
+
+              return now.isAfter(from) && now.isBefore(to);
+            });
+
+            _trackingService.sendLocation(location, activeTimesheet['id']);
+          } catch (e) {
+            BackgroundLocation.stopLocationService();
+            return null;
+          }
+        });
       },
-    ).then((int status) {
-      print('[BackgroundFetch] configure success: $status');
-    }).catchError((e) {
-      print('[BackgroundFetch] configure ERROR: $e');
-    });
-
-    BackgroundFetch.start().then((int status) {
-      print('[BackgroundFetch] start success: $status');
-    }).catchError((e) {
-      print('[BackgroundFetch] start FAILURE: $e');
-    });
-  }
-
-  _getCurrentPosition() async {
-    dynamic position = await _trackingService.getCurrentPosition();
-    print(position);
+      onDenied: () {
+        // Show a message asking the user to reconsider or do something else
+      },
+    );
   }
 
   @override
   void initState() {
     super.initState();
 
-    // Position position = await _trackingService.getCurrentPosition();
-
-    _getCurrentPosition();
-
-    // _getActiveTimesheet().then(_initBackgroundFetch);
+    _getActiveTimesheet().then(_getCurrentPosition);
   }
 
   @override

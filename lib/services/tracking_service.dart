@@ -13,32 +13,38 @@ Location location = new Location();
 class TrackingService {
   final ApiService apiService = ApiService.create();
 
-  Future getCurrentPosition() async {
+  Location get locationInstance {
+    return location;
+  }
+
+  Future<LocationData> getCurrentPosition() async {
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
-    LocationData _locationData;
 
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
-        return;
+        return null;
       }
     }
 
     _permissionGranted = await location.hasPermission();
+    print(_permissionGranted);
+
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
+      print(_permissionGranted);
+
       if (_permissionGranted != PermissionStatus.granted) {
-        return;
+        return null;
       }
     }
 
-    _locationData = await location.getLocation();
-    return _locationData;
+    return await location.getLocation();
   }
 
-  Future<bool> sendLocation(Position position, String timesheetId) async {
+  Future<bool> sendLocation(dynamic position, String timesheetId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String authEncoded = (prefs.getString('auth') ?? '');
 
