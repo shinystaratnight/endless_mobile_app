@@ -30,11 +30,8 @@ dependencies:
   provider: ^4.3.2+2
   shared_preferences:
   jiffy: ^3.0.1
-  geolocator:
-  background_fetch: ^0.6.0
   timezone:
   signature: ^3.2.0
-  location: ^3.0.0
   flag: ^3.1.0
   background_location: ^0.3.0
 

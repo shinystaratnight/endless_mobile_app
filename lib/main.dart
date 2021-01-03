@@ -21,14 +21,8 @@ import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:provider/provider.dart';
-import 'package:background_fetch/background_fetch.dart';
 
 import 'package:piiprent/screens/login_screen.dart';
-
-void backgroundFetchHeadlessTask(String taskId) async {
-  print('[BackgroundFetch] Headless event received.');
-  BackgroundFetch.finish(taskId);
-}
 
 void main() {
   runApp(
@@ -47,10 +41,6 @@ void main() {
       child: MyApp(),
     ),
   );
-
-  // Register to receive BackgroundFetch events after app is terminated.
-  // Requires {stopOnTerminate: false, enableHeadless: true}
-  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 class MyApp extends StatelessWidget {

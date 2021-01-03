@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:piiprent/services/tracking_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
-import 'dart:async';
 
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/group_title.dart';

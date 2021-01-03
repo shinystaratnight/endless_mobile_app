@@ -1,5 +1,3 @@
-import 'package:piiprent/constants.dart';
-
 class Contact {
   final String id;
   final Map<String, dynamic> picture;

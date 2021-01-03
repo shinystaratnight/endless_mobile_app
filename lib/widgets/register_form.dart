@@ -48,10 +48,6 @@ class _RegisterFormState extends State<RegisterForm> {
     {'value': 'Dr.', 'label': 'Dr.'},
   ];
 
-  bool _isTrue(dynamic v) {
-    return v != null ? true : false;
-  }
-
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -69,7 +65,7 @@ class _RegisterFormState extends State<RegisterForm> {
     _errorStream.add(null);
 
     try {
-      var result = await contactService.register(
+      await contactService.register(
         birthday: _birthday,
         email: _email,
         firstName: _firstName,
