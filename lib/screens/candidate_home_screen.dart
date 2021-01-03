@@ -59,6 +59,8 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
           List<dynamic> activeTimeshseets =
               json.decode(activeTimesheetsEncoded);
 
+          print(activeTimeshseets);
+
           try {
             var activeTimesheet = activeTimeshseets.firstWhere((element) {
               DateTime from = DateTime.parse(element['from']);

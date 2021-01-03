@@ -1,3 +1,4 @@
+import 'package:background_location/background_location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:piiprent/constants.dart';
@@ -124,6 +125,7 @@ class LoginService {
 
   Future<bool> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    BackgroundLocation.stopLocationService();
     prefs.clear();
     _user = null;
     apiService.auth = null;
