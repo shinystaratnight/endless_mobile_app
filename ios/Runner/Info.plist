@@ -24,16 +24,41 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>apple-maps</string>
+		<string>google-maps</string>
+		<string>comgooglemaps</string>
+		<string>citymapper</string>
+		<string>uber</string>
+		<string>lyft</string>
+		<string>transit</string>
+		<string>waze</string>
+		<string>yandexnavi</string>
+		<string>moovit</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
 	<string>13.0</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Some assignments require your location during working hours to be recorded!</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Background tracking requirement</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Some assignments require your location during working hours to be recorded!</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>For upload or change profile picture</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
@@ -58,22 +83,5 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>apple-maps</string>
-		<string>google-maps</string>
-		<string>comgooglemaps</string>
-		<string>citymapper</string>
-		<string>uber</string>
-		<string>lyft</string>
-		<string>transit</string>
-		<string>waze</string>
-		<string>yandexnavi</string>
-		<string>moovit</string>
-	</array>
-	<key>NSMotionUsageDescription</key>
-	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>For upload or change profile picture</string>
 </dict>
 </plist>
