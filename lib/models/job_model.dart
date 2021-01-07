@@ -75,6 +75,10 @@ class Job {
     );
   }
 
+  get position {
+    return translations['position']['en'];
+  }
+
   static JobStatus parseStatus(int status) {
     switch (status) {
       case 0:
