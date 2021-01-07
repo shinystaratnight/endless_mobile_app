@@ -19,7 +19,7 @@ class TimesheetService {
         await apiService.get(path: '/hr/timesheets-candidate/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Timesheet> timesheets =
           results.map((dynamic el) => Timesheet.fromJson(el)).toList();
@@ -53,7 +53,7 @@ class TimesheetService {
         await apiService.get(path: '/hr/timesheets-candidate/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Timesheet> timesheets =
           results.map((dynamic el) => Timesheet.fromJson(el)).toList();
@@ -77,7 +77,7 @@ class TimesheetService {
         path: '/hr/timesheets/unapproved/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Timesheet> timesheets =
           results.map((dynamic el) => Timesheet.fromJson(el)).toList();
@@ -101,7 +101,7 @@ class TimesheetService {
         await apiService.get(path: '/hr/timesheets/history/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Timesheet> timesheets =
           results.map((dynamic el) => Timesheet.fromJson(el)).toList();
@@ -126,7 +126,7 @@ class TimesheetService {
         await apiService.get(path: '/hr/timesheets-candidate/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Timesheet> timesheets =
           results.map((dynamic el) => Timesheet.fromJson(el)).toList();
@@ -148,7 +148,7 @@ class TimesheetService {
         await apiService.get(path: '/hr/timesheets-candidate/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       int count = body['count'];
 
       return count;
@@ -171,7 +171,7 @@ class TimesheetService {
         await apiService.get(path: '/hr/timesheets-candidate/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Timesheet> timesheets =
           results.map((dynamic el) => Timesheet.fromJson(el)).toList();
@@ -193,7 +193,7 @@ class TimesheetService {
         await apiService.get(path: '/hr/timesheets-candidate/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       int count = body['count'];
 
       return count;

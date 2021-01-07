@@ -13,7 +13,7 @@ class CompanyService {
       );
 
       if (res.statusCode == 200) {
-        Map<String, dynamic> body = json.decode(res.body);
+        Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
         Settings settings = Settings.fromJson(body);
 
         return settings;

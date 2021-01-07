@@ -22,7 +22,7 @@ class IndustryService {
     );
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Industry> industries =
           results.map((dynamic el) => Industry.fromJson(el)).toList();
@@ -46,7 +46,7 @@ class IndustryService {
     );
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Skill> skills =
           results.map((dynamic el) => Skill.fromJson(el)).toList();

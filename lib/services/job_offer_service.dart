@@ -20,7 +20,7 @@ class JobOfferService {
         await apiService.get(path: '/hr/joboffers-candidate/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<JobOffer> jobOffers =
           results.map((dynamic el) => JobOffer.fromJson(el)).toList();
@@ -42,7 +42,7 @@ class JobOfferService {
         await apiService.get(path: '/hr/joboffers-candidate/', params: params);
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       int count = body['count'];
 
       return count;

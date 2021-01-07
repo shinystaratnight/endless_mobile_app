@@ -40,7 +40,7 @@ class LoginService {
         throw 'Something went wrong';
       }
 
-      Auth auth = Auth.fromJson(json.decode(res.body));
+      Auth auth = Auth.fromJson(json.decode(utf8.decode(res.bodyBytes)));
       apiService.auth = auth;
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -69,7 +69,7 @@ class LoginService {
         var res = await refreshToken(auth);
 
         if (res != null) {
-          auth = Auth.fromJson(json.decode(res.body));
+          auth = Auth.fromJson(json.decode(utf8.decode(res.bodyBytes)));
           apiService.auth = auth;
 
           SharedPreferences prefs = await SharedPreferences.getInstance();

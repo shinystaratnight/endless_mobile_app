@@ -42,7 +42,7 @@ class ContactService {
     );
 
     if (res.statusCode == 200) {
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
 
       return body['message'];
     } else {
@@ -91,7 +91,7 @@ class ContactService {
     try {
       http.Response res = await apiService.get(path: '/core/users/roles/');
 
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> roles = body['roles'];
       return roles.map((dynamic el) => Role.fromJson(el)).toList();
     } catch (e) {
@@ -104,7 +104,7 @@ class ContactService {
       http.Response res =
           await apiService.get(path: '/core/companycontacts/$id/');
 
-      Map<String, dynamic> body = json.decode(res.body);
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       return ClientContact.fromJson(body);
     } catch (e) {
       throw Exception("Failed fetching roles");

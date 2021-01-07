@@ -19,7 +19,7 @@ class CandidateService {
           path: 'candidate/candidatecontacts/$id/', params: params);
 
       if (res.statusCode == 200) {
-        Map<String, dynamic> body = json.decode(res.body);
+        Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
         Candidate candidate = Candidate.fromJson(body);
 
         return candidate;
@@ -44,7 +44,7 @@ class CandidateService {
           await apiService.get(path: 'hr/carrierlists/', params: params);
 
       if (res.statusCode == 200) {
-        Map<String, dynamic> body = json.decode(res.body);
+        Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
         List<dynamic> results = body['results'];
         List<Carrier> carriers =
             results.map((dynamic el) => Carrier.fromJson(el)).toList();
@@ -71,7 +71,7 @@ class CandidateService {
           await apiService.post(path: 'hr/carrierlists/', body: body);
 
       if (res.statusCode == 201) {
-        Map<String, dynamic> body = json.decode(res.body);
+        Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
         return Carrier.fromJson(body);
       } else {
         throw Exception('Failed set candidate availability');
@@ -98,7 +98,7 @@ class CandidateService {
           await apiService.put(path: 'hr/carrierlists/$id/', body: body);
 
       if (res.statusCode == 200) {
-        Map<String, dynamic> body = json.decode(res.body);
+        Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
         return Carrier.fromJson(body);
       } else {
         throw Exception('Failed update candidate availability');
