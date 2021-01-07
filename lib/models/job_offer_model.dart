@@ -8,6 +8,7 @@ class JobOffer {
   final String location;
   final String timezone;
   final String clientContact;
+  final tags;
 
   static final requestFields = [
     'id',
@@ -26,6 +27,7 @@ class JobOffer {
     this.location,
     this.timezone,
     this.clientContact,
+    this.tags,
   });
 
   factory JobOffer.fromJson(Map<String, dynamic> json) {

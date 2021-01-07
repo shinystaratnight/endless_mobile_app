@@ -221,7 +221,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     return ProfileGroup(
       title: 'Skills',
       onEdit: () {},
-      canEdit: true,
+      canEdit: false,
       content: skills
           .map(
             (e) => _listItem(

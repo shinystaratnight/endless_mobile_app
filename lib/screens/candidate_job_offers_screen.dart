@@ -29,6 +29,7 @@ class CandidateJobOffersScreen extends StatelessWidget {
             clientContact: instance.clientContact,
             offer: true,
             update: reset,
+            tags: instance.tags,
           );
         },
       ),

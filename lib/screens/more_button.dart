@@ -34,7 +34,7 @@ class MoreButton extends StatelessWidget {
         return _buildWrapper(
           RaisedButton(
             onPressed: onPressed,
-            child: Text('Upload'),
+            child: Text('Load'),
           ),
         );
       },

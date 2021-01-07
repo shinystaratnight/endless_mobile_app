@@ -5,22 +5,25 @@ import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/group_title.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class CandidateJobDetailsScreen extends StatefulWidget {
   final String position;
   final String company;
   final String longitude;
-  final String lantitude;
+  final String latitude;
   final DateTime date;
   final String clientContact;
+  final List<dynamic> tags;
 
   CandidateJobDetailsScreen({
     this.position,
     this.company,
     this.longitude,
-    this.lantitude,
+    this.latitude,
     this.date,
     this.clientContact,
+    this.tags,
   });
 
   @override
@@ -29,10 +32,40 @@ class CandidateJobDetailsScreen extends StatefulWidget {
 }
 
 class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
-  GoogleMapController mapController;
+  GoogleMapController _mapController;
+  Location _location = Location();
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+
+  int _id = 1;
+
+  void _add(double latitude, double longitude) {
+    final MarkerId markerId = MarkerId(_id.toString());
+
+    final Marker marker = Marker(
+      markerId: markerId,
+      position: LatLng(
+        latitude,
+        longitude,
+      ),
+    );
+
+    setState(() {
+      markers[markerId] = marker;
+      _id = _id + 1;
+    });
+  }
 
   void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
+    _mapController = controller;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _add(
+      double.parse(widget.latitude),
+      double.parse(widget.longitude),
+    );
   }
 
   @override
@@ -64,7 +97,8 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               SizedBox(
                 height: 15.0,
               ),
-              GroupTitle(title: 'Tags'),
+              // TODO: Add tags
+              // GroupTitle(title: 'Tags'),
               GroupTitle(title: 'Job information'),
               SizedBox(
                 height: 15.0,
@@ -88,7 +122,23 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               RaisedButton(
                 color: Colors.white,
                 child: Text('Direct me'),
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    LocationData data = await _location.getLocation();
+
+                    _add(data.latitude, data.longitude);
+                    _mapController.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                        CameraPosition(
+                          target: LatLng(data.latitude, data.longitude),
+                          zoom: 15,
+                        ),
+                      ),
+                    );
+                  } catch (e) {
+                    print(e);
+                  }
+                },
               ),
               SizedBox(
                 height: 350.0,
@@ -97,20 +147,12 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
-                      double.parse(widget.lantitude),
+                      double.parse(widget.latitude),
                       double.parse(widget.longitude),
                     ),
                     zoom: 13.0,
                   ),
-                  markers: {
-                    Marker(
-                      markerId: MarkerId('1'),
-                      position: LatLng(
-                        double.parse(widget.lantitude),
-                        double.parse(widget.longitude),
-                      ),
-                    )
-                  },
+                  markers: Set<Marker>.of(markers.values),
                 ),
               ),
             ],

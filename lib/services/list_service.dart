@@ -81,11 +81,11 @@ class ListService {
     }
   }
 
-  reset() {
+  Future reset() {
     params = _initParams;
     _offset = 0;
     _streamController.add(null);
-    start();
+    return start();
   }
 
   closeStream() {

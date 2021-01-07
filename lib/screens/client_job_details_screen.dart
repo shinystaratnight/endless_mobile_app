@@ -132,6 +132,7 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
                 height: 15.0,
               ),
               GroupTitle(title: 'Tags'),
+              Text(widget.tags.reduce((value, element) => '$value, $element')),
               GroupTitle(title: 'Job information'),
               SizedBox(
                 height: 15.0,

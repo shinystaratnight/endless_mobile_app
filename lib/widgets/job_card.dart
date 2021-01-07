@@ -17,6 +17,7 @@ class JobCard extends StatefulWidget {
   final String latitude;
   final String clientContact;
   final Function update;
+  final List<dynamic> tags;
 
   final bool offer;
 
@@ -31,6 +32,7 @@ class JobCard extends StatefulWidget {
     this.clientContact,
     this.offer = false,
     this.update,
+    this.tags,
   });
 
   @override
@@ -93,9 +95,10 @@ class _JobCardState extends State<JobCard> {
             company: widget.company,
             position: widget.position,
             longitude: widget.longitude,
-            lantitude: widget.latitude,
+            latitude: widget.latitude,
             date: widget.date,
             clientContact: widget.clientContact,
+            tags: widget.tags,
           ),
         ),
       ),
