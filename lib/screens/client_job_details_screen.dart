@@ -33,6 +33,10 @@ class ClientJobDetailsScreen extends StatefulWidget {
 }
 
 class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
+  String _from = DateFormat('yyyy-MM-dd')
+      .format(DateTime.now().subtract(Duration(days: 7)));
+  String _to;
+
   Widget _buildTableCell(String text, [Color color = Colors.black]) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
@@ -65,35 +69,48 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
               color: Colors.grey,
             ),
           ),
-          children: data.asMap().entries.map((e) {
-            int i = e.key;
-            Shift shift = e.value;
+          children: data.length > 0
+              ? data.asMap().entries.map((e) {
+                  int i = e.key;
+                  Shift shift = e.value;
 
-            if (i == 0) {
-              return TableRow(
-                decoration: BoxDecoration(color: Colors.grey[200]),
-                children: [
-                  _buildTableCell('Date'),
-                  _buildTableCell('Start Time'),
-                  _buildTableCell('Workers'),
-                  _buildTableCell('Status'),
+                  if (i == 0) {
+                    return TableRow(
+                      decoration: BoxDecoration(color: Colors.grey[200]),
+                      children: [
+                        _buildTableCell('Date'),
+                        _buildTableCell('Start Time'),
+                        _buildTableCell('Workers'),
+                        _buildTableCell('Status'),
+                      ],
+                    );
+                  }
+
+                  return TableRow(
+                    children: [
+                      _buildTableCell(
+                          DateFormat('dd/MM/yyyy').format(shift.datetime)),
+                      _buildTableCell(DateFormat.jm().format(shift.datetime)),
+                      _buildTableCell(shift.workers.toString()),
+                      _buildTableCell(
+                        shift.isFulfilled ? 'Fulfilled' : 'Unfulfilled',
+                        shift.isFulfilled ? Colors.green[400] : Colors.red[400],
+                      ),
+                    ],
+                  );
+                }).toList()
+              : [
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Text('No Data'),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              );
-            }
-
-            return TableRow(
-              children: [
-                _buildTableCell(
-                    DateFormat('dd/MM/yyyy').format(shift.datetime)),
-                _buildTableCell(DateFormat.jm().format(shift.datetime)),
-                _buildTableCell(shift.workers.toString()),
-                _buildTableCell(
-                  shift.isFulfilled ? 'Fulfilled' : 'Unfulfilled',
-                  shift.isFulfilled ? Colors.green[400] : Colors.red[400],
-                ),
-              ],
-            );
-          }).toList(),
         ),
       ],
     );
@@ -107,7 +124,13 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Job')),
       floatingActionButton: FilterDialogButton(
-        onClose: (_) {},
+        from: _from,
+        onClose: (data) {
+          setState(() {
+            _from = data['from'];
+            _to = data['to'];
+          });
+        },
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -157,9 +180,13 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
                 future: jobService.getShifts({
                   'job': widget.id,
                   'client_contact': loginService.user.id,
+                  'ordering': '-date.shift_date,-time',
+                  'date__shift_date_0': _from,
+                  'date__shift_date_1': _to
                 }),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
+                  if (!snapshot.hasData ||
+                      snapshot.connectionState != ConnectionState.done) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );

@@ -41,6 +41,7 @@ class Candidate {
     'visa_type',
     'visa_expiry_date',
     'tag_list',
+    'address',
   ];
 
   Candidate({
@@ -83,7 +84,7 @@ class Candidate {
     return Candidate(
       id: json['id'],
       averageScore: json['average_score'],
-      address: parseAddress(contact['address']),
+      address: parseAddress(json['address']),
       skills: skills,
       designation: designation,
       firstName: contact['first_name'],

@@ -23,6 +23,10 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
   DateTime _from;
   DateTime _to;
 
+  get hasData {
+    return _from != null || _to != null;
+  }
+
   @override
   void initState() {
     if (widget.from != null) {
@@ -39,9 +43,35 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: _showDialog,
-      child: Icon(
-        Icons.filter_list,
-        color: Colors.blue,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Icon(
+            Icons.filter_list,
+            color: Colors.blue,
+          ),
+
+          // TODO: implement showing functionality
+          hasData
+              ? Positioned(
+                  top: -2.0,
+                  right: -2.0,
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    height: 12.0,
+                    width: 12.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.red[300],
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 3.0,
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox(),
+        ],
       ),
       backgroundColor: Colors.white,
     );
