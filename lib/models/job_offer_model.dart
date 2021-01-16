@@ -11,6 +11,7 @@ class JobOffer {
   final String clientContact;
   final tags;
   final Map<String, dynamic> translations;
+  final String notes;
 
   static final requestFields = [
     'id',
@@ -30,6 +31,7 @@ class JobOffer {
     this.clientContact,
     this.tags,
     this.translations,
+    this.notes,
   });
 
   factory JobOffer.fromJson(Map<String, dynamic> json) {
@@ -54,6 +56,7 @@ class JobOffer {
       location: (address['__str__'] as String).replaceAll('\n', ' '),
       clientContact: job['jobsite']['primary_contact']['name'],
       translations: translations,
+      notes: job['notes'],
     );
   }
 

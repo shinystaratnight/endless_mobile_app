@@ -1,29 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/group_title.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 class CandidateJobDetailsScreen extends StatefulWidget {
-  final String position;
-  final String company;
-  final String longitude;
-  final String latitude;
-  final DateTime date;
-  final String clientContact;
-  final List<dynamic> tags;
+  final JobOffer jobOffer;
 
   CandidateJobDetailsScreen({
-    this.position,
-    this.company,
-    this.longitude,
-    this.latitude,
-    this.date,
-    this.clientContact,
-    this.tags,
+    this.jobOffer,
   });
 
   @override
@@ -63,8 +53,8 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
   void initState() {
     super.initState();
     _add(
-      double.parse(widget.latitude),
-      double.parse(widget.longitude),
+      double.parse(widget.jobOffer.latitude),
+      double.parse(widget.jobOffer.longitude),
     );
   }
 
@@ -82,12 +72,12 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 height: 25.0,
               ),
               Text(
-                widget.position,
+                widget.jobOffer.position,
                 style: TextStyle(fontSize: 22.0),
                 textAlign: TextAlign.center,
               ),
               Text(
-                widget.company,
+                widget.jobOffer.company,
                 style: TextStyle(
                   fontSize: 18.0,
                   color: Colors.grey[500],
@@ -105,23 +95,23 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               ),
               DetailsRecord(
                 label: 'Site Supervisor',
-                value: widget.clientContact,
+                value: widget.jobOffer.clientContact,
               ),
               DetailsRecord(
                 label: 'Shift Date',
-                value: DateFormat('dd/MM/yyyy').format(widget.date),
+                value: DateFormat('dd/MM/yyyy').format(widget.jobOffer.datetime),
               ),
               DetailsRecord(
                 label: 'Shift Starting Time',
-                value: DateFormat.jm().format(widget.date),
+                value: DateFormat.jm().format(widget.jobOffer.datetime),
               ),
-              DetailsRecord(label: 'Note', value: ''),
+              DetailsRecord(label: 'Note', value: widget.jobOffer.notes,),
               SizedBox(
                 height: 15.0,
               ),
               RaisedButton(
                 color: Colors.white,
-                child: Text('Direct me'),
+                child: Text('Show on map'),
                 onPressed: () async {
                   try {
                     LocationData data = await _location.getLocation();
@@ -140,6 +130,20 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                   }
                 },
               ),
+              RaisedButton(
+                color: Colors.white,
+                child: Text('Direct me'),
+                onPressed: () async {
+                  final availableMaps = await MapLauncher.installedMaps;
+                  print(availableMaps);
+
+                  await availableMaps.first.showMarker(
+                    coords: Coords(double.parse(widget.jobOffer.latitude),
+                        double.parse(widget.jobOffer.longitude)),
+                    title: widget.jobOffer.company,
+                  );
+                },
+              ),
               SizedBox(
                 height: 350.0,
                 width: 20.0,
@@ -147,8 +151,8 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
-                      double.parse(widget.latitude),
-                      double.parse(widget.longitude),
+                      double.parse(widget.jobOffer.latitude),
+                      double.parse(widget.jobOffer.longitude),
                     ),
                     zoom: 13.0,
                   ),
@@ -159,11 +163,6 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: _goToTheLake,
-      //   label: Text('To the lake!'),
-      //   icon: Icon(Icons.directions_boat),
-      // ),
     );
   }
 }

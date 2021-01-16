@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/screens/candidate_job_details_screen.dart';
 import 'package:piiprent/services/job_offer_service.dart';
 import 'package:piiprent/services/notification_service.dart';
@@ -8,31 +9,15 @@ import 'package:piiprent/widgets/list_card_record.dart';
 import 'package:provider/provider.dart';
 
 class JobCard extends StatefulWidget {
-  final String company;
-  final String position;
-  final DateTime date;
-  final String location;
-  final String id;
-  final String longitude;
-  final String latitude;
-  final String clientContact;
   final Function update;
-  final List<dynamic> tags;
+  final JobOffer jobOffer;
 
   final bool offer;
 
   JobCard({
-    this.company,
-    this.position,
-    this.date,
-    this.location,
-    this.id,
-    this.longitude,
-    this.latitude,
-    this.clientContact,
     this.offer = false,
     this.update,
-    this.tags,
+    this.jobOffer,
   });
 
   @override
@@ -48,7 +33,7 @@ class _JobCardState extends State<JobCard> {
       _fetching = true;
     });
     try {
-      await jobOfferService.accept(widget.id);
+      await jobOfferService.accept(widget.jobOffer.id);
       await notificationService.checkJobOfferNotifications();
 
       if (widget.update != null) {
@@ -68,7 +53,7 @@ class _JobCardState extends State<JobCard> {
       _fetching = true;
     });
     try {
-      await jobOfferService.decline(widget.id);
+      await jobOfferService.decline(widget.jobOffer.id);
       await notificationService.checkJobOfferNotifications();
 
       if (widget.update != null) {
@@ -92,13 +77,7 @@ class _JobCardState extends State<JobCard> {
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => CandidateJobDetailsScreen(
-            company: widget.company,
-            position: widget.position,
-            longitude: widget.longitude,
-            latitude: widget.latitude,
-            date: widget.date,
-            clientContact: widget.clientContact,
-            tags: widget.tags,
+            jobOffer: widget.jobOffer,
           ),
         ),
       ),
@@ -107,11 +86,11 @@ class _JobCardState extends State<JobCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.company,
+              widget.jobOffer.company,
               style: TextStyle(fontSize: 22.0, color: Colors.white),
             ),
             Text(
-              widget.position,
+              widget.jobOffer.position,
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.white,
@@ -136,7 +115,7 @@ class _JobCardState extends State<JobCard> {
                         width: 5.0,
                       ),
                       Text(
-                        DateFormat.jm().format(widget.date),
+                        DateFormat.jm().format(widget.jobOffer.datetime),
                         style: TextStyle(color: Colors.blue),
                       ),
                     ],
@@ -151,7 +130,7 @@ class _JobCardState extends State<JobCard> {
                         width: 5.0,
                       ),
                       Text(
-                        DateFormat('dd/MM/yyyy').format(widget.date),
+                        DateFormat('dd/MM/yyyy').format(widget.jobOffer.datetime),
                         style: TextStyle(color: Colors.blue),
                       ),
                     ],
@@ -168,7 +147,7 @@ class _JobCardState extends State<JobCard> {
                     color: Colors.blue,
                   ),
                   Text(
-                    widget.location,
+                    widget.jobOffer.location,
                     style: TextStyle(color: Colors.blue),
                   ),
                 ],

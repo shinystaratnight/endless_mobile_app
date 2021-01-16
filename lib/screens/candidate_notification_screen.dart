@@ -50,14 +50,7 @@ class CandidateNotificationScreen extends StatelessWidget {
               action: jobOfferService.getCandidateJobOffers,
               getChild: (JobOffer instance, Function reset) {
                 return JobCard(
-                  company: instance.company,
-                  date: instance.datetime,
-                  location: instance.location,
-                  position: instance.position,
-                  id: instance.id,
-                  longitude: instance.longitude,
-                  latitude: instance.latitude,
-                  clientContact: instance.clientContact,
+                  jobOffer: instance,
                   offer: true,
                   update: reset,
                 );

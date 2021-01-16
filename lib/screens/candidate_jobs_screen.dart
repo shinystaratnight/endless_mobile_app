@@ -33,14 +33,7 @@ class CandidateJobsScreen extends StatelessWidget {
         updateStream: _updateStream.stream,
         getChild: (JobOffer instance, Function reset) {
           return JobCard(
-            company: instance.company,
-            date: instance.datetime,
-            location: instance.location,
-            position: instance.position,
-            id: instance.id,
-            longitude: instance.longitude,
-            latitude: instance.latitude,
-            clientContact: instance.clientContact,
+            jobOffer: instance,
           );
         },
       ),

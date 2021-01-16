@@ -35,6 +35,9 @@ dependencies:
   flag: ^3.1.0
   background_location: ^0.3.0
   location:
+  country_code_picker: ^1.7.0
+  map_launcher: ^1.1.2
+
 
 
   # The following adds the Cupertino Icons font to your application.
