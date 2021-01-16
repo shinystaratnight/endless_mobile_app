@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/average_scores_model.dart';
 import 'package:piiprent/models/candidate_model.dart';
@@ -310,7 +311,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             Expanded(
               child: Field(
                 label: 'Residency status',
-                initialValue: candidate.residency,
+                initialValue: candidate.residency != null ? Residency[candidate.residency] : '',
                 readOnly: true,
               ),
             ),
@@ -321,11 +322,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               child: Field(
                 label: 'Nationality',
                 initialValue: candidate.nationality,
+                readOnly: true,
               ),
             ),
           ],
         ),
-        Row(
+        candidate.residency == 3 ? Row(
           children: [
             Expanded(
               child: Field(
@@ -347,7 +349,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
           ],
-        ),
+        ) : SizedBox(),
       ],
     );
   }

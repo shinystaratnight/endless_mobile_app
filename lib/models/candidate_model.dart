@@ -20,7 +20,7 @@ class Candidate {
   final String email;
   final String phone;
   final AverageScores averageScores;
-  final String residency;
+  final int residency;
   final String nationality;
   final String visaType;
   final DateTime visaExpiryDate;
@@ -98,7 +98,7 @@ class Candidate {
       email: contact['email'],
       phone: contact['phone_mobile'],
       averageScores: AverageScores.fromJson(json['candidate_scores']),
-      residency: json['residency'] != null ? Residency[json['residency']] : '',
+      residency: json['residency'],
       nationality:
           json['nationality'] != null ? json['nationality']['__str__'] : '',
       visaType: json['visa_type'] != null ? json['visa_type']['__str__'] : '',
