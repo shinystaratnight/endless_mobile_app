@@ -13,7 +13,7 @@ import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_select.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
-import 'package:flag/flag.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 
 class RegisterForm extends StatefulWidget {
   final IndustryService industryService = IndustryService();
@@ -36,6 +36,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String _birthday;
   String _industry;
   List<dynamic> _skills;
+  CountryCode _phoneCountryCode;
 
   StreamController _industryStream = StreamController();
   StreamController _fetchingStream = StreamController();
@@ -143,25 +144,21 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
             Field(
               label: 'Mobile number',
-              initialValue: '+',
+              initialValue: '',
               onSaved: (String value) {
-                _phone = value;
+                _phone = '$_phoneCountryCode$value';
               },
               leading: widget.settings != null
-                  ? Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[400],
-                            blurRadius: 3,
-                          ),
-                        ],
-                      ),
-                      margin: const EdgeInsets.only(right: 8.0),
-                      child: Flag(
-                        widget.settings.countryCode,
-                        height: 16.0,
-                        width: 20.0,
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: CountryCodePicker(
+                        onInit: (prefix) => _phoneCountryCode = prefix,
+                        onChanged: (prefix) =>
+                            setState(() => _phoneCountryCode = prefix),
+                        initialSelection: widget.settings.countryCode,
+                        showCountryOnly: false,
+                        showOnlyCountryWhenClosed: false,
+                        alignLeft: false,
                       ),
                     )
                   : SizedBox(),
@@ -243,7 +240,9 @@ class _RegisterFormState extends State<RegisterForm> {
               stream: _errorStream.stream,
               builder: (context, snapshot) {
                 return FormMessage(
-                    type: MessageType.Error, message: snapshot.data);
+                  type: MessageType.Error,
+                  message: snapshot.data,
+                );
               },
             ),
             StreamBuilder(

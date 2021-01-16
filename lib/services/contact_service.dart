@@ -83,7 +83,7 @@ class ContactService {
 
       return true;
     } else {
-      throw Exception("User not registered");
+      throw Exception("User was not registered");
     }
   }
 
