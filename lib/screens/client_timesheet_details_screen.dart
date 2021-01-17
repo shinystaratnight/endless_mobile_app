@@ -372,6 +372,10 @@ class _ClientTimesheetDetailsScreenState
                   }
 
                   if (snapshot.hasData) {
+                    if (snapshot.data.length == 0) {
+                      return Center(child: Text('No data'));
+                    }
+
                     double latitude = snapshot.data[0].latitude;
                     double longitude = snapshot.data[0].longitude;
                     Set<Polyline> polylines = Set();
