@@ -32,7 +32,6 @@ dependencies:
   jiffy: ^3.0.1
   timezone:
   signature: ^3.2.0
-  flag: ^3.1.0
   background_location: ^0.3.0
   location:
   country_code_picker: ^1.7.0
