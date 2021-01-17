@@ -21,6 +21,8 @@ class Timesheet {
   final bool signatureScheme;
   final Map<String, dynamic> supervisorSignature;
   final int evaluation;
+  final String candidateId;
+  final String timezone;
 
   static final requestFields = [
     'id',
@@ -58,6 +60,8 @@ class Timesheet {
     this.signatureScheme,
     this.supervisorSignature,
     this.evaluation,
+    this.candidateId,
+    this.timezone,
   });
 
   factory Timesheet.fromJson(Map<String, dynamic> json) {
@@ -95,6 +99,8 @@ class Timesheet {
       supervisorSignature: json['supervisor_signature'],
       evaluation:
           json['evaluated'] ? json['evaluation']['evaluation_score'] : 1,
+      candidateId: candidateContact['id'],
+      timezone: json['time_zone'],
     );
   }
 

@@ -4,6 +4,7 @@ import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/screens/candidate_job_details_screen.dart';
 import 'package:piiprent/services/job_offer_service.dart';
 import 'package:piiprent/services/notification_service.dart';
+import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
 import 'package:provider/provider.dart';
@@ -130,7 +131,8 @@ class _JobCardState extends State<JobCard> {
                         width: 5.0,
                       ),
                       Text(
-                        DateFormat('dd/MM/yyyy').format(widget.jobOffer.datetime),
+                        DateFormat('dd/MM/yyyy')
+                            .format(widget.jobOffer.datetime),
                         style: TextStyle(color: Colors.blue),
                       ),
                     ],
@@ -171,31 +173,28 @@ class _JobCardState extends State<JobCard> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                IconButton(
-                                  onPressed: _fetching
-                                      ? null
-                                      : () => _declineJobOffer(
-                                            jobOfferService,
-                                            notificationService,
-                                          ),
-                                  icon: Icon(Icons.close),
-                                  color: Colors.redAccent,
+                                FormSubmitButton(
+                                  label: 'Accept',
+                                  onPressed: () => _acceptJobOffer(
+                                    jobOfferService,
+                                    notificationService,
+                                  ),
+                                  disabled: _fetching,
+                                  color: Colors.green[400],
+                                  horizontalPadding: 50,
                                 ),
-                                SizedBox(
-                                  width: 15.0,
+                                FormSubmitButton(
+                                  label: 'Reject',
+                                  onPressed: () => _declineJobOffer(
+                                    jobOfferService,
+                                    notificationService,
+                                  ),
+                                  disabled: _fetching,
+                                  color: Colors.red[400],
+                                  horizontalPadding: 50,
                                 ),
-                                IconButton(
-                                  icon: Icon(Icons.check),
-                                  color: Colors.greenAccent,
-                                  onPressed: _fetching
-                                      ? null
-                                      : () => _acceptJobOffer(
-                                            jobOfferService,
-                                            notificationService,
-                                          ),
-                                )
                               ],
                             ),
                           ),

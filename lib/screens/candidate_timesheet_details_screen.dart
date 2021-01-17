@@ -51,6 +51,8 @@ class _CandidateTimesheetDetailsScreenState
   String _breakEnd = TimesheetTimeKey[TimesheetTime.BreakEnd];
   String _shiftEnd = TimesheetTimeKey[TimesheetTime.End];
 
+  bool _withBreak = true;
+
   Map<String, DateTime> _times = Map();
 
   @override
@@ -99,6 +101,10 @@ class _CandidateTimesheetDetailsScreenState
   _submitForm(TimesheetService timesheetService) async {
     try {
       setState(() => _fetching = true);
+      if (!_withBreak) {
+        _times[_breakEnd] = _times[_breakStart];
+      }
+
       Map<String, String> body =
           _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
       bool result = await timesheetService.submitTimesheet(widget.id, body);
@@ -221,26 +227,30 @@ class _CandidateTimesheetDetailsScreenState
                       )
                     : null,
               ),
-              DetailsRecord(
-                label: 'Break Start Time',
-                value: DateFormat.jm().format(_times[_breakStart]),
-                button: widget.status == 4 && !_updated
-                    ? _buildChangeButton(
-                        _times[_breakStart],
-                        _breakStart,
-                      )
-                    : null,
-              ),
-              DetailsRecord(
-                label: 'Break End Time',
-                value: DateFormat.jm().format(_times[_breakEnd]),
-                button: widget.status == 4 && !_updated
-                    ? _buildChangeButton(
-                        _times[_breakEnd],
-                        _breakEnd,
-                      )
-                    : null,
-              ),
+              _withBreak || widget.status != 4
+                  ? DetailsRecord(
+                      label: 'Break Start Time',
+                      value: DateFormat.jm().format(_times[_breakStart]),
+                      button: widget.status == 4 && !_updated
+                          ? _buildChangeButton(
+                              _times[_breakStart],
+                              _breakStart,
+                            )
+                          : null,
+                    )
+                  : SizedBox(),
+              _withBreak || widget.status != 4
+                  ? DetailsRecord(
+                      label: 'Break End Time',
+                      value: DateFormat.jm().format(_times[_breakEnd]),
+                      button: widget.status == 4 && !_updated
+                          ? _buildChangeButton(
+                              _times[_breakEnd],
+                              _breakEnd,
+                            )
+                          : null,
+                    )
+                  : SizedBox(),
               DetailsRecord(
                 label: 'Shift End Time',
                 value: DateFormat.jm().format(_times[_shiftEnd]),
@@ -251,6 +261,24 @@ class _CandidateTimesheetDetailsScreenState
                       )
                     : null,
               ),
+              widget.status == 4 && !_updated
+                  ? Row(
+                      children: [
+                        Container(
+                          child: Text('Break'),
+                          margin: const EdgeInsets.only(left: 8.0),
+                        ),
+                        Switch(
+                          value: _withBreak,
+                          onChanged: (bool newValue) {
+                            setState(() {
+                              _withBreak = newValue;
+                            });
+                          },
+                        ),
+                      ],
+                    )
+                  : SizedBox(),
               GroupTitle(title: 'Job Information'),
               DetailsRecord(
                 label: 'Jobsite',
@@ -287,6 +315,7 @@ class _CandidateTimesheetDetailsScreenState
                                   _declinePreShiftCheck(timesheetService),
                               disabled: _fetching,
                               color: Colors.red[400],
+                              horizontalPadding: 50,
                             ),
                             FormSubmitButton(
                               label: 'Accept',
@@ -294,6 +323,7 @@ class _CandidateTimesheetDetailsScreenState
                                   _acceptPreShiftCheck(timesheetService),
                               disabled: _fetching,
                               color: Colors.green[400],
+                              horizontalPadding: 50,
                             ),
                           ],
                         ),

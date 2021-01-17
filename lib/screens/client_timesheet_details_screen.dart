@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/models/timesheet_model.dart';
+import 'package:piiprent/models/tracking_model.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/evaluate.dart';
@@ -13,6 +14,7 @@ import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
 import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ClientTimesheetDetailsScreen extends StatefulWidget {
   final Timesheet timesheet;
@@ -37,6 +39,7 @@ class _ClientTimesheetDetailsScreenState
   bool _changed = false;
   bool _evaluated = true;
   int _evaluationScore = 1;
+  GoogleMapController _mapController;
 
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 3,
@@ -181,6 +184,7 @@ class _ClientTimesheetDetailsScreenState
         margin: const EdgeInsets.only(bottom: 15.0),
         child: Column(
           children: [
+            GroupTitle(title: 'Signature'),
             Signature(
               controller: _controller,
               width: 309,
@@ -224,6 +228,10 @@ class _ClientTimesheetDetailsScreenState
     }
 
     return SizedBox();
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController = controller;
   }
 
   @override
@@ -349,6 +357,62 @@ class _ClientTimesheetDetailsScreenState
                 score: _evaluationScore,
                 onChange: (score) {
                   _evaluate(timesheetService, score);
+                },
+              ),
+              GroupTitle(title: 'Tracking'),
+              FutureBuilder(
+                future: timesheetService.getTrackingData(
+                  widget.timesheet.candidateId,
+                  widget.timesheet.id,
+                ),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Tracking>> snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                      ],
+                    );
+                  }
+
+                  if (snapshot.hasData) {
+                    double latitude = snapshot.data[0].latitude;
+                    double longitude = snapshot.data[0].longitude;
+                    Set<Polyline> polylines = Set();
+                    polylines.add(
+                      Polyline(
+                        polylineId: PolylineId('tracking'),
+                        color: Colors.blue,
+                        width: 2,
+                        points: snapshot.data
+                            .map((e) => LatLng(
+                                  e.latitude,
+                                  e.longitude,
+                                ))
+                            .toList(),
+                      ),
+                    );
+
+                    return SizedBox(
+                      height: 350.0,
+                      width: 20.0,
+                      child: GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(
+                            latitude,
+                            longitude,
+                          ),
+                          zoom: 12.0,
+                        ),
+                        myLocationButtonEnabled: false,
+                        polylines: polylines,
+                      ),
+                    );
+                  } else {
+                    return SizedBox();
+                  }
                 },
               ),
               _buildSignatureBlock(),

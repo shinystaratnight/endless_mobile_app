@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/timesheet_model.dart';
+import 'package:piiprent/models/tracking_model.dart';
 import 'package:piiprent/services/api_service.dart';
 
 class TimesheetService {
@@ -324,6 +325,37 @@ class TimesheetService {
       return true;
     } else {
       throw Exception('Failed to change timesheet times');
+    }
+  }
+
+  Future<List<Tracking>> getTrackingData(
+    String candidateId,
+    String timesheetId,
+  ) async {
+    Map<String, dynamic> params = {
+      'timesheet': timesheetId,
+      'limit': '-1',
+    };
+
+    try {
+      http.Response res = await this.apiService.get(
+            path: '/candidate/location/$candidateId/history/',
+            params: params,
+          );
+
+      if (res.statusCode == 200) {
+        Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
+        List<dynamic> results = body['results'];
+
+        return results
+            .map((dynamic element) => Tracking.fromJson(element))
+            .toList();
+      } else {
+        throw Exception('Failed to load tracking data');
+      }
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 }

@@ -5,18 +5,23 @@ class FormSubmitButton extends StatelessWidget {
   final Function onPressed;
   final String label;
   final Color color;
+  final double horizontalPadding;
 
   FormSubmitButton({
     @required this.disabled,
     @required this.onPressed,
     @required this.label,
     this.color = Colors.blueAccent,
+    this.horizontalPadding = 60,
   });
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: 10,
+      ),
       color: color,
       textColor: Colors.white,
       // disabledColor: Colors.blue[200],

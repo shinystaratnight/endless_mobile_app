@@ -99,13 +99,17 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               ),
               DetailsRecord(
                 label: 'Shift Date',
-                value: DateFormat('dd/MM/yyyy').format(widget.jobOffer.datetime),
+                value:
+                    DateFormat('dd/MM/yyyy').format(widget.jobOffer.datetime),
               ),
               DetailsRecord(
                 label: 'Shift Starting Time',
                 value: DateFormat.jm().format(widget.jobOffer.datetime),
               ),
-              DetailsRecord(label: 'Note', value: widget.jobOffer.notes,),
+              DetailsRecord(
+                label: 'Note',
+                value: widget.jobOffer.notes,
+              ),
               SizedBox(
                 height: 15.0,
               ),
