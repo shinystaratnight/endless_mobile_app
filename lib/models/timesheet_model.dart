@@ -76,6 +76,7 @@ class Timesheet {
         json['job_offer']['candidate_contact'];
 
     Map<String, dynamic> company = json['company'];
+    Location location = getLocation(json['time_zone']);
 
     return Timesheet(
       id: json['id'],
@@ -85,12 +86,10 @@ class Timesheet {
       address: (json['jobsite']['address']['__str__'] as String)
           .replaceAll('\n', ' '),
       jobsite: json['jobsite']['__str__'],
-      shiftStart:
-          parseWithTimeZone(json['time_zone'], json['shift_started_at_tz']),
-      shiftEnd: parseWithTimeZone(json['time_zone'], json['shift_ended_at_tz']),
-      breakStart:
-          parseWithTimeZone(json['time_zone'], json['break_started_at_tz']),
-      breakEnd: parseWithTimeZone(json['time_zone'], json['break_ended_at_tz']),
+      shiftStart: parseWithTimeZone(location, json['shift_started_at_tz']),
+      shiftEnd: parseWithTimeZone(location, json['shift_ended_at_tz']),
+      breakStart: parseWithTimeZone(location, json['break_started_at_tz']),
+      breakEnd: parseWithTimeZone(location, json['break_ended_at_tz']),
       status: json['status'],
       candidate: candidateContact['contact'],
       score: candidateContact['candidate_scores']['average_score'],
@@ -137,8 +136,8 @@ DateTime getDateTime(String date, String time) {
   return DateTime.parse('$date $time');
 }
 
-DateTime parseWithTimeZone(String timezone, String target) {
+DateTime parseWithTimeZone(Location location, String target) {
   tz.initializeTimeZones();
 
-  return TZDateTime.from(DateTime.parse(target), getLocation(timezone));
+  return TZDateTime.from(DateTime.parse(target), location);
 }

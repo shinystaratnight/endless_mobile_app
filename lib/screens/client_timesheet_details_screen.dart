@@ -39,7 +39,6 @@ class _ClientTimesheetDetailsScreenState
   bool _changed = false;
   bool _evaluated = true;
   int _evaluationScore = 1;
-  GoogleMapController _mapController;
 
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 3,
@@ -230,10 +229,6 @@ class _ClientTimesheetDetailsScreenState
     return SizedBox();
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
-  }
-
   @override
   Widget build(BuildContext context) {
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
@@ -398,7 +393,6 @@ class _ClientTimesheetDetailsScreenState
                       height: 350.0,
                       width: 20.0,
                       child: GoogleMap(
-                        onMapCreated: _onMapCreated,
                         initialCameraPosition: CameraPosition(
                           target: LatLng(
                             latitude,
