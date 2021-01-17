@@ -26,16 +26,7 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>apple-maps</string>
-		<string>google-maps</string>
-		<string>comgooglemaps</string>
-		<string>citymapper</string>
-		<string>uber</string>
-		<string>lyft</string>
-		<string>transit</string>
-		<string>waze</string>
-		<string>yandexnavi</string>
-		<string>moovit</string>
+		<string>iosamap</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -83,9 +74,5 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>iosamap</string>
-	</array>
 </dict>
 </plist>

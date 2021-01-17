@@ -404,11 +404,11 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       decoration: BoxDecoration(
                         color: Colors.grey[300],
                         shape: BoxShape.circle,
-                        image: loginService.user.userAvatarUrl() != null
+                        image: candidate.contact.userAvatarUrl() != null
                             ? DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  loginService.user.userAvatarUrl(),
+                                  candidate.contact.userAvatarUrl(),
                                 ),
                               )
                             : null,

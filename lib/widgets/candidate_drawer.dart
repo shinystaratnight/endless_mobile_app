@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,7 @@ class CandidateDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginService loginService = Provider.of<LoginService>(context);
+    ContactService contactService = Provider.of<ContactService>(context);
 
     return Drawer(
       child: Container(
@@ -19,24 +21,29 @@ class CandidateDrawer extends StatelessWidget {
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              child: Center(
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    shape: BoxShape.circle,
-                    image: loginService.user.userAvatarUrl() != null
-                        ? DecorationImage(
-                            fit: BoxFit.cover,
-                            image:
-                                NetworkImage(loginService.user.userAvatarUrl()),
-                          )
-                        : null,
+            FutureBuilder(
+              future:
+                  contactService.getContactPicture(loginService.user.userId,),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return DrawerHeader(
+                  child: Center(
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        shape: BoxShape.circle,
+                        image: snapshot.hasData
+                            ? DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(snapshot.data),
+                              )
+                            : null,
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
             !dashboard
                 ? ListTile(

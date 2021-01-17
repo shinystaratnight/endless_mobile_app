@@ -110,4 +110,21 @@ class ContactService {
       throw Exception("Failed fetching roles");
     }
   }
+
+  Future getContactPicture(String id) async {
+    Map<String, dynamic> params = {
+      'fields': ['picture'],
+    };
+
+    try {
+      http.Response res = await apiService.get(path: '/core/contacts/$id/', params: params);
+
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
+      var picture = body['picture'];
+
+      return picture != null ? picture['origin'] : null ;
+    } catch (e) {
+      throw Exception("Failed fetching roles");
+    }
+  }
 }
