@@ -76,7 +76,10 @@ class Timesheet {
         json['job_offer']['candidate_contact'];
 
     Map<String, dynamic> company = json['company'];
+    tz.initializeTimeZones();
     Location location = getLocation(json['time_zone']);
+
+    // print(location.name);
 
     return Timesheet(
       id: json['id'],
@@ -137,7 +140,5 @@ DateTime getDateTime(String date, String time) {
 }
 
 DateTime parseWithTimeZone(Location location, String target) {
-  tz.initializeTimeZones();
-
   return TZDateTime.from(DateTime.parse(target), location);
 }
