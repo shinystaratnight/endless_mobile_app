@@ -28,13 +28,13 @@ class DetailsRecord extends StatelessWidget {
                   child: Row(
                     children: this.button != null
                         ? [
-                            Text(value),
+                            Text(value != null ? value : ''),
                             SizedBox(width: 8.0),
                             Expanded(child: this.button)
                           ]
                         : [
                             Expanded(
-                              child: Text(value),
+                              child: Text(value != null ? value : ''),
                             ),
                           ],
                   ),

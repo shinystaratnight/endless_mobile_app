@@ -42,7 +42,12 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     flex: 1,
                     child: HomeScreenButton(
                       color: Colors.orange[700],
-                      text: 'Coming soon',
+                      icon: Icon(
+                        Icons.location_on,
+                        color: Colors.orange[700],
+                      ),
+                      path: '/client_jobsites',
+                      text: 'Jobsites',
                     ),
                   ),
                 ],

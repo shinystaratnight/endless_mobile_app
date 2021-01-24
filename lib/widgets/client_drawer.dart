@@ -22,7 +22,8 @@ class ClientDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             FutureBuilder(
-              future: contactService.getContactPicture(loginService.user.userId),
+              future:
+                  contactService.getContactPicture(loginService.user.userId),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 return DrawerHeader(
                   child: Center(
@@ -35,8 +36,7 @@ class ClientDrawer extends StatelessWidget {
                         image: snapshot.hasData
                             ? DecorationImage(
                                 fit: BoxFit.cover,
-                                image:
-                                    NetworkImage(snapshot.data),
+                                image: NetworkImage(snapshot.data),
                               )
                             : null,
                       ),
@@ -59,6 +59,13 @@ class ClientDrawer extends StatelessWidget {
             ListTile(
               title: Text('Profile', style: _textStyle),
               onTap: () => Navigator.pushNamed(context, '/client_profile'),
+            ),
+            Divider(
+              color: Colors.grey[300],
+            ),
+            ListTile(
+              title: Text('Jobsites', style: _textStyle),
+              onTap: () => Navigator.pushNamed(context, '/client_jobsites'),
             ),
             Divider(
               color: Colors.grey[300],
