@@ -25,7 +25,7 @@ dependencies:
     sdk: flutter
   google_fonts: ^1.1.0
   table_calendar: ^2.2.3
-  google_maps_flutter:
+  google_maps_flutter: 1.0.3
   http:
   provider: ^4.3.2+2
   shared_preferences:
@@ -35,7 +35,7 @@ dependencies:
   background_location: ^0.3.0
   location:
   country_code_picker: ^1.7.0
-  map_launcher: ^1.1.2
+  map_launcher: 1.1.2
 
 
 

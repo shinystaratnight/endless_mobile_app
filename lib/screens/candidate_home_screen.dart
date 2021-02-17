@@ -44,9 +44,15 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
 
     BackgroundLocation.stopLocationService();
     BackgroundLocation.getPermissions(
-      onGranted: () {
+      onGranted: () async {
         // Start location service here or do something else
-        BackgroundLocation.startLocationService();
+        await BackgroundLocation.setAndroidNotification(
+          title: "Background service is running",
+          message: "Background location in progress",
+          icon: "@mipmap/ic_launcher",
+        );
+        await BackgroundLocation.setAndroidConfiguration(1000);
+        await BackgroundLocation.startLocationService();
         BackgroundLocation.getLocationUpdates((location) async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           String activeTimesheetsEncoded =
