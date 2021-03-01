@@ -36,6 +36,9 @@ dependencies:
   location:
   country_code_picker: ^1.7.0
   map_launcher: ^1.1.2
+  flutter_translate: ^1.6.0
+  flutter_localizations:
+    sdk: flutter
 
 
 
@@ -71,6 +74,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:            
     - images/
+    - assets/i18n/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

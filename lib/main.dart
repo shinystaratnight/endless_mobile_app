@@ -23,10 +23,22 @@ import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:piiprent/screens/login_screen.dart';
 
-void main() {
+void main() async {
+  var delegate = await LocalizationDelegate.create(
+    fallbackLocale: 'en_US',
+    supportedLocales: [
+      'en_US',
+      'et',
+      'fi',
+      'ru',
+    ],
+  );
+
   runApp(
     MultiProvider(
       providers: [
@@ -41,7 +53,7 @@ void main() {
         Provider<CompanyService>(create: (_) => CompanyService()),
         Provider<JobsiteService>(create: (_) => JobsiteService()),
       ],
-      child: MyApp(),
+      child: LocalizedApp(delegate, MyApp()),
     ),
   );
 }
@@ -49,34 +61,46 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Piiprent',
-      theme: new ThemeData(
-        accentColor: Colors.blueAccent,
-        scaffoldBackgroundColor: Colors.grey[100],
-        textTheme:
-            GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
+    var localizationDelegate = LocalizedApp.of(context).delegate;
+
+    return LocalizationProvider(
+      state: LocalizationProvider.of(context).state,
+      child: MaterialApp(
+        title: 'Piiprent',
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          localizationDelegate
+        ],
+        supportedLocales: localizationDelegate.supportedLocales,
+        locale: localizationDelegate.currentLocale,
+        theme: new ThemeData(
+          accentColor: Colors.blueAccent,
+          scaffoldBackgroundColor: Colors.grey[100],
+          textTheme:
+              GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
+        ),
+        debugShowCheckedModeBanner: false,
+        routes: <String, WidgetBuilder>{
+          '/login': (BuildContext context) => LoginScreen(),
+          '/candidate_home': (BuildContext context) => CandidateHomeScreen(),
+          '/candidate_jobs': (BuildContext context) => CandidateJobsScreen(),
+          '/candidate_job_offers': (BuildContext context) =>
+              CandidateJobOffersScreen(),
+          '/candidate_timesheets': (BuildContext context) =>
+              CandidateTimesheetsScreen(),
+          '/candidate_profile': (BuildContext context) =>
+              CandidateProfileScreen(),
+          '/client_home': (BuildContext context) => ClientHomeScreen(),
+          '/client_profile': (BuildContext context) => ClientProfileScreen(),
+          '/client_jobs': (BuildContext context) => ClientJobsScreen(),
+          '/client_timesheets': (BuildContext context) =>
+              ClientTimesheetsScreen(),
+          '/client_jobsites': (BuildContext context) => ClientJobsitesScreen(),
+          '/forgot_password': (BuildContext context) => ForgotPasswordScreen(),
+        },
+        home: PreviewScreen(),
       ),
-      debugShowCheckedModeBanner: false,
-      routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => LoginScreen(),
-        '/candidate_home': (BuildContext context) => CandidateHomeScreen(),
-        '/candidate_jobs': (BuildContext context) => CandidateJobsScreen(),
-        '/candidate_job_offers': (BuildContext context) =>
-            CandidateJobOffersScreen(),
-        '/candidate_timesheets': (BuildContext context) =>
-            CandidateTimesheetsScreen(),
-        '/candidate_profile': (BuildContext context) =>
-            CandidateProfileScreen(),
-        '/client_home': (BuildContext context) => ClientHomeScreen(),
-        '/client_profile': (BuildContext context) => ClientProfileScreen(),
-        '/client_jobs': (BuildContext context) => ClientJobsScreen(),
-        '/client_timesheets': (BuildContext context) =>
-            ClientTimesheetsScreen(),
-        '/client_jobsites': (BuildContext context) => ClientJobsitesScreen(),
-        '/forgot_password': (BuildContext context) => ForgotPasswordScreen(),
-      },
-      home: PreviewScreen(),
     );
   }
 }
