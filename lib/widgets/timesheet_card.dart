@@ -4,6 +4,7 @@ import 'package:piiprent/constants.dart';
 import 'package:piiprent/screens/candidate_timesheet_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class TimesheetCard extends StatelessWidget {
   final String company;
@@ -120,7 +121,7 @@ class TimesheetCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Shift Started At',
+                    translate('timesheet.shift_started_at'),
                     style: TextStyle(color: Colors.blueAccent),
                   ),
                   Row(
@@ -144,7 +145,7 @@ class TimesheetCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Break',
+                    translate('timesheet.break'),
                     style: TextStyle(color: Colors.blueAccent),
                   ),
                   Row(
@@ -155,7 +156,7 @@ class TimesheetCard extends StatelessWidget {
                       ),
                       SizedBox(width: 5.0),
                       Text(
-                        'to',
+                        translate('timesheet.break_to'),
                         style: TextStyle(color: Colors.blueAccent),
                       ),
                       SizedBox(width: 5.0),
@@ -174,7 +175,7 @@ class TimesheetCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Shift Ended At',
+                    translate('timesheet.shift_ended_at'),
                     style: TextStyle(color: Colors.blueAccent),
                   ),
                   Row(

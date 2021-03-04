@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'dart:async';
 import 'package:jiffy/jiffy.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class FilterDialog extends StatefulWidget {
   final DateTime from;
@@ -99,7 +100,8 @@ class _FilterDialogState extends State<FilterDialog> {
               RaisedButton(
                 color: Colors.blueAccent,
                 onPressed: _setToday,
-                child: Text('Today', style: TextStyle(color: Colors.white)),
+                child: Text(translate('dialog.today'),
+                    style: TextStyle(color: Colors.white)),
               ),
               SizedBox(
                 width: 8.0,
@@ -107,7 +109,8 @@ class _FilterDialogState extends State<FilterDialog> {
               RaisedButton(
                 color: Colors.blueAccent,
                 onPressed: _setYesterday,
-                child: Text('Yesterday', style: TextStyle(color: Colors.white)),
+                child: Text(translate('dialog.yesterday'),
+                    style: TextStyle(color: Colors.white)),
               ),
               SizedBox(
                 width: 8.0,
@@ -115,7 +118,8 @@ class _FilterDialogState extends State<FilterDialog> {
               RaisedButton(
                 color: Colors.blueAccent,
                 onPressed: _setThisWeek,
-                child: Text('This week', style: TextStyle(color: Colors.white)),
+                child: Text(translate('dialog.this_week'),
+                    style: TextStyle(color: Colors.white)),
               )
             ],
           ),
@@ -127,7 +131,8 @@ class _FilterDialogState extends State<FilterDialog> {
               RaisedButton(
                 color: Colors.blueAccent,
                 onPressed: _setLastWeek,
-                child: Text('Last week', style: TextStyle(color: Colors.white)),
+                child: Text(translate('dialog.last_week'),
+                    style: TextStyle(color: Colors.white)),
               ),
               SizedBox(
                 width: 8.0,
@@ -135,8 +140,8 @@ class _FilterDialogState extends State<FilterDialog> {
               RaisedButton(
                 color: Colors.blueAccent,
                 onPressed: _setThisMonth,
-                child:
-                    Text('This month', style: TextStyle(color: Colors.white)),
+                child: Text(translate('dialog.this_month'),
+                    style: TextStyle(color: Colors.white)),
               ),
               SizedBox(
                 width: 8.0,
@@ -144,8 +149,8 @@ class _FilterDialogState extends State<FilterDialog> {
               RaisedButton(
                 color: Colors.blueAccent,
                 onPressed: _setLastMonth,
-                child:
-                    Text('Last month', style: TextStyle(color: Colors.white)),
+                child: Text(translate('dialog.last_month'),
+                    style: TextStyle(color: Colors.white)),
               )
             ],
           ),
@@ -173,7 +178,7 @@ class _FilterDialogState extends State<FilterDialog> {
               children: [
                 Expanded(
                   child: Field(
-                    label: 'From',
+                    label: translate('dialog.from'),
                     datepicker: true,
                     initialValue: widget.from,
                     setStream: _fromStreamController.stream,
@@ -184,7 +189,7 @@ class _FilterDialogState extends State<FilterDialog> {
                 ),
                 Expanded(
                   child: Field(
-                    label: 'To',
+                    label: translate('dialog.to'),
                     datepicker: true,
                     initialValue: widget.to,
                     setStream: _toStreamController.stream,

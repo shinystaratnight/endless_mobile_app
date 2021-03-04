@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/services/login_service.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/filter_dialog_button.dart';
@@ -56,7 +57,7 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
           alignment: Alignment.center,
           decoration: BoxDecoration(color: Colors.blue),
           child: Text(
-            'Shifts',
+            translate('table.shifts'),
             style: TextStyle(
               fontSize: 16.0,
               color: Colors.white,
@@ -105,7 +106,7 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
-                          child: Text('No Data'),
+                          child: Text(translate('tmessage.no_data')),
                         ),
                       ),
                     ],
@@ -122,7 +123,7 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
     LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Job')),
+      appBar: AppBar(title: Text(translate('page.title.job'))),
       floatingActionButton: FilterDialogButton(
         from: _from,
         onClose: (data) {
@@ -154,25 +155,28 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
               SizedBox(
                 height: 15.0,
               ),
-              GroupTitle(title: 'Tags'),
+              GroupTitle(title: translate('group.title.tags')),
               widget.tags.length > 0
                   ? Text(widget.tags
                       .reduce((value, element) => '$value, $element'))
                   : SizedBox(),
-              GroupTitle(title: 'Job information'),
+              GroupTitle(title: translate('group.title.job_information')),
               SizedBox(
                 height: 15.0,
               ),
-              DetailsRecord(label: 'Site Supervisor', value: widget.contact),
               DetailsRecord(
-                label: 'Shift Date',
+                  label: translate('field.site_supervisor'),
+                  value: widget.contact),
+              DetailsRecord(
+                label: translate('field.shift_date'),
                 value: DateFormat('dd/MM/yyyy').format(widget.workStartDate),
               ),
               DetailsRecord(
-                label: 'Shift Starting Time',
+                label: translate('field.shift_starting_time'),
                 value: DateFormat.jm().format(widget.workStartDate),
               ),
-              DetailsRecord(label: 'Note', value: widget.notes),
+              DetailsRecord(
+                  label: translate('field.note'), value: widget.notes),
               SizedBox(
                 height: 15.0,
               ),
@@ -194,7 +198,7 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
 
                   if (snapshot.hasError) {
                     return Center(
-                      child: Text('Has Error'),
+                      child: Text(translate('message.has_error')),
                     );
                   }
 

@@ -5,6 +5,7 @@ import 'package:piiprent/widgets/home_calendar.dart';
 import 'package:piiprent/widgets/home_screen_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
       drawer: ClientDrawer(
         dashboard: true,
       ),
-      appBar: AppBar(title: Text('Dashboard')),
+      appBar: AppBar(title: Text(translate('page.title.dashboard'))),
       body: SingleChildScrollView(
         child: PageContainer(
           child: Column(

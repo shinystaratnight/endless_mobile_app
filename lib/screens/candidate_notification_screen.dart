@@ -8,6 +8,7 @@ import 'package:piiprent/widgets/job_card.dart';
 import 'package:piiprent/widgets/list_page.dart';
 import 'package:piiprent/widgets/timesheet_card.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateNotificationScreen extends StatelessWidget {
   @override
@@ -26,7 +27,7 @@ class CandidateNotificationScreen extends StatelessWidget {
                     Icon(Icons.local_offer),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('Job Offers'),
+                      child: Text(translate('page.title.job_offers')),
                     )
                   ],
                 ),
@@ -37,7 +38,7 @@ class CandidateNotificationScreen extends StatelessWidget {
                     Icon(Icons.query_builder),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('Timesheets'),
+                      child: Text('page.title.timesheets'),
                     )
                   ],
                 ),

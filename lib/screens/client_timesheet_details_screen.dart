@@ -15,6 +15,7 @@ import 'package:piiprent/widgets/group_title.dart';
 import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientTimesheetDetailsScreen extends StatefulWidget {
   final Timesheet timesheet;
@@ -131,7 +132,7 @@ class _ClientTimesheetDetailsScreenState
           Padding(
             padding: const EdgeInsets.only(left: 4.0),
             child: Text(
-              'Change',
+              translate('button.change'),
               style: TextStyle(
                 color: Colors.blue,
                 fontSize: 14.0,
@@ -183,7 +184,7 @@ class _ClientTimesheetDetailsScreenState
         margin: const EdgeInsets.only(bottom: 15.0),
         child: Column(
           children: [
-            GroupTitle(title: 'Signature'),
+            GroupTitle(title: translate('group.title.signature')),
             Signature(
               controller: _controller,
               width: 309,
@@ -195,7 +196,7 @@ class _ClientTimesheetDetailsScreenState
             ),
             RaisedButton(
               onPressed: () => _controller.clear(),
-              child: Text('Clear'),
+              child: Text(translate('button.clear')),
             )
           ],
         ),
@@ -235,7 +236,7 @@ class _ClientTimesheetDetailsScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Timesheet'),
+        title: Text(translate('page.title.timesheet')),
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
@@ -298,13 +299,13 @@ class _ClientTimesheetDetailsScreenState
               SizedBox(
                 height: 15.0,
               ),
-              GroupTitle(title: 'Times'),
+              GroupTitle(title: translate('group.title.times')),
               DetailsRecord(
-                label: 'Shift Date',
+                label: translate('field.shift_date'),
                 value: DateFormat('dd/MM/yyyy').format(_times[_shiftStart]),
               ),
               DetailsRecord(
-                label: 'Shift Start Time',
+                label: translate('field.shift_start_time'),
                 value: DateFormat.jm().format(_times[_shiftStart]),
                 button: widget.timesheet.status == 5 && !_updated
                     ? _buildChangeButton(
@@ -314,7 +315,7 @@ class _ClientTimesheetDetailsScreenState
                     : null,
               ),
               DetailsRecord(
-                label: 'Break Start Time',
+                label: translate('field.break_start_time'),
                 value: DateFormat.jm().format(_times[_breakStart]),
                 button: widget.timesheet.status == 5 && !_updated
                     ? _buildChangeButton(
@@ -324,7 +325,7 @@ class _ClientTimesheetDetailsScreenState
                     : null,
               ),
               DetailsRecord(
-                label: 'Break End Time',
+                label: translate('field.break_end_time'),
                 value: DateFormat.jm().format(_times[_breakEnd]),
                 button: widget.timesheet.status == 5 && !_updated
                     ? _buildChangeButton(
@@ -334,7 +335,7 @@ class _ClientTimesheetDetailsScreenState
                     : null,
               ),
               DetailsRecord(
-                label: 'Shift End Time',
+                label: translate('field.shift_end_time'),
                 value: DateFormat.jm().format(_times[_shiftEnd]),
                 button: widget.timesheet.status == 5 && !_updated
                     ? _buildChangeButton(
@@ -344,7 +345,7 @@ class _ClientTimesheetDetailsScreenState
                     : null,
               ),
               DetailsRecord(
-                label: 'Jobsite',
+                label: translate('field.jobsite'),
                 value: widget.timesheet.jobsite,
               ),
               Evaluate(
@@ -354,7 +355,7 @@ class _ClientTimesheetDetailsScreenState
                   _evaluate(timesheetService, score);
                 },
               ),
-              GroupTitle(title: 'Tracking'),
+              GroupTitle(title: translate('group.title.tracking')),
               FutureBuilder(
                 future: timesheetService.getTrackingData(
                   widget.timesheet.candidateId,
@@ -373,7 +374,7 @@ class _ClientTimesheetDetailsScreenState
 
                   if (snapshot.hasData) {
                     if (snapshot.data.length == 0) {
-                      return Center(child: Text('No data'));
+                      return Center(child: Text(translate('message.no_data')));
                     }
 
                     double latitude = snapshot.data[0].latitude;
@@ -423,7 +424,7 @@ class _ClientTimesheetDetailsScreenState
                         }
 
                         return FormSubmitButton(
-                          label: 'Submit',
+                          label: translate('button.submit'),
                           onPressed: () => _submitForm(
                             timesheetService,
                             _controller,

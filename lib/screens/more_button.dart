@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class MoreButton extends StatelessWidget {
   final bool isShow;
@@ -34,7 +35,7 @@ class MoreButton extends StatelessWidget {
         return _buildWrapper(
           RaisedButton(
             onPressed: onPressed,
-            child: Text('Load'),
+            child: Text(translate('button.load')),
           ),
         );
       },

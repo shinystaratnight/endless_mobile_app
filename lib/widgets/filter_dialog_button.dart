@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/widgets/filter_dialog.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class FilterDialogButton extends StatefulWidget {
   final String from;
@@ -103,17 +104,17 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
             onPressed: () {
               Navigator.of(context).pop(FilterDialogResult.Clear);
             },
-            child: Text('Clear'),
+            child: Text(translate('button.clear')),
           ),
           RaisedButton(
             onPressed: () {
               Navigator.of(context).pop(FilterDialogResult.Submit);
             },
             color: Colors.blueAccent,
-            child: Text('Submit'),
+            child: Text(translate('button.submit')),
           ),
         ],
-        title: Text('Choose Dates'),
+        title: Text(translate('dialog.choose_dates')),
         contentPadding: const EdgeInsets.all(8.0),
         titlePadding: const EdgeInsets.symmetric(
           horizontal: 8.0,

@@ -17,6 +17,7 @@ import 'package:piiprent/widgets/score_badge.dart';
 import 'package:piiprent/widgets/stars.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateProfileScreen extends StatefulWidget {
   @override
@@ -99,7 +100,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     CandidateService candidateService = Provider.of<CandidateService>(context);
 
     return ProfileGroup(
-      title: 'Personal Details',
+      title: translate('group.title.personal_details'),
       onEdit: onEdit != null ? onEdit : () {},
       canEdit: true,
       isEditing: edit,
@@ -108,7 +109,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           children: [
             Expanded(
               child: Field(
-                label: 'First name',
+                label: translate('field.first_name'),
                 initialValue: candidate.firstName,
                 readOnly: true,
               ),
@@ -118,7 +119,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             ),
             Expanded(
               child: Field(
-                label: 'Last name',
+                label: translate('field.last_name'),
                 initialValue: candidate.lastName,
                 readOnly: true,
               ),
@@ -130,7 +131,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           children: [
             Expanded(
               child: Field(
-                label: 'Height',
+                label: translate('field.height'),
                 type: TextInputType.number,
                 initialValue: candidate.height.toString(),
                 readOnly: !edit,
@@ -147,7 +148,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             ),
             Expanded(
               child: Field(
-                label: 'Weight',
+                label: translate('field.weight'),
                 initialValue: candidate.weight.toString(),
                 readOnly: !edit,
                 validator: numberValidator,
@@ -162,14 +163,14 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         ),
         Container(
           child: Field(
-            label: 'BMI',
+            label: translate('field.bmi'),
             initialValue: candidate.bmi,
             readOnly: true,
           ),
         ),
         Container(
           child: Field(
-            label: 'Birthday',
+            label: translate('field.birthday'),
             initialValue: DateFormat('dd/MM/yyyy').format(candidate.birthday),
             readOnly: true,
           ),
@@ -181,7 +182,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   candidateService,
                   candidate,
                 ),
-                label: 'Update',
+                label: translate('button.update'),
               )
             : SizedBox(),
       ],
@@ -190,26 +191,26 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
 
   Widget _buildContactDetails(Candidate candidate) {
     return ProfileGroup(
-      title: 'Contact Details',
+      title: translate('group.title.contact_details'),
       onEdit: () {},
       content: [
         Container(
           child: Field(
-            label: 'Email',
+            label: translate('field.email'),
             initialValue: candidate.email,
             readOnly: true,
           ),
         ),
         Container(
           child: Field(
-            label: 'Phone',
+            label: translate('field.phone'),
             initialValue: candidate.phone,
             readOnly: true,
           ),
         ),
         Container(
           child: Field(
-            label: 'Address',
+            label: translate('field.address'),
             initialValue: candidate.address,
             readOnly: true,
           ),
@@ -220,7 +221,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
 
   Widget _buildSkills(List<CandidateSkill> skills) {
     return ProfileGroup(
-      title: 'Skills',
+      title: translate('group.title.skills'),
       onEdit: () {},
       canEdit: false,
       content: skills
@@ -241,13 +242,13 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
 
   Widget _buildScore(AverageScores averageScores) {
     return ProfileGroup(
-      title: 'Score',
+      title: translate('group.title.score'),
       content: [
         _listItem(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Average test'),
+              Text(translate('skill.average_test')),
               Stars(
                 active: averageScores.recruitmentScore,
               )
@@ -258,7 +259,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Client feedback'),
+              Text(translate('skill.client_feedback')),
               Stars(
                 active: averageScores.clientFeedback,
               )
@@ -269,7 +270,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Reliability'),
+              Text(translate('skill.reliability')),
               Stars(
                 active: averageScores.reliability,
               )
@@ -280,7 +281,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Loyality'),
+              Text(translate('skill.loyality')),
               Stars(
                 active: averageScores.loyality,
               )
@@ -291,7 +292,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Everage skill'),
+              Text(translate('skill.avarage_skill')),
               Stars(
                 active: averageScores.skillScore,
               )
@@ -304,14 +305,16 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
 
   Widget _buildResidency(Candidate candidate) {
     return ProfileGroup(
-      title: 'Residency',
+      title: translate('group.title.residency'),
       content: [
         Row(
           children: [
             Expanded(
               child: Field(
-                label: 'Residency status',
-                initialValue: candidate.residency != null ? Residency[candidate.residency] : '',
+                label: translate('field.residency_status'),
+                initialValue: candidate.residency != null
+                    ? Residency[candidate.residency]
+                    : '',
                 readOnly: true,
               ),
             ),
@@ -320,43 +323,46 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             ),
             Expanded(
               child: Field(
-                label: 'Nationality',
+                label: translate('field.nationality'),
                 initialValue: candidate.nationality,
                 readOnly: true,
               ),
             ),
           ],
         ),
-        candidate.residency == 3 ? Row(
-          children: [
-            Expanded(
-              child: Field(
-                label: 'Visa type',
-                initialValue: candidate.visaType,
-                readOnly: true,
-              ),
-            ),
-            SizedBox(
-              width: 8.0,
-            ),
-            Expanded(
-              child: Field(
-                label: 'Visa expire date',
-                initialValue: candidate.visaExpiryDate != null
-                    ? DateFormat('dd/MM/yyyy').format(candidate.visaExpiryDate)
-                    : '',
-                readOnly: true,
-              ),
-            ),
-          ],
-        ) : SizedBox(),
+        candidate.residency == 3
+            ? Row(
+                children: [
+                  Expanded(
+                    child: Field(
+                      label: translate('field.visa_type'),
+                      initialValue: candidate.visaType,
+                      readOnly: true,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Expanded(
+                    child: Field(
+                      label: translate('field.visa_expire_date'),
+                      initialValue: candidate.visaExpiryDate != null
+                          ? DateFormat('dd/MM/yyyy')
+                              .format(candidate.visaExpiryDate)
+                          : '',
+                      readOnly: true,
+                    ),
+                  ),
+                ],
+              )
+            : SizedBox(),
       ],
     );
   }
 
   Widget _buildTags(List<CandidateTag> tags) {
     return ProfileGroup(
-      title: 'Tags',
+      title: translate('group.title.tags'),
       content: tags
           .map(
             (e) => _listItem(
@@ -378,7 +384,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(
-      appBar: getCandidateAppBar('Profile', context),
+      appBar: getCandidateAppBar(translate('page.title.profile'), context),
       body: FutureBuilder(
         future: candidateService.getCandidate(loginService.user.id),
         builder: (context, snapshot) {
@@ -508,7 +514,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       );
                     },
                     child: Text(
-                      'Change Password',
+                      translate('button.change_password'),
                       style: TextStyle(fontSize: 16),
                     ),
                   ),

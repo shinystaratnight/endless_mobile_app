@@ -7,6 +7,7 @@ import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   @override
@@ -66,7 +67,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Change Password')),
+      appBar: AppBar(title: Text(translate('page.title.change_password'))),
       body: SingleChildScrollView(
         child: PageContainer(
           child: Form(
@@ -74,21 +75,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             child: Column(
               children: [
                 Field(
-                  label: 'Current password',
+                  label: translate('field.current_password'),
                   obscureText: true,
                   onSaved: (String value) {
                     _oldPass = value;
                   },
                 ),
                 Field(
-                  label: 'New password',
+                  label: translate('field.new_password'),
                   obscureText: true,
                   onSaved: (String value) {
                     _newPass = value;
                   },
                 ),
                 Field(
-                  label: 'Verify password',
+                  label: translate('field.verify_pssword'),
                   obscureText: true,
                   onSaved: (String value) {
                     _confirmPass = value;
@@ -110,7 +111,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   onPressed: () {
                     _onSubmit(contactService, loginService.user.userId);
                   },
-                  label: 'Submit',
+                  label: translate('button.submit'),
                 ),
               ],
             ),

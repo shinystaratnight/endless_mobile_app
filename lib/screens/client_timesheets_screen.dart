@@ -8,6 +8,7 @@ import 'package:piiprent/widgets/filter_dialog_button.dart';
 import 'package:piiprent/widgets/list_page.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientTimesheetsScreen extends StatelessWidget {
   final StreamController _updateStream = StreamController.broadcast();
@@ -21,7 +22,7 @@ class ClientTimesheetsScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Timesheets'),
+          title: Text(translate('page.title.timesheets')),
           bottom: TabBar(
             tabs: [
               Tab(
@@ -31,7 +32,8 @@ class ClientTimesheetsScreen extends StatelessWidget {
                     Icon(Icons.assignment),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('Unapproved'),
+                      child:
+                          Text(translate('page.title.timesheets.unapproved')),
                     )
                   ],
                 ),
@@ -43,7 +45,7 @@ class ClientTimesheetsScreen extends StatelessWidget {
                     Icon(Icons.query_builder),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('History'),
+                      child: Text(translate('page.title.timesheets.history')),
                     )
                   ],
                 ),

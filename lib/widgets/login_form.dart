@@ -10,6 +10,7 @@ import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class LoginForm extends StatefulWidget {
   final Function onRegister;
@@ -91,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           children: [
             Field(
-              label: 'Email Address',
+              label: translate('field.email'),
               type: TextInputType.emailAddress,
               validator: emailValidator,
               onSaved: (String value) {
@@ -99,7 +100,7 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             Field(
-              label: 'Password',
+              label: translate('field.password'),
               obscureText: true,
               onSaved: (String value) {
                 _password = value;
@@ -112,7 +113,7 @@ class _LoginFormState extends State<LoginForm> {
             FormSubmitButton(
               disabled: _fetching,
               onPressed: () => _onLogin(loginService, contactService),
-              label: 'Login',
+              label: translate('button.login'),
             ),
             SizedBox(
               height: 10,
@@ -120,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
             GestureDetector(
               onTap: () => Navigator.pushNamed(context, '/forgot_password'),
               child: Text(
-                'Forgot Password?',
+                translate('link.forgot_password'),
                 style: TextStyle(color: Colors.blue),
               ),
             ),
@@ -130,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't have an account,",
+                Text(translate('text.login_page'),
                     style: TextStyle(color: Colors.grey[700])),
                 SizedBox(
                   width: 5,
@@ -138,7 +139,7 @@ class _LoginFormState extends State<LoginForm> {
                 GestureDetector(
                   onTap: widget.onRegister,
                   child: Text(
-                    'Register here!',
+                    translate('link.register_here'),
                     style: TextStyle(color: Colors.blueAccent),
                   ),
                 ),

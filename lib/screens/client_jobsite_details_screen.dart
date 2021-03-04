@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/jobsite_model.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/group_title.dart';
@@ -59,7 +60,7 @@ class _ClientJobsiteDetailsScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Jobsite'),
+        title: Text(translate('page.title.jobsite')),
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
@@ -102,78 +103,78 @@ class _ClientJobsiteDetailsScreenState
               // TODO: Add tags
               // GroupTitle(title: 'Tags'),
               GroupTitle(
-                title: 'Primary Contact',
+                title: translate('group.title.primary_contact'),
               ),
               SizedBox(
                 height: 15.0,
               ),
               DetailsRecord(
-                label: 'Name',
+                label: translate('field.name'),
                 value: widget.jobsite.primaryContact.str,
               ),
               DetailsRecord(
-                label: 'Job Title',
+                label: translate('field.job_title'),
                 value: widget.jobsite.primaryContactJobTitle,
               ),
               DetailsRecord(
-                label: 'Phone number',
+                label: translate('field.phone'),
                 value: widget.jobsite.primaryContact.phoneMobile,
               ),
               SizedBox(
                 height: 15.0,
               ),
               GroupTitle(
-                title: 'Jobsite information',
+                title: translate('group.title.jobsite_information'),
               ),
               SizedBox(
                 height: 15.0,
               ),
               DetailsRecord(
-                label: 'Industry',
+                label: translate('field.industry'),
                 value: widget.jobsite.industry,
               ),
               DetailsRecord(
-                label: 'Start Date',
+                label: translate('field.start_date'),
                 value: widget.jobsite.startDate != null
                     ? DateFormat('dd/MM/yyyy').format(widget.jobsite.startDate)
                     : '',
               ),
               DetailsRecord(
-                label: 'End date',
+                label: translate('field.end_date'),
                 value: widget.jobsite.endDate != null
                     ? DateFormat.jm().format(widget.jobsite.endDate)
                     : '',
               ),
               DetailsRecord(
-                label: 'Note',
+                label: translate('field.note'),
                 value: widget.jobsite.notes,
               ),
               SizedBox(
                 height: 15.0,
               ),
               GroupTitle(
-                title: 'Portfolio Manager',
+                title: translate('group.title.portfolio_manager'),
               ),
               SizedBox(
                 height: 15.0,
               ),
               DetailsRecord(
-                label: 'Name',
+                label: translate('field.name'),
                 value: widget.jobsite.portfolioManager.str,
               ),
               DetailsRecord(
-                label: 'Job Title',
+                label: translate('field.job_title'),
                 value: widget.jobsite.portfolioManagerJobTitle,
               ),
               DetailsRecord(
-                label: 'Phone number',
+                label: translate('field.phone'),
                 value: widget.jobsite.portfolioManager.phoneMobile,
               ),
               SizedBox(
                 height: 15.0,
               ),
               GroupTitle(
-                title: 'Map',
+                title: translate('group.title.map'),
               ),
               SizedBox(
                 height: 15.0,

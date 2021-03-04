@@ -8,6 +8,7 @@ import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class JobCard extends StatefulWidget {
   final Function update;
@@ -176,7 +177,7 @@ class _JobCardState extends State<JobCard> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 FormSubmitButton(
-                                  label: 'Accept',
+                                  label: translate('button.accept'),
                                   onPressed: () => _acceptJobOffer(
                                     jobOfferService,
                                     notificationService,
@@ -186,7 +187,7 @@ class _JobCardState extends State<JobCard> {
                                   horizontalPadding: 50,
                                 ),
                                 FormSubmitButton(
-                                  label: 'Reject',
+                                  label: translate('button.reject'),
                                   onPressed: () => _declineJobOffer(
                                     jobOfferService,
                                     notificationService,

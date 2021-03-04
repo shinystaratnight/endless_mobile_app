@@ -5,6 +5,7 @@ import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 enum CalendarType {
   Canddate,
@@ -198,7 +199,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                             Navigator.of(context).pop(CarrrierStatus.Available);
                           }
                         : null,
-                    child: Text('Available'),
+                    child: Text(translate('button.available')),
                   ),
                   RaisedButton(
                     onPressed: holidays.length == 0
@@ -208,10 +209,12 @@ class _HomeCalendarState extends State<HomeCalendar> {
                           }
                         : null,
                     color: Colors.blueAccent,
-                    child: Text('Unavailable'),
+                    child: Text(translate('button.unavailable')),
                   ),
                 ],
-                title: Text(id != null ? 'Update' : 'Confirm?'),
+                title: Text(id != null
+                    ? translate('dialog.update')
+                    : translate('dialog.confirm')),
                 contentPadding: const EdgeInsets.all(8.0),
                 titlePadding: const EdgeInsets.symmetric(
                   horizontal: 8.0,
@@ -261,11 +264,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
     var data = [
       {
         'color': Colors.green[400],
-        'label': 'Fulfilled',
+        'label': translate('group.title.fulfilled'),
       },
       {
         'color': Colors.red[400],
-        'label': 'Unfulfilled',
+        'label': translate('group.title.unfulfilled'),
       }
     ];
 
@@ -298,11 +301,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
     var data = [
       {
         'color': Colors.green[400],
-        'label': 'Available',
+        'label': translate('button.available'),
       },
       {
         'color': Colors.red[400],
-        'label': 'Unavailable',
+        'label': translate('button.unavailable'),
       }
     ];
 
@@ -370,7 +373,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
           alignment: Alignment.center,
           decoration: BoxDecoration(color: Colors.blue),
           child: Text(
-            'Shifts',
+            translate('table.shifts'),
             style: TextStyle(
               fontSize: 16.0,
               color: Colors.white,
@@ -391,10 +394,10 @@ class _HomeCalendarState extends State<HomeCalendar> {
               return TableRow(
                 decoration: BoxDecoration(color: Colors.grey[200]),
                 children: [
-                  _buildTableCell('Jobsite'),
-                  _buildTableCell('Start Time'),
-                  _buildTableCell('Workers'),
-                  _buildTableCell('Status'),
+                  _buildTableCell(translate('field.jobsite')),
+                  _buildTableCell(translate('field.start_time')),
+                  _buildTableCell(translate('table.workers')),
+                  _buildTableCell(translate('timesheet.status')),
                 ],
               );
             }
@@ -405,7 +408,9 @@ class _HomeCalendarState extends State<HomeCalendar> {
                 _buildTableCell(DateFormat.jm().format(shift.datetime)),
                 _buildTableCell(shift.workers.toString()),
                 _buildTableCell(
-                  shift.isFulfilled ? 'Fulfilled' : 'Unfulfilled',
+                  shift.isFulfilled
+                      ? translate('group.title.fulfilled')
+                      : translate('group.title.unfulfilled'),
                   shift.isFulfilled ? Colors.green[400] : Colors.red[400],
                 ),
               ],

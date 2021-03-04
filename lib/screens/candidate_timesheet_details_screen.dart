@@ -8,6 +8,7 @@ import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateTimesheetDetailsScreen extends StatefulWidget {
   final String position;
@@ -130,7 +131,7 @@ class _CandidateTimesheetDetailsScreenState
           Padding(
             padding: const EdgeInsets.only(left: 4.0),
             child: Text(
-              'Change',
+              translate('button.change'),
               style: TextStyle(
                 color: Colors.blue,
                 fontSize: 14.0,
@@ -212,13 +213,13 @@ class _CandidateTimesheetDetailsScreenState
               SizedBox(
                 height: 15.0,
               ),
-              GroupTitle(title: 'Times'),
+              GroupTitle(title: translate('group.title.times')),
               DetailsRecord(
-                label: 'Shift Date',
+                label: translate('field.shift_date'),
                 value: DateFormat('dd/MM/yyyy').format(widget.shiftDate),
               ),
               DetailsRecord(
-                label: 'Shift Start Time',
+                label: translate('field.shift_start_time'),
                 value: DateFormat.jm().format(_times[_shiftStart]),
                 button: widget.status == 4 && !_updated
                     ? _buildChangeButton(
@@ -229,7 +230,7 @@ class _CandidateTimesheetDetailsScreenState
               ),
               _withBreak || widget.status != 4
                   ? DetailsRecord(
-                      label: 'Break Start Time',
+                      label: translate('field.break_start_time'),
                       value: DateFormat.jm().format(_times[_breakStart]),
                       button: widget.status == 4 && !_updated
                           ? _buildChangeButton(
@@ -241,7 +242,7 @@ class _CandidateTimesheetDetailsScreenState
                   : SizedBox(),
               _withBreak || widget.status != 4
                   ? DetailsRecord(
-                      label: 'Break End Time',
+                      label: translate('field.break_end_time'),
                       value: DateFormat.jm().format(_times[_breakEnd]),
                       button: widget.status == 4 && !_updated
                           ? _buildChangeButton(
@@ -252,7 +253,7 @@ class _CandidateTimesheetDetailsScreenState
                     )
                   : SizedBox(),
               DetailsRecord(
-                label: 'Shift End Time',
+                label: translate('field.shift_end_time'),
                 value: DateFormat.jm().format(_times[_shiftEnd]),
                 button: widget.status == 4 && !_updated
                     ? _buildChangeButton(
@@ -265,7 +266,7 @@ class _CandidateTimesheetDetailsScreenState
                   ? Row(
                       children: [
                         Container(
-                          child: Text('Break'),
+                          child: Text(translate('timesheet.break')),
                           margin: const EdgeInsets.only(left: 8.0),
                         ),
                         Switch(
@@ -279,17 +280,17 @@ class _CandidateTimesheetDetailsScreenState
                       ],
                     )
                   : SizedBox(),
-              GroupTitle(title: 'Job Information'),
+              GroupTitle(title: translate('group.title.job_information')),
               DetailsRecord(
-                label: 'Jobsite',
+                label: translate('field.jobsite'),
                 value: widget.jobsite,
               ),
               DetailsRecord(
-                label: 'Site Manager',
+                label: translate('field.site_manager'),
                 value: widget.clientContact,
               ),
               DetailsRecord(
-                label: 'Address',
+                label: translate('field.address'),
                 value: widget.address,
               ),
               widget.status == 1 && !_updated
@@ -299,7 +300,7 @@ class _CandidateTimesheetDetailsScreenState
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Center(
                             child: Text(
-                              'Confirm if you are going to work',
+                              translate('message.pre_shift_check'),
                               style: TextStyle(
                                 color: Colors.grey,
                               ),
@@ -310,7 +311,7 @@ class _CandidateTimesheetDetailsScreenState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FormSubmitButton(
-                              label: 'Decline',
+                              label: translate('button.decline'),
                               onPressed: () =>
                                   _declinePreShiftCheck(timesheetService),
                               disabled: _fetching,
@@ -318,7 +319,7 @@ class _CandidateTimesheetDetailsScreenState
                               horizontalPadding: 50,
                             ),
                             FormSubmitButton(
-                              label: 'Accept',
+                              label: translate('button.accept'),
                               onPressed: () =>
                                   _acceptPreShiftCheck(timesheetService),
                               disabled: _fetching,
@@ -332,7 +333,7 @@ class _CandidateTimesheetDetailsScreenState
                   : Container(),
               widget.status == 4 && !_updated
                   ? FormSubmitButton(
-                      label: 'Submit',
+                      label: translate('button.submit'),
                       onPressed: () => _submitForm(timesheetService),
                       disabled: _fetching,
                     )

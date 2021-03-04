@@ -4,6 +4,7 @@ import 'package:piiprent/models/jobsite_model.dart';
 import 'package:piiprent/screens/client_jobsite_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class JobsiteCard extends StatelessWidget {
   final Function update;
@@ -61,7 +62,7 @@ class JobsiteCard extends StatelessWidget {
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Start Date'),
+                  Text(translate('field.start_date')),
                   Text(jobsite.startDate != null
                       ? DateFormat('dd/MM/yyyy').format(jobsite.startDate)
                       : ''),
@@ -73,7 +74,7 @@ class JobsiteCard extends StatelessWidget {
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('End Date'),
+                  Text(translate('field.end_date')),
                   Text(jobsite.endDate != null
                       ? DateFormat.jm().format(jobsite.endDate)
                       : ''),

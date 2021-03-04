@@ -3,6 +3,7 @@ import 'package:piiprent/models/job_model.dart';
 import 'package:piiprent/screens/client_job_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientJobCard extends StatelessWidget {
   final Job job;
@@ -53,7 +54,7 @@ class ClientJobCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text('Status:'),
+          Text(translate('timesheet.status')),
           SizedBox(
             width: 4.0,
           ),
@@ -152,7 +153,7 @@ class ClientJobCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          'Workers',
+                          translate('table.workers'),
                           style: TextStyle(
                             fontSize: 14.0,
                             color: Colors.white,
@@ -186,7 +187,7 @@ class ClientJobCard extends StatelessWidget {
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Position'),
+                  Text(translate('timesheet.position')),
                   Text(job.translations['position']['en']),
                 ],
               ),
