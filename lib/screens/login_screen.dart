@@ -4,6 +4,7 @@ import 'package:piiprent/widgets/login_form.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:piiprent/widgets/register_form.dart';
 import 'package:provider/provider.dart';
+import 'package:piiprent/widgets/language-select.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -53,6 +54,10 @@ class _LoginScreenState extends State<LoginScreen> {
               return Container(
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: LanguageSelect(),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 45.0),
                       child: Image.asset('images/company_banner.png'),

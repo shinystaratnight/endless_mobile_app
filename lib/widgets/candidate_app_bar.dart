@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/screens/candidate_notification_screen.dart';
+import 'package:piiprent/widgets/language-select.dart';
 
 Widget getCandidateAppBar(
   String title,
@@ -14,6 +15,11 @@ Widget getCandidateAppBar(
           ? Stack(
               alignment: Alignment.center,
               children: [
+                IconButton(
+                  icon: Icon(Icons.language),
+                  iconSize: 24,
+                  onPressed: () => LanguageSelect(),
+                ),
                 IconButton(
                   iconSize: 24,
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
