@@ -51,49 +51,64 @@ class LoginService {
 
       return _user.type;
     } catch (e) {
-      throw e;
+      if (e == null) {
+        throw 'Something went wrong';
+      }
+
+      String message = e['message'];
+
+      if (message == null) {
+        throw 'Something went wrong';
+      }
+
+      throw message;
     }
   }
 
   Future<RoleType> getUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String authEncoded = (prefs.getString('auth') ?? '');
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String authEncoded = (prefs.getString('auth') ?? '');
 
-    if (authEncoded != '') {
-      Auth auth = Auth.fromJson(json.decode(authEncoded));
-      var payload = parseJwtPayLoad(auth.access_token_jwt);
-      DateTime expireDateTime =
-          DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000);
+      if (authEncoded != '') {
+        Auth auth = Auth.fromJson(json.decode(authEncoded));
+        var payload = parseJwtPayLoad(auth.access_token_jwt);
+        DateTime expireDateTime =
+            DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000);
 
-      if (DateTime.now().isAfter(expireDateTime)) {
-        var res = await refreshToken(auth);
+        if (DateTime.now().isAfter(expireDateTime)) {
+          var res = await refreshToken(auth);
 
-        if (res != null) {
-          auth = Auth.fromJson(json.decode(utf8.decode(res.bodyBytes)));
-          apiService.auth = auth;
+          if (res != null) {
+            auth = Auth.fromJson(json.decode(utf8.decode(res.bodyBytes)));
+            apiService.auth = auth;
 
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('auth', res.body);
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('auth', res.body);
 
-          var payload = parseJwtPayLoad(auth.access_token_jwt);
-          _user = User.fromTokenPayload(payload);
+            var payload = parseJwtPayLoad(auth.access_token_jwt);
+            _user = User.fromTokenPayload(payload);
+          } else {
+            await logout();
+            return null;
+          }
         } else {
-          await logout();
-          return null;
+          apiService.auth = auth;
+          _user = User.fromTokenPayload(payload);
         }
+
+        if (user.type == RoleType.Client) {
+          List<Role> roles = await contactService.getRoles();
+          roles[0].active = true;
+          user.roles = roles;
+        }
+
+        return _user.type;
       } else {
-        apiService.auth = auth;
-        _user = User.fromTokenPayload(payload);
+        return null;
       }
-
-      if (user.type == RoleType.Client) {
-        List<Role> roles = await contactService.getRoles();
-        roles[0].active = true;
-        user.roles = roles;
-      }
-
-      return _user.type;
-    } else {
+    } catch (e) {
+      await logout();
       return null;
     }
   }

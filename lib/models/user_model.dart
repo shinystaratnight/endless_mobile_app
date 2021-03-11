@@ -22,6 +22,10 @@ class User {
   });
 
   factory User.fromTokenPayload(Map<String, dynamic> payload) {
+    if (payload['contact'] == null) {
+      throw 'Error';
+    }
+
     var contact = payload['contact'][0];
 
     return User(
