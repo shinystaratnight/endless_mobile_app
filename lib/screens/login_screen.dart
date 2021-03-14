@@ -5,6 +5,7 @@ import 'package:piiprent/widgets/page_container.dart';
 import 'package:piiprent/widgets/register_form.dart';
 import 'package:provider/provider.dart';
 import 'package:piiprent/widgets/language-select.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -76,12 +77,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       child: Row(
                         children: [
-                          _buildPageButton(_activeForm == 'login', 'Login',
+                          _buildPageButton(
+                              _activeForm == 'login',
+                              translate('button.login'),
                               () => setState(() => _activeForm = 'login')),
                           SizedBox(
                             width: 10,
                           ),
-                          _buildPageButton(_activeForm == 'register', 'Sign Up',
+                          _buildPageButton(
+                              _activeForm == 'register',
+                              translate('button.sign_up'),
                               () => setState(() => _activeForm = 'register'))
                         ],
                       ),
