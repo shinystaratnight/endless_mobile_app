@@ -174,7 +174,7 @@ class _JobCardState extends State<JobCard> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 FormSubmitButton(
                                   label: translate('button.accept'),
@@ -184,7 +184,7 @@ class _JobCardState extends State<JobCard> {
                                   ),
                                   disabled: _fetching,
                                   color: Colors.green[400],
-                                  horizontalPadding: 50,
+                                  horizontalPadding: 20,
                                 ),
                                 FormSubmitButton(
                                   label: translate('button.reject'),
@@ -194,7 +194,7 @@ class _JobCardState extends State<JobCard> {
                                   ),
                                   disabled: _fetching,
                                   color: Colors.red[400],
-                                  horizontalPadding: 50,
+                                  horizontalPadding: 20,
                                 ),
                               ],
                             ),

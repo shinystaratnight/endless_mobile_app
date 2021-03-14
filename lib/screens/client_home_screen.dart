@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/services/login_service.dart';
+import 'package:piiprent/widgets/client_app_bar.dart';
 import 'package:piiprent/widgets/client_drawer.dart';
 import 'package:piiprent/widgets/home_calendar.dart';
 import 'package:piiprent/widgets/home_screen_button.dart';
@@ -21,7 +22,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
       drawer: ClientDrawer(
         dashboard: true,
       ),
-      appBar: AppBar(title: Text(translate('page.title.dashboard'))),
+      appBar: getClientAppBar(translate('page.title.dashboard'), context),
       body: SingleChildScrollView(
         child: PageContainer(
           child: Column(
@@ -37,7 +38,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                           color: Colors.blue[700],
                         ),
                         path: '/client_profile',
-                        text: 'Profile',
+                        text: translate('page.title.profile'),
                       )),
                   Expanded(
                     flex: 1,
@@ -48,7 +49,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         color: Colors.orange[700],
                       ),
                       path: '/client_jobsites',
-                      text: 'Jobsites',
+                      text: translate('page.title.jobsites'),
                     ),
                   ),
                 ],
@@ -64,7 +65,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         color: Colors.amber[700],
                       ),
                       path: '/client_jobs',
-                      text: 'Jobs',
+                      text: translate('page.title.jobs'),
                     ),
                   ),
                   Expanded(
@@ -76,7 +77,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         color: Colors.green[700],
                       ),
                       path: '/client_timesheets',
-                      text: 'Timesheets',
+                      text: translate('page.title.timesheets'),
                     ),
                   )
                 ],

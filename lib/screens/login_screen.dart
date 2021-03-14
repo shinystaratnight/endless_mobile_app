@@ -54,9 +54,12 @@ class _LoginScreenState extends State<LoginScreen> {
               return Container(
                 child: Column(
                   children: [
-                    Padding(
+                    Container(
+                      alignment: Alignment.bottomRight,
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: LanguageSelect(),
+                      child: LanguageSelect(
+                        color: Colors.grey[500],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 45.0),

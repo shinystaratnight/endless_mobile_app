@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:flutter/material.dart';
 import 'package:piiprent/models/job_offer_model.dart';
@@ -18,7 +19,7 @@ class CandidateJobsScreen extends StatelessWidget {
     JobService jobService = Provider.of<JobService>(context);
 
     return Scaffold(
-      appBar: getCandidateAppBar('Jobs', context),
+      appBar: getCandidateAppBar(translate('page.title.jobs'), context),
       drawer: CandidateDrawer(),
       floatingActionButton: FilterDialogButton(
         onClose: (data) {

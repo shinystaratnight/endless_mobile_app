@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/jobsite_model.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:piiprent/widgets/client_app_bar.dart';
 
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/group_title.dart';
@@ -59,8 +60,9 @@ class _ClientJobsiteDetailsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(translate('page.title.jobsite')),
+      appBar: getClientAppBar(
+        translate('page.title.jobsite'),
+        context,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(

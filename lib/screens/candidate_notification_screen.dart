@@ -19,32 +19,33 @@ class CandidateNotificationScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: getCandidateAppBar('Notifications', context,
-            tabs: [
-              Tab(
-                child: Row(
-                  children: [
-                    Icon(Icons.local_offer),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(translate('page.title.job_offers')),
-                    )
-                  ],
-                ),
-              ),
-              Tab(
-                child: Row(
-                  children: [
-                    Icon(Icons.query_builder),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('page.title.timesheets'),
-                    )
-                  ],
-                ),
-              ),
-            ],
-            showNotification: false),
+        appBar:
+            getCandidateAppBar(translate('page.title.notifications'), context,
+                tabs: [
+                  Tab(
+                    child: Row(
+                      children: [
+                        Icon(Icons.local_offer),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(translate('page.title.job_offers')),
+                        )
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      children: [
+                        Icon(Icons.query_builder),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(translate('page.title.timesheets')),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+                showNotification: false),
         body: TabBarView(
           children: [
             ListPage<JobOffer>(

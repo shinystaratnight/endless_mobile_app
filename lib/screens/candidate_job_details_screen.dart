@@ -62,7 +62,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getCandidateAppBar('Job', context),
+      appBar: getCandidateAppBar(translate('page.title.job'), context),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(16.0),

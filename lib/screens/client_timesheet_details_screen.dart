@@ -8,6 +8,7 @@ import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/models/tracking_model.dart';
 import 'package:piiprent/services/timesheet_service.dart';
+import 'package:piiprent/widgets/client_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/evaluate.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
@@ -235,8 +236,9 @@ class _ClientTimesheetDetailsScreenState
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(translate('page.title.timesheet')),
+      appBar: getClientAppBar(
+        translate('page.title.timesheet'),
+        context,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(

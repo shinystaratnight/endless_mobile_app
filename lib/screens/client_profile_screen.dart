@@ -3,6 +3,7 @@ import 'package:piiprent/models/client_contact_model.dart';
 import 'package:piiprent/screens/change_password_screen.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
+import 'package:piiprent/widgets/client_app_bar.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:piiprent/widgets/profile_group.dart';
@@ -39,7 +40,7 @@ class ClientProfileScreen extends StatelessWidget {
     LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(translate('page.title.profile'))),
+      appBar: getClientAppBar(translate('page.title.profile'), context),
       body: FutureBuilder(
         future: contactService.getCompanyContactDetails(loginService.user.id),
         builder: (BuildContext context, AsyncSnapshot snapshot) {

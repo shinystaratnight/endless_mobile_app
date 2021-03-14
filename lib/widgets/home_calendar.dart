@@ -285,7 +285,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                       width: 8.0,
                     ),
                     Text(
-                      el['label'],
+                      translate(el['label']),
                       style: TextStyle(fontSize: 16.0),
                     )
                   ],
@@ -301,11 +301,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
     var data = [
       {
         'color': Colors.green[400],
-        'label': translate('button.available'),
+        'label': 'button.available',
       },
       {
         'color': Colors.red[400],
-        'label': translate('button.unavailable'),
+        'label': 'button.unavailable',
       }
     ];
 
@@ -322,7 +322,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                       width: 8.0,
                     ),
                     Text(
-                      el['label'],
+                      translate(el['label']),
                       style: TextStyle(fontSize: 16.0),
                     )
                   ],

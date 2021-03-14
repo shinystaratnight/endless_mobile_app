@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
+import 'package:piiprent/widgets/client_app_bar.dart';
 import 'package:piiprent/widgets/client_drawer.dart';
 import 'package:piiprent/widgets/client_timesheet_card.dart';
 import 'package:piiprent/widgets/filter_dialog_button.dart';
@@ -21,37 +22,35 @@ class ClientTimesheetsScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(translate('page.title.timesheets')),
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.assignment),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child:
-                          Text(translate('page.title.timesheets.unapproved')),
-                    )
-                  ],
-                ),
+        appBar: getClientAppBar(
+          translate('page.title.timesheets'),
+          context,
+          tabs: [
+            Tab(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.assignment),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(translate('page.title.timesheets.unapproved')),
+                  )
+                ],
               ),
-              Tab(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.query_builder),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(translate('page.title.timesheets.history')),
-                    )
-                  ],
-                ),
+            ),
+            Tab(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.query_builder),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(translate('page.title.timesheets.history')),
+                  )
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         drawer: ClientDrawer(),
         floatingActionButton: FilterDialogButton(

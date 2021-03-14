@@ -11,15 +11,11 @@ Widget getCandidateAppBar(
 }) {
   return AppBar(
     actions: [
+      LanguageSelect(),
       showNotification
           ? Stack(
               alignment: Alignment.center,
               children: [
-                IconButton(
-                  icon: Icon(Icons.language),
-                  iconSize: 24,
-                  onPressed: () => LanguageSelect(),
-                ),
                 IconButton(
                   iconSize: 24,
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(

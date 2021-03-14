@@ -6,6 +6,7 @@ import 'package:piiprent/widgets/candidate_drawer.dart';
 import 'package:piiprent/widgets/job_card.dart';
 import 'package:piiprent/widgets/list_page.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateJobOffersScreen extends StatelessWidget {
   @override
@@ -13,7 +14,7 @@ class CandidateJobOffersScreen extends StatelessWidget {
     JobOfferService jobOfferService = Provider.of<JobOfferService>(context);
 
     return Scaffold(
-      appBar: getCandidateAppBar('Job Offers', context),
+      appBar: getCandidateAppBar(translate('page.title.job_offers'), context),
       drawer: CandidateDrawer(),
       body: ListPage<JobOffer>(
         action: jobOfferService.getCandidateJobOffers,

@@ -179,7 +179,7 @@ class _CandidateTimesheetDetailsScreenState
 
     return Scaffold(
       appBar: getCandidateAppBar(
-        'Timesheet',
+        translate('page.title.timesheet'),
         context,
         showNotification: false,
         leading: Builder(

@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:background_location/background_location.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateHomeScreen extends StatefulWidget {
   @override
@@ -98,7 +99,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
 
     return Scaffold(
       drawer: CandidateDrawer(dashboard: true),
-      appBar: getCandidateAppBar('Home', context),
+      appBar: getCandidateAppBar(translate('page.title.dashboard'), context),
       body: SingleChildScrollView(
         child: PageContainer(
           child: Column(
@@ -114,7 +115,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                         color: Colors.blue[700],
                       ),
                       path: '/candidate_profile',
-                      text: 'Profile',
+                      text: translate('page.title.profile'),
                     ),
                   ),
                   Expanded(
@@ -126,7 +127,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                         color: Colors.orange[700],
                       ),
                       path: '/candidate_job_offers',
-                      text: 'Job Offers',
+                      text: translate('page.title.job_offers'),
                       stream: notificationService.jobOfferStream,
                       update: notificationService.checkJobOfferNotifications,
                     ),
@@ -144,7 +145,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                         color: Colors.amber[700],
                       ),
                       path: '/candidate_jobs',
-                      text: 'Jobs',
+                      text: translate('page.title.jobs'),
                     ),
                   ),
                   Expanded(
@@ -156,7 +157,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                         color: Colors.green[700],
                       ),
                       path: '/candidate_timesheets',
-                      text: 'Timesheets',
+                      text: translate('page.title.timesheets'),
                       stream: notificationService.timesheetStream,
                       update: notificationService.checkTimesheetNotifications,
                     ),
