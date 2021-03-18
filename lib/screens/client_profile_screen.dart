@@ -3,27 +3,29 @@ import 'package:piiprent/models/client_contact_model.dart';
 import 'package:piiprent/screens/change_password_screen.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
+import 'package:piiprent/widgets/client_app_bar.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:piiprent/widgets/profile_group.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientProfileScreen extends StatelessWidget {
   Widget _buildContactDetails(ClientContact contact) {
     return ProfileGroup(
-      title: 'Contact Details',
+      title: translate('group.title.contact_details'),
       onEdit: () {},
       content: [
         Container(
           child: Field(
-            label: 'Email',
+            label: translate('field.email'),
             initialValue: contact.email,
             readOnly: true,
           ),
         ),
         Container(
           child: Field(
-            label: 'Phone',
+            label: translate('field.phone'),
             initialValue: contact.phone,
             readOnly: true,
           ),
@@ -38,7 +40,7 @@ class ClientProfileScreen extends StatelessWidget {
     LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
+      appBar: getClientAppBar(translate('page.title.profile'), context),
       body: FutureBuilder(
         future: contactService.getCompanyContactDetails(loginService.user.id),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -117,7 +119,7 @@ class ClientProfileScreen extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      'Change Password',
+                      translate('button.change_password'),
                       style: TextStyle(fontSize: 16),
                     ),
                   ),

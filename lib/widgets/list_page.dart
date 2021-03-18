@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/screens/more_button.dart';
 import 'package:piiprent/services/list_service.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ListPage<T> extends StatefulWidget {
   final Function action;
@@ -59,7 +60,7 @@ class _ListPageState<T> extends State<ListPage<T>> {
 
           if (data.length == 0) {
             return Center(
-              child: Text('No Data'),
+              child: Text(translate('message.no_data')),
             );
           }
 
@@ -89,7 +90,7 @@ class _ListPageState<T> extends State<ListPage<T>> {
 
         if (snapshot.hasError) {
           return Container(
-            child: Text('Something went wrong!'),
+            child: Text(translate('message.has_error')),
           );
         }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class Evaluate extends StatefulWidget {
   final int score;
@@ -81,7 +82,7 @@ class _EvaluateState extends State<Evaluate> {
               ? Expanded(
                   flex: 1,
                   child: Text(
-                    'Evaluate',
+                    translate('timesheet.evaluate'),
                     style: TextStyle(fontSize: 18.0),
                   ),
                 )

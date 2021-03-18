@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/group_title.dart';
@@ -61,7 +62,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getCandidateAppBar('Job', context),
+      appBar: getCandidateAppBar(translate('page.title.job'), context),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(16.0),
@@ -89,25 +90,25 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               ),
               // TODO: Add tags
               // GroupTitle(title: 'Tags'),
-              GroupTitle(title: 'Job information'),
+              GroupTitle(title: translate('group.title.job_information')),
               SizedBox(
                 height: 15.0,
               ),
               DetailsRecord(
-                label: 'Site Supervisor',
+                label: translate('field.site_supervisor'),
                 value: widget.jobOffer.clientContact,
               ),
               DetailsRecord(
-                label: 'Shift Date',
+                label: translate('field.shift_date'),
                 value:
                     DateFormat('dd/MM/yyyy').format(widget.jobOffer.datetime),
               ),
               DetailsRecord(
-                label: 'Shift Starting Time',
+                label: translate('field.shift_starting_time'),
                 value: DateFormat.jm().format(widget.jobOffer.datetime),
               ),
               DetailsRecord(
-                label: 'Note',
+                label: translate('field.note'),
                 value: widget.jobOffer.notes,
               ),
               SizedBox(
@@ -115,7 +116,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               ),
               RaisedButton(
                 color: Colors.white,
-                child: Text('Show on map'),
+                child: Text(translate('button.show')),
                 onPressed: () async {
                   try {
                     LocationData data = await _location.getLocation();
@@ -136,7 +137,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               ),
               RaisedButton(
                 color: Colors.white,
-                child: Text('Direct me'),
+                child: Text(translate('button.direct_me')),
                 onPressed: () async {
                   final availableMaps = await MapLauncher.installedMaps;
                   print(availableMaps);

@@ -4,6 +4,7 @@ import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/screens/client_timesheet_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientTimesheetCard extends StatelessWidget {
   final Timesheet timesheet;
@@ -63,7 +64,7 @@ class ClientTimesheetCard extends StatelessWidget {
                   style: TextStyle(fontSize: 22.0, color: Colors.white),
                 ),
                 Text(
-                  'Position - ${timesheet.position}',
+                  "${translate('timesheet.position')} - ${timesheet.position}",
                   style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(
@@ -96,7 +97,7 @@ class ClientTimesheetCard extends StatelessWidget {
                     ? Container(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
-                          '(Signature required)',
+                          "(${translate('timesheet.signature_required')})",
                           style: TextStyle(color: Colors.white),
                         ),
                       )
@@ -112,7 +113,7 @@ class ClientTimesheetCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Shift Started At',
+                    translate('timesheet.shift_started_at'),
                     style: TextStyle(color: Colors.blueAccent),
                   ),
                   Row(
@@ -136,7 +137,7 @@ class ClientTimesheetCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Break',
+                    translate('timesheet.break'),
                     style: TextStyle(color: Colors.blueAccent),
                   ),
                   Row(
@@ -147,7 +148,7 @@ class ClientTimesheetCard extends StatelessWidget {
                       ),
                       SizedBox(width: 5.0),
                       Text(
-                        'to',
+                        translate('timesheet.break_to'),
                         style: TextStyle(color: Colors.blueAccent),
                       ),
                       SizedBox(width: 5.0),
@@ -166,7 +167,7 @@ class ClientTimesheetCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Shift Ended At',
+                    translate('timesheet.shift_ended_at'),
                     style: TextStyle(color: Colors.blueAccent),
                   ),
                   Row(

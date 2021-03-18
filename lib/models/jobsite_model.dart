@@ -64,8 +64,11 @@ class Jobsite {
       translations: translations,
       company: json['regular_company']['__str__'],
       address: (json['address']['__str__'] as String).replaceAll('\n', ' '),
-      portfolioManager: Contact.fromJson(portfolioManager['contact']),
-      portfolioManagerJobTitle: portfolioManager['job_title'],
+      portfolioManager: portfolioManager != null
+          ? Contact.fromJson(portfolioManager['contact'])
+          : Contact(),
+      portfolioManagerJobTitle:
+          portfolioManager != null ? portfolioManager['job_title'] : '',
       primaryContact: Contact.fromJson(primaryContact['contact']),
       primaryContactJobTitle: primaryContact['job_title'],
       startDate: json['start_date'] != null

@@ -37,7 +37,7 @@ class _HomeScreenButtonState extends State<HomeScreenButton> {
         children: [
           Container(
             margin: EdgeInsets.all(8.0),
-            padding: EdgeInsets.all(15.0),
+            padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 10.0),
             child: Row(
               children: [
                 widget.icon != null

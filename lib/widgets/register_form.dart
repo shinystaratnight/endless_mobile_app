@@ -14,6 +14,7 @@ import 'package:piiprent/widgets/form_select.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class RegisterForm extends StatefulWidget {
   final IndustryService industryService = IndustryService();
@@ -102,7 +103,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 Expanded(
                   flex: 1,
                   child: FormSelect(
-                    title: 'Title',
+                    title: translate('field.title'),
                     columns: 4,
                     options: titleOptions,
                     multiple: false,
@@ -118,7 +119,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 Expanded(
                   flex: 2,
                   child: Field(
-                    label: 'First name',
+                    label: translate('field.first_name'),
                     onSaved: (String value) {
                       _firstName = value;
                     },
@@ -127,7 +128,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 Expanded(
                   flex: 2,
                   child: Field(
-                    label: 'Last name',
+                    label: translate('field.last_name'),
                     onSaved: (String value) {
                       _lastName = value;
                     },
@@ -136,14 +137,14 @@ class _RegisterFormState extends State<RegisterForm> {
               ],
             ),
             Field(
-              label: 'Email',
+              label: translate('field.email'),
               validator: emailValidator,
               onSaved: (String value) {
                 _email = value;
               },
             ),
             Field(
-              label: 'Mobile number',
+              label: translate('field.phone'),
               initialValue: '',
               onSaved: (String value) {
                 _phone = '$_phoneCountryCode$value';
@@ -164,7 +165,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   : SizedBox(),
             ),
             Field(
-              label: 'Birthday',
+              label: translate('field.birthday'),
               datepicker: true,
               onSaved: (String value) {
                 _birthday = value;
@@ -178,7 +179,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
                   return FormSelect(
                     multiple: false,
-                    title: 'Industries',
+                    title: translate('field.industries'),
                     columns: 1,
                     onChanged: (String id) {
                       _industry = id;
@@ -218,7 +219,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       List<Skill> data = snapshot.data;
                       return FormSelect(
                         multiple: true,
-                        title: 'Skills',
+                        title: translate('field.skills'),
                         columns: 1,
                         onChanged: (List<dynamic> ids) {
                           _skills = ids;
@@ -253,7 +254,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   child: FormSubmitButton(
                     disabled: snapshot.hasData && snapshot.data,
                     onPressed: () => _register(contactService),
-                    label: 'Register',
+                    label: translate('button.register'),
                   ),
                 );
               },

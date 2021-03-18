@@ -8,6 +8,7 @@ import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class JobCard extends StatefulWidget {
   final Function update;
@@ -173,27 +174,27 @@ class _JobCardState extends State<JobCard> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 FormSubmitButton(
-                                  label: 'Accept',
+                                  label: translate('button.accept'),
                                   onPressed: () => _acceptJobOffer(
                                     jobOfferService,
                                     notificationService,
                                   ),
                                   disabled: _fetching,
                                   color: Colors.green[400],
-                                  horizontalPadding: 50,
+                                  horizontalPadding: 20,
                                 ),
                                 FormSubmitButton(
-                                  label: 'Reject',
+                                  label: translate('button.reject'),
                                   onPressed: () => _declineJobOffer(
                                     jobOfferService,
                                     notificationService,
                                   ),
                                   disabled: _fetching,
                                   color: Colors.red[400],
-                                  horizontalPadding: 50,
+                                  horizontalPadding: 20,
                                 ),
                               ],
                             ),

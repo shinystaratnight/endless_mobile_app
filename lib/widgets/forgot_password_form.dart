@@ -6,6 +6,7 @@ import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ForgotPasswordForm extends StatefulWidget {
   @override
@@ -62,7 +63,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
         child: Column(
           children: [
             Field(
-              label: 'Email',
+              label: translate('field.email'),
               validator: emailValidator,
               onSaved: (String value) {
                 _email = value;
@@ -79,7 +80,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
             FormSubmitButton(
               disabled: _fetching,
               onPressed: () => _onSubmit(contactService),
-              label: 'Submit',
+              label: translate('button.submit'),
             ),
             SizedBox(
               height: 10,
@@ -87,7 +88,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Text(
-                'Back to login',
+                translate('link.back_to_login'),
                 style: TextStyle(color: Colors.grey[700]),
               ),
             ),

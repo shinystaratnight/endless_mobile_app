@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:flutter/material.dart';
 import 'package:piiprent/models/timesheet_model.dart';
@@ -18,7 +19,7 @@ class CandidateTimesheetsScreen extends StatelessWidget {
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
 
     return Scaffold(
-      appBar: getCandidateAppBar('Timesheets', context),
+      appBar: getCandidateAppBar(translate('page.title.timesheets'), context),
       drawer: CandidateDrawer(),
       floatingActionButton: FilterDialogButton(
         onClose: (data) {

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:piiprent/models/job_model.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/services/login_service.dart';
+import 'package:piiprent/widgets/client_app_bar.dart';
 import 'package:piiprent/widgets/client_drawer.dart';
 import 'package:piiprent/widgets/client_job_card.dart';
 import 'package:piiprent/widgets/list_page.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientJobsScreen extends StatelessWidget {
   @override
@@ -14,7 +16,7 @@ class ClientJobsScreen extends StatelessWidget {
     LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Jobs')),
+      appBar: getClientAppBar(translate('page.title.jobs'), context),
       drawer: ClientDrawer(),
       body: ListPage<Job>(
         action: jobService.getClientJobs,

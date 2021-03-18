@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateDrawer extends StatelessWidget {
   final TextStyle _textStyle = TextStyle(fontSize: 18, color: Colors.blue);
@@ -22,8 +23,9 @@ class CandidateDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             FutureBuilder(
-              future:
-                  contactService.getContactPicture(loginService.user.userId,),
+              future: contactService.getContactPicture(
+                loginService.user.userId,
+              ),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 return DrawerHeader(
                   child: Center(
@@ -47,7 +49,8 @@ class CandidateDrawer extends StatelessWidget {
             ),
             !dashboard
                 ? ListTile(
-                    title: Text('Dashboard', style: _textStyle),
+                    title: Text(translate('page.title.dashboard'),
+                        style: _textStyle),
                     onTap: () =>
                         Navigator.pushNamed(context, '/candidate_home'),
                   )
@@ -58,14 +61,15 @@ class CandidateDrawer extends StatelessWidget {
                   )
                 : SizedBox(),
             ListTile(
-              title: Text('Profile', style: _textStyle),
+              title: Text(translate('page.title.profile'), style: _textStyle),
               onTap: () => Navigator.pushNamed(context, '/candidate_profile'),
             ),
             Divider(
               color: Colors.grey[300],
             ),
             ListTile(
-              title: Text('Job Offers', style: _textStyle),
+              title:
+                  Text(translate('page.title.job_offers'), style: _textStyle),
               onTap: () =>
                   Navigator.pushNamed(context, '/candidate_job_offers'),
             ),
@@ -73,14 +77,15 @@ class CandidateDrawer extends StatelessWidget {
               color: Colors.grey[300],
             ),
             ListTile(
-              title: Text('Jobs', style: _textStyle),
+              title: Text(translate('page.title.jobs'), style: _textStyle),
               onTap: () => Navigator.pushNamed(context, '/candidate_jobs'),
             ),
             Divider(
               color: Colors.grey[300],
             ),
             ListTile(
-              title: Text('Timesheets', style: _textStyle),
+              title:
+                  Text(translate('page.title.timesheets'), style: _textStyle),
               onTap: () =>
                   Navigator.pushNamed(context, '/candidate_timesheets'),
             ),
@@ -88,7 +93,7 @@ class CandidateDrawer extends StatelessWidget {
               color: Colors.grey[300],
             ),
             ListTile(
-              title: Text('Logout', style: _textStyle),
+              title: Text(translate('button.logout'), style: _textStyle),
               onTap: () => {
                 loginService
                     .logout()
