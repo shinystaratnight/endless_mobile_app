@@ -3,6 +3,7 @@ import 'package:piiprent/helpers/functions.dart';
 class Skill {
   final String id;
   final Map<String, Map<String, String>> translations;
+  final String skillName;
 
   static final requestFields = [
     'id',
@@ -12,6 +13,7 @@ class Skill {
   Skill({
     this.id,
     this.translations,
+    this.skillName,
   });
 
   factory Skill.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class Skill {
     return Skill(
       id: json['id'],
       translations: translations,
+      skillName: json['name']['id'],
     );
   }
 

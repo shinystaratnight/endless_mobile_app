@@ -21,7 +21,10 @@ import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/services/jobsite_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
+import 'package:piiprent/services/skill_activity_service.dart';
+import 'package:piiprent/services/skill_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
+import 'package:piiprent/services/worktype_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -52,6 +55,9 @@ void main() async {
         Provider<NotificationService>(create: (_) => NotificationService()),
         Provider<CompanyService>(create: (_) => CompanyService()),
         Provider<JobsiteService>(create: (_) => JobsiteService()),
+        Provider<SkillActivityService>(create: (_) => SkillActivityService()),
+        Provider<WorktypeService>(create: (_) => WorktypeService()),
+        Provider<SkillService>(create: (_) => SkillService()),
       ],
       child: LocalizedApp(delegate, MyApp()),
     ),

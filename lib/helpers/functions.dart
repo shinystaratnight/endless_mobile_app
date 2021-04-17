@@ -12,7 +12,10 @@ Map<String, String> generateTranslations(
     translations.forEach((element) {
       result.addAll({element['language']['id']: element['value']});
     });
-    result.addAll({languageMap['EN']: name});
+
+    if (result[languageMap['EN']] == null) {
+      result.addAll({languageMap['EN']: name});
+    }
   }
 
   return result;

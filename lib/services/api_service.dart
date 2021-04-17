@@ -83,6 +83,17 @@ class ApiService {
     return await http.patch(uri, headers: headers, body: bodyEncoded);
   }
 
+  Future delete({String path}) async {
+    Uri uri = _createURI(path, _emptyMap);
+    Map<String, String> headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+    _updateByToken(headers);
+
+    return await http.delete(uri, headers: headers);
+  }
+
   Uri _createURI(String path, Map<String, dynamic> params) {
     return Uri(
       scheme: 'https',

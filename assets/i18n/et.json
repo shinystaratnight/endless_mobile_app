@@ -17,6 +17,7 @@
     "page.title.timesheets.unapproved": "Kinnitamata",
     "page.title.timesheets.history": "Ajalugu",
     "page.title.job_offers": "Tööpakkumised",
+    "page.title.notifications": "Teatised",
     "skill.average_test": "Testi keskmine",
     "skill.client_feedback": "Kliendi tagasiside",
     "skill.reliability": "Töökindlus",
@@ -44,6 +45,7 @@
     "button.reject": "Lükka tagasi",
     "button.register": "Registreeri",
     "button.change_password": "Muuda salasõna",
+    "button.add": "Lisama",
     "timesheet.status": "Staatus",
     "timesheet.shift_started_at": "Vahetus algas kell",
     "timesheet.shift_ended_at": "Vahetus lõppes kell",
@@ -105,6 +107,8 @@
     "field.title": "Nimetus",
     "field.industries": "Erialad",
     "field.skills": "Oskused",
+    "field.skill_activity": "Tegevus",
+    "field.skill_activity_amount": "Kogus",
     "group.title.job_information": "Töökoha teave",
     "group.title.personal_details": "Isikuandmed",
     "group.title.contact_details": "Kontaktandmed",
@@ -120,5 +124,6 @@
     "group.title.tracking": "Jälgimine",
     "group.title.jobsite_information": "Jobsite information",
     "group.title.fulfilled": "Fulfilled",
-    "group.title.unfulfilled": "Unfulfilled"
+    "group.title.unfulfilled": "Unfulfilled",
+    "group.title.skill_activities": "Skill Activities"
 }

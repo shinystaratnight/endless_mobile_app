@@ -17,6 +17,7 @@
     "page.title.timesheets.unapproved": "Ei hyväksytty",
     "page.title.timesheets.history": "Historia",
     "page.title.job_offers": "Työtarjoukset",
+    "page.title.notifications": "Ilmoitukset",
     "skill.average_test": "Testin keskiarvo",
     "skill.client_feedback": "Asiakaspalautetta",
     "skill.reliability": "Luotettavuus",
@@ -44,6 +45,7 @@
     "button.reject": "Hylätä",
     "button.register": "Rekisteröidä",
     "button.change_password": "Vaihda salasana",
+    "button.add": "Lisätä",
     "timesheet.status": "Tila",
     "timesheet.shift_started_at": "Vuoro alkoi",
     "timesheet.shift_ended_at": "Vuoro päättyi klo",
@@ -105,6 +107,8 @@
     "field.title": "Nimiö",
     "field.industries": "Toimialat",
     "field.skills": "Taidot",
+    "field.skill_activity": "Toiminta",
+    "field.skill_activity_amount": "Määrä",
     "group.title.job_information": "Työpaikan tiedot",
     "group.title.personal_details": "Henkilökohtaiset tiedot",
     "group.title.contact_details": "Yhteystiedot",
@@ -120,5 +124,6 @@
     "group.title.tracking": "Seuranta",
     "group.title.jobsite_information": "Jobsite information",
     "group.title.fulfilled": "Fulfilled",
-    "group.title.unfulfilled": "Unfulfilled"
+    "group.title.unfulfilled": "Unfulfilled",
+    "group.title.skill_activities": "Skill Activities"
 }

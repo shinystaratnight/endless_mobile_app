@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
+import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
@@ -22,6 +24,7 @@ class CandidateTimesheetDetailsScreen extends StatefulWidget {
   final DateTime breakEnd;
   final int status;
   final String id;
+  final String positionId;
 
   CandidateTimesheetDetailsScreen({
     this.position = '',
@@ -35,6 +38,7 @@ class CandidateTimesheetDetailsScreen extends StatefulWidget {
     this.breakEnd,
     this.status,
     this.id,
+    this.positionId,
   });
 
   @override
@@ -176,6 +180,8 @@ class _CandidateTimesheetDetailsScreenState
   @override
   Widget build(BuildContext context) {
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
+    SkillActivityService skillActivityService =
+        Provider.of<SkillActivityService>(context);
 
     return Scaffold(
       appBar: getCandidateAppBar(
@@ -231,7 +237,9 @@ class _CandidateTimesheetDetailsScreenState
               _withBreak || widget.status != 4
                   ? DetailsRecord(
                       label: translate('field.break_start_time'),
-                      value: DateFormat.jm().format(_times[_breakStart]),
+                      value: _times[_breakStart] == null
+                          ? '-'
+                          : DateFormat.jm().format(_times[_breakStart]),
                       button: widget.status == 4 && !_updated
                           ? _buildChangeButton(
                               _times[_breakStart],
@@ -243,7 +251,9 @@ class _CandidateTimesheetDetailsScreenState
               _withBreak || widget.status != 4
                   ? DetailsRecord(
                       label: translate('field.break_end_time'),
-                      value: DateFormat.jm().format(_times[_breakEnd]),
+                      value: _times[_breakEnd] == null
+                          ? '-'
+                          : DateFormat.jm().format(_times[_breakEnd]),
                       button: widget.status == 4 && !_updated
                           ? _buildChangeButton(
                               _times[_breakEnd],
@@ -280,6 +290,12 @@ class _CandidateTimesheetDetailsScreenState
                       ],
                     )
                   : SizedBox(),
+              SkillActivityTable(
+                hasActions: widget.status == 4 && !_updated,
+                service: skillActivityService,
+                skill: widget.positionId,
+                timesheet: widget.id,
+              ),
               GroupTitle(title: translate('group.title.job_information')),
               DetailsRecord(
                 label: translate('field.jobsite'),

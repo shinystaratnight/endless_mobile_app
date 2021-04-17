@@ -17,6 +17,8 @@
     "page.title.timesheets.unapproved": "Unapproved",
     "page.title.timesheets.history": "History",
     "page.title.job_offers": "Job Offers",
+    "page.title.notifications": "Notifications",
+    "page.title.create_skill_activity": "Create",
     "skill.average_test": "Average test",
     "skill.client_feedback": "Client feedback",
     "skill.reliability": "Reliability",
@@ -44,6 +46,7 @@
     "button.reject": "Reject",
     "button.register": "Register",
     "button.change_password": "Change Password",
+    "button.add": "Add",
     "timesheet.status": "Status",
     "timesheet.shift_started_at": "Shift Started At",
     "timesheet.shift_ended_at": "Shift Ended At",
@@ -105,6 +108,8 @@
     "field.title": "Title",
     "field.industries": "Industries",
     "field.skills": "Skills",
+    "field.skill_activity": "Skill Activity",
+    "field.skill_activity_amount": "Amount",
     "group.title.job_information": "Job Information",
     "group.title.personal_details": "Personal Details",
     "group.title.contact_details": "Contact Details",
@@ -120,5 +125,6 @@
     "group.title.tracking": "Tracking",
     "group.title.jobsite_information": "Jobsite information",
     "group.title.fulfilled": "Fulfilled",
-    "group.title.unfulfilled": "Unfulfilled"
+    "group.title.unfulfilled": "Unfulfilled",
+    "group.title.skill_activities": "Skill Activities"
 }

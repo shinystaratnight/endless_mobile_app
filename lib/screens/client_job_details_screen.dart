@@ -107,7 +107,7 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
-                          child: Text(translate('tmessage.no_data')),
+                          child: Text(translate('message.no_data')),
                         ),
                       ),
                     ],

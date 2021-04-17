@@ -20,6 +20,7 @@ class TimesheetCard extends StatelessWidget {
   final int status;
   final String id;
   final Function update;
+  final String positionId;
 
   TimesheetCard({
     this.company,
@@ -35,6 +36,7 @@ class TimesheetCard extends StatelessWidget {
     this.status,
     this.id,
     this.update,
+    this.positionId,
   });
 
   @override
@@ -44,18 +46,18 @@ class TimesheetCard extends StatelessWidget {
         var result = await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CandidateTimesheetDetailsScreen(
-              position: position,
-              jobsite: jobsite,
-              clientContact: clientContact,
-              address: address,
-              shiftDate: shiftDate,
-              shiftStart: shiftStart,
-              shiftEnd: shiftEnd,
-              breakStart: breakStart,
-              breakEnd: breakEnd,
-              status: status,
-              id: id,
-            ),
+                position: position,
+                jobsite: jobsite,
+                clientContact: clientContact,
+                address: address,
+                shiftDate: shiftDate,
+                shiftStart: shiftStart,
+                shiftEnd: shiftEnd,
+                breakStart: breakStart,
+                breakEnd: breakEnd,
+                status: status,
+                id: id,
+                positionId: positionId),
           ),
         );
 
@@ -140,35 +142,41 @@ class TimesheetCard extends StatelessWidget {
                 ],
               ),
             ),
-            ListCardRecord(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    translate('timesheet.break'),
-                    style: TextStyle(color: Colors.blueAccent),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        DateFormat.jm().format(breakStart),
-                        style: TextStyle(color: Colors.blueAccent),
-                      ),
-                      SizedBox(width: 5.0),
-                      Text(
-                        translate('timesheet.break_to'),
-                        style: TextStyle(color: Colors.blueAccent),
-                      ),
-                      SizedBox(width: 5.0),
-                      Text(
-                        DateFormat.jm().format(breakEnd),
-                        style: TextStyle(color: Colors.blueAccent),
-                      )
-                    ],
+            breakStart != null || breakEnd != null
+                ? ListCardRecord(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          translate('timesheet.break'),
+                          style: TextStyle(color: Colors.blueAccent),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              breakStart == null
+                                  ? ''
+                                  : DateFormat.jm().format(breakStart),
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                            SizedBox(width: 5.0),
+                            Text(
+                              translate('timesheet.break_to'),
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                            SizedBox(width: 5.0),
+                            Text(
+                              breakEnd == null
+                                  ? ''
+                                  : DateFormat.jm().format(breakEnd),
+                              style: TextStyle(color: Colors.blueAccent),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   )
-                ],
-              ),
-            ),
+                : SizedBox(),
             ListCardRecord(
               last: true,
               content: Row(

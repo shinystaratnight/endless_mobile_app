@@ -1,4 +1,3 @@
-import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/functions.dart';
 import 'package:piiprent/models/average_scores_model.dart';
 import 'package:piiprent/models/candidate_skill_model.dart';
