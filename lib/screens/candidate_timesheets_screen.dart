@@ -49,6 +49,7 @@ class CandidateTimesheetsScreen extends StatelessWidget {
             id: instance.id,
             update: reset,
             positionId: instance.positionId,
+            clientId: instance.clientId,
           );
         },
       ),

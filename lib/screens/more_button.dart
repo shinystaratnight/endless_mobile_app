@@ -33,7 +33,7 @@ class MoreButton extends StatelessWidget {
         }
 
         return _buildWrapper(
-          RaisedButton(
+          ElevatedButton(
             onPressed: onPressed,
             child: Text(translate('button.load')),
           ),

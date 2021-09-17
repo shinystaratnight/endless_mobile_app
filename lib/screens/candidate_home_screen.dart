@@ -44,44 +44,36 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
     }
 
     BackgroundLocation.stopLocationService();
-    BackgroundLocation.getPermissions(
-      onGranted: () {
-        // Start location service here or do something else
-        BackgroundLocation.startLocationService();
-        BackgroundLocation.getLocationUpdates((location) async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          String activeTimesheetsEncoded =
-              (prefs.getString('activeTimesheets') ?? null);
+    BackgroundLocation.startLocationService(distanceFilter: 5.0);
+    // Start location service here or do something else
+    BackgroundLocation.getLocationUpdates((location) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String activeTimesheetsEncoded =
+          (prefs.getString('activeTimesheets') ?? null);
 
-          if (activeTimesheetsEncoded == null) {
-            return;
-          }
+      if (activeTimesheetsEncoded == null) {
+        return;
+      }
 
-          List<dynamic> activeTimeshseets =
-              json.decode(activeTimesheetsEncoded);
+      List<dynamic> activeTimeshseets = json.decode(activeTimesheetsEncoded);
 
-          print(activeTimeshseets);
+      print(activeTimeshseets);
 
-          try {
-            var activeTimesheet = activeTimeshseets.firstWhere((element) {
-              DateTime from = DateTime.parse(element['from']);
-              DateTime to = DateTime.parse(element['to']);
-              DateTime now = DateTime.now().toUtc();
+      try {
+        var activeTimesheet = activeTimeshseets.firstWhere((element) {
+          DateTime from = DateTime.parse(element['from']);
+          DateTime to = DateTime.parse(element['to']);
+          DateTime now = DateTime.now().toUtc();
 
-              return now.isAfter(from) && now.isBefore(to);
-            });
-
-            _trackingService.sendLocation(location, activeTimesheet['id']);
-          } catch (e) {
-            BackgroundLocation.stopLocationService();
-            return null;
-          }
+          return now.isAfter(from) && now.isBefore(to);
         });
-      },
-      onDenied: () {
-        // Show a message asking the user to reconsider or do something else
-      },
-    );
+
+        _trackingService.sendLocation(location, activeTimesheet['id']);
+      } catch (e) {
+        BackgroundLocation.stopLocationService();
+        return null;
+      }
+    });
   }
 
   @override

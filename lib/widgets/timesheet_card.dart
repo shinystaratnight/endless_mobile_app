@@ -21,23 +21,24 @@ class TimesheetCard extends StatelessWidget {
   final String id;
   final Function update;
   final String positionId;
+  final String clientId;
 
-  TimesheetCard({
-    this.company,
-    this.position,
-    this.clientContact,
-    this.address,
-    this.jobsite,
-    this.shiftDate,
-    this.shiftStart,
-    this.shiftEnd,
-    this.breakStart,
-    this.breakEnd,
-    this.status,
-    this.id,
-    this.update,
-    this.positionId,
-  });
+  TimesheetCard(
+      {this.company,
+      this.position,
+      this.clientContact,
+      this.address,
+      this.jobsite,
+      this.shiftDate,
+      this.shiftStart,
+      this.shiftEnd,
+      this.breakStart,
+      this.breakEnd,
+      this.status,
+      this.id,
+      this.update,
+      this.positionId,
+      this.clientId});
 
   @override
   Widget build(BuildContext context) {
@@ -46,18 +47,20 @@ class TimesheetCard extends StatelessWidget {
         var result = await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CandidateTimesheetDetailsScreen(
-                position: position,
-                jobsite: jobsite,
-                clientContact: clientContact,
-                address: address,
-                shiftDate: shiftDate,
-                shiftStart: shiftStart,
-                shiftEnd: shiftEnd,
-                breakStart: breakStart,
-                breakEnd: breakEnd,
-                status: status,
-                id: id,
-                positionId: positionId),
+              position: position,
+              jobsite: jobsite,
+              clientContact: clientContact,
+              address: address,
+              shiftDate: shiftDate,
+              shiftStart: shiftStart,
+              shiftEnd: shiftEnd,
+              breakStart: breakStart,
+              breakEnd: breakEnd,
+              status: status,
+              id: id,
+              positionId: positionId,
+              companyId: clientId,
+            ),
           ),
         );
 
@@ -186,14 +189,16 @@ class TimesheetCard extends StatelessWidget {
                     translate('timesheet.shift_ended_at'),
                     style: TextStyle(color: Colors.blueAccent),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        DateFormat.jm().format(shiftEnd),
-                        style: TextStyle(color: Colors.blueAccent),
-                      ),
-                    ],
-                  )
+                  shiftEnd != null
+                      ? Row(
+                          children: [
+                            Text(
+                              DateFormat.jm().format(shiftEnd),
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                          ],
+                        )
+                      : SizedBox(),
                 ],
               ),
             ),

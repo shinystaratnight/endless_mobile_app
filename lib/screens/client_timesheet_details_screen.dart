@@ -81,8 +81,8 @@ class _ClientTimesheetDetailsScreenState
       SignatureController signatureContoller) async {
     try {
       setState(() => _fetching = true);
-      Map<String, String> body =
-          _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
+      Map<String, String> body = _times.map((key, value) =>
+          MapEntry(key, value != null ? value.toUtc().toString() : null));
       final data = await signatureContoller.toPngBytes();
       String img64 = base64.encode(data);
 
@@ -197,7 +197,7 @@ class _ClientTimesheetDetailsScreenState
             SizedBox(
               height: 10,
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => _controller.clear(),
               child: Text(translate('button.clear')),
             )
@@ -377,6 +377,7 @@ class _ClientTimesheetDetailsScreenState
                 service: skillActivityService,
                 skill: widget.timesheet.positionId,
                 timesheet: widget.timesheet.id,
+                companyId: widget.timesheet.clientId,
               ),
               GroupTitle(title: translate('group.title.tracking')),
               FutureBuilder(

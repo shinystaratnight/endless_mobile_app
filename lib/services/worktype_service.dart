@@ -1,5 +1,4 @@
 import 'package:http/http.dart' as http;
-import 'package:piiprent/constants.dart';
 import 'dart:convert';
 import 'package:piiprent/models/worktype_model.dart';
 import 'package:piiprent/services/api_service.dart';
@@ -9,7 +8,6 @@ class WorktypeService {
 
   Future getSkillWorktypes([Map<String, dynamic> query]) async {
     Map<String, dynamic> params = {
-      'company': companyId,
       'fields': Worktype.requestFields,
     };
 

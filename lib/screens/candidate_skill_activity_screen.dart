@@ -14,10 +14,12 @@ import 'package:flutter_translate/flutter_translate.dart';
 class CandidateSkillActivityScreen extends StatefulWidget {
   final String timesheet;
   final String skill;
+  final String companyId;
 
   CandidateSkillActivityScreen({
     this.timesheet,
     this.skill,
+    this.companyId,
   });
 
   @override
@@ -28,6 +30,7 @@ class CandidateSkillActivityScreen extends StatefulWidget {
 class _CandidateSkillActivityScreenState
     extends State<CandidateSkillActivityScreen> {
   String _worktype;
+  String _rate;
   double _value;
 
   bool _fetching = false;
@@ -50,7 +53,7 @@ class _CandidateSkillActivityScreenState
 
     try {
       await service.createSkillActivity(SkillActivityBody(
-        rate: null,
+        rate: double.parse(_rate),
         worktype: _worktype,
         value: _value,
         timesheet: widget.timesheet,
@@ -74,6 +77,7 @@ class _CandidateSkillActivityScreenState
     SkillActivityService skillActivityService =
         Provider.of<SkillActivityService>(context);
     WorktypeService worktypeService = Provider.of<WorktypeService>(context);
+    var localizationDelegate = LocalizedApp.of(context).delegate;
 
     return Scaffold(
       appBar:
@@ -87,6 +91,8 @@ class _CandidateSkillActivityScreenState
                 FutureBuilder(
                   future: worktypeService.getSkillWorktypes({
                     'skill': widget.skill,
+                    'company': widget.companyId,
+                    'priced': 'true'
                   }),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
@@ -98,9 +104,16 @@ class _CandidateSkillActivityScreenState
                         columns: 1,
                         onChanged: (String id) {
                           _worktype = id;
+                          var el =
+                              data.firstWhere((element) => element.id == id);
+                          _rate = el.defaultRate;
                         },
                         options: data.map((Worktype el) {
-                          return {'value': el.id, 'label': el.name};
+                          return {
+                            'value': el.id,
+                            'label':
+                                el.name(localizationDelegate.currentLocale),
+                          };
                         }).toList(),
                       );
                     }

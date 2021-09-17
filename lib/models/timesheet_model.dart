@@ -25,6 +25,7 @@ class Timesheet {
   final String timezone;
   final int wageType;
   final String positionId;
+  final String clientId;
 
   static final requestFields = [
     'id',
@@ -67,6 +68,7 @@ class Timesheet {
     this.timezone,
     this.wageType,
     this.positionId,
+    this.clientId,
   });
 
   factory Timesheet.fromJson(Map<String, dynamic> json) {
@@ -88,6 +90,7 @@ class Timesheet {
       clientContact: json['supervisor']['name'],
       translations: translations,
       company: company['__str__'],
+      clientId: company['id'],
       address: (json['jobsite']['address']['__str__'] as String)
           .replaceAll('\n', ' '),
       jobsite: json['jobsite']['__str__'],

@@ -11,12 +11,14 @@ class SkillActivityTable extends StatefulWidget {
   final String timesheet;
   final String skill;
   final SkillActivityService service;
+  final String companyId;
 
   SkillActivityTable({
     this.hasActions,
     this.timesheet,
     this.skill,
     this.service,
+    this.companyId,
   });
 
   @override
@@ -93,7 +95,8 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
     );
   }
 
-  Widget _buildTable(List<SkillActivity> data) {
+  Widget _buildTable(List<SkillActivity> data, BuildContext context) {
+    var localizationDelegate = LocalizedApp.of(context).delegate;
     return Column(
       children: [
         Table(
@@ -130,7 +133,8 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
 
                   return TableRow(
                     children: [
-                      _buildTableCell(skillActivity.worktype.name),
+                      _buildTableCell(skillActivity.worktype
+                          .name(localizationDelegate.currentLocale)),
                       _buildTableCell(skillActivity.value.toString()),
                       Container(
                         width: 28.0,
@@ -187,7 +191,7 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
             return Container(
               child: Column(
                 children: [
-                  this._buildTable(data),
+                  this._buildTable(data, context),
                   SizedBox(
                     height: 16,
                   ),
@@ -201,7 +205,7 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                         )
                       : SizedBox(),
                   widget.hasActions && !_fetching
-                      ? RaisedButton(
+                      ? ElevatedButton(
                           onPressed: () {
                             Navigator.of(context)
                                 .push(
@@ -210,6 +214,7 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                     CandidateSkillActivityScreen(
                                   timesheet: widget.timesheet,
                                   skill: widget.skill,
+                                  companyId: widget.companyId,
                                 ),
                               ),
                             )
