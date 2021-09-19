@@ -17,6 +17,7 @@ class CandidateTimesheetsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
+    var localizationDelegate = LocalizedApp.of(context).delegate;
 
     return Scaffold(
       appBar: getCandidateAppBar(translate('page.title.timesheets'), context),
@@ -35,7 +36,7 @@ class CandidateTimesheetsScreen extends StatelessWidget {
         getChild: (Timesheet instance, Function reset) {
           return TimesheetCard(
             company: instance.company,
-            position: instance.position,
+            position: instance.position(localizationDelegate.currentLocale),
             clientContact: instance.clientContact,
             jobsite: instance.jobsite,
             address: instance.address,
@@ -47,6 +48,8 @@ class CandidateTimesheetsScreen extends StatelessWidget {
             status: instance.status,
             id: instance.id,
             update: reset,
+            positionId: instance.positionId,
+            clientId: instance.clientId,
           );
         },
       ),

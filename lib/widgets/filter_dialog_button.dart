@@ -100,17 +100,17 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actions: [
-          RaisedButton(
+          ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop(FilterDialogResult.Clear);
             },
             child: Text(translate('button.clear')),
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop(FilterDialogResult.Submit);
             },
-            color: Colors.blueAccent,
+            // color: Colors.blueAccent,
             child: Text(translate('button.submit')),
           ),
         ],

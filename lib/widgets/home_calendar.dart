@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:piiprent/models/carrier_model.dart';
 import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/candidate_service.dart';
@@ -40,8 +41,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
   Map<DateTime, List> _candidateUnavailable;
   Map<DateTime, List> _candidateAvailable;
 
-  Map<DateTime, List> _clientFulfilledShifts;
-  Map<DateTime, List> _clientUnfulfilledShifts;
+  Map<DateTime, List<Shift>> _clientFulfilledShifts;
+  Map<DateTime, List<Shift>> _clientUnfulfilledShifts;
 
   List<Shift> _shifts;
 
@@ -84,11 +85,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
         shifts.forEach((Shift el) {
           if (el.isFulfilled) {
             _clientFulfilledShifts.addAll({
-              el.datetime: [el]
+              el.date: [el]
             });
           } else {
             _clientUnfulfilledShifts.addAll({
-              el.datetime: [el]
+              el.date: [el]
             });
           }
         });
@@ -101,7 +102,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
   @override
   void initState() {
     super.initState();
-    _calendarController = CalendarController();
+    // _calendarController = CalendarController();
 
     if (widget.type == CalendarType.Canddate) {
       _initCandidateCalendar();
@@ -177,38 +178,37 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return Column(
       children: [
         TableCalendar(
-          calendarController: _calendarController,
-          events: _candidateAvailable,
-          holidays: _candidateUnavailable,
+          focusedDay: DateTime.now(),
+          firstDay: DateTime.now(),
+          lastDay: Jiffy().endOf(Units.YEAR).dateTime,
+          currentDay: DateTime.now(),
           startingDayOfWeek: StartingDayOfWeek.monday,
-          onDaySelected: (date, events, holidays) {
-            String id = events.length > 0
-                ? events[0].id
-                : holidays.length > 0
-                    ? holidays[0].id
+          onDaySelected: (date, events) {
+            String id = _candidateAvailable[date] != null
+                ? _candidateAvailable[date][0].id
+                : _candidateUnavailable[date] != null
+                    ? _candidateUnavailable[date][0].id
                     : null;
 
             showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(
                 actions: [
-                  RaisedButton(
-                    color: Colors.blue,
-                    onPressed: events.length == 0
+                  ElevatedButton(
+                    onPressed: _candidateAvailable[date] == null
                         ? () {
                             Navigator.of(context).pop(CarrrierStatus.Available);
                           }
                         : null,
                     child: Text(translate('button.available')),
                   ),
-                  RaisedButton(
-                    onPressed: holidays.length == 0
+                  ElevatedButton(
+                    onPressed: _candidateUnavailable[date] == null
                         ? () {
                             Navigator.of(context)
                                 .pop(CarrrierStatus.Unavailable);
                           }
                         : null,
-                    color: Colors.blueAccent,
                     child: Text(translate('button.unavailable')),
                   ),
                 ],
@@ -223,35 +223,33 @@ class _HomeCalendarState extends State<HomeCalendar> {
               ),
             ).then((available) => _updateAvailability(date, available, id));
           },
-          builders: CalendarBuilders(
-            markersBuilder: (context, date, events, holidays) {
-              final children = <Widget>[];
-
-              if (events.isNotEmpty) {
-                children.add(
-                  Positioned(
+          calendarBuilders: CalendarBuilders(
+            markerBuilder: (context, date, events) {
+              if (_candidateAvailable != null) {
+                if (_candidateAvailable[date] != null) {
+                  return Positioned(
                     bottom: 2,
                     child: _buildCircle(
                       radius: 4.0,
                       color: Colors.green[400],
                     ),
-                  ),
-                );
+                  );
+                }
               }
 
-              if (holidays.isNotEmpty) {
-                children.add(
-                  Positioned(
+              if (_candidateUnavailable != null) {
+                if (_candidateUnavailable[date] != null) {
+                  return Positioned(
                     bottom: 2,
                     child: _buildCircle(
                       radius: 4.0,
                       color: Colors.red[400],
                     ),
-                  ),
-                );
+                  );
+                }
               }
 
-              return children;
+              return SizedBox();
             },
           ),
         ),
@@ -425,50 +423,53 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return Column(
       children: [
         TableCalendar(
-          calendarController: _calendarController,
-          events: _clientFulfilledShifts,
-          holidays: _clientUnfulfilledShifts,
+          focusedDay: DateTime.now(),
+          firstDay: DateTime.now(),
+          lastDay: Jiffy().endOf(Units.YEAR).dateTime,
+          currentDay: DateTime.now(),
           startingDayOfWeek: StartingDayOfWeek.monday,
-          onDaySelected: (date, List<dynamic> events, List<dynamic> holidays) {
+          onDaySelected: (date, events) {
             List<Shift> shifts = [];
-            events.forEach((shift) => shifts.add(shift));
-            holidays.forEach((shift) => shifts.add(shift));
+            _clientFulfilledShifts.values
+                .forEach((shift) => shifts.forEach((element) {
+                      shifts.add(element);
+                    }));
+            _clientUnfulfilledShifts.values
+                .forEach((shift) => shifts.forEach((element) {
+                      shifts.add(element);
+                    }));
 
             setState(() {
               _shifts = shifts;
             });
           },
-          builders: CalendarBuilders(
-            markersBuilder: (context, date, events, holidays) {
-              final children = <Widget>[];
-
-              if (events.isNotEmpty) {
-                children.add(
-                  Positioned(
+          calendarBuilders: CalendarBuilders(
+            markerBuilder: (context, date, events) {
+              if (_clientFulfilledShifts != null) {
+                if (_clientFulfilledShifts[date] != null) {
+                  return Positioned(
                     bottom: 2,
-                    right: 14,
                     child: _buildCircle(
                       radius: 4.0,
                       color: Colors.green[400],
                     ),
-                  ),
-                );
+                  );
+                }
               }
 
-              if (holidays.isNotEmpty) {
-                children.add(
-                  Positioned(
+              if (_clientUnfulfilledShifts != null) {
+                if (_clientUnfulfilledShifts[date] != null) {
+                  return Positioned(
                     bottom: 2,
-                    left: 14,
                     child: _buildCircle(
                       radius: 4.0,
                       color: Colors.red[400],
                     ),
-                  ),
-                );
+                  );
+                }
               }
 
-              return children;
+              return SizedBox();
             },
           ),
         ),

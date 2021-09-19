@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
+import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
@@ -22,6 +24,8 @@ class CandidateTimesheetDetailsScreen extends StatefulWidget {
   final DateTime breakEnd;
   final int status;
   final String id;
+  final String positionId;
+  final String companyId;
 
   CandidateTimesheetDetailsScreen({
     this.position = '',
@@ -35,6 +39,8 @@ class CandidateTimesheetDetailsScreen extends StatefulWidget {
     this.breakEnd,
     this.status,
     this.id,
+    this.positionId,
+    this.companyId,
   });
 
   @override
@@ -53,6 +59,8 @@ class _CandidateTimesheetDetailsScreenState
   String _shiftEnd = TimesheetTimeKey[TimesheetTime.End];
 
   bool _withBreak = true;
+  bool _hours;
+  String _error;
 
   Map<String, DateTime> _times = Map();
 
@@ -102,17 +110,32 @@ class _CandidateTimesheetDetailsScreenState
   _submitForm(TimesheetService timesheetService) async {
     try {
       setState(() => _fetching = true);
-      if (!_withBreak) {
-        _times[_breakEnd] = _times[_breakStart];
+      setState(() {
+        _error = null;
+      });
+      Map<String, String> body;
+
+      if (_hours) {
+        if (!_withBreak) {
+          _times[_breakEnd] = _times[_breakStart];
+        }
+
+        body =
+            _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
+        body['hours'] = 'true';
+      } else {
+        body = {'hours': 'false'};
       }
 
-      Map<String, String> body =
-          _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
       bool result = await timesheetService.submitTimesheet(widget.id, body);
 
       setState(() => _updated = result);
     } catch (e) {
       print(e);
+
+      setState(() {
+        _error = e;
+      });
     } finally {
       setState(() => _fetching = false);
     }
@@ -173,9 +196,87 @@ class _CandidateTimesheetDetailsScreenState
     );
   }
 
+  Widget _buildTimesForm() {
+    return Column(
+      children: [
+        GroupTitle(title: translate('group.title.times')),
+        DetailsRecord(
+          label: translate('field.shift_start_time'),
+          value: DateFormat.jm().format(_times[_shiftStart]),
+          button: widget.status == 4 && !_updated
+              ? _buildChangeButton(
+                  _times[_shiftStart],
+                  _shiftStart,
+                )
+              : null,
+        ),
+        _withBreak || widget.status != 4
+            ? DetailsRecord(
+                label: translate('field.break_start_time'),
+                value: _times[_breakStart] == null
+                    ? '-'
+                    : DateFormat.jm().format(_times[_breakStart]),
+                button: widget.status == 4 && !_updated
+                    ? _buildChangeButton(
+                        _times[_breakStart],
+                        _breakStart,
+                      )
+                    : null,
+              )
+            : SizedBox(),
+        _withBreak || widget.status != 4
+            ? DetailsRecord(
+                label: translate('field.break_end_time'),
+                value: _times[_breakEnd] == null
+                    ? '-'
+                    : DateFormat.jm().format(_times[_breakEnd]),
+                button: widget.status == 4 && !_updated
+                    ? _buildChangeButton(
+                        _times[_breakEnd],
+                        _breakEnd,
+                      )
+                    : null,
+              )
+            : SizedBox(),
+        DetailsRecord(
+          label: translate('field.shift_end_time'),
+          value: _times[_shiftEnd] == null
+              ? '-'
+              : DateFormat.jm().format(_times[_shiftEnd]),
+          button: widget.status == 4 && !_updated
+              ? _buildChangeButton(
+                  _times[_shiftEnd],
+                  _shiftEnd,
+                )
+              : null,
+        ),
+        widget.status == 4 && !_updated
+            ? Row(
+                children: [
+                  Container(
+                    child: Text(translate('timesheet.break')),
+                    margin: const EdgeInsets.only(left: 8.0),
+                  ),
+                  Switch(
+                    value: _withBreak,
+                    onChanged: (bool newValue) {
+                      setState(() {
+                        _withBreak = newValue;
+                      });
+                    },
+                  ),
+                ],
+              )
+            : SizedBox(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
+    SkillActivityService skillActivityService =
+        Provider.of<SkillActivityService>(context);
 
     return Scaffold(
       appBar: getCandidateAppBar(
@@ -213,72 +314,41 @@ class _CandidateTimesheetDetailsScreenState
               SizedBox(
                 height: 15.0,
               ),
-              GroupTitle(title: translate('group.title.times')),
               DetailsRecord(
                 label: translate('field.shift_date'),
                 value: DateFormat('dd/MM/yyyy').format(widget.shiftDate),
               ),
-              DetailsRecord(
-                label: translate('field.shift_start_time'),
-                value: DateFormat.jm().format(_times[_shiftStart]),
-                button: widget.status == 4 && !_updated
-                    ? _buildChangeButton(
-                        _times[_shiftStart],
-                        _shiftStart,
-                      )
-                    : null,
-              ),
-              _withBreak || widget.status != 4
-                  ? DetailsRecord(
-                      label: translate('field.break_start_time'),
-                      value: DateFormat.jm().format(_times[_breakStart]),
-                      button: widget.status == 4 && !_updated
-                          ? _buildChangeButton(
-                              _times[_breakStart],
-                              _breakStart,
-                            )
-                          : null,
-                    )
-                  : SizedBox(),
-              _withBreak || widget.status != 4
-                  ? DetailsRecord(
-                      label: translate('field.break_end_time'),
-                      value: DateFormat.jm().format(_times[_breakEnd]),
-                      button: widget.status == 4 && !_updated
-                          ? _buildChangeButton(
-                              _times[_breakEnd],
-                              _breakEnd,
-                            )
-                          : null,
-                    )
-                  : SizedBox(),
-              DetailsRecord(
-                label: translate('field.shift_end_time'),
-                value: DateFormat.jm().format(_times[_shiftEnd]),
-                button: widget.status == 4 && !_updated
-                    ? _buildChangeButton(
-                        _times[_shiftEnd],
-                        _shiftEnd,
-                      )
-                    : null,
-              ),
               widget.status == 4 && !_updated
-                  ? Row(
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
-                          child: Text(translate('timesheet.break')),
-                          margin: const EdgeInsets.only(left: 8.0),
-                        ),
-                        Switch(
-                          value: _withBreak,
-                          onChanged: (bool newValue) {
-                            setState(() {
-                              _withBreak = newValue;
-                            });
-                          },
-                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _hours = true;
+                              });
+                            },
+                            child: Text(translate('button.times_only'))),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _hours = false;
+                              });
+                            },
+                            child: Text(translate('button.peicework')))
                       ],
                     )
+                  : SizedBox(),
+              _hours == true || widget.status != 4
+                  ? this._buildTimesForm()
+                  : SizedBox(),
+              _hours == false || widget.status != 4
+                  ? SkillActivityTable(
+                      hasActions: widget.status == 4 && !_updated,
+                      service: skillActivityService,
+                      skill: widget.positionId,
+                      timesheet: widget.id,
+                      companyId: widget.companyId)
                   : SizedBox(),
               GroupTitle(title: translate('group.title.job_information')),
               DetailsRecord(
@@ -331,13 +401,21 @@ class _CandidateTimesheetDetailsScreenState
                       ],
                     )
                   : Container(),
-              widget.status == 4 && !_updated
+              widget.status == 4 && !_updated && _hours != null
                   ? FormSubmitButton(
                       label: translate('button.submit'),
                       onPressed: () => _submitForm(timesheetService),
                       disabled: _fetching,
                     )
-                  : Container()
+                  : Container(),
+              _error != null
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        _error,
+                        style: TextStyle(color: Colors.red[400]),
+                      ))
+                  : SizedBox()
             ],
           ),
         ),

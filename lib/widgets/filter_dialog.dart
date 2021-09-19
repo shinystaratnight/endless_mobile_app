@@ -74,7 +74,7 @@ class _FilterDialogState extends State<FilterDialog> {
   _setThisMonth() {
     DateTime now = DateTime.now();
     DateTime firstDayOfMonth = DateTime.utc(now.year, now.month, 1);
-    DateTime lastDayofMonth = Jiffy().endOf(Units.MONTH);
+    DateTime lastDayofMonth = Jiffy().endOf(Units.MONTH).dateTime;
     _emit(firstDayOfMonth, lastDayofMonth);
   }
 
@@ -82,9 +82,13 @@ class _FilterDialogState extends State<FilterDialog> {
     DateTime now = DateTime.now();
     DateTime firstDayOfMonth = DateTime.utc(now.year, now.month, 1);
     DateTime firstDayOfLastMonth =
-        Jiffy(firstDayOfMonth.subtract(Duration(days: 1))).startOf(Units.MONTH);
+        Jiffy(firstDayOfMonth.subtract(Duration(days: 1)))
+            .startOf(Units.MONTH)
+            .dateTime;
     DateTime lastDayOfLastMonth =
-        Jiffy(firstDayOfMonth.subtract(Duration(days: 1))).endOf(Units.MONTH);
+        Jiffy(firstDayOfMonth.subtract(Duration(days: 1)))
+            .endOf(Units.MONTH)
+            .dateTime;
     _emit(firstDayOfLastMonth, lastDayOfLastMonth);
   }
 
@@ -97,8 +101,8 @@ class _FilterDialogState extends State<FilterDialog> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              RaisedButton(
-                color: Colors.blueAccent,
+              ElevatedButton(
+                // color: Colors.blueAccent,
                 onPressed: _setToday,
                 child: Text(translate('dialog.today'),
                     style: TextStyle(color: Colors.white)),
@@ -106,8 +110,8 @@ class _FilterDialogState extends State<FilterDialog> {
               SizedBox(
                 width: 8.0,
               ),
-              RaisedButton(
-                color: Colors.blueAccent,
+              ElevatedButton(
+                // color: Colors.blueAccent,
                 onPressed: _setYesterday,
                 child: Text(translate('dialog.yesterday'),
                     style: TextStyle(color: Colors.white)),
@@ -115,8 +119,8 @@ class _FilterDialogState extends State<FilterDialog> {
               SizedBox(
                 width: 8.0,
               ),
-              RaisedButton(
-                color: Colors.blueAccent,
+              ElevatedButton(
+                // color: Colors.blueAccent,
                 onPressed: _setThisWeek,
                 child: Text(translate('dialog.this_week'),
                     style: TextStyle(color: Colors.white)),
@@ -128,8 +132,8 @@ class _FilterDialogState extends State<FilterDialog> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              RaisedButton(
-                color: Colors.blueAccent,
+              ElevatedButton(
+                // color: Colors.blueAccent,
                 onPressed: _setLastWeek,
                 child: Text(translate('dialog.last_week'),
                     style: TextStyle(color: Colors.white)),
@@ -137,8 +141,8 @@ class _FilterDialogState extends State<FilterDialog> {
               SizedBox(
                 width: 8.0,
               ),
-              RaisedButton(
-                color: Colors.blueAccent,
+              ElevatedButton(
+                // color: Colors.blueAccent,
                 onPressed: _setThisMonth,
                 child: Text(translate('dialog.this_month'),
                     style: TextStyle(color: Colors.white)),
@@ -146,8 +150,8 @@ class _FilterDialogState extends State<FilterDialog> {
               SizedBox(
                 width: 8.0,
               ),
-              RaisedButton(
-                color: Colors.blueAccent,
+              ElevatedButton(
+                // color: Colors.blueAccent,
                 onPressed: _setLastMonth,
                 child: Text(translate('dialog.last_month'),
                     style: TextStyle(color: Colors.white)),

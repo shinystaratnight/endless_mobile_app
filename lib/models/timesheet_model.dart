@@ -23,6 +23,9 @@ class Timesheet {
   final int evaluation;
   final String candidateId;
   final String timezone;
+  final int wageType;
+  final String positionId;
+  final String clientId;
 
   static final requestFields = [
     'id',
@@ -40,6 +43,7 @@ class Timesheet {
     'supervisor_signature',
     'time_zone',
     'evaluation',
+    'wage_type',
   ];
 
   Timesheet({
@@ -62,6 +66,9 @@ class Timesheet {
     this.evaluation,
     this.candidateId,
     this.timezone,
+    this.wageType,
+    this.positionId,
+    this.clientId,
   });
 
   factory Timesheet.fromJson(Map<String, dynamic> json) {
@@ -83,6 +90,7 @@ class Timesheet {
       clientContact: json['supervisor']['name'],
       translations: translations,
       company: company['__str__'],
+      clientId: company['id'],
       address: (json['jobsite']['address']['__str__'] as String)
           .replaceAll('\n', ' '),
       jobsite: json['jobsite']['__str__'],
@@ -100,11 +108,19 @@ class Timesheet {
           json['evaluated'] ? json['evaluation']['evaluation_score'] : 1,
       candidateId: candidateContact['id'],
       timezone: json['time_zone'],
+      wageType: json['wage_type'],
+      positionId: json['position']['id'],
     );
   }
 
-  get position {
-    return translations['position']['en'];
+  String position(locale) {
+    if (locale == 'en_US') {
+      return translations['position']['en'];
+    }
+
+    String tranlsation = translations['position'][locale.toString()];
+
+    return tranlsation != null ? tranlsation : translations['position']['en'];
   }
 
   String get candidateAvatarUrl {
@@ -137,6 +153,10 @@ DateTime getDateTime(String date, String time) {
 }
 
 DateTime parseWithTimeZone(String timezone, String target) {
+  if (target == null) {
+    return null;
+  }
+
   tz.initializeTimeZones();
 
   return TZDateTime.from(DateTime.parse(target), getLocation(timezone));

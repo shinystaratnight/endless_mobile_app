@@ -15,6 +15,7 @@ class CandidateNotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     JobOfferService jobOfferService = Provider.of<JobOfferService>(context);
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
+    var localizationDelegate = LocalizedApp.of(context).delegate;
 
     return DefaultTabController(
       length: 2,
@@ -63,7 +64,8 @@ class CandidateNotificationScreen extends StatelessWidget {
               getChild: (Timesheet instance, Function reset) {
                 return TimesheetCard(
                   company: instance.company,
-                  position: instance.position,
+                  position:
+                      instance.position(localizationDelegate.currentLocale),
                   clientContact: instance.clientContact,
                   jobsite: instance.jobsite,
                   address: instance.address,

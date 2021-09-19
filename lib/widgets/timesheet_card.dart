@@ -20,22 +20,25 @@ class TimesheetCard extends StatelessWidget {
   final int status;
   final String id;
   final Function update;
+  final String positionId;
+  final String clientId;
 
-  TimesheetCard({
-    this.company,
-    this.position,
-    this.clientContact,
-    this.address,
-    this.jobsite,
-    this.shiftDate,
-    this.shiftStart,
-    this.shiftEnd,
-    this.breakStart,
-    this.breakEnd,
-    this.status,
-    this.id,
-    this.update,
-  });
+  TimesheetCard(
+      {this.company,
+      this.position,
+      this.clientContact,
+      this.address,
+      this.jobsite,
+      this.shiftDate,
+      this.shiftStart,
+      this.shiftEnd,
+      this.breakStart,
+      this.breakEnd,
+      this.status,
+      this.id,
+      this.update,
+      this.positionId,
+      this.clientId});
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +58,8 @@ class TimesheetCard extends StatelessWidget {
               breakEnd: breakEnd,
               status: status,
               id: id,
+              positionId: positionId,
+              companyId: clientId,
             ),
           ),
         );
@@ -140,35 +145,41 @@ class TimesheetCard extends StatelessWidget {
                 ],
               ),
             ),
-            ListCardRecord(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    translate('timesheet.break'),
-                    style: TextStyle(color: Colors.blueAccent),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        DateFormat.jm().format(breakStart),
-                        style: TextStyle(color: Colors.blueAccent),
-                      ),
-                      SizedBox(width: 5.0),
-                      Text(
-                        translate('timesheet.break_to'),
-                        style: TextStyle(color: Colors.blueAccent),
-                      ),
-                      SizedBox(width: 5.0),
-                      Text(
-                        DateFormat.jm().format(breakEnd),
-                        style: TextStyle(color: Colors.blueAccent),
-                      )
-                    ],
+            breakStart != null || breakEnd != null
+                ? ListCardRecord(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          translate('timesheet.break'),
+                          style: TextStyle(color: Colors.blueAccent),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              breakStart == null
+                                  ? ''
+                                  : DateFormat.jm().format(breakStart),
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                            SizedBox(width: 5.0),
+                            Text(
+                              translate('timesheet.break_to'),
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                            SizedBox(width: 5.0),
+                            Text(
+                              breakEnd == null
+                                  ? ''
+                                  : DateFormat.jm().format(breakEnd),
+                              style: TextStyle(color: Colors.blueAccent),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   )
-                ],
-              ),
-            ),
+                : SizedBox(),
             ListCardRecord(
               last: true,
               content: Row(
@@ -178,14 +189,16 @@ class TimesheetCard extends StatelessWidget {
                     translate('timesheet.shift_ended_at'),
                     style: TextStyle(color: Colors.blueAccent),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        DateFormat.jm().format(shiftEnd),
-                        style: TextStyle(color: Colors.blueAccent),
-                      ),
-                    ],
-                  )
+                  shiftEnd != null
+                      ? Row(
+                          children: [
+                            Text(
+                              DateFormat.jm().format(shiftEnd),
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                          ],
+                        )
+                      : SizedBox(),
                 ],
               ),
             ),

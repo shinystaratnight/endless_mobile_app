@@ -17,6 +17,8 @@ class ClientTimesheetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var localizationDelegate = LocalizedApp.of(context).delegate;
+
     return GestureDetector(
       onTap: () async {
         var result = await Navigator.of(context).push(
@@ -64,7 +66,7 @@ class ClientTimesheetCard extends StatelessWidget {
                   style: TextStyle(fontSize: 22.0, color: Colors.white),
                 ),
                 Text(
-                  "${translate('timesheet.position')} - ${timesheet.position}",
+                  "${translate('timesheet.position')} - ${timesheet.position(localizationDelegate.currentLocale)}",
                   style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(
@@ -119,12 +121,17 @@ class ClientTimesheetCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        DateFormat('dd/MM/yyyy').format(timesheet.shiftStart),
+                        timesheet.shiftStart != null
+                            ? DateFormat('dd/MM/yyyy')
+                                .format(timesheet.shiftStart)
+                            : '-',
                         style: TextStyle(color: Colors.blueAccent),
                       ),
                       SizedBox(width: 5.0),
                       Text(
-                        DateFormat.jm().format(timesheet.shiftStart),
+                        timesheet.shiftStart != null
+                            ? DateFormat.jm().format(timesheet.shiftStart)
+                            : '-',
                         style: TextStyle(color: Colors.blueAccent),
                       )
                     ],
@@ -143,7 +150,9 @@ class ClientTimesheetCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        DateFormat.jm().format(timesheet.breakStart),
+                        timesheet.breakStart != null
+                            ? DateFormat.jm().format(timesheet.breakStart)
+                            : '-',
                         style: TextStyle(color: Colors.blueAccent),
                       ),
                       SizedBox(width: 5.0),
@@ -153,7 +162,9 @@ class ClientTimesheetCard extends StatelessWidget {
                       ),
                       SizedBox(width: 5.0),
                       Text(
-                        DateFormat.jm().format(timesheet.breakEnd),
+                        timesheet.breakEnd != null
+                            ? DateFormat.jm().format(timesheet.breakEnd)
+                            : '-',
                         style: TextStyle(color: Colors.blueAccent),
                       )
                     ],
@@ -173,7 +184,9 @@ class ClientTimesheetCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        DateFormat.jm().format(timesheet.shiftEnd),
+                        timesheet.shiftEnd != null
+                            ? DateFormat.jm().format(timesheet.shiftEnd)
+                            : '-',
                         style: TextStyle(color: Colors.blueAccent),
                       ),
                     ],

@@ -7,12 +7,14 @@ import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/models/tracking_model.dart';
+import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/client_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/evaluate.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
+import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -79,8 +81,8 @@ class _ClientTimesheetDetailsScreenState
       SignatureController signatureContoller) async {
     try {
       setState(() => _fetching = true);
-      Map<String, String> body =
-          _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
+      Map<String, String> body = _times.map((key, value) =>
+          MapEntry(key, value != null ? value.toUtc().toString() : null));
       final data = await signatureContoller.toPngBytes();
       String img64 = base64.encode(data);
 
@@ -195,7 +197,7 @@ class _ClientTimesheetDetailsScreenState
             SizedBox(
               height: 10,
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => _controller.clear(),
               child: Text(translate('button.clear')),
             )
@@ -234,6 +236,9 @@ class _ClientTimesheetDetailsScreenState
   @override
   Widget build(BuildContext context) {
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
+    SkillActivityService skillActivityService =
+        Provider.of<SkillActivityService>(context);
+    var localizationDelegate = LocalizedApp.of(context).delegate;
 
     return Scaffold(
       appBar: getClientAppBar(
@@ -294,7 +299,7 @@ class _ClientTimesheetDetailsScreenState
                 textAlign: TextAlign.center,
               ),
               Text(
-                widget.timesheet.position,
+                widget.timesheet.position(localizationDelegate.currentLocale),
                 style: TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.center,
               ),
@@ -304,11 +309,15 @@ class _ClientTimesheetDetailsScreenState
               GroupTitle(title: translate('group.title.times')),
               DetailsRecord(
                 label: translate('field.shift_date'),
-                value: DateFormat('dd/MM/yyyy').format(_times[_shiftStart]),
+                value: _times[_shiftStart] != null
+                    ? DateFormat('dd/MM/yyyy').format(_times[_shiftStart])
+                    : '-',
               ),
               DetailsRecord(
                 label: translate('field.shift_start_time'),
-                value: DateFormat.jm().format(_times[_shiftStart]),
+                value: _times[_shiftStart] != null
+                    ? DateFormat.jm().format(_times[_shiftStart])
+                    : '-',
                 button: widget.timesheet.status == 5 && !_updated
                     ? _buildChangeButton(
                         _times[_shiftStart],
@@ -318,7 +327,9 @@ class _ClientTimesheetDetailsScreenState
               ),
               DetailsRecord(
                 label: translate('field.break_start_time'),
-                value: DateFormat.jm().format(_times[_breakStart]),
+                value: _times[_breakStart] != null
+                    ? DateFormat.jm().format(_times[_breakStart])
+                    : '-',
                 button: widget.timesheet.status == 5 && !_updated
                     ? _buildChangeButton(
                         _times[_breakStart],
@@ -328,7 +339,9 @@ class _ClientTimesheetDetailsScreenState
               ),
               DetailsRecord(
                 label: translate('field.break_end_time'),
-                value: DateFormat.jm().format(_times[_breakEnd]),
+                value: _times[_breakEnd] != null
+                    ? DateFormat.jm().format(_times[_breakEnd])
+                    : '-',
                 button: widget.timesheet.status == 5 && !_updated
                     ? _buildChangeButton(
                         _times[_breakEnd],
@@ -338,7 +351,9 @@ class _ClientTimesheetDetailsScreenState
               ),
               DetailsRecord(
                 label: translate('field.shift_end_time'),
-                value: DateFormat.jm().format(_times[_shiftEnd]),
+                value: _times[_shiftEnd] != null
+                    ? DateFormat.jm().format(_times[_shiftEnd])
+                    : '-',
                 button: widget.timesheet.status == 5 && !_updated
                     ? _buildChangeButton(
                         _times[_shiftEnd],
@@ -356,6 +371,13 @@ class _ClientTimesheetDetailsScreenState
                 onChange: (score) {
                   _evaluate(timesheetService, score);
                 },
+              ),
+              SkillActivityTable(
+                hasActions: widget.timesheet.status == 5 && !_updated,
+                service: skillActivityService,
+                skill: widget.timesheet.positionId,
+                timesheet: widget.timesheet.id,
+                companyId: widget.timesheet.clientId,
               ),
               GroupTitle(title: translate('group.title.tracking')),
               FutureBuilder(

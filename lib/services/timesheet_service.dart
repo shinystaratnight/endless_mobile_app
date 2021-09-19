@@ -256,6 +256,11 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return true;
     } else {
+      if (res.statusCode == 400) {
+        Map<String, dynamic> responseBody =
+            json.decode(utf8.decode(res.bodyBytes));
+        throw responseBody['errors']['non_field_errors'][0];
+      }
       throw Exception('Failed to submit Timesheet');
     }
   }
@@ -308,7 +313,7 @@ class TimesheetService {
       body: {'supervisor_signature': signature},
     );
 
-    if (res.statusCode == 201) {
+    if (res.statusCode == 200) {
       return true;
     } else {
       throw Exception('Failed to approve by signature Timesheet');

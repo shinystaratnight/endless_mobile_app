@@ -18,6 +18,7 @@
     "page.title.timesheets.history": "История",
     "page.title.job_offers": "Предложения",
     "page.title.notifications": "Уведомления",
+    "page.title.create_skill_activity": "Create",
     "skill.average_test": "Средний тест",
     "skill.client_feedback": "Отзыв клиентов",
     "skill.reliability": "Надежность",
@@ -45,6 +46,9 @@
     "button.reject": "Отклонить",
     "button.register": "Отправить",
     "button.change_password": "Изменить пароль",
+    "button.add": "Добавить",
+    "button.times_only": "Только время",
+    "button.peicework": "Сдельная работа",
     "timesheet.status": "Статус",
     "timesheet.shift_started_at": "Начало смены",
     "timesheet.shift_ended_at": "Окончание смены",
@@ -106,6 +110,8 @@
     "field.title": "Ображение",
     "field.industries": "Отрасли",
     "field.skills": "Умения",
+    "field.skill_activity": "Работа",
+    "field.skill_activity_amount": "Кол.",
     "group.title.job_information": "О работе",
     "group.title.personal_details": "Персональные данные",
     "group.title.contact_details": "Контактные дынные",
@@ -121,5 +127,6 @@
     "group.title.tracking": "Отслеживание",
     "group.title.jobsite_information": "Место работы",
     "group.title.fulfilled": "Заполнена",
-    "group.title.unfulfilled": "Не заполнена"
+    "group.title.unfulfilled": "Не заполнена",
+    "group.title.skill_activities": "Виды работ"
 }
