@@ -25,7 +25,7 @@ class CandidateProfileScreen extends StatefulWidget {
 }
 
 class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
-  int _heigth;
+  int _height;
   int _weight;
   bool _fetching = false;
   dynamic _formError;
@@ -54,7 +54,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
       bool result = await candidateService.updatePersonalDetails(
         id: id,
         contactId: contactId,
-        height: _heigth == null ? candidate.height : _heigth,
+        height: _height == null ? candidate.height : _height,
         weight: _weight == null ? candidate.weight : _weight,
       );
 
@@ -138,7 +138,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                 validator: numberValidator,
                 onChanged: (String value) {
                   setState(() {
-                    _heigth = int.parse(value);
+                    _height = int.parse(value);
                   });
                 },
               ),
