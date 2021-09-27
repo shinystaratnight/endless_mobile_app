@@ -32,7 +32,6 @@ dependencies:
   jiffy:
   timezone:
   signature: ^4.1.1
-  background_location: ^0.6.1
   location:
   country_code_picker: ^2.0.2
   map_launcher: 1.0.0
