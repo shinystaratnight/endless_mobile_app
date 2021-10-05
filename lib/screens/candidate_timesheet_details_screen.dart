@@ -72,6 +72,11 @@ class _CandidateTimesheetDetailsScreenState
       _breakEnd: widget.breakEnd,
       _shiftEnd: widget.shiftEnd
     };
+
+    if (widget.status == 5) {
+      _hours = true;
+    }
+
     super.initState();
   }
 
@@ -203,20 +208,20 @@ class _CandidateTimesheetDetailsScreenState
         DetailsRecord(
           label: translate('field.shift_start_time'),
           value: DateFormat.jm().format(_times[_shiftStart]),
-          button: widget.status == 4 && !_updated
+          button: (widget.status == 4 || widget.status == 5) && !_updated
               ? _buildChangeButton(
                   _times[_shiftStart],
                   _shiftStart,
                 )
               : null,
         ),
-        _withBreak || widget.status != 4
+        _withBreak || (widget.status != 4 && widget.status != 5)
             ? DetailsRecord(
                 label: translate('field.break_start_time'),
                 value: _times[_breakStart] == null
                     ? '-'
                     : DateFormat.jm().format(_times[_breakStart]),
-                button: widget.status == 4 && !_updated
+                button: (widget.status == 4 || widget.status == 5) && !_updated
                     ? _buildChangeButton(
                         _times[_breakStart],
                         _breakStart,
@@ -224,13 +229,13 @@ class _CandidateTimesheetDetailsScreenState
                     : null,
               )
             : SizedBox(),
-        _withBreak || widget.status != 4
+        _withBreak || (widget.status != 4 && widget.status != 5)
             ? DetailsRecord(
                 label: translate('field.break_end_time'),
                 value: _times[_breakEnd] == null
                     ? '-'
                     : DateFormat.jm().format(_times[_breakEnd]),
-                button: widget.status == 4 && !_updated
+                button: (widget.status == 4 || widget.status == 5) && !_updated
                     ? _buildChangeButton(
                         _times[_breakEnd],
                         _breakEnd,
@@ -243,14 +248,14 @@ class _CandidateTimesheetDetailsScreenState
           value: _times[_shiftEnd] == null
               ? '-'
               : DateFormat.jm().format(_times[_shiftEnd]),
-          button: widget.status == 4 && !_updated
+          button: (widget.status == 4 || widget.status == 5) && !_updated
               ? _buildChangeButton(
                   _times[_shiftEnd],
                   _shiftEnd,
                 )
               : null,
         ),
-        widget.status == 4 && !_updated
+        (widget.status == 4 || widget.status == 5) && !_updated
             ? Row(
                 children: [
                   Container(
@@ -344,7 +349,8 @@ class _CandidateTimesheetDetailsScreenState
                   : SizedBox(),
               _hours == false || widget.status != 4
                   ? SkillActivityTable(
-                      hasActions: widget.status == 4 && !_updated,
+                      hasActions: (widget.status == 4 || widget.status == 5) &&
+                          !_updated,
                       service: skillActivityService,
                       skill: widget.positionId,
                       timesheet: widget.id,
@@ -401,7 +407,9 @@ class _CandidateTimesheetDetailsScreenState
                       ],
                     )
                   : Container(),
-              widget.status == 4 && !_updated && _hours != null
+              (widget.status == 4 || widget.status == 5) &&
+                      !_updated &&
+                      _hours != null
                   ? FormSubmitButton(
                       label: translate('button.submit'),
                       onPressed: () => _submitForm(timesheetService),
