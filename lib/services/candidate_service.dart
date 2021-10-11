@@ -113,10 +113,18 @@ class CandidateService {
     String contactId,
     int height,
     int weight,
+    String firstName,
+    String lastName,
+    String email,
+    String phoneMobile,
   }) async {
     Map<String, dynamic> body = {
       'contact': {
         'id': contactId,
+        'first_name': firstName,
+        'last_name': lastName,
+        'email': email,
+        'phone_mobile': phoneMobile,
       },
       'height': height,
       'weight': weight,

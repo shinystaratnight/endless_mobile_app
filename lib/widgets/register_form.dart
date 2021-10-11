@@ -206,7 +206,10 @@ class _RegisterFormState extends State<RegisterForm> {
                 String industry = snapshot.data;
 
                 return FutureBuilder(
-                  future: industryService.getSkills(industry),
+                  future: industryService.getSkills(
+                    industry,
+                    widget.settings.company,
+                  ),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.active ||
                         snapshot.connectionState == ConnectionState.waiting) {

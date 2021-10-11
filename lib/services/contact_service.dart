@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
+import 'package:piiprent/models/api_error_model.dart';
 import 'package:piiprent/models/client_contact_model.dart';
 import 'package:piiprent/models/role_model.dart';
 
@@ -79,11 +80,10 @@ class ContactService {
     );
 
     if (res.statusCode == 200) {
-      // Map<String, dynamic> body = json.decode(res.body);
-
       return true;
     } else {
-      throw Exception("User was not registered");
+      var error = ApiError.fromJson(json.decode(res.body));
+      throw Exception(error.messages.join(' '));
     }
   }
 
@@ -117,12 +117,15 @@ class ContactService {
     };
 
     try {
-      http.Response res = await apiService.get(path: '/core/contacts/$id/', params: params);
+      http.Response res = await apiService.get(
+        path: '/core/contacts/$id/',
+        params: params,
+      );
 
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       var picture = body['picture'];
 
-      return picture != null ? picture['origin'] : null ;
+      return picture != null ? picture['origin'] : null;
     } catch (e) {
       throw Exception("Failed fetching roles");
     }

@@ -33,11 +33,15 @@ class IndustryService {
     }
   }
 
-  Future<List<Skill>> getSkills(String industry) async {
+  Future<List<Skill>> getSkills(
+    String industry,
+    String company,
+  ) async {
     Map<String, dynamic> params = {
       'limit': '-1',
       'fields': Skill.requestFields,
       'industry': industry,
+      'company': company,
     };
 
     http.Response res = await apiService.get(

@@ -49,6 +49,7 @@
     "button.add": "Add",
     "button.times_only": "Times Only",
     "button.peicework": "Piecework or combined",
+    "button.edit": "Edit",
     "timesheet.status": "Status",
     "timesheet.shift_started_at": "Shift Started At",
     "timesheet.shift_ended_at": "Shift Ended At",

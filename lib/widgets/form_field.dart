@@ -75,8 +75,12 @@ class _FieldState extends State<Field> {
             child: TextFormField(
               controller: myController,
               decoration: InputDecoration(
-                labelText: widget.label,
-              ),
+                  labelText: widget.label,
+                  border: UnderlineInputBorder(
+                    borderSide: widget.readOnly == true
+                        ? BorderSide.none
+                        : BorderSide(),
+                  )),
               onChanged: widget.onChanged,
               onTap: widget.datepicker
                   ? () {
@@ -106,7 +110,7 @@ class _FieldState extends State<Field> {
               readOnly: widget.datepicker || widget.readOnly,
               style: TextStyle(
                 color: widget.datepicker || widget.readOnly
-                    ? Colors.grey[700]
+                    ? Colors.grey[600]
                     : Colors.black,
               ),
             ),
