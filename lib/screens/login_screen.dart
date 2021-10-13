@@ -80,21 +80,26 @@ class _LoginScreenState extends State<LoginScreen> {
                           _buildPageButton(
                               _activeForm == 'login',
                               translate('button.login'),
-                              () => setState(() => _activeForm = 'login')),
+                              () => setState(
+                                    () => _activeForm = 'login',
+                                  )),
                           SizedBox(
                             width: 10,
                           ),
                           _buildPageButton(
                               _activeForm == 'register',
                               translate('button.sign_up'),
-                              () => setState(() => _activeForm = 'register'))
+                              () => setState(
+                                    () => _activeForm = 'register',
+                                  ))
                         ],
                       ),
                     ),
                     _activeForm == 'login'
                         ? LoginForm(
-                            onRegister: () =>
-                                setState(() => _activeForm = 'register'))
+                            onRegister: () => setState(
+                                  () => _activeForm = 'register',
+                                ))
                         : RegisterForm(settings: snapshot.data),
                   ],
                 ),

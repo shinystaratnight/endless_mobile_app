@@ -161,7 +161,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
               ),
               HomeCalendar(
                 type: CalendarType.Canddate,
-                userId: loginService.user.id,
+                userId: loginService.user != null ? loginService.user.id : null,
               ),
             ],
           ),

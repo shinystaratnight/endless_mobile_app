@@ -84,9 +84,174 @@ class _RegisterFormState extends State<RegisterForm> {
     }
   }
 
+  Widget _buildTitleField(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: FormSelect(
+            title: translate('field.title'),
+            columns: 4,
+            options: titleOptions,
+            multiple: false,
+            onChanged: (String title) {
+              _title = title;
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildFirstNameField(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Field(
+        label: translate('field.first_name'),
+        onSaved: (String value) {
+          _firstName = value;
+        },
+      ),
+    );
+  }
+
+  Widget _buildLastNameField(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Field(
+        label: translate('field.last_name'),
+        onSaved: (String value) {
+          _lastName = value;
+        },
+      ),
+    );
+  }
+
+  Widget _buildEmailField(BuildContext context) {
+    return Field(
+      label: translate('field.email'),
+      validator: emailValidator,
+      onSaved: (String value) {
+        _email = value;
+      },
+    );
+  }
+
+  Widget _buildPhoneNumberField(BuildContext context) {
+    return Field(
+      label: translate('field.phone'),
+      initialValue: '',
+      onSaved: (String value) {
+        _phone = '$_phoneCountryCode$value';
+      },
+      leading: widget.settings != null
+          ? Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: CountryCodePicker(
+                onInit: (prefix) => _phoneCountryCode = prefix,
+                onChanged: (prefix) =>
+                    setState(() => _phoneCountryCode = prefix),
+                initialSelection: widget.settings.countryCode,
+                showCountryOnly: false,
+                showOnlyCountryWhenClosed: false,
+                alignLeft: false,
+              ),
+            )
+          : SizedBox(),
+    );
+  }
+
+  Widget _buildBirthdayField(BuildContext context) {
+    return Field(
+      label: translate('field.birthday'),
+      datepicker: true,
+      onSaved: (String value) {
+        _birthday = value;
+      },
+    );
+  }
+
+  Widget _buildIndustryField(BuildContext context) {
+    IndustryService industryService = Provider.of<IndustryService>(context);
+
+    return FutureBuilder(
+      future: industryService.getIndustries(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          List<Industry> data = snapshot.data;
+
+          return FormSelect(
+            multiple: false,
+            title: translate('field.industries'),
+            columns: 1,
+            onChanged: (String id) {
+              _industry = id;
+              _industryStream.add(id);
+            },
+            options: data.map((Industry el) {
+              return {'value': el.id, 'label': el.name};
+            }).toList(),
+          );
+        }
+
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  Widget _buildSkillField(BuildContext context) {
+    IndustryService industryService = Provider.of<IndustryService>(context);
+
+    return StreamBuilder(
+      stream: _industryStream.stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container();
+        }
+
+        String industry = snapshot.data;
+
+        return FutureBuilder(
+          future: industryService.getSkills(
+            industry,
+            widget.settings.company,
+          ),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.active ||
+                snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (snapshot.hasData) {
+              List<Skill> data = snapshot.data;
+              return FormSelect(
+                multiple: true,
+                title: translate('field.skills'),
+                columns: 1,
+                onChanged: (List<dynamic> ids) {
+                  _skills = ids;
+                },
+                options: data.map((Skill el) {
+                  return {'value': el.id, 'label': el.name};
+                }).toList(),
+              );
+            }
+
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    IndustryService industryService = Provider.of<IndustryService>(context);
     ContactService contactService = Provider.of<ContactService>(context);
 
     return Container(
@@ -98,148 +263,18 @@ class _RegisterFormState extends State<RegisterForm> {
             SizedBox(
               height: 14.0,
             ),
+            _buildTitleField(context),
             Row(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: FormSelect(
-                    title: translate('field.title'),
-                    columns: 4,
-                    options: titleOptions,
-                    multiple: false,
-                    onChanged: (String title) {
-                      _title = title;
-                    },
-                  ),
-                )
+                _buildFirstNameField(context),
+                _buildLastNameField(context)
               ],
             ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Field(
-                    label: translate('field.first_name'),
-                    onSaved: (String value) {
-                      _firstName = value;
-                    },
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Field(
-                    label: translate('field.last_name'),
-                    onSaved: (String value) {
-                      _lastName = value;
-                    },
-                  ),
-                )
-              ],
-            ),
-            Field(
-              label: translate('field.email'),
-              validator: emailValidator,
-              onSaved: (String value) {
-                _email = value;
-              },
-            ),
-            Field(
-              label: translate('field.phone'),
-              initialValue: '',
-              onSaved: (String value) {
-                _phone = '$_phoneCountryCode$value';
-              },
-              leading: widget.settings != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: CountryCodePicker(
-                        onInit: (prefix) => _phoneCountryCode = prefix,
-                        onChanged: (prefix) =>
-                            setState(() => _phoneCountryCode = prefix),
-                        initialSelection: widget.settings.countryCode,
-                        showCountryOnly: false,
-                        showOnlyCountryWhenClosed: false,
-                        alignLeft: false,
-                      ),
-                    )
-                  : SizedBox(),
-            ),
-            Field(
-              label: translate('field.birthday'),
-              datepicker: true,
-              onSaved: (String value) {
-                _birthday = value;
-              },
-            ),
-            FutureBuilder(
-              future: industryService.getIndustries(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  List<Industry> data = snapshot.data;
-
-                  return FormSelect(
-                    multiple: false,
-                    title: translate('field.industries'),
-                    columns: 1,
-                    onChanged: (String id) {
-                      _industry = id;
-                      _industryStream.add(id);
-                    },
-                    options: data.map((Industry el) {
-                      return {'value': el.id, 'label': el.name};
-                    }).toList(),
-                  );
-                }
-
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
-            StreamBuilder(
-              stream: _industryStream.stream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Container();
-                }
-
-                String industry = snapshot.data;
-
-                return FutureBuilder(
-                  future: industryService.getSkills(
-                    industry,
-                    widget.settings.company,
-                  ),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active ||
-                        snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                    if (snapshot.hasData) {
-                      List<Skill> data = snapshot.data;
-                      return FormSelect(
-                        multiple: true,
-                        title: translate('field.skills'),
-                        columns: 1,
-                        onChanged: (List<dynamic> ids) {
-                          _skills = ids;
-                        },
-                        options: data.map((Skill el) {
-                          return {'value': el.id, 'label': el.name};
-                        }).toList(),
-                      );
-                    }
-
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                );
-              },
-            ),
+            _buildEmailField(context),
+            _buildPhoneNumberField(context),
+            _buildBirthdayField(context),
+            _buildIndustryField(context),
+            _buildSkillField(context),
             StreamBuilder(
               stream: _errorStream.stream,
               builder: (context, snapshot) {

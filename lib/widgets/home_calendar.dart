@@ -47,6 +47,10 @@ class _HomeCalendarState extends State<HomeCalendar> {
   List<Shift> _shifts;
 
   _initCandidateCalendar() async {
+    if (widget.userId == null) {
+      return;
+    }
+
     try {
       List<Carrier> carriers =
           await _candidateService.getCandidateAvailability(widget.userId);
