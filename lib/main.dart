@@ -15,6 +15,7 @@ import 'package:piiprent/screens/preview_screen.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/company_service.dart';
 import 'package:piiprent/services/contact_service.dart';
+import 'package:piiprent/services/country_service.dart';
 import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/services/job_offer_service.dart';
 import 'package:piiprent/services/job_service.dart';
@@ -58,6 +59,7 @@ void main() async {
         Provider<SkillActivityService>(create: (_) => SkillActivityService()),
         Provider<WorktypeService>(create: (_) => WorktypeService()),
         Provider<SkillService>(create: (_) => SkillService()),
+        Provider<CountryService>(create: (_) => CountryService()),
       ],
       child: LocalizedApp(delegate, MyApp()),
     ),

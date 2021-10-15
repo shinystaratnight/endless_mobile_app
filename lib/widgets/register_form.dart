@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/validator.dart';
+import 'package:piiprent/models/country_model.dart';
 import 'package:piiprent/models/industry_model.dart';
 import 'package:piiprent/models/settings_model.dart';
 import 'package:piiprent/models/skill_model.dart';
 import 'package:piiprent/services/contact_service.dart';
+import 'package:piiprent/services/country_service.dart';
 import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
@@ -30,6 +32,15 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   String _title;
+  String _gender;
+  String _residency;
+  String _nationality;
+  String _transport;
+  String _height;
+  String _weight;
+  String _bankAccountName;
+  String _bankName;
+  String _iban;
   String _firstName;
   String _lastName;
   String _email;
@@ -48,6 +59,23 @@ class _RegisterFormState extends State<RegisterForm> {
     {'value': 'Ms.', 'label': 'Ms.'},
     {'value': 'Mrs.', 'label': 'Mrs.'},
     {'value': 'Dr.', 'label': 'Dr.'},
+  ];
+
+  List<Map<String, dynamic>> genderOptions = [
+    {'value': 'male', 'label': 'Male'},
+    {'value': 'female', 'label': 'Female'},
+  ];
+
+  List<Map<String, dynamic>> residencyOptions = [
+    {'value': "0", 'label': "Unknown"},
+    {'value': "1", 'label': "Citizen"},
+    {'value': "2", 'label': "Permanent Resident"},
+    {'value': "3", 'label': "Temporary Resident"}
+  ];
+
+  List<Map<String, dynamic>> transportationOptions = [
+    {'value': "1", 'label': "Own Car"},
+    {'value': "2", 'label': "Public Transportation"}
   ];
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -96,6 +124,25 @@ class _RegisterFormState extends State<RegisterForm> {
             multiple: false,
             onChanged: (String title) {
               _title = title;
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildGenderField(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: FormSelect(
+            title: translate('field.gender'),
+            columns: 2,
+            options: genderOptions,
+            multiple: false,
+            onChanged: (String gender) {
+              _gender = gender;
             },
           ),
         )
@@ -167,6 +214,124 @@ class _RegisterFormState extends State<RegisterForm> {
       datepicker: true,
       onSaved: (String value) {
         _birthday = value;
+      },
+    );
+  }
+
+  Widget _buildNationalityField(BuildContext context) {
+    CountryService countryService = Provider.of<CountryService>(context);
+
+    return FutureBuilder(
+      future: countryService.getCountries(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          List<Country> data = snapshot.data;
+
+          return FormSelect(
+            multiple: false,
+            title: translate('field.nationality'),
+            columns: 1,
+            onChanged: (String id) {
+              _nationality = id;
+            },
+            options: data.map((Country el) {
+              return {'value': el.id, 'label': el.str};
+            }).toList(),
+          );
+        }
+
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  Widget _buildResidencyField(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: FormSelect(
+            title: translate('field.residency'),
+            columns: 1,
+            options: residencyOptions,
+            multiple: false,
+            onChanged: (String residency) {
+              _residency = residency;
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _transportationToWorkField(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: FormSelect(
+            title: translate('field.transport'),
+            columns: 1,
+            options: transportationOptions,
+            multiple: false,
+            onChanged: (String transport) {
+              _transport = transport;
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildHeightField(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Field(
+        label: translate('field.height'),
+        onSaved: (String height) {
+          _height = height;
+        },
+      ),
+    );
+  }
+
+  Widget _buildWeightField(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Field(
+        label: translate('field.weight'),
+        onSaved: (String weight) {
+          _weight = weight;
+        },
+      ),
+    );
+  }
+
+  Widget _buildBankAccountNameField(BuildContext context) {
+    return Field(
+      label: translate('field.account_holders_name'),
+      onSaved: (String value) {
+        _bankAccountName = value;
+      },
+    );
+  }
+
+  Widget _buildBankNameField(BuildContext context) {
+    return Field(
+      label: translate('field.bank_name'),
+      onSaved: (String value) {
+        _bankName = value;
+      },
+    );
+  }
+
+  Widget _buildIbanField(BuildContext context) {
+    return Field(
+      label: translate('field.iban'),
+      onSaved: (String value) {
+        _iban = value;
       },
     );
   }
@@ -270,9 +435,22 @@ class _RegisterFormState extends State<RegisterForm> {
                 _buildLastNameField(context)
               ],
             ),
+            _buildGenderField(context),
             _buildEmailField(context),
             _buildPhoneNumberField(context),
             _buildBirthdayField(context),
+            _buildNationalityField(context),
+            _buildResidencyField(context),
+            _transportationToWorkField(context),
+            Row(
+              children: [
+                _buildHeightField(context),
+                _buildWeightField(context)
+              ],
+            ),
+            _buildBankAccountNameField(context),
+            _buildBankNameField(context),
+            _buildIbanField(context),
             _buildIndustryField(context),
             _buildSkillField(context),
             StreamBuilder(

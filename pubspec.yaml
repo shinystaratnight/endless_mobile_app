@@ -39,6 +39,7 @@ dependencies:
   flutter_translate: ^3.0.1
   flutter_localizations:
     sdk: flutter
+  flutter_google_places:
 
 
 
