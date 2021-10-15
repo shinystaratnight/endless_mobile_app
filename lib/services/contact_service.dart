@@ -60,6 +60,16 @@ class ContactService {
     lastName,
     industry,
     skills,
+    gender,
+    residency,
+    nationality,
+    transport,
+    height,
+    weight,
+    bankAccountName,
+    bankName,
+    iban,
+    tags,
   }) async {
     var body = {
       'contact': {
@@ -68,10 +78,22 @@ class ContactService {
         'last_name': lastName,
         'birthday': birthday,
         'phone_mobile': phone,
-        'email': email
+        'email': email,
+        'bank_accounts': {
+          'AccountholdersName': bankAccountName,
+          'IBAN': iban,
+          'bank_name': bankName,
+        },
+        'gender': gender,
       },
+      'height': height,
+      'weight': weight,
+      'nationality': {'id': nationality},
+      'transportation_to_work': transport,
+      'residency': residency,
       'industry': {'id': industry},
-      'skill': skills
+      'skill': skills,
+      'tag': tags,
     };
 
     http.Response res = await apiService.post(

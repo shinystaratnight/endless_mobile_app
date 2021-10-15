@@ -3,13 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/validator.dart';
+import 'package:piiprent/models/application_form_model.dart';
 import 'package:piiprent/models/country_model.dart';
 import 'package:piiprent/models/industry_model.dart';
 import 'package:piiprent/models/settings_model.dart';
 import 'package:piiprent/models/skill_model.dart';
+import 'package:piiprent/models/tag_model.dart';
+import 'package:piiprent/services/company_service.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/country_service.dart';
 import 'package:piiprent/services/industry_service.dart';
+import 'package:piiprent/services/tag_service.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_select.dart';
@@ -41,6 +45,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String _bankAccountName;
   String _bankName;
   String _iban;
+  List<dynamic> _tags;
   String _firstName;
   String _lastName;
   String _email;
@@ -104,6 +109,16 @@ class _RegisterFormState extends State<RegisterForm> {
         phone: _phone,
         skills: _skills,
         title: _title,
+        gender: _gender,
+        residency: _residency,
+        nationality: _nationality,
+        transport: _transport,
+        height: _height,
+        weight: _weight,
+        bankAccountName: _bankAccountName,
+        bankName: _bankName,
+        iban: _iban,
+        tags: _tags,
       );
     } catch (e) {
       _errorStream.add(e.toString());
@@ -415,69 +430,136 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
+  Widget _buildTagField(BuildContext context) {
+    TagService tagService = Provider.of<TagService>(context);
+
+    return FutureBuilder(
+      future: tagService.getAllTags(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          List<Tag> data = snapshot.data;
+
+          return FormSelect(
+            multiple: true,
+            title: translate('field.tags'),
+            columns: 1,
+            onChanged: (List<dynamic> ids) {
+              _tags = ids;
+            },
+            options: data.map((Tag el) {
+              return {
+                'value': el.id,
+                'label': el.name,
+              };
+            }).toList(),
+          );
+        }
+
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ContactService contactService = Provider.of<ContactService>(context);
+    CompanyService companyService = Provider.of<CompanyService>(context);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 18.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 14.0,
-            ),
-            _buildTitleField(context),
-            Row(
-              children: [
-                _buildFirstNameField(context),
-                _buildLastNameField(context)
-              ],
-            ),
-            _buildGenderField(context),
-            _buildEmailField(context),
-            _buildPhoneNumberField(context),
-            _buildBirthdayField(context),
-            _buildNationalityField(context),
-            _buildResidencyField(context),
-            _transportationToWorkField(context),
-            Row(
-              children: [
-                _buildHeightField(context),
-                _buildWeightField(context)
-              ],
-            ),
-            _buildBankAccountNameField(context),
-            _buildBankNameField(context),
-            _buildIbanField(context),
-            _buildIndustryField(context),
-            _buildSkillField(context),
-            StreamBuilder(
-              stream: _errorStream.stream,
-              builder: (context, snapshot) {
-                return FormMessage(
-                  type: MessageType.Error,
-                  message: snapshot.data,
-                );
-              },
-            ),
-            StreamBuilder(
-              stream: _fetchingStream.stream,
-              builder: (context, snapshot) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FormSubmitButton(
-                    disabled: snapshot.hasData && snapshot.data,
-                    onPressed: () => _register(contactService),
-                    label: translate('button.register'),
+    return FutureBuilder(
+      future: companyService.getApplicationFormSettings(widget.settings.formId),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          ApplicationForm form = snapshot.data;
+
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 14.0,
                   ),
-                );
-              },
+                  if (form.isExist(['contact.title']))
+                    _buildTitleField(context),
+                  if (form.isExist(['contact.first_name', 'contact.last_name']))
+                    Row(
+                      children: [
+                        if (form.isExist(['contact.first_name']))
+                          _buildFirstNameField(context),
+                        if (form.isExist(['contact.last_name']))
+                          _buildLastNameField(context)
+                      ],
+                    ),
+                  if (form.isExist(['contact.gender']))
+                    _buildGenderField(context),
+                  if (form.isExist(['contact.email']))
+                    _buildEmailField(context),
+                  if (form.isExist(['contact.phone_mobile']))
+                    _buildPhoneNumberField(context),
+                  if (form.isExist(['contact.birthday']))
+                    _buildBirthdayField(context),
+                  if (form.isExist(['nationality']))
+                    _buildNationalityField(context),
+                  if (form.isExist(['residency']))
+                    _buildResidencyField(context),
+                  if (form.isExist(['transportation_to_work']))
+                    _transportationToWorkField(context),
+                  if (form.isExist(['height', 'weight']))
+                    Row(
+                      children: [
+                        if (form.isExist(['height']))
+                          _buildHeightField(context),
+                        if (form.isExist(['weight'])) _buildWeightField(context)
+                      ],
+                    ),
+                  if (form
+                      .isExist(['contact.bank_accounts.AccountholdersName']))
+                    _buildBankAccountNameField(context),
+                  if (form.isExist(['contact.bank_accounts.bank_name']))
+                    _buildBankNameField(context),
+                  if (form.isExist(['contact.bank_accounts.IBAN']))
+                    _buildIbanField(context),
+                  if (form.isExist(['skill'])) _buildIndustryField(context),
+                  if (form.isExist(['skill'])) _buildSkillField(context),
+                  if (form.isExist(['tag'])) _buildTagField(context),
+                  StreamBuilder(
+                    stream: _errorStream.stream,
+                    builder: (context, snapshot) {
+                      return FormMessage(
+                        type: MessageType.Error,
+                        message: snapshot.data,
+                      );
+                    },
+                  ),
+                  StreamBuilder(
+                    stream: _fetchingStream.stream,
+                    builder: (context, snapshot) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FormSubmitButton(
+                          disabled: snapshot.hasData && snapshot.data,
+                          onPressed: () => _register(contactService),
+                          label: translate('button.register'),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
+          );
+        }
+
+        return Center(
+          child: Padding(
+            child: CircularProgressIndicator(),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+          ),
+        );
+      },
     );
   }
 }

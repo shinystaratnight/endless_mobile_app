@@ -24,6 +24,7 @@ import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/skill_service.dart';
+import 'package:piiprent/services/tag_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/services/worktype_service.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +61,7 @@ void main() async {
         Provider<WorktypeService>(create: (_) => WorktypeService()),
         Provider<SkillService>(create: (_) => SkillService()),
         Provider<CountryService>(create: (_) => CountryService()),
+        Provider<TagService>(create: (_) => TagService()),
       ],
       child: LocalizedApp(delegate, MyApp()),
     ),
