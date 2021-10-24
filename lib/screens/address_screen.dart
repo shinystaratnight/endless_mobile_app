@@ -34,7 +34,6 @@ class _AddressScreenState extends State<AddressScreen> {
             children: <Widget>[
               Field(
                 onChanged: (value) {
-                  print(value);
                   if (value.isNotEmpty) {
                     autoCompleteSearch(value);
                   } else {
@@ -63,7 +62,6 @@ class _AddressScreenState extends State<AddressScreen> {
                       title: Text(predictions[index].description),
                       onTap: () async {
                         var address = predictions[index];
-                        print(address.placeId);
                         this.googlePlace.details.getJson(address.placeId).then(
                           (value) {
                             final decodedResponse = json.decode(value);

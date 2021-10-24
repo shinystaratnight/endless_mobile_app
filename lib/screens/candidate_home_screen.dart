@@ -38,10 +38,11 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   }
 
   _getCurrentPosition(dynamic activeTimesheets) async {
+    print('here');
     print(activeTimesheets);
-    if (activeTimesheets == null) {
-      return;
-    }
+    // if (activeTimesheets == null) {
+    //   return;
+    // }
 
     BackgroundLocation.stopLocationService();
     BackgroundLocation.startLocationService(distanceFilter: 5.0);
@@ -56,8 +57,6 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
       }
 
       List<dynamic> activeTimeshseets = json.decode(activeTimesheetsEncoded);
-
-      print(activeTimeshseets);
 
       try {
         var activeTimesheet = activeTimeshseets.firstWhere((element) {
