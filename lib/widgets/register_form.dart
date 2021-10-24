@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/enums.dart';
-import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/application_form_model.dart';
 import 'package:piiprent/models/country_model.dart';
 import 'package:piiprent/models/industry_model.dart';
@@ -58,9 +57,9 @@ class _RegisterFormState extends State<RegisterForm> {
   CountryCode _phoneCountryCode;
   Map<String, dynamic> _address;
 
-  StreamController _industryStream = StreamController();
-  StreamController _fetchingStream = StreamController();
-  StreamController _errorStream = StreamController();
+  final StreamController _industryStream = StreamController();
+  final StreamController _fetchingStream = StreamController();
+  final StreamController _errorStream = StreamController();
 
   List<Map<String, dynamic>> titleOptions = [
     {'value': 'Mr.', 'label': 'Mr.'},
@@ -122,7 +121,7 @@ class _RegisterFormState extends State<RegisterForm> {
         bankName: _bankName,
         iban: _iban,
         tags: _tags,
-        address: json.encode(_address),
+        address: _address,
       );
     } catch (e) {
       _errorStream.add(e.toString());
@@ -169,11 +168,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildFirstNameField(BuildContext context) {
+  Widget _buildFirstNameField(BuildContext context, [Function validator]) {
     return Expanded(
       flex: 2,
       child: Field(
         label: translate('field.first_name'),
+        validator: validator,
         onSaved: (String value) {
           _firstName = value;
         },
@@ -181,11 +181,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildLastNameField(BuildContext context) {
+  Widget _buildLastNameField(BuildContext context, [Function validator]) {
     return Expanded(
       flex: 2,
       child: Field(
         label: translate('field.last_name'),
+        validator: validator,
         onSaved: (String value) {
           _lastName = value;
         },
@@ -193,23 +194,24 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildEmailField(BuildContext context) {
+  Widget _buildEmailField(BuildContext context, [Function validator]) {
     return Field(
       label: translate('field.email'),
-      validator: emailValidator,
+      validator: validator,
       onSaved: (String value) {
         _email = value;
       },
     );
   }
 
-  Widget _buildPhoneNumberField(BuildContext context) {
+  Widget _buildPhoneNumberField(BuildContext context, [Function validator]) {
     return Field(
       label: translate('field.phone'),
       initialValue: '',
       onSaved: (String value) {
         _phone = '$_phoneCountryCode$value';
       },
+      validator: validator,
       leading: widget.settings != null
           ? Padding(
               padding: const EdgeInsets.only(top: 16.0),
@@ -227,10 +229,11 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildBirthdayField(BuildContext context) {
+  Widget _buildBirthdayField(BuildContext context, [Function validator]) {
     return Field(
       label: translate('field.birthday'),
       datepicker: true,
+      validator: validator,
       onSaved: (String value) {
         _birthday = value;
       },
@@ -304,11 +307,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildHeightField(BuildContext context) {
+  Widget _buildHeightField(BuildContext context, [Function validator]) {
     return Expanded(
       flex: 2,
       child: Field(
         label: translate('field.height'),
+        validator: validator,
         onSaved: (String height) {
           _height = height;
         },
@@ -316,11 +320,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildWeightField(BuildContext context) {
+  Widget _buildWeightField(BuildContext context, [Function validator]) {
     return Expanded(
       flex: 2,
       child: Field(
         label: translate('field.weight'),
+        validator: validator,
         onSaved: (String weight) {
           _weight = weight;
         },
@@ -328,27 +333,31 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildBankAccountNameField(BuildContext context) {
+  Widget _buildBankAccountNameField(BuildContext context,
+      [Function validator]) {
     return Field(
       label: translate('field.account_holders_name'),
+      validator: validator,
       onSaved: (String value) {
         _bankAccountName = value;
       },
     );
   }
 
-  Widget _buildBankNameField(BuildContext context) {
+  Widget _buildBankNameField(BuildContext context, [Function validator]) {
     return Field(
       label: translate('field.bank_name'),
+      validator: validator,
       onSaved: (String value) {
         _bankName = value;
       },
     );
   }
 
-  Widget _buildIbanField(BuildContext context) {
+  Widget _buildIbanField(BuildContext context, [Function validator]) {
     return Field(
       label: translate('field.iban'),
+      validator: validator,
       onSaved: (String value) {
         _iban = value;
       },
@@ -405,17 +414,23 @@ class _RegisterFormState extends State<RegisterForm> {
 
         String industry = snapshot.data;
 
+        print(snapshot.data);
+
         return FutureBuilder(
           future: industryService.getSkills(
             industry,
             widget.settings.company,
           ),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.active ||
-                snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+            var progress = const Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
                 child: CircularProgressIndicator(),
-              );
+              ),
+            );
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return progress;
             }
 
             if (snapshot.hasData) {
@@ -433,9 +448,7 @@ class _RegisterFormState extends State<RegisterForm> {
               );
             }
 
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return progress;
           },
         );
       },

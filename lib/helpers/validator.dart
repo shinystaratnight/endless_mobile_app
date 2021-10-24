@@ -22,3 +22,11 @@ String numberValidator(String value) {
     return 'Please enter a valid number!';
   }
 }
+
+String requiredValidator(dynamic value) {
+  if (value != null) {
+    return null;
+  }
+
+  return 'This field is required';
+}
