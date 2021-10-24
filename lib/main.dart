@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:piiprent/screens/address_screen.dart';
 import 'package:piiprent/screens/candidate_home_screen.dart';
 import 'package:piiprent/screens/candidate_job_offers_screen.dart';
 import 'package:piiprent/screens/candidate_jobs_screen.dart';
@@ -108,6 +109,7 @@ class MyApp extends StatelessWidget {
               ClientTimesheetsScreen(),
           '/client_jobsites': (BuildContext context) => ClientJobsitesScreen(),
           '/forgot_password': (BuildContext context) => ForgotPasswordScreen(),
+          '/address': (BuildContext context) => AddressScreen(),
         },
         home: PreviewScreen(),
       ),

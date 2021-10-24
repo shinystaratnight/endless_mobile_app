@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/enums.dart';
@@ -14,6 +15,7 @@ import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/country_service.dart';
 import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/services/tag_service.dart';
+import 'package:piiprent/widgets/address_field.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_select.dart';
@@ -54,6 +56,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String _industry;
   List<dynamic> _skills;
   CountryCode _phoneCountryCode;
+  Map<String, dynamic> _address;
 
   StreamController _industryStream = StreamController();
   StreamController _fetchingStream = StreamController();
@@ -119,6 +122,7 @@ class _RegisterFormState extends State<RegisterForm> {
         bankName: _bankName,
         iban: _iban,
         tags: _tags,
+        address: json.encode(_address),
       );
     } catch (e) {
       _errorStream.add(e.toString());
@@ -381,6 +385,14 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
+  Widget _buildAddressField(BuildContext context) {
+    return AddressField(onSaved: (Map<String, dynamic> address) {
+      setState(() {
+        _address = address;
+      });
+    });
+  }
+
   Widget _buildSkillField(BuildContext context) {
     IndustryService industryService = Provider.of<IndustryService>(context);
 
@@ -501,6 +513,8 @@ class _RegisterFormState extends State<RegisterForm> {
                     _buildPhoneNumberField(context),
                   if (form.isExist(['contact.birthday']))
                     _buildBirthdayField(context),
+                  if (form.isExist(['contact.address.street_address']))
+                    _buildAddressField(context),
                   if (form.isExist(['nationality']))
                     _buildNationalityField(context),
                   if (form.isExist(['residency']))

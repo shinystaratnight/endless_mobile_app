@@ -70,6 +70,7 @@ class ContactService {
     bankName,
     iban,
     tags,
+    address,
   }) async {
     var body = {
       'contact': {
@@ -85,6 +86,7 @@ class ContactService {
           'bank_name': bankName,
         },
         'gender': gender,
+        'address': {'street_address': address}
       },
       'height': height,
       'weight': weight,

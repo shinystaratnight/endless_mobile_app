@@ -98,9 +98,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     _activeForm == 'login'
                         ? LoginForm(
                             onRegister: () => setState(
-                                  () => _activeForm = 'register',
-                                ))
-                        : RegisterForm(settings: snapshot.data),
+                              () => _activeForm = 'register',
+                            ),
+                          )
+                        : RegisterForm(
+                            settings: snapshot.data,
+                          ),
                   ],
                 ),
               );
