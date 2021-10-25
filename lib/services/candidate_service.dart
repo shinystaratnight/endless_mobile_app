@@ -143,4 +143,39 @@ class CandidateService {
       return e;
     }
   }
+
+  Future<bool> updatePicture({
+    String contactId,
+    String title,
+    String firstName,
+    String lastName,
+    String email,
+    String phoneMobile,
+    String picture,
+    String birthday,
+  }) async {
+    Map<String, dynamic> body = {
+      'id': contactId,
+      'title': title,
+      'first_name': firstName,
+      'last_name': lastName,
+      'email': email,
+      'phone_mobile': phoneMobile,
+      'birthday': birthday,
+      'picture': picture
+    };
+
+    try {
+      http.Response res =
+          await apiService.put(path: '/core/contacts/$contactId/', body: body);
+
+      if (res.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed update contact personal details');
+      }
+    } catch (e) {
+      return false;
+    }
+  }
 }

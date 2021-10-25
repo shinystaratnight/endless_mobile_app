@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/validator.dart';
@@ -18,8 +21,11 @@ import 'package:piiprent/widgets/stars.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CandidateProfileScreen extends StatefulWidget {
+  const CandidateProfileScreen({Key key}) : super(key: key);
+
   @override
   _CandidateProfileScreenState createState() => _CandidateProfileScreenState();
 }
@@ -38,8 +44,51 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     'skills': false,
     'contact': false,
   };
-  GlobalKey<FormState> _detailsFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> _contactFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _detailsFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _contactFormKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+  Uint8List _imageBytes;
+
+  _onTapImage(
+    CandidateService candidateService,
+    Candidate candidate,
+    BuildContext context,
+  ) async {
+    final XFile image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      final bytes = await image.readAsBytes();
+      final picture = 'data:image/jpeg;base64,${base64.encode(bytes)}';
+      final String contactId = candidate.contact.id;
+
+      final result = await candidateService.updatePicture(
+        contactId: contactId,
+        title: candidate.contact.title ?? '',
+        birthday: candidate.contact.birthday ?? '',
+        firstName: _firstName == null ? candidate.firstName : _firstName,
+        lastName: _lastName == null ? candidate.lastName : _lastName,
+        email: _email == null ? candidate.email : _email,
+        phoneMobile: _phoneNumber == null ? candidate.phone : _phoneNumber,
+        picture: picture,
+      );
+
+      if (result == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green[400],
+            content: const Text(
+              'Avatar updated',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+
+        setState(() {
+          _imageBytes = bytes;
+        });
+      }
+    }
+  }
 
   _onSavePersonalDetails(
     CandidateService candidateService,
@@ -460,20 +509,29 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                     height: 20.0,
                   ),
                   Center(
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        shape: BoxShape.circle,
-                        image: candidate.contact.userAvatarUrl() != null
-                            ? DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  candidate.contact.userAvatarUrl(),
-                                ),
-                              )
-                            : null,
+                    child: GestureDetector(
+                      onTap: () => _onTapImage(
+                        candidateService,
+                        candidate,
+                        context,
+                      ),
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          shape: BoxShape.circle,
+                          image: candidate.contact.userAvatarUrl() != null
+                              ? DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: _imageBytes != null
+                                      ? MemoryImage(_imageBytes)
+                                      : NetworkImage(
+                                          candidate.contact.userAvatarUrl(),
+                                        ),
+                                )
+                              : null,
+                        ),
                       ),
                     ),
                   ),
