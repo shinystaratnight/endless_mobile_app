@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/validator.dart';
@@ -18,8 +21,11 @@ import 'package:piiprent/widgets/stars.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CandidateProfileScreen extends StatefulWidget {
+  const CandidateProfileScreen({Key key}) : super(key: key);
+
   @override
   _CandidateProfileScreenState createState() => _CandidateProfileScreenState();
 }
@@ -27,10 +33,62 @@ class CandidateProfileScreen extends StatefulWidget {
 class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   int _height;
   int _weight;
+  String _firstName;
+  String _lastName;
+  String _email;
+  String _phoneNumber;
   bool _fetching = false;
   dynamic _formError;
-  Map<String, bool> _editMap = {'details': false, 'skills': false};
-  GlobalKey<FormState> _detailsFormKey = GlobalKey<FormState>();
+  Map<String, bool> _editMap = {
+    'details': false,
+    'skills': false,
+    'contact': false,
+  };
+  final GlobalKey<FormState> _detailsFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _contactFormKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+  Uint8List _imageBytes;
+
+  _onTapImage(
+    CandidateService candidateService,
+    Candidate candidate,
+    BuildContext context,
+  ) async {
+    final XFile image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      final bytes = await image.readAsBytes();
+      final picture = 'data:image/jpeg;base64,${base64.encode(bytes)}';
+      final String contactId = candidate.contact.id;
+
+      final result = await candidateService.updatePicture(
+        contactId: contactId,
+        title: candidate.contact.title ?? '',
+        birthday: candidate.contact.birthday ?? '',
+        firstName: _firstName == null ? candidate.firstName : _firstName,
+        lastName: _lastName == null ? candidate.lastName : _lastName,
+        email: _email == null ? candidate.email : _email,
+        phoneMobile: _phoneNumber == null ? candidate.phone : _phoneNumber,
+        picture: picture,
+      );
+
+      if (result == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green[400],
+            content: const Text(
+              'Avatar updated',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+
+        setState(() {
+          _imageBytes = bytes;
+        });
+      }
+    }
+  }
 
   _onSavePersonalDetails(
     CandidateService candidateService,
@@ -39,11 +97,13 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     String id = candidate.id;
     String contactId = candidate.contact.id;
 
-    if (!_detailsFormKey.currentState.validate()) {
+    if (!_detailsFormKey.currentState.validate() ||
+        !_contactFormKey.currentState.validate()) {
       return;
     }
 
     _detailsFormKey.currentState.save();
+    _contactFormKey.currentState.save();
 
     setState(() {
       _fetching = true;
@@ -56,11 +116,16 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         contactId: contactId,
         height: _height == null ? candidate.height : _height,
         weight: _weight == null ? candidate.weight : _weight,
+        firstName: _firstName == null ? candidate.firstName : _firstName,
+        lastName: _lastName == null ? candidate.lastName : _lastName,
+        email: _email == null ? candidate.email : _email,
+        phoneMobile: _phoneNumber == null ? candidate.phone : _phoneNumber,
       );
 
       if (result) {
         setState(() {
           _editMap['details'] = false;
+          _editMap['contact'] = false;
         });
       }
     } catch (e) {
@@ -101,9 +166,6 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
 
     return ProfileGroup(
       title: translate('group.title.personal_details'),
-      onEdit: onEdit != null ? onEdit : () {},
-      canEdit: true,
-      isEditing: edit,
       content: [
         Row(
           children: [
@@ -111,7 +173,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               child: Field(
                 label: translate('field.first_name'),
                 initialValue: candidate.firstName,
-                readOnly: true,
+                readOnly: !edit,
+                onChanged: (String value) {
+                  setState(() {
+                    _firstName = value;
+                  });
+                },
               ),
             ),
             SizedBox(
@@ -121,7 +188,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               child: Field(
                 label: translate('field.last_name'),
                 initialValue: candidate.lastName,
-                readOnly: true,
+                readOnly: !edit,
+                onChanged: (String value) {
+                  setState(() {
+                    _lastName = value;
+                  });
+                },
               ),
             ),
           ],
@@ -184,28 +256,47 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                 ),
                 label: translate('button.update'),
               )
-            : SizedBox(),
+            : FormSubmitButton(
+                disabled: _fetching,
+                onPressed: onEdit,
+                label: translate('button.edit'),
+              ),
       ],
     );
   }
 
-  Widget _buildContactDetails(Candidate candidate) {
+  Widget _buildContactDetails(
+    Candidate candidate, [
+    bool edit = false,
+    Function onEdit,
+  ]) {
+    CandidateService candidateService = Provider.of<CandidateService>(context);
+
     return ProfileGroup(
       title: translate('group.title.contact_details'),
-      onEdit: () {},
       content: [
         Container(
           child: Field(
             label: translate('field.email'),
             initialValue: candidate.email,
-            readOnly: true,
+            readOnly: !edit,
+            onChanged: (String value) {
+              setState(() {
+                _email = value;
+              });
+            },
           ),
         ),
         Container(
           child: Field(
             label: translate('field.phone'),
             initialValue: candidate.phone,
-            readOnly: true,
+            readOnly: !edit,
+            onChanged: (String value) {
+              setState(() {
+                _phoneNumber = value;
+              });
+            },
           ),
         ),
         Container(
@@ -215,6 +306,20 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             readOnly: true,
           ),
         ),
+        edit
+            ? FormSubmitButton(
+                disabled: _fetching,
+                onPressed: () => _onSavePersonalDetails(
+                  candidateService,
+                  candidate,
+                ),
+                label: translate('button.update'),
+              )
+            : FormSubmitButton(
+                disabled: _fetching,
+                onPressed: onEdit,
+                label: translate('button.edit'),
+              ),
       ],
     );
   }
@@ -404,20 +509,29 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                     height: 20.0,
                   ),
                   Center(
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        shape: BoxShape.circle,
-                        image: candidate.contact.userAvatarUrl() != null
-                            ? DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  candidate.contact.userAvatarUrl(),
-                                ),
-                              )
-                            : null,
+                    child: GestureDetector(
+                      onTap: () => _onTapImage(
+                        candidateService,
+                        candidate,
+                        context,
+                      ),
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          shape: BoxShape.circle,
+                          image: candidate.contact.userAvatarUrl() != null
+                              ? DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: _imageBytes != null
+                                      ? MemoryImage(_imageBytes)
+                                      : NetworkImage(
+                                          candidate.contact.userAvatarUrl(),
+                                        ),
+                                )
+                              : null,
+                        ),
                       ),
                     ),
                   ),
@@ -428,7 +542,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        loginService.user.name,
+                        '${candidate.firstName} ${candidate.lastName}',
                         style: TextStyle(
                           color: Colors.blueAccent,
                           fontSize: 18.0,
@@ -465,21 +579,34 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       _editMap['details'],
                       () {
                         bool isEdit = _editMap['details'];
-                        print(isEdit);
                         setState(
                           () {
                             _editMap['details'] = !isEdit;
                             _editMap = _editMap;
                           },
                         );
-                        print(!isEdit);
                       },
                     ),
                   ),
                   SizedBox(
                     height: 15.0,
                   ),
-                  _buildContactDetails(candidate),
+                  Form(
+                    key: _contactFormKey,
+                    child: _buildContactDetails(
+                      candidate,
+                      _editMap['contact'],
+                      () {
+                        bool isEdit = _editMap['contact'];
+                        setState(
+                          () {
+                            _editMap['contact'] = !isEdit;
+                            _editMap = _editMap;
+                          },
+                        );
+                      },
+                    ),
+                  ),
                   SizedBox(
                     height: 15.0,
                   ),

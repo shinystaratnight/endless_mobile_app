@@ -49,6 +49,7 @@
     "button.add": "Lisama",
     "button.times_only": "Ainult ajatöö",
     "button.peicework": "Kombineeritud või tükitöö",
+    "button.edit": "Edit",
     "timesheet.status": "Staatus",
     "timesheet.shift_started_at": "Vahetus algas kell",
     "timesheet.shift_ended_at": "Vahetus lõppes kell",

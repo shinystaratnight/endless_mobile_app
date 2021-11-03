@@ -10,6 +10,8 @@ PODS:
   - GoogleMaps/Base (3.9.0)
   - GoogleMaps/Maps (3.9.0):
     - GoogleMaps/Base
+  - image_picker (0.0.1):
+    - Flutter
   - location (0.0.1):
     - Flutter
   - map_launcher (0.0.1):
@@ -23,6 +25,7 @@ DEPENDENCIES:
   - background_location (from `.symlinks/plugins/background_location/ios`)
   - Flutter (from `Flutter`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - location (from `.symlinks/plugins/location/ios`)
   - map_launcher (from `.symlinks/plugins/map_launcher/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -39,6 +42,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
   map_launcher:
@@ -53,6 +58,7 @@ SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   google_maps_flutter: 279865bd07e2d8751f43a3bc64bac7f6075d0c93
   GoogleMaps: 4b5346bddfe6911bb89155d43c903020170523ac
+  image_picker: 9aa50e1d8cdacdbed739e925b7eea16d014367e6
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   map_launcher: e325db1261d029ff33e08e03baccffe09593ffea
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c

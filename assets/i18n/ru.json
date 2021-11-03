@@ -49,6 +49,7 @@
     "button.add": "Добавить",
     "button.times_only": "Только время",
     "button.peicework": "Сдельная работа",
+    "button.edit": "Редактировать",
     "timesheet.status": "Статус",
     "timesheet.shift_started_at": "Начало смены",
     "timesheet.shift_ended_at": "Окончание смены",

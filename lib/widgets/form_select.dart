@@ -7,6 +7,7 @@ class FormSelect extends StatefulWidget {
   final Function onSave;
   final Function onChanged;
   final String title;
+  final Function validator;
 
   FormSelect({
     this.options,
@@ -15,6 +16,7 @@ class FormSelect extends StatefulWidget {
     this.onSave,
     this.title,
     this.onChanged,
+    this.validator,
   });
 
   @override
@@ -74,7 +76,8 @@ class _FormSelectState extends State<FormSelect> {
     if (widget.onChanged != null) {
       if (widget.multiple) {
         widget.onChanged(
-            _multipleValue.map((Option option) => option.value).toList());
+          _multipleValue.map((Option option) => option.value).toList(),
+        );
       } else {
         widget.onChanged(_value.value);
       }

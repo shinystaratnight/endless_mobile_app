@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:piiprent/screens/address_screen.dart';
 import 'package:piiprent/screens/candidate_home_screen.dart';
 import 'package:piiprent/screens/candidate_job_offers_screen.dart';
 import 'package:piiprent/screens/candidate_jobs_screen.dart';
@@ -15,6 +16,7 @@ import 'package:piiprent/screens/preview_screen.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/company_service.dart';
 import 'package:piiprent/services/contact_service.dart';
+import 'package:piiprent/services/country_service.dart';
 import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/services/job_offer_service.dart';
 import 'package:piiprent/services/job_service.dart';
@@ -23,6 +25,7 @@ import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/skill_service.dart';
+import 'package:piiprent/services/tag_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/services/worktype_service.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +61,8 @@ void main() async {
         Provider<SkillActivityService>(create: (_) => SkillActivityService()),
         Provider<WorktypeService>(create: (_) => WorktypeService()),
         Provider<SkillService>(create: (_) => SkillService()),
+        Provider<CountryService>(create: (_) => CountryService()),
+        Provider<TagService>(create: (_) => TagService()),
       ],
       child: LocalizedApp(delegate, MyApp()),
     ),
@@ -104,6 +109,7 @@ class MyApp extends StatelessWidget {
               ClientTimesheetsScreen(),
           '/client_jobsites': (BuildContext context) => ClientJobsitesScreen(),
           '/forgot_password': (BuildContext context) => ForgotPasswordScreen(),
+          '/address': (BuildContext context) => AddressScreen(),
         },
         home: PreviewScreen(),
       ),

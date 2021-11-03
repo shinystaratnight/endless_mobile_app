@@ -36,6 +36,8 @@
 	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
+	<key>NSCameraUsageDescription</key>
+	<string>For upload or change profile picture</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

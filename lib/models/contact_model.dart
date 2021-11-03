@@ -7,6 +7,7 @@ class Contact {
   final String email;
   final String phoneMobile;
   final String str;
+  final String birthday;
 
   Contact({
     this.id,
@@ -17,6 +18,7 @@ class Contact {
     this.email,
     this.phoneMobile,
     this.str,
+    this.birthday,
   });
 
   factory Contact.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class Contact {
       email: json['email'],
       phoneMobile: json['phone_mobile'],
       str: json['__str__'],
+      birthday: json['birthday'],
     );
   }
 
