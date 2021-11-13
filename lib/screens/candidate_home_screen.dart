@@ -11,7 +11,7 @@ import 'package:piiprent/widgets/page_container.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-// import 'package:background_location/background_location.dart';
+import 'package:background_location/background_location.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateHomeScreen extends StatefulWidget {
@@ -37,56 +37,56 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
     return null;
   }
 
-  // _getCurrentPosition(dynamic activeTimesheets) async {
-  //   print(activeTimesheets);
-  //   if (activeTimesheets == null) {
-  //     return;
-  //   }
-  //
-  //   BackgroundLocation.stopLocationService();
-  //   BackgroundLocation.startLocationService(distanceFilter: 5.0);
-  //   // Start location service here or do something else
-  //   await BackgroundLocation.setAndroidNotification(
-  //         title: "Background service is running",
-  //         message: "Background location in progress",
-  //         icon: "@mipmap/ic_launcher",
-  //       );
-  //       await BackgroundLocation.setAndroidConfiguration(1000);
-  //   BackgroundLocation.getLocationUpdates((location) async {
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     String activeTimesheetsEncoded =
-  //         (prefs.getString('activeTimesheets') ?? null);
-  //
-  //     if (activeTimesheetsEncoded == null) {
-  //       return;
-  //     }
-  //
-  //     List<dynamic> activeTimeshseets = json.decode(activeTimesheetsEncoded);
-  //
-  //     print(activeTimeshseets);
-  //
-  //     try {
-  //       var activeTimesheet = activeTimeshseets.firstWhere((element) {
-  //         DateTime from = DateTime.parse(element['from']);
-  //         DateTime to = DateTime.parse(element['to']);
-  //         DateTime now = DateTime.now().toUtc();
-  //
-  //         return now.isAfter(from) && now.isBefore(to);
-  //       });
-  //
-  //       _trackingService.sendLocation(location, activeTimesheet['id']);
-  //     } catch (e) {
-  //       BackgroundLocation.stopLocationService();
-  //       return null;
-  //     }
-  //   });
-  // }
+  _getCurrentPosition(dynamic activeTimesheets) async {
+    print(activeTimesheets);
+    if (activeTimesheets == null) {
+      return;
+    }
+
+    BackgroundLocation.stopLocationService();
+    BackgroundLocation.startLocationService(distanceFilter: 5.0);
+    // Start location service here or do something else
+    await BackgroundLocation.setAndroidNotification(
+      title: "Background service is running",
+      message: "Background location in progress",
+      icon: "@mipmap/ic_launcher",
+    );
+    await BackgroundLocation.setAndroidConfiguration(1000);
+    BackgroundLocation.getLocationUpdates((location) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String activeTimesheetsEncoded =
+          (prefs.getString('activeTimesheets') ?? null);
+
+      if (activeTimesheetsEncoded == null) {
+        return;
+      }
+
+      List<dynamic> activeTimeshseets = json.decode(activeTimesheetsEncoded);
+
+      print(activeTimeshseets);
+
+      try {
+        var activeTimesheet = activeTimeshseets.firstWhere((element) {
+          DateTime from = DateTime.parse(element['from']);
+          DateTime to = DateTime.parse(element['to']);
+          DateTime now = DateTime.now().toUtc();
+
+          return now.isAfter(from) && now.isBefore(to);
+        });
+
+        _trackingService.sendLocation(location, activeTimesheet['id']);
+      } catch (e) {
+        BackgroundLocation.stopLocationService();
+        return null;
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
 
-    // _getActiveTimesheet().then(_getCurrentPosition);
+    _getActiveTimesheet().then(_getCurrentPosition);
   }
 
   @override
