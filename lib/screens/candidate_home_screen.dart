@@ -38,14 +38,11 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   }
 
   _getCurrentPosition(dynamic activeTimesheets) async {
-    print('here');
-    print(activeTimesheets);
     // if (activeTimesheets == null) {
     //   return;
     // }
 
-    BackgroundLocation.stopLocationService();
-    BackgroundLocation.startLocationService(distanceFilter: 5.0);
+    await BackgroundLocation.startLocationService(distanceFilter: 5.0);
     // Start location service here or do something else
     BackgroundLocation.getLocationUpdates((location) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -67,7 +64,10 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
           return now.isAfter(from) && now.isBefore(to);
         });
 
-        _trackingService.sendLocation(location, activeTimesheet['id']);
+        var result = await _trackingService.sendLocation(
+          location,
+          activeTimesheet['id'],
+        );
       } catch (e) {
         BackgroundLocation.stopLocationService();
         return null;
