@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/models/application_form_model.dart';
 import 'package:piiprent/models/country_model.dart';
@@ -20,8 +21,6 @@ import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_select.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class RegisterForm extends StatefulWidget {
   final IndustryService industryService = IndustryService();

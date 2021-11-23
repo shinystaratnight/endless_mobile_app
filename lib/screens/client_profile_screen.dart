@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/models/client_contact_model.dart';
 import 'package:piiprent/screens/change_password_screen.dart';
 import 'package:piiprent/services/contact_service.dart';
@@ -8,7 +9,6 @@ import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:piiprent/widgets/profile_group.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientProfileScreen extends StatelessWidget {
   Widget _buildContactDetails(ClientContact contact) {

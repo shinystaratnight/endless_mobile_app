@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/services/contact_service.dart';
@@ -6,7 +7,6 @@ import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class ForgotPasswordForm extends StatefulWidget {
   @override

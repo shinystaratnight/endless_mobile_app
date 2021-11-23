@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:piiprent/models/skill_activity_model.dart';
-import 'dart:convert';
 import 'package:piiprent/services/api_service.dart';
 
 class SkillActivityBody {
@@ -36,8 +37,7 @@ class SkillActivityBody {
 class SkillActivityService {
   final ApiService apiService = ApiService.create();
 
-  Future<List<SkillActivity>> getSkillActivitiesByTimesheet(
-      [Map<String, dynamic> query]) async {
+  Future<List<SkillActivity>> getSkillActivitiesByTimesheet([Map<String, dynamic> query]) async {
     Map<String, dynamic> params = {};
 
     if (query != null) {
@@ -45,13 +45,13 @@ class SkillActivityService {
     }
 
     http.Response res =
-        await apiService.get(path: '/hr/timesheetrates/', params: params);
+    await apiService.get(path: '/hr/timesheetrates/', params: params);
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<SkillActivity> skillActivities =
-          results.map((dynamic el) => SkillActivity.fromJson(el)).toList();
+      results.map((dynamic el) => SkillActivity.fromJson(el)).toList();
 
       if (skillActivities.isNotEmpty) {
         skillActivities.insert(0, SkillActivity(id: ''));
@@ -65,9 +65,9 @@ class SkillActivityService {
 
   Future<bool> createSkillActivity(SkillActivityBody body) async {
     http.Response res = await this.apiService.post(
-          path: 'hr/timesheetrates/',
-          body: body.getRequestBody(),
-        );
+      path: 'hr/timesheetrates/',
+      body: body.getRequestBody(),
+    );
 
     if (res.statusCode == 201) {
       return true;
@@ -78,8 +78,8 @@ class SkillActivityService {
 
   Future<bool> removeSkillActivity(String id) async {
     http.Response res = await this.apiService.delete(
-          path: 'hr/timesheetrates/$id/',
-        );
+      path: 'hr/timesheetrates/$id/',
+    );
 
     if (res.statusCode == 204) {
       return true;

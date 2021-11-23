@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/screens/client_timesheet_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientTimesheetCard extends StatelessWidget {
   final Timesheet timesheet;

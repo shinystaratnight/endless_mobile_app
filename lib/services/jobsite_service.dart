@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:piiprent/models/jobsite_model.dart';
-import 'dart:convert';
 import 'package:piiprent/services/api_service.dart';
 
 class JobsiteService {
@@ -16,13 +17,13 @@ class JobsiteService {
     }
 
     http.Response res =
-        await apiService.get(path: '/hr/jobsites/', params: params);
+    await apiService.get(path: '/hr/jobsites/', params: params);
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Jobsite> jobsites =
-          results.map((dynamic el) => Jobsite.fromJson(el)).toList();
+      results.map((dynamic el) => Jobsite.fromJson(el)).toList();
 
       return {"list": jobsites, "count": body["count"]};
     } else {

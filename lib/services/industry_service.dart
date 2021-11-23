@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
+import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/models/industry_model.dart';
 import 'package:piiprent/models/skill_model.dart';

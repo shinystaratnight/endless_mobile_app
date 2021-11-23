@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/models/job_model.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/services/login_service.dart';
@@ -7,7 +8,6 @@ import 'package:piiprent/widgets/client_drawer.dart';
 import 'package:piiprent/widgets/client_job_card.dart';
 import 'package:piiprent/widgets/list_page.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientJobsScreen extends StatelessWidget {
   @override

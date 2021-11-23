@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/average_scores_model.dart';
@@ -19,9 +22,6 @@ import 'package:piiprent/widgets/profile_group.dart';
 import 'package:piiprent/widgets/score_badge.dart';
 import 'package:piiprent/widgets/stars.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CandidateProfileScreen extends StatefulWidget {
   const CandidateProfileScreen({Key key}) : super(key: key);

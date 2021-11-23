@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:http/http.dart';
 import 'package:piiprent/helpers/jwt_decode.dart';
 import 'package:piiprent/models/auth_model.dart';
 import 'package:piiprent/models/user_model.dart';
 import 'package:piiprent/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class TrackingService {
   final ApiService apiService = ApiService.create();
@@ -36,9 +37,9 @@ class TrackingService {
 
     try {
       Response res = await this.apiService.put(
-            path: 'candidate/location/${user.candidateId}/',
-            body: body,
-          );
+        path: 'candidate/location/${user.candidateId}/',
+        body: body,
+      );
 
       if (res.statusCode == 200) {
         return true;

@@ -1,7 +1,8 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:piiprent/models/application_form_model.dart';
 import 'package:piiprent/models/settings_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:piiprent/services/api_service.dart';
 
 class CompanyService {
