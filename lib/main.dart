@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:piiprent/screens/address_screen.dart';
 import 'package:piiprent/screens/candidate_home_screen.dart';
@@ -12,6 +14,7 @@ import 'package:piiprent/screens/client_jobsites_screen.dart';
 import 'package:piiprent/screens/client_profile_screen.dart';
 import 'package:piiprent/screens/client_timesheets_screen.dart';
 import 'package:piiprent/screens/forgot_password_screen.dart';
+import 'package:piiprent/screens/login_screen.dart';
 import 'package:piiprent/screens/preview_screen.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/company_service.dart';
@@ -29,10 +32,6 @@ import 'package:piiprent/services/tag_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/services/worktype_service.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-
-import 'package:piiprent/screens/login_screen.dart';
 
 void main() async {
   var delegate = await LocalizationDelegate.create(

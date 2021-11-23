@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/services/company_service.dart';
+import 'package:piiprent/widgets/language-select.dart';
 import 'package:piiprent/widgets/login_form.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:piiprent/widgets/register_form.dart';
 import 'package:provider/provider.dart';
-import 'package:piiprent/widgets/language-select.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

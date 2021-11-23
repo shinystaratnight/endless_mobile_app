@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:piiprent/models/country_model.dart';
-import 'dart:convert';
 import 'package:piiprent/services/api_service.dart';
 
 class CountryService {
@@ -17,13 +18,13 @@ class CountryService {
     }
 
     http.Response res =
-        await apiService.get(path: '/core/countries/', params: params);
+    await apiService.get(path: '/core/countries/', params: params);
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Country> countries =
-          results.map((dynamic el) => Country.fromJson(el)).toList();
+      results.map((dynamic el) => Country.fromJson(el)).toList();
 
       return countries;
     } else {

@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:background_location/background_location.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
@@ -10,9 +14,6 @@ import 'package:piiprent/widgets/home_screen_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'package:background_location/background_location.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateHomeScreen extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
 
   _getActiveTimesheet() async {
     List<Map<String, dynamic>> activeTimesheets =
-        await _timesheetService.getActiveTimeheets();
+    await _timesheetService.getActiveTimeheets();
 
     if (activeTimesheets != null && activeTimesheets.length > 0) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -47,7 +48,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
     BackgroundLocation.getLocationUpdates((location) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String activeTimesheetsEncoded =
-          (prefs.getString('activeTimesheets') ?? null);
+      (prefs.getString('activeTimesheets') ?? null);
 
       if (activeTimesheetsEncoded == null) {
         return;
@@ -85,7 +86,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   @override
   Widget build(BuildContext context) {
     NotificationService notificationService =
-        Provider.of<NotificationService>(context);
+    Provider.of<NotificationService>(context);
     LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(

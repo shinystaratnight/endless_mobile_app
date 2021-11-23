@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/screens/more_button.dart';
 import 'package:piiprent/services/list_service.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class ListPage<T> extends StatefulWidget {
   final Function action;

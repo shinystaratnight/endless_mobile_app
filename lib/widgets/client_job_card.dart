@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/models/job_model.dart';
 import 'package:piiprent/screens/client_job_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientJobCard extends StatelessWidget {
   final Job job;

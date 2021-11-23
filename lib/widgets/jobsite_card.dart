@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/jobsite_model.dart';
 import 'package:piiprent/screens/client_jobsite_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class JobsiteCard extends StatelessWidget {
   final Function update;

@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:intl/intl.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:piiprent/models/candidate_model.dart';
 import 'package:piiprent/models/carrier_model.dart';
-
 import 'package:piiprent/services/api_service.dart';
 
 class CandidateService {

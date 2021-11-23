@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/services/login_service.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/widgets/client_app_bar.dart';
-
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/filter_dialog_button.dart';
 import 'package:piiprent/widgets/group_title.dart';

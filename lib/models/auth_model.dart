@@ -1,8 +1,10 @@
 class Auth {
   // ignore: non_constant_identifier_names
   final String access_token_jwt;
+
   // ignore: non_constant_identifier_names
   final String refresh_token;
+
   // ignore: non_constant_identifier_names
   final String token_type;
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/models/worktype_model.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
@@ -9,7 +10,6 @@ import 'package:piiprent/widgets/form_select.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateSkillActivityScreen extends StatefulWidget {
   final String timesheet;

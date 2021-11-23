@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:piiprent/models/job_offer_model.dart';
-import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-
-import 'package:piiprent/widgets/details_record.dart';
-import 'package:piiprent/widgets/group_title.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:map_launcher/map_launcher.dart';
+import 'package:piiprent/models/job_offer_model.dart';
+import 'package:piiprent/widgets/candidate_app_bar.dart';
+import 'package:piiprent/widgets/details_record.dart';
+import 'package:piiprent/widgets/group_title.dart';
 
 class CandidateJobDetailsScreen extends StatefulWidget {
   final JobOffer jobOffer;

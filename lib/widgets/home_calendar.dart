@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:piiprent/models/carrier_model.dart';
 import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 enum CalendarType {
   Canddate,
