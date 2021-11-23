@@ -17,13 +17,13 @@ class JobsiteService {
     }
 
     http.Response res =
-    await apiService.get(path: '/hr/jobsites/', params: params);
+        await apiService.get(path: '/hr/jobsites/', params: params);
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Jobsite> jobsites =
-      results.map((dynamic el) => Jobsite.fromJson(el)).toList();
+          results.map((dynamic el) => Jobsite.fromJson(el)).toList();
 
       return {"list": jobsites, "count": body["count"]};
     } else {

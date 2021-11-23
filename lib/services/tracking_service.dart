@@ -37,9 +37,9 @@ class TrackingService {
 
     try {
       Response res = await this.apiService.put(
-        path: 'candidate/location/${user.candidateId}/',
-        body: body,
-      );
+            path: 'candidate/location/${user.candidateId}/',
+            body: body,
+          );
 
       if (res.statusCode == 200) {
         return true;

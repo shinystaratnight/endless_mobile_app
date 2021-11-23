@@ -18,13 +18,13 @@ class CountryService {
     }
 
     http.Response res =
-    await apiService.get(path: '/core/countries/', params: params);
+        await apiService.get(path: '/core/countries/', params: params);
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Country> countries =
-      results.map((dynamic el) => Country.fromJson(el)).toList();
+          results.map((dynamic el) => Country.fromJson(el)).toList();
 
       return countries;
     } else {

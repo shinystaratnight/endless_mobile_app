@@ -21,13 +21,13 @@ class JobService {
     }
 
     http.Response res =
-    await apiService.get(path: '/hr/joboffers-candidate/', params: params);
+        await apiService.get(path: '/hr/joboffers-candidate/', params: params);
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<JobOffer> jobs =
-      results.map((dynamic el) => JobOffer.fromJson(el)).toList();
+          results.map((dynamic el) => JobOffer.fromJson(el)).toList();
 
       return {"list": jobs, "count": body['count']};
     } else {
@@ -78,7 +78,7 @@ class JobService {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
       List<Shift> shifts =
-      results.map((dynamic el) => Shift.fromJson(el)).toList();
+          results.map((dynamic el) => Shift.fromJson(el)).toList();
 
       return {"list": shifts, "count": body['count']};
     } else {
@@ -105,7 +105,7 @@ class JobService {
     if (res.statusCode == 200) {
       List<dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<Shift> shifts =
-      body.map((dynamic el) => Shift.fromJson(el)).toList();
+          body.map((dynamic el) => Shift.fromJson(el)).toList();
 
       return shifts;
     } else {

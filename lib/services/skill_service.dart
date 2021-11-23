@@ -13,7 +13,7 @@ class SkillService {
     };
 
     http.Response res =
-    await apiService.get(path: '/skills/skills/$id', params: params);
+        await apiService.get(path: '/skills/skills/$id', params: params);
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));

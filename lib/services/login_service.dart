@@ -31,7 +31,7 @@ class LoginService {
 
     try {
       http.Response res =
-      await apiService.post(path: '/oauth2/token/', body: body);
+          await apiService.post(path: '/oauth2/token/', body: body);
 
       if (res.statusCode == 400) {
         throw 'Invalid credentials given.';
@@ -75,7 +75,7 @@ class LoginService {
         Auth auth = Auth.fromJson(json.decode(authEncoded));
         var payload = parseJwtPayLoad(auth.access_token_jwt);
         DateTime expireDateTime =
-        DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000);
+            DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000);
 
         if (DateTime.now().isAfter(expireDateTime)) {
           var res = await refreshToken(auth);
@@ -127,7 +127,7 @@ class LoginService {
 
     try {
       http.Response res =
-      await apiService.post(path: '/oauth2/token/', body: body);
+          await apiService.post(path: '/oauth2/token/', body: body);
 
       if (res.statusCode == 200) {
         return res;
