@@ -26,7 +26,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
 
   _getActiveTimesheet() async {
     List<Map<String, dynamic>> activeTimesheets =
-    await _timesheetService.getActiveTimeheets();
+        await _timesheetService.getActiveTimeheets();
 
     if (activeTimesheets != null && activeTimesheets.length > 0) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -56,7 +56,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
     BackgroundLocation.getLocationUpdates((location) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String activeTimesheetsEncoded =
-      (prefs.getString('activeTimesheets') ?? null);
+          (prefs.getString('activeTimesheets') ?? null);
 
       if (activeTimesheetsEncoded == null) {
         return;
@@ -93,7 +93,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   @override
   Widget build(BuildContext context) {
     NotificationService notificationService =
-    Provider.of<NotificationService>(context);
+        Provider.of<NotificationService>(context);
     LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(
