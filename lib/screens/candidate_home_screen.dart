@@ -39,20 +39,12 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   }
 
   _getCurrentPosition(dynamic activeTimesheets) async {
-    print(activeTimesheets);
-    if (activeTimesheets == null) {
-      return;
-    }
+    // if (activeTimesheets == null) {
+    //   return;
+    // }
 
-    BackgroundLocation.stopLocationService();
-    BackgroundLocation.startLocationService(distanceFilter: 5.0);
+    await BackgroundLocation.startLocationService(distanceFilter: 5.0);
     // Start location service here or do something else
-    await BackgroundLocation.setAndroidNotification(
-      title: "Background service is running",
-      message: "Background location in progress",
-      icon: "@mipmap/ic_launcher",
-    );
-    await BackgroundLocation.setAndroidConfiguration(1000);
     BackgroundLocation.getLocationUpdates((location) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String activeTimesheetsEncoded =
@@ -64,8 +56,6 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
 
       List<dynamic> activeTimeshseets = json.decode(activeTimesheetsEncoded);
 
-      print(activeTimeshseets);
-
       try {
         var activeTimesheet = activeTimeshseets.firstWhere((element) {
           DateTime from = DateTime.parse(element['from']);
@@ -75,7 +65,10 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
           return now.isAfter(from) && now.isBefore(to);
         });
 
-        _trackingService.sendLocation(location, activeTimesheet['id']);
+        var result = await _trackingService.sendLocation(
+          location,
+          activeTimesheet['id'],
+        );
       } catch (e) {
         BackgroundLocation.stopLocationService();
         return null;
