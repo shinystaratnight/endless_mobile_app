@@ -1,3 +1,4 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -34,6 +35,11 @@ import 'package:piiprent/services/worktype_service.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Future.delayed(Duration(seconds: 1), () async {
+    await AppTrackingTransparency.requestTrackingAuthorization();
+  });
+
   var delegate = await LocalizationDelegate.create(
     fallbackLocale: 'en_US',
     supportedLocales: [
@@ -88,7 +94,7 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.blueAccent,
           scaffoldBackgroundColor: Colors.grey[100],
           textTheme:
-              GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
+          GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
         ),
         debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{

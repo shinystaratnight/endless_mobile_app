@@ -42,10 +42,6 @@
 	<string>For upload or change profile picture</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Some assignments require your location during working hours to be recorded!</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Background tracking requirement</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Some assignments require your location during working hours to be recorded!</string>
 	<key>NSMotionUsageDescription</key>

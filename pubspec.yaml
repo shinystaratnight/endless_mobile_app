@@ -37,6 +37,7 @@ dependencies:
   country_code_picker: ^2.0.2
   map_launcher: ^2.1.1
   flutter_translate: ^3.0.1
+  app_tracking_transparency: ^2.0.2+1
   flutter_localizations:
     sdk: flutter
 
