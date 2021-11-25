@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
@@ -13,6 +12,10 @@ import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
 import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
+
+import 'activitywidget_page.dart';
+import 'timewidget_page.dart';
+import 'widgets/timesheet_general_info_widget.dart';
 
 class CandidateTimesheetNewDetailsScreen extends StatefulWidget {
   final String position;
@@ -282,6 +285,9 @@ class _CandidateTimesheetNewDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
+    var dateString = 'April 20, 2020';
+    DateFormat format = new DateFormat("MMMM dd, yyyy");
+    var shiftEnddate = format.parse(dateString);
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
     SkillActivityService skillActivityService =
         Provider.of<SkillActivityService>(context);
@@ -307,7 +313,7 @@ class _CandidateTimesheetNewDetailsScreenState
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -318,18 +324,38 @@ class _CandidateTimesheetNewDetailsScreenState
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
-              GeneralnformationWidget('images/icons/ic_profile.svg',
-                  'SUPERVISIOR', widget.clientContact),
-              GeneralnformationWidget('images/icons/ic_building.svg', 'COMPANY',
-                  widget.clientContact),
-              GeneralnformationWidget(
-                  'images/icons/ic_work.svg', 'JOBSITE', widget.jobsite),
-              GeneralnformationWidget(
-                  'images/icons/ic_support.svg', 'POSISTION', widget.position),
-              GeneralnformationWidget('images/icons/ic_calendar.svg',
-                  'SHIFTDATE', widget.shiftEnd.toString()),
+              Align(
+                alignment: Alignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    GeneralInformationWidget(
+                      imageIcon: 'images/icons/ic_profile.svg',
+                      name: 'SUPERVISIOR',
+                      value: widget.clientContact,
+                    ),
+                    GeneralInformationWidget(
+                        imageIcon: 'images/icons/ic_building.svg',
+                        name: 'COMPANY',
+                        value: widget.clientContact),
+                    GeneralInformationWidget(
+                        imageIcon: 'images/icons/ic_work.svg',
+                        name: 'JOBSITE',
+                        value: widget.jobsite),
+                    GeneralInformationWidget(
+                        imageIcon: 'images/icons/ic_support.svg',
+                        name: 'POSISTION',
+                        value: widget.position),
+                    GeneralInformationWidget(
+                        imageIcon: 'images/icons/ic_calendar.svg',
+                        name: 'SHIFTDATE',
+                        value:
+                            "${widget.shiftDate.month}:${widget.shiftDate.day}:${widget.shiftDate.year}"),
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 30,
               ),
@@ -341,17 +367,35 @@ class _CandidateTimesheetNewDetailsScreenState
                     Container(
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.add,
-                            color: Colors.blue,
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TimeWidgetPage()),
+                              );
+                            },
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.blue,
+                            ),
                           ),
                           SizedBox(
                             width: 13,
                           ),
-                          Text(
-                            'ADD',
-                            style: TextStyle(color: Colors.blue),
-                          )
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TimeWidgetPage()),
+                              );
+                            },
+                            child: Text(
+                              'ADD',
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                          ),
                         ],
                       ),
                     )
@@ -372,17 +416,35 @@ class _CandidateTimesheetNewDetailsScreenState
                     Container(
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.add,
-                            color: Colors.blue,
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ActivityWidgetPage()),
+                              );
+                            },
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.blue,
+                            ),
                           ),
                           SizedBox(
                             width: 13,
                           ),
-                          Text(
-                            'ADD',
-                            style: TextStyle(color: Colors.blue),
-                          )
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ActivityWidgetPage()),
+                              );
+                            },
+                            child: Text(
+                              'ADD',
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                          ),
                         ],
                       ),
                     )
@@ -393,17 +455,15 @@ class _CandidateTimesheetNewDetailsScreenState
                 height: 30,
               ),
               Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: new BorderRadius.circular(8.0),
+                ),
                 width: 380,
                 height: 35,
-                color: Colors.blue,
                 child: ElevatedButton(
                   onPressed: () {},
-                  child: Text('SUBMIT'),
-                  style: ElevatedButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(8.0),
-                    ),
-                  ),
+                  child: Text('Submit'),
                 ),
               ),
               SizedBox(
@@ -423,36 +483,36 @@ class _CandidateTimesheetNewDetailsScreenState
               ),
               widget.status == 4 && !_updated
                   ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _hours = true;
-                              });
-                            },
-                            child: Text(translate('button.times_only'))),
-                        ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _hours = false;
-                              });
-                            },
-                            child: Text(translate('button.peicework')))
-                      ],
-                    )
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _hours = true;
+                        });
+                      },
+                      child: Text(translate('button.times_only'))),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _hours = false;
+                        });
+                      },
+                      child: Text(translate('button.peicework')))
+                ],
+              )
                   : SizedBox(),
               _hours == true || widget.status != 4
                   ? this._buildTimesForm()
                   : SizedBox(),
               _hours == false || widget.status != 4
                   ? SkillActivityTable(
-                      hasActions: (widget.status == 4 || widget.status == 5) &&
-                          !_updated,
-                      service: skillActivityService,
-                      skill: widget.positionId,
-                      timesheet: widget.id,
-                      companyId: widget.companyId)
+                  hasActions: (widget.status == 4 || widget.status == 5) &&
+                      !_updated,
+                  service: skillActivityService,
+                  skill: widget.positionId,
+                  timesheet: widget.id,
+                  companyId: widget.companyId)
                   : SizedBox(),
               GroupTitle(title: translate('group.title.job_information')),
               DetailsRecord(
@@ -469,48 +529,48 @@ class _CandidateTimesheetNewDetailsScreenState
               ),
               widget.status == 1 && !_updated
                   ? Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Center(
-                            child: Text(
-                              translate('message.pre_shift_check'),
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Center(
+                      child: Text(
+                        translate('message.pre_shift_check'),
+                        style: TextStyle(
+                          color: Colors.grey,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            FormSubmitButton(
-                              label: translate('button.decline'),
-                              onPressed: () =>
-                                  _declinePreShiftCheck(timesheetService),
-                              disabled: _fetching,
-                              color: Colors.red[400],
-                              horizontalPadding: 50,
-                            ),
-                            FormSubmitButton(
-                              label: translate('button.accept'),
-                              onPressed: () =>
-                                  _acceptPreShiftCheck(timesheetService),
-                              disabled: _fetching,
-                              color: Colors.green[400],
-                              horizontalPadding: 50,
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FormSubmitButton(
+                        label: translate('button.decline'),
+                        onPressed: () =>
+                            _declinePreShiftCheck(timesheetService),
+                        disabled: _fetching,
+                        color: Colors.red[400],
+                        horizontalPadding: 50,
+                      ),
+                      FormSubmitButton(
+                        label: translate('button.accept'),
+                        onPressed: () =>
+                            _acceptPreShiftCheck(timesheetService),
+                        disabled: _fetching,
+                        color: Colors.green[400],
+                        horizontalPadding: 50,
+                      ),
+                    ],
+                  ),
+                ],
+              )
                   : Container(),
               (widget.status == 4 || widget.status == 5) &&
-                      !_updated &&
-                      _hours != null
+                  !_updated &&
+                  _hours != null
                   ? FormSubmitButton(
-                      label: translate('button.submit'),
-                      onPressed: () => _submitForm(timesheetService),
+                label: translate('button.submit'),
+                onPressed: () => _submitForm(timesheetService),
                       disabled: _fetching,
                     )
                   : Container(),
@@ -521,36 +581,11 @@ class _CandidateTimesheetNewDetailsScreenState
                         _error,
                         style: TextStyle(color: Colors.red[400]),
                       ))
-                  : SizedBox()
+                  : SizedBox(),
             ],
           ),
         ),
       ),
     );
   }
-}
-
-Widget GeneralnformationWidget(String imageIcon, String name, String value) {
-  return Container(
-    padding: EdgeInsets.only(bottom: 5, top: 5, right: 5),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(child: SvgPicture.asset(imageIcon)),
-        Container(
-          child: Align(
-            alignment: Alignment.center,
-            child: Text(
-              name,
-              style: TextStyle(
-                color: Colors.grey,
-              ),
-            ),
-          ),
-        ),
-        Text(value),
-      ],
-    ),
-  );
 }

@@ -21,9 +21,11 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  date_time_picker: ^2.1.0
   flutter:
     sdk: flutter
   flutter_svg: any
+  intl: any
   google_fonts: ^2.1.0
   table_calendar: ^3.0.2
   google_maps_flutter:
