@@ -30,7 +30,7 @@ class _TimeWidgetPageState extends State<TimeWidgetPage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -64,7 +64,7 @@ class _TimeWidgetPageState extends State<TimeWidgetPage> {
             Column(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
