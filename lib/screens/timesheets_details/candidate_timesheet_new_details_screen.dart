@@ -349,10 +349,10 @@ class _CandidateTimesheetNewDetailsScreenState
                         name: 'POSISTION',
                         value: widget.position),
                     GeneralInformationWidget(
-                        imageIcon: 'images/icons/ic_calendar.svg',
-                        name: 'SHIFTDATE',
-                        value:
-                            "${widget.shiftDate.month}:${widget.shiftDate.day}:${widget.shiftDate.year}"),
+                      imageIcon: 'images/icons/ic_calendar.svg',
+                      name: 'SHIFTDATE',
+                      value: DateFormat('dd/MM/yyyy').format(widget.shiftDate),
+                    ),
                   ],
                 ),
               ),
