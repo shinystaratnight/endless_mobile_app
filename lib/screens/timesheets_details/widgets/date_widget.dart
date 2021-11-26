@@ -32,6 +32,8 @@ class _DateButtonWidgetState extends State<DateButtonWidget> {
         children: [
           FlatButton(
             child: Container(
+              width: 155,
+              height: 56,
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Color(0xffEEF6FF),
@@ -43,8 +45,6 @@ class _DateButtonWidgetState extends State<DateButtonWidget> {
                   Radius.circular(5.0), //         <--- border radius here
                 ),
               ),
-              width: 155,
-              height: 56,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

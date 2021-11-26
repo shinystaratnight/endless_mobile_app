@@ -285,9 +285,6 @@ class _CandidateTimesheetNewDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
-    var dateString = 'April 20, 2020';
-    DateFormat format = new DateFormat("MMMM dd, yyyy");
-    var shiftEnddate = format.parse(dateString);
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
     SkillActivityService skillActivityService =
         Provider.of<SkillActivityService>(context);
