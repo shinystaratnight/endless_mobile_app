@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ActivityWidgetPage extends StatefulWidget {
+class ActivityWidgetPage extends StatelessWidget {
   const ActivityWidgetPage({Key key}) : super(key: key);
 
-  @override
-  State<ActivityWidgetPage> createState() => _ActivityWidgetPageState();
-}
-
-class _ActivityWidgetPageState extends State<ActivityWidgetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

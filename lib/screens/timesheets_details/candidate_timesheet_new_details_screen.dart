@@ -4,6 +4,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/screens/timesheets_details/time_widget_page.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
@@ -13,8 +14,7 @@ import 'package:piiprent/widgets/group_title.dart';
 import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 
-import 'activitywidget_page.dart';
-import 'timewidget_page.dart';
+import 'activity_widget_page.dart';
 import 'widgets/timesheet_general_info_widget.dart';
 
 class CandidateTimesheetNewDetailsScreen extends StatefulWidget {
@@ -372,7 +372,8 @@ class _CandidateTimesheetNewDetailsScreenState
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TimeWidgetPage()),
+                                    builder: (context) =>
+                                        TimeSheetWidgetPage()),
                               );
                             },
                             child: Icon(
@@ -388,7 +389,8 @@ class _CandidateTimesheetNewDetailsScreenState
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TimeWidgetPage()),
+                                    builder: (context) =>
+                                        TimeSheetWidgetPage()),
                               );
                             },
                             child: Text(

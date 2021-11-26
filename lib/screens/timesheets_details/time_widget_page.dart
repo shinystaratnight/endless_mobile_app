@@ -3,17 +3,9 @@ import 'package:flutter/material.dart';
 import 'widgets/date_widget.dart';
 import 'widgets/time_widget.dart';
 
-class TimeWidgetPage extends StatefulWidget {
-  String time;
-  Function function;
+class TimeSheetWidgetPage extends StatelessWidget {
+  const TimeSheetWidgetPage({Key key}) : super(key: key);
 
-  TimeWidgetPage({Key key}) : super(key: key);
-
-  @override
-  State<TimeWidgetPage> createState() => _TimeWidgetPageState();
-}
-
-class _TimeWidgetPageState extends State<TimeWidgetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
