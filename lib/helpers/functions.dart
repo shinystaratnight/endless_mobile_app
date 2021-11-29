@@ -59,7 +59,7 @@ void showProminentDisclosureDialog(
           child: AlertDialog(
             title: Text('Prominent disclosure'),
             content: Text(
-                'Piiprent collects location data to track your job progress when you have started the Job from the App even when the app is in background\nThis app not functional without location permission.'),
+                'If you have started a job from the App then Piiprent collects your location data to track your job progress even if the app is working in background.\nThe app is not functional without location permission.'),
             actions: <Widget>[
               MaterialButton(
                 onPressed: () {
@@ -92,7 +92,7 @@ void showDenyAlertDialog(BuildContext context, Function action) {
           child: AlertDialog(
             title: Text('Are you sure?'),
             content: Text(
-                "When you are going to work and have active shift, we can tracking work location for the confirmation without this permission you're not eligible for this work"),
+                "We track your work location if you are going to work and have an active shift. You are not eligible for this work without confirmation of this permission."),
             actions: <Widget>[
               MaterialButton(
                 onPressed: () {
