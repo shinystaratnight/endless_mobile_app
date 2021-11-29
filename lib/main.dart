@@ -1,7 +1,7 @@
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:piiprent/screens/address_screen.dart';
 import 'package:piiprent/screens/candidate_home_screen.dart';
@@ -36,9 +36,6 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Future.delayed(Duration(seconds: 1), () async {
-    await AppTrackingTransparency.requestTrackingAuthorization();
-  });
 
   var delegate = await LocalizationDelegate.create(
     fallbackLocale: 'en_US',
@@ -81,7 +78,7 @@ class MyApp extends StatelessWidget {
 
     return LocalizationProvider(
       state: LocalizationProvider.of(context).state,
-      child: MaterialApp(
+      child: GetMaterialApp(
         title: 'Piiprent',
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
@@ -94,7 +91,7 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.blueAccent,
           scaffoldBackgroundColor: Colors.grey[100],
           textTheme:
-          GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
+              GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
         ),
         debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{

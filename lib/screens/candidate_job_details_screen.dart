@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:map_launcher/map_launcher.dart';
+import 'package:piiprent/helpers/functions.dart';
 import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
@@ -56,6 +57,20 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
       double.parse(widget.jobOffer.latitude),
       double.parse(widget.jobOffer.longitude),
     );
+  }
+
+  void showConcernDialog(Function allowed) {
+    showProminentDisclosureDialog(context, (bool isAllowed) {
+      if (isAllowed) {
+        allowed();
+      } else {
+        showDenyAlertDialog(context, (bool isAllowed) {
+          if (isAllowed) {
+            showConcernDialog(allowed);
+          }
+        });
+      }
+    });
   }
 
   @override
@@ -117,21 +132,23 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 color: Colors.white,
                 child: Text(translate('button.show')),
                 onPressed: () async {
-                  try {
-                    LocationData data = await _location.getLocation();
+                  showConcernDialog(() async {
+                    try {
+                      LocationData data = await _location.getLocation();
 
-                    _add(data.latitude, data.longitude);
-                    _mapController.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: LatLng(data.latitude, data.longitude),
-                          zoom: 15,
+                      _add(data.latitude, data.longitude);
+                      _mapController.animateCamera(
+                        CameraUpdate.newCameraPosition(
+                          CameraPosition(
+                            target: LatLng(data.latitude, data.longitude),
+                            zoom: 15,
+                          ),
                         ),
-                      ),
-                    );
-                  } catch (e) {
-                    print(e);
-                  }
+                      );
+                    } catch (e) {
+                      print(e);
+                    }
+                  });
                 },
               ),
               RaisedButton(

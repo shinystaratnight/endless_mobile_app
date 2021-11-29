@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:background_location/background_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:piiprent/helpers/functions.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
@@ -38,11 +39,21 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
     return null;
   }
 
-  _getCurrentPosition(dynamic activeTimesheets) async {
-    // if (activeTimesheets == null) {
-    //   return;
-    // }
+  void showConcernDialog(dynamic activeTimesheets) {
+    showProminentDisclosureDialog(context, (bool isAllowed) {
+      if (isAllowed) {
+        _getCurrentPosition(activeTimesheets);
+      } else {
+        showDenyAlertDialog(context, (bool isAllowed) {
+          if (isAllowed) {
+            showConcernDialog(activeTimesheets);
+          }
+        });
+      }
+    });
+  }
 
+  _getCurrentPosition(dynamic activeTimesheets) async {
     await BackgroundLocation.startLocationService(distanceFilter: 5.0);
     // Start location service here or do something else
     BackgroundLocation.getLocationUpdates((location) async {
@@ -80,7 +91,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   void initState() {
     super.initState();
 
-    _getActiveTimesheet().then(_getCurrentPosition);
+    _getActiveTimesheet().then(showConcernDialog);
   }
 
   @override
