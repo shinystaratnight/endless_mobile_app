@@ -13,28 +13,37 @@ class GeneralInformationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 5, top: 5, right: 5),
+      padding: EdgeInsets.only(bottom: 17),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Container(
-              alignment: Alignment.topLeft,
-              width: 30,
-              child: SvgPicture.asset(imageIcon)),
+          SvgPicture.asset(
+            imageIcon,
+            width: 12.24,
+            height: 12.25,
+          ),
+          SizedBox(
+            width: 8,
+          ),
           Expanded(
             flex: 2,
+            child: Text(
+              name,
+              style: TextStyle(color: Color(0xFF7A7A7A), fontSize: 12),
+            ),
+          ),
+          Expanded(
+            flex: 6,
             child: Container(
-              alignment: Alignment.centerLeft,
               child: Text(
-                name,
+                value,
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Color(0xff2F363D),
+                  fontSize: 14,
                 ),
               ),
             ),
           ),
-          Expanded(flex: 4, child: Container(child: Text(value))),
         ],
       ),
     );

@@ -31,6 +31,7 @@ class CandidateTimesheetNewDetailsScreen extends StatefulWidget {
   final String id;
   final String positionId;
   final String companyId;
+  final String companyStr;
 
   CandidateTimesheetNewDetailsScreen({
     this.position = '',
@@ -46,6 +47,7 @@ class CandidateTimesheetNewDetailsScreen extends StatefulWidget {
     this.id,
     this.positionId,
     this.companyId,
+    this.companyStr,
   });
 
   @override
@@ -310,51 +312,47 @@ class _CandidateTimesheetNewDetailsScreenState
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
                 child: Text(
                   'General Information',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 12,
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    GeneralInformationWidget(
-                      imageIcon: 'images/icons/ic_profile.svg',
-                      name: 'SUPERVISIOR',
-                      value: widget.clientContact,
-                    ),
-                    GeneralInformationWidget(
-                        imageIcon: 'images/icons/ic_building.svg',
-                        name: 'COMPANY',
-                        value: widget.clientContact),
-                    GeneralInformationWidget(
-                        imageIcon: 'images/icons/ic_work.svg',
-                        name: 'JOBSITE',
-                        value: widget.jobsite),
-                    GeneralInformationWidget(
-                        imageIcon: 'images/icons/ic_support.svg',
-                        name: 'POSISTION',
-                        value: widget.position),
-                    GeneralInformationWidget(
-                      imageIcon: 'images/icons/ic_calendar.svg',
-                      name: 'SHIFTDATE',
-                      value: DateFormat('dd/MM/yyyy').format(widget.shiftDate),
-                    ),
-                  ],
-                ),
+              Column(
+                children: [
+                  GeneralInformationWidget(
+                    imageIcon: 'images/icons/ic_profile.svg',
+                    name: 'SUPERVISIOR',
+                    value: widget.clientContact,
+                  ),
+                  GeneralInformationWidget(
+                      imageIcon: 'images/icons/ic_building.svg',
+                      name: 'COMPANY',
+                      value: widget.companyStr),
+                  GeneralInformationWidget(
+                      imageIcon: 'images/icons/ic_work.svg',
+                      name: 'JOBSITE',
+                      value: widget.jobsite),
+                  GeneralInformationWidget(
+                      imageIcon: 'images/icons/ic_support.svg',
+                      name: 'POSITION',
+                      value: widget.position),
+                  GeneralInformationWidget(
+                    imageIcon: 'images/icons/ic_calendar.svg',
+                    name: 'SHIFT DATE',
+                    value: DateFormat('MMM dd, yyyy').format(widget.shiftDate),
+                  ),
+                ],
               ),
               SizedBox(
-                height: 30,
+                height: 7,
               ),
               Container(
                 child: Row(
