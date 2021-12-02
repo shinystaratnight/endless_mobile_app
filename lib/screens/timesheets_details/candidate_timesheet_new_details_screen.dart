@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/screens/timesheets_details/selected_time_details.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
@@ -398,8 +399,12 @@ class _CandidateTimesheetNewDetailsScreenState
                           ],
                         )
                       : InkWell(
-                          onTap: () {
-                            Get.to(TimeSheetWidgetPage());
+                          onTap: () async {
+                            var result = await Get.to(TimeSheetWidgetPage());
+                            if (result is SelectedTimeDetails) {
+                              // todo selected Time Details
+                              print('SelectedTimeDetails:: $result');
+                            }
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
