@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
+import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/helpers/enums.dart';
-import 'package:piiprent/screens/timesheets_details/time_widget_page.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
@@ -68,7 +68,6 @@ class _CandidateTimesheetNewDetailsScreenState
   bool _withBreak = true;
   bool _hours;
   String _error;
-
   Map<String, DateTime> _times = Map();
 
   @override
@@ -319,7 +318,11 @@ class _CandidateTimesheetNewDetailsScreenState
               Container(
                 child: Text(
                   'General Information',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.lightBlack,
+                  ),
                 ),
               ),
               SizedBox(
@@ -354,50 +357,69 @@ class _CandidateTimesheetNewDetailsScreenState
               SizedBox(
                 height: 7,
               ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Time', style: TextStyle(fontWeight: FontWeight.w500)),
-                    Container(
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TimeSheetWidgetPage()),
-                              );
-                            },
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.blue,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Time',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: AppColors.lightBlack,
+                    ),
+                  ),
+                  _shiftStart?.isNotEmpty != true
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Icon(
+                                Icons.edit,
+                                color: AppColors.green,
+                                size: 18,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 13,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TimeSheetWidgetPage()),
-                              );
-                            },
-                            child: Text(
+                            SizedBox(
+                              width: 16,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 3.0,
+                              ),
+                              child: Icon(
+                                Icons.delete,
+                                color: AppColors.red,
+                                size: 18,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Icon(
+                                Icons.add,
+                                color: AppColors.blue,
+                                size: 12,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 7,
+                            ),
+                            Text(
                               'ADD',
-                              style: TextStyle(color: Colors.blue),
+                              style: TextStyle(
+                                color: AppColors.blue,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                          ],
+                        ),
+                ],
               ),
               SizedBox(
                 height: 30,
@@ -480,36 +502,36 @@ class _CandidateTimesheetNewDetailsScreenState
               ),
               widget.status == 4 && !_updated
                   ? Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _hours = true;
-                        });
-                      },
-                      child: Text(translate('button.times_only'))),
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _hours = false;
-                        });
-                      },
-                      child: Text(translate('button.peicework')))
-                ],
-              )
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _hours = true;
+                              });
+                            },
+                            child: Text(translate('button.times_only'))),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _hours = false;
+                              });
+                            },
+                            child: Text(translate('button.peicework')))
+                      ],
+                    )
                   : SizedBox(),
               _hours == true || widget.status != 4
                   ? this._buildTimesForm()
                   : SizedBox(),
               _hours == false || widget.status != 4
                   ? SkillActivityTable(
-                  hasActions: (widget.status == 4 || widget.status == 5) &&
-                      !_updated,
-                  service: skillActivityService,
-                  skill: widget.positionId,
-                  timesheet: widget.id,
-                  companyId: widget.companyId)
+                      hasActions: (widget.status == 4 || widget.status == 5) &&
+                          !_updated,
+                      service: skillActivityService,
+                      skill: widget.positionId,
+                      timesheet: widget.id,
+                      companyId: widget.companyId)
                   : SizedBox(),
               GroupTitle(title: translate('group.title.job_information')),
               DetailsRecord(
@@ -526,48 +548,48 @@ class _CandidateTimesheetNewDetailsScreenState
               ),
               widget.status == 1 && !_updated
                   ? Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Center(
-                      child: Text(
-                        translate('message.pre_shift_check'),
-                        style: TextStyle(
-                          color: Colors.grey,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Center(
+                            child: Text(
+                              translate('message.pre_shift_check'),
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FormSubmitButton(
-                        label: translate('button.decline'),
-                        onPressed: () =>
-                            _declinePreShiftCheck(timesheetService),
-                        disabled: _fetching,
-                        color: Colors.red[400],
-                        horizontalPadding: 50,
-                      ),
-                      FormSubmitButton(
-                        label: translate('button.accept'),
-                        onPressed: () =>
-                            _acceptPreShiftCheck(timesheetService),
-                        disabled: _fetching,
-                        color: Colors.green[400],
-                        horizontalPadding: 50,
-                      ),
-                    ],
-                  ),
-                ],
-              )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FormSubmitButton(
+                              label: translate('button.decline'),
+                              onPressed: () =>
+                                  _declinePreShiftCheck(timesheetService),
+                              disabled: _fetching,
+                              color: Colors.red[400],
+                              horizontalPadding: 50,
+                            ),
+                            FormSubmitButton(
+                              label: translate('button.accept'),
+                              onPressed: () =>
+                                  _acceptPreShiftCheck(timesheetService),
+                              disabled: _fetching,
+                              color: Colors.green[400],
+                              horizontalPadding: 50,
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
                   : Container(),
               (widget.status == 4 || widget.status == 5) &&
-                  !_updated &&
-                  _hours != null
+                      !_updated &&
+                      _hours != null
                   ? FormSubmitButton(
-                label: translate('button.submit'),
-                onPressed: () => _submitForm(timesheetService),
+                      label: translate('button.submit'),
+                      onPressed: () => _submitForm(timesheetService),
                       disabled: _fetching,
                     )
                   : Container(),

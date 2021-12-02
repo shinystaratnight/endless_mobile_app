@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:piiprent/helpers/colors.dart';
 
 class GeneralInformationWidget extends StatelessWidget {
   final String imageIcon;
@@ -29,7 +30,10 @@ class GeneralInformationWidget extends StatelessWidget {
             flex: 2,
             child: Text(
               name,
-              style: TextStyle(color: Color(0xFF7A7A7A), fontSize: 12),
+              style: TextStyle(
+                color: AppColors.grey,
+                fontSize: 12,
+              ),
             ),
           ),
           Expanded(
@@ -38,7 +42,7 @@ class GeneralInformationWidget extends StatelessWidget {
               child: Text(
                 value,
                 style: TextStyle(
-                  color: Color(0xff2F363D),
+                  color: AppColors.lightBlack,
                   fontSize: 14,
                 ),
               ),
