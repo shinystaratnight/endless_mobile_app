@@ -41,11 +41,11 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
 
   void showConcernDialog(dynamic activeTimesheets) {
     showProminentDisclosureDialog(context, (bool isAllowed) {
-      if (isAllowed) {
+      if (isAllowed == true) {
         _getCurrentPosition(activeTimesheets);
-      } else {
+      } else if (isAllowed == false) {
         showDenyAlertDialog(context, (bool isAllowed) {
-          if (isAllowed) {
+          if (isAllowed == true) {
             showConcernDialog(activeTimesheets);
           }
         });

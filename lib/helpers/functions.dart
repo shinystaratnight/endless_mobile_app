@@ -48,6 +48,8 @@ void showProminentDisclosureDialog(
     if (status.isGranted) {
       action(true);
       return;
+    } else {
+      prefs.setBool('isPermissionAllowed', false);
     }
   }
   showDialog(
@@ -59,7 +61,9 @@ void showProminentDisclosureDialog(
           child: AlertDialog(
             title: Text('Prominent disclosure'),
             content: Text(
-                'If you have started a job from the App then Piiprent collects your location data to track your job progress even if the app is working in background.\nThe app is not functional without location permission.'),
+              'If you have started a job from the App then Piiprent collects your location data to track your job progress even if the app is working in background.\nThe app is not functional without location permission.',
+              textAlign: TextAlign.justify,
+            ),
             actions: <Widget>[
               MaterialButton(
                 onPressed: () {
@@ -70,9 +74,8 @@ void showProminentDisclosureDialog(
               ),
               MaterialButton(
                 onPressed: () {
-                  prefs.setBool('isPermissionAllowed', true);
                   Navigator.pop(context);
-                  action(true);
+                  requestPermission(context, action);
                 },
                 child: Text('Agree'),
               ),
@@ -80,6 +83,21 @@ void showProminentDisclosureDialog(
           ));
     },
   );
+}
+
+void requestPermission(BuildContext context, Function action) async {
+  if (await Permission.location.request().isGranted) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isPermissionAllowed', true);
+    action(true);
+  } else {
+    var status = await Permission.location.status;
+    if (status.isPermanentlyDenied) {
+      showErrorDialog(context, 'Permission is required',
+          'Location Permission is required in order to access this feature. Please go to App settings from the System settings in order to allow location permission.',
+          action: action);
+    }
+  }
 }
 
 void showDenyAlertDialog(BuildContext context, Function action) {
@@ -92,7 +110,9 @@ void showDenyAlertDialog(BuildContext context, Function action) {
           child: AlertDialog(
             title: Text('Are you sure?'),
             content: Text(
-                "We track your work location if you are going to work and have an active shift. You are not eligible for this work without confirmation of this permission."),
+              "We track your work location if you are going to work and have an active shift. You are not eligible for this work without confirmation of this permission.",
+              textAlign: TextAlign.justify,
+            ),
             actions: <Widget>[
               MaterialButton(
                 onPressed: () {
@@ -110,6 +130,50 @@ void showDenyAlertDialog(BuildContext context, Function action) {
               ),
             ],
           ));
+    },
+  );
+}
+
+void showErrorDialog(BuildContext context, String title, String message,
+    {Function action}) {
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return WillPopScope(
+        onWillPop: () => Future.value(false),
+        child: AlertDialog(
+          title: Text(title ?? 'Error occurred'),
+          content: Text(
+            message ?? 'Unexpected error occurred.',
+            textAlign: TextAlign.justify,
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              onPressed: () {
+                Navigator.pop(context);
+                action(null);
+              },
+              child: Text('Close'),
+            ),
+            MaterialButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                await openAppSettings();
+                if (await Permission.location.status.isGranted) {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool('isPermissionAllowed', true);
+                  action(true);
+                } else {
+                  action(null);
+                }
+              },
+              child: Text('Open App settings'),
+            ),
+          ],
+        ),
+      );
     },
   );
 }

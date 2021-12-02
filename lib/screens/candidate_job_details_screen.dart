@@ -61,11 +61,11 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
 
   void showConcernDialog(Function allowed) {
     showProminentDisclosureDialog(context, (bool isAllowed) {
-      if (isAllowed) {
+      if (isAllowed == true) {
         allowed();
-      } else {
+      } else if (isAllowed == false) {
         showDenyAlertDialog(context, (bool isAllowed) {
-          if (isAllowed) {
+          if (isAllowed == true) {
             showConcernDialog(allowed);
           }
         });
