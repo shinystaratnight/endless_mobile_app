@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/colors.dart';
@@ -15,6 +16,7 @@ import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 
 import 'activity_widget_page.dart';
+import 'time_widget_page.dart';
 import 'widgets/timesheet_general_info_widget.dart';
 
 class CandidateTimesheetNewDetailsScreen extends StatefulWidget {
@@ -395,29 +397,34 @@ class _CandidateTimesheetNewDetailsScreenState
                             ),
                           ],
                         )
-                      : Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Icon(
-                                Icons.add,
-                                color: AppColors.blue,
-                                size: 12,
+                      : InkWell(
+                          onTap: () {
+                            Get.to(TimeSheetWidgetPage());
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Icon(
+                                  Icons.add,
+                                  color: AppColors.blue,
+                                  size: 12,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 7,
-                            ),
-                            Text(
-                              'ADD',
-                              style: TextStyle(
-                                color: AppColors.blue,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
+                              SizedBox(
+                                width: 7,
                               ),
-                            ),
-                          ],
+                              Text(
+                                'ADD',
+                                style: TextStyle(
+                                  color: AppColors.blue,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                 ],
               ),
