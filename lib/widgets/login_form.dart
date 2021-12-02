@@ -58,8 +58,8 @@ class _LoginFormState extends State<LoginForm> {
       }
     } catch (e) {
       setState(() {
-        _formError = e;
         _fetching = false;
+        _formError = e?.toString() ?? 'Unexpected error occurred.';
       });
     }
   }

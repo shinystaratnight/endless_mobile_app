@@ -52,17 +52,7 @@ class LoginService {
 
       return _user.type;
     } catch (e) {
-      if (e == null) {
-        throw 'Something went wrong';
-      }
-
-      String message = e['message'];
-
-      if (message == null) {
-        throw 'Something went wrong';
-      }
-
-      throw message;
+      throw e?.toString() ?? 'Something went wrong';
     }
   }
 
