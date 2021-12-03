@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/screens/timesheets_details/selected_time_details.dart';
 import 'package:piiprent/screens/timesheets_details/widgets/date_picker_box_widget.dart';
 import 'package:piiprent/screens/timesheets_details/widgets/time_hint_widget.dart';
 
+import 'widgets/break_duration_page.dart';
 import 'widgets/time_picker_box_widget.dart';
 
 class TimeSheetWidgetPage extends StatelessWidget {
@@ -25,7 +27,7 @@ class TimeSheetWidgetPage extends StatelessWidget {
                 size: 36.0,
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Get.back(result: context);
               },
             );
           },
@@ -37,7 +39,7 @@ class TimeSheetWidgetPage extends StatelessWidget {
               size: 26.0,
             ),
             onPressed: () {
-              Navigator.pop(context, selectedTimeDetails);
+              Get.back(result: selectedTimeDetails);
             },
           ),
         ],
@@ -51,7 +53,7 @@ class TimeSheetWidgetPage extends StatelessWidget {
             Row(
               children: [
                 DatePickerBoxWidget(
-                  initialDate: DateTime(2021, 12, 2),
+                  initialDate: DateTime.now(),
                   onDateSelected: (DateTime startDate) {
                     selectedTimeDetails.startDateStr =
                         DateFormat('MMM dd, yyyy').format(startDate);
@@ -75,9 +77,24 @@ class TimeSheetWidgetPage extends StatelessWidget {
             SizedBox(height: 12),
             Row(
               children: [
-                DatePickerBoxWidget(),
+                DatePickerBoxWidget(
+                  initialDate: DateTime.now(),
+                  onDateSelected: (DateTime endDate) {
+                    selectedTimeDetails.endDateStr =
+                        DateFormat('MMM dd, yyyy').format(endDate);
+
+                    print(
+                        'startDateChanged: ${selectedTimeDetails.endDateStr}');
+                  },
+                ),
                 SizedBox(width: 16),
-                TimePickerBoxWidget(),
+                TimePickerBoxWidget(
+                  onTimeSelected: (TimeOfDay startTime) {
+                    selectedTimeDetails.endTimeStr = startTime.format(context);
+                    print(
+                        'startTimeChanged: ${selectedTimeDetails.endTimeStr}');
+                  },
+                ),
               ],
             ),
             SizedBox(height: 20),
@@ -85,7 +102,8 @@ class TimeSheetWidgetPage extends StatelessWidget {
             SizedBox(height: 12),
             Row(
               children: [
-                TimePickerBoxWidget(),
+                BreakDurationPage(),
+                SizedBox(width: 16),
                 Expanded(
                   child: SizedBox(),
                 ),
@@ -95,7 +113,9 @@ class TimeSheetWidgetPage extends StatelessWidget {
             Container(
               width: double.infinity,
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.back(result: selectedTimeDetails);
+                },
                 height: 40,
                 child: Text(
                   'SUBMIT',

@@ -49,7 +49,7 @@ class TimePickerBoxWidget extends StatelessWidget {
               SvgPicture.asset(
                 "images/icons/ic_time.svg",
                 height: 20,
-                width: 18,
+                width: 20,
               ),
             ],
           ),

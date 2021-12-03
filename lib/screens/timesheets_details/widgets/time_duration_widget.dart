@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/screens/timesheets_details/time_widget_page.dart';
 
 class TimeDurationWidgetPage extends StatefulWidget {
@@ -32,13 +35,14 @@ class _TimeDurationWidgetPageState extends State<TimeDurationWidgetPage> {
                   child: new Text(
                     _dateTime.hour.toString().padLeft(2, '0') +
                         ':' +
-                        _dateTime.minute.toString().padLeft(2, '0') +
-                        ':' +
-                        _dateTime.second.toString().padLeft(2, '0'),
+                        _dateTime.minute.toString().padLeft(2, '0')
+                    // ':' +
+                    // _dateTime.second.toString().padLeft(2, '0')
+                    ,
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue),
+                        color: AppColors.darkBlue),
                   ),
                 ),
                 Container(
@@ -49,14 +53,11 @@ class _TimeDurationWidgetPageState extends State<TimeDurationWidgetPage> {
                         child: InkWell(
                           child: Text(
                             'cancel',
-                            style: TextStyle(color: Colors.black, fontSize: 18),
+                            style: TextStyle(
+                                color: AppColors.darkBlue, fontSize: 18),
                           ),
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TimeSheetWidgetPage()),
-                            );
+                            Get.to(() => TimeSheetWidgetPage());
                           },
                         ),
                       ),
@@ -64,14 +65,11 @@ class _TimeDurationWidgetPageState extends State<TimeDurationWidgetPage> {
                         child: InkWell(
                           child: Text(
                             'ok',
-                            style: TextStyle(fontSize: 18, color: Colors.black),
+                            style: TextStyle(
+                                fontSize: 18, color: AppColors.darkBlue),
                           ),
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TimeSheetWidgetPage()),
-                            );
+                            Get.to(() => TimeSheetWidgetPage());
                           },
                         ),
                       )
@@ -101,8 +99,8 @@ class _TimeDurationWidgetPageState extends State<TimeDurationWidgetPage> {
 
   Widget hourMinuteSecond() {
     return new TimePickerSpinner(
-      normalTextStyle: TextStyle(fontSize: 24, color: Colors.black),
-      highlightedTextStyle: TextStyle(fontSize: 30, color: Colors.blueAccent),
+      normalTextStyle: TextStyle(fontSize: 24, color: AppColors.grey),
+      highlightedTextStyle: TextStyle(fontSize: 30, color: AppColors.darkBlue),
       isShowSeconds: true,
       onTimeChange: (time) {
         setState(() {
