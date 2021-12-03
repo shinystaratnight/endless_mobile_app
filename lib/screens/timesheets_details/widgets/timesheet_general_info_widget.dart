@@ -20,11 +20,11 @@ class GeneralInformationWidget extends StatelessWidget {
         children: [
           SvgPicture.asset(
             imageIcon,
-            width: 12.24,
-            height: 12.25,
+            width: 14,
+            height: 14,
           ),
           SizedBox(
-            width: 8,
+            width: 6,
           ),
           Expanded(
             flex: 2,
@@ -38,13 +38,11 @@ class GeneralInformationWidget extends StatelessWidget {
           ),
           Expanded(
             flex: 6,
-            child: Container(
-              child: Text(
-                value,
-                style: TextStyle(
-                  color: AppColors.lightBlack,
-                  fontSize: 14,
-                ),
+            child: Text(
+              value,
+              style: TextStyle(
+                color: AppColors.lightBlack,
+                fontSize: 14,
               ),
             ),
           ),
