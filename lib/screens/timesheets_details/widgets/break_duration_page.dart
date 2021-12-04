@@ -3,24 +3,36 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:piiprent/helpers/colors.dart';
-import 'package:piiprent/screens/timesheets_details/widgets/time_duration_widget.dart';
+
+import '../selected_time_details.dart';
 
 class BreakDurationPage extends StatelessWidget {
-  BreakDurationPage({Key key}) : super(key: key);
+  BreakDurationPage({this.initialTime, this.onTimeSelected, Key key})
+      : super(key: key);
+  SelectedTimeDetails selectedTimeDetails = SelectedTimeDetails();
 
-  final RxString selectedTimeStr = 'Time'.obs;
+  final DateTime initialTime;
+  final Function onTimeSelected;
+  final RxString selectedBreakTimeStr = 'Time'.obs;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TimeDurationWidgetPage(),
-            ),
-          );
+        onTap: () async {
+          var result = await showTimePicker(
+              builder: (context, snapshot) {
+                return MediaQuery(
+                    data: MediaQuery.of(context)
+                        .copyWith(alwaysUse24HourFormat: true),
+                    child: snapshot);
+              },
+              context: context,
+              initialTime: initialTime ?? TimeOfDay.now());
+          if (result != null) {
+            selectedBreakTimeStr.value = result.format(context);
+            onTimeSelected?.call(result);
+          }
         },
         child: Ink(
           height: 56,
@@ -40,7 +52,7 @@ class BreakDurationPage extends StatelessWidget {
             children: [
               Obx(
                 () => Text(
-                  selectedTimeStr.value,
+                  selectedBreakTimeStr.value,
                   style: TextStyle(fontSize: 16, color: AppColors.lightBlack),
                 ),
               ),

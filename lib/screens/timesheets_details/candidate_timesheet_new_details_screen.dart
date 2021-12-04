@@ -64,7 +64,6 @@ class _CandidateTimesheetNewDetailsScreenState
   bool _updated = false;
   bool _fetching = false;
 
-  // var controller = Get.put(TimeController());
   SelectedTimeDetails selectedTimeDetails = SelectedTimeDetails();
 
   String _shiftStart = TimesheetTimeKey[TimesheetTime.Start];
