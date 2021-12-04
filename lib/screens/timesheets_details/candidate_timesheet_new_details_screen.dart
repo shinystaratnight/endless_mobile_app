@@ -367,16 +367,29 @@ class _CandidateTimesheetNewDetailsScreenState
                     color: AppColors.lightBlack,
                   ),
                 ),
-                _shiftStart?.isNotEmpty != true
+                (selectedTimeDetails.startDateStr != '' ||
+                        selectedTimeDetails.endDateStr != '' ||
+                        selectedTimeDetails.breakTime != '')
                     ? Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(3.0),
-                            child: Icon(
-                              Icons.edit,
-                              color: AppColors.green,
-                              size: 18,
+                            child: InkWell(
+                              onTap: () async {
+                                var result = await Get.to(() =>
+                                    TimeSheetWidgetPage(selectedTimeDetails));
+                                if (result is SelectedTimeDetails) {
+                                  setState(() {
+                                    selectedTimeDetails = result;
+                                  });
+                                }
+                              },
+                              child: Icon(
+                                Icons.edit,
+                                color: AppColors.green,
+                                size: 18,
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -386,31 +399,26 @@ class _CandidateTimesheetNewDetailsScreenState
                             padding: const EdgeInsets.symmetric(
                               vertical: 3.0,
                             ),
-                            child: Icon(
-                              Icons.delete,
-                              color: AppColors.red,
-                              size: 18,
+                            child: InkWell(
+                              onTap: () {
+                                // todo call delete function
+                              },
+                              child: Icon(
+                                Icons.delete,
+                                color: AppColors.red,
+                                size: 18,
+                              ),
                             ),
                           ),
                         ],
                       )
                     : InkWell(
                         onTap: () async {
-                          var result = await Get.to(TimeSheetWidgetPage());
+                          var result = await Get.to(
+                              () => TimeSheetWidgetPage(selectedTimeDetails));
                           if (result is SelectedTimeDetails) {
-                            // todo selected Time Details
                             setState(() {
                               selectedTimeDetails = result;
-                              print(
-                                  'SelectedTimeDetails:: ${result.startDateStr}');
-                              print(
-                                  'SelectedTimeDetails:: ${result.startTimeStr}');
-                              print(
-                                  'SelectedTimeDetails:: ${result.endDateStr}');
-                              print(
-                                  'SelectedTimeDetails:: ${result.endTimeStr}');
-                              print(
-                                  'SelectedTimeDetails:: ${result.breakTime}');
                             });
                           }
                         },
@@ -442,22 +450,25 @@ class _CandidateTimesheetNewDetailsScreenState
               ],
             ),
             SizedBox(
-              height: 19,
+              height: 18,
             ),
             Column(
               children: [
-                TimeAddWidget(
-                    'START TIME',
-                    selectedTimeDetails.startDateStr +
-                        " " +
-                        selectedTimeDetails.startTimeStr),
-                TimeAddWidget(
-                    'END TIME',
-                    selectedTimeDetails.endDateStr +
-                        " " +
-                        selectedTimeDetails.endTimeStr),
-                TimeAddWidget(
-                    'BREAK TIME', selectedTimeDetails.breakTime.toString())
+                if (selectedTimeDetails.startDateStr != "")
+                  TimeAddWidget(
+                      'START TIME',
+                      selectedTimeDetails.startDateStr +
+                          " " +
+                          selectedTimeDetails.startTimeStr),
+                if (selectedTimeDetails.endDateStr != "")
+                  TimeAddWidget(
+                      'END TIME',
+                      selectedTimeDetails.endDateStr +
+                          " " +
+                          selectedTimeDetails.endTimeStr),
+                if (selectedTimeDetails.breakTime != "")
+                  TimeAddWidget(
+                      'BREAK TIME', selectedTimeDetails.breakTime.toString())
               ],
             ),
             SizedBox(

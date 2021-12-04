@@ -14,6 +14,9 @@ class DatePickerBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    dateStr.value = initialDate != null
+        ? DateFormat('MMM dd, yyyy').format(initialDate)
+        : 'Date';
     return Expanded(
       child: InkWell(
         borderRadius: BorderRadius.circular(4.0),
@@ -25,7 +28,7 @@ class DatePickerBoxWidget extends StatelessWidget {
               lastDate: DateTime(DateTime.now().year + 2));
           if (result != null) {
             dateStr.value = DateFormat('MMM dd, yyyy').format(result);
-            onDateSelected?.call(result);
+            onDateSelected?.call(dateStr.value);
           }
         },
         child: Ink(
@@ -45,7 +48,7 @@ class DatePickerBoxWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Obx(
-                () => Text(
+                    () => Text(
                   dateStr.value,
                   style: TextStyle(fontSize: 16, color: AppColors.lightBlack),
                 ),

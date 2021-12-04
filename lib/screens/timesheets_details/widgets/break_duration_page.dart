@@ -4,19 +4,18 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:piiprent/helpers/colors.dart';
 
-import '../selected_time_details.dart';
-
 class BreakDurationPage extends StatelessWidget {
   BreakDurationPage({this.initialTime, this.onTimeSelected, Key key})
       : super(key: key);
-  SelectedTimeDetails selectedTimeDetails = SelectedTimeDetails();
 
-  final DateTime initialTime;
+  final TimeOfDay initialTime;
   final Function onTimeSelected;
   final RxString selectedBreakTimeStr = 'Time'.obs;
 
   @override
   Widget build(BuildContext context) {
+    selectedBreakTimeStr.value =
+        initialTime != null ? initialTime.format(context) : 'Time';
     return Expanded(
       child: InkWell(
         onTap: () async {
@@ -30,8 +29,8 @@ class BreakDurationPage extends StatelessWidget {
               context: context,
               initialTime: initialTime ?? TimeOfDay.now());
           if (result != null) {
-            selectedBreakTimeStr.value = '${result.hour}h : ${result.minute}m';
-            onTimeSelected?.call(result);
+            selectedBreakTimeStr.value = '${result.hour}h ${result.minute}m';
+            onTimeSelected?.call(selectedBreakTimeStr.value);
           }
         },
         child: Ink(
@@ -51,7 +50,7 @@ class BreakDurationPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Obx(
-                () => Text(
+                    () => Text(
                   selectedBreakTimeStr.value,
                   style: TextStyle(fontSize: 16, color: AppColors.lightBlack),
                 ),

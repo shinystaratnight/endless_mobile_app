@@ -8,11 +8,13 @@ class TimePickerBoxWidget extends StatelessWidget {
   TimePickerBoxWidget({Key key, this.onTimeSelected, this.initialTime})
       : super(key: key);
   final Function onTimeSelected;
-  final DateTime initialTime;
+  final TimeOfDay initialTime;
   final RxString selectedTimeStr = 'Time'.obs;
 
   @override
   Widget build(BuildContext context) {
+    selectedTimeStr.value =
+        initialTime != null ? initialTime.format(context) : 'Time';
     return Expanded(
       child: InkWell(
         borderRadius: BorderRadius.circular(4.0),
@@ -20,9 +22,8 @@ class TimePickerBoxWidget extends StatelessWidget {
           var result = await showTimePicker(
               context: context, initialTime: initialTime ?? TimeOfDay.now());
           if (result != null) {
-            selectedTimeStr.value = '${result.hour}h : ${result.minute}m';
-            // selectedTimeStr.value = result.format(context);
-            onTimeSelected?.call(selectedTimeStr);
+            selectedTimeStr.value = result.format(context);
+            onTimeSelected?.call(selectedTimeStr.value);
           }
         },
         child: Ink(
@@ -42,7 +43,7 @@ class TimePickerBoxWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Obx(
-                () => Text(
+                    () => Text(
                   selectedTimeStr.value,
                   style: TextStyle(fontSize: 16, color: AppColors.lightBlack),
                 ),

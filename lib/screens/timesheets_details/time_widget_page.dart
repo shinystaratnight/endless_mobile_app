@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:piiprent/helpers/colors.dart';
+import 'package:piiprent/helpers/functions.dart';
 import 'package:piiprent/screens/timesheets_details/selected_time_details.dart';
 import 'package:piiprent/screens/timesheets_details/widgets/date_picker_box_widget.dart';
 import 'package:piiprent/screens/timesheets_details/widgets/time_hint_widget.dart';
@@ -10,8 +10,8 @@ import 'widgets/break_duration_page.dart';
 import 'widgets/time_picker_box_widget.dart';
 
 class TimeSheetWidgetPage extends StatelessWidget {
-  TimeSheetWidgetPage({Key key}) : super(key: key);
-  SelectedTimeDetails selectedTimeDetails = SelectedTimeDetails();
+  TimeSheetWidgetPage(this.selectedTimeDetails, {Key key}) : super(key: key);
+  SelectedTimeDetails selectedTimeDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -53,21 +53,18 @@ class TimeSheetWidgetPage extends StatelessWidget {
             Row(
               children: [
                 DatePickerBoxWidget(
-                  initialDate: DateTime.now(),
-                  onDateSelected: (DateTime startDate) {
-                    selectedTimeDetails.startDateStr =
-                        DateFormat('MMM dd, yyyy').format(startDate);
-                    print(
-                        'startDateChanged: ${selectedTimeDetails.startDateStr}');
+                  initialDate:
+                      stringDateToDateTime(selectedTimeDetails.startDateStr),
+                  onDateSelected: (String startDate) {
+                    selectedTimeDetails.startDateStr = startDate;
                   },
                 ),
                 SizedBox(width: 16),
                 TimePickerBoxWidget(
-                  onTimeSelected: (TimeOfDay startTime) {
-                    selectedTimeDetails.startTimeStr =
-                        startTime.format(context);
-                    print(
-                        'startTimeChanged: ${selectedTimeDetails.startTimeStr}');
+                  initialTime:
+                      stringTimeToTimeOfDay(selectedTimeDetails.startTimeStr),
+                  onTimeSelected: (String startTime) {
+                    selectedTimeDetails.startTimeStr = startTime;
                   },
                 ),
               ],
@@ -78,21 +75,18 @@ class TimeSheetWidgetPage extends StatelessWidget {
             Row(
               children: [
                 DatePickerBoxWidget(
-                  initialDate: DateTime.now(),
-                  onDateSelected: (DateTime endDate) {
-                    selectedTimeDetails.endDateStr =
-                        DateFormat('MMM dd, yyyy').format(endDate);
-
-                    print(
-                        'startDateChanged: ${selectedTimeDetails.endDateStr}');
+                  initialDate:
+                      stringDateToDateTime(selectedTimeDetails.endDateStr),
+                  onDateSelected: (String endDate) {
+                    selectedTimeDetails.endDateStr = endDate;
                   },
                 ),
                 SizedBox(width: 16),
                 TimePickerBoxWidget(
-                  onTimeSelected: (TimeOfDay startTime) {
-                    selectedTimeDetails.endTimeStr = startTime.format(context);
-                    print(
-                        'startTimeChanged: ${selectedTimeDetails.endTimeStr}');
+                  initialTime:
+                      stringTimeToTimeOfDay(selectedTimeDetails.endTimeStr),
+                  onTimeSelected: (String endTime) {
+                    selectedTimeDetails.endTimeStr = endTime;
                   },
                 ),
               ],
@@ -103,11 +97,10 @@ class TimeSheetWidgetPage extends StatelessWidget {
             Row(
               children: [
                 BreakDurationPage(
-                  onTimeSelected: (TimeOfDay breakTime) {
-                    selectedTimeDetails.breakTime =
-                        "${breakTime.hour}h   ${breakTime.minute}m";
-                    print(
-                        'breakTimeChanged : ${selectedTimeDetails.breakTime}');
+                  initialTime:
+                      stringBreakTimeToTimeOfDay(selectedTimeDetails.breakTime),
+                  onTimeSelected: (String breakTime) {
+                    selectedTimeDetails.breakTime = breakTime;
                   },
                 ),
                 SizedBox(width: 16),
