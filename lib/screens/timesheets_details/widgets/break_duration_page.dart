@@ -20,7 +20,7 @@ class BreakDurationPage extends StatelessWidget {
     return Expanded(
       child: InkWell(
         onTap: () async {
-          var result = await showTimePicker(
+          TimeOfDay result = await showTimePicker(
               builder: (context, snapshot) {
                 return MediaQuery(
                     data: MediaQuery.of(context)
@@ -30,7 +30,7 @@ class BreakDurationPage extends StatelessWidget {
               context: context,
               initialTime: initialTime ?? TimeOfDay.now());
           if (result != null) {
-            selectedBreakTimeStr.value = result.format(context);
+            selectedBreakTimeStr.value = '${result.hour}h : ${result.minute}m';
             onTimeSelected?.call(result);
           }
         },

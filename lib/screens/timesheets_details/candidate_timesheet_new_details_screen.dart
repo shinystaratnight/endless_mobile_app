@@ -456,7 +456,8 @@ class _CandidateTimesheetNewDetailsScreenState
                     selectedTimeDetails.endDateStr +
                         " " +
                         selectedTimeDetails.endTimeStr),
-                TimeAddWidget('BREAK TIME', selectedTimeDetails.breakTime)
+                TimeAddWidget(
+                    'BREAK TIME', selectedTimeDetails.breakTime.toString())
               ],
             ),
             SizedBox(

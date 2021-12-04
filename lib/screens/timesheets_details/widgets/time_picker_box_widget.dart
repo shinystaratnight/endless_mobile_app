@@ -20,8 +20,9 @@ class TimePickerBoxWidget extends StatelessWidget {
           var result = await showTimePicker(
               context: context, initialTime: initialTime ?? TimeOfDay.now());
           if (result != null) {
-            selectedTimeStr.value = result.format(context);
-            onTimeSelected?.call(result);
+            selectedTimeStr.value = '${result.hour}h : ${result.minute}m';
+            // selectedTimeStr.value = result.format(context);
+            onTimeSelected?.call(selectedTimeStr);
           }
         },
         child: Ink(

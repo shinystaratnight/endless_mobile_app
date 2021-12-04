@@ -102,7 +102,14 @@ class TimeSheetWidgetPage extends StatelessWidget {
             SizedBox(height: 12),
             Row(
               children: [
-                BreakDurationPage(),
+                BreakDurationPage(
+                  onTimeSelected: (TimeOfDay breakTime) {
+                    selectedTimeDetails.breakTime =
+                        "${breakTime.hour}h   ${breakTime.minute}m";
+                    print(
+                        'breakTimeChanged : ${selectedTimeDetails.breakTime}');
+                  },
+                ),
                 SizedBox(width: 16),
                 Expanded(
                   child: SizedBox(),
