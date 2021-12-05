@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
@@ -16,6 +17,7 @@ import 'package:piiprent/services/country_service.dart';
 import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/services/tag_service.dart';
 import 'package:piiprent/widgets/address_field.dart';
+import 'package:piiprent/widgets/async_dropdown.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_select.dart';
@@ -385,31 +387,41 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget _buildIndustryField(BuildContext context) {
     IndustryService industryService = Provider.of<IndustryService>(context);
 
-    return FutureBuilder(
-      future: industryService.getIndustries(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          List<Industry> data = snapshot.data;
-
-          return FormSelect(
-            multiple: false,
-            title: translate('field.industries'),
-            columns: 1,
-            onChanged: (String id) {
-              _industry = id;
-              _industryStream.add(id);
-            },
-            options: data.map((Industry el) {
-              return {'value': el.id, 'label': el.name};
-            }).toList(),
-          );
-        }
-
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+    return AsyncDropdown(
+      label: translate('field.industries'),
+      future: industryService.getIndustries,
+      onChange: (dynamic val) {
+        print(val);
       },
     );
+
+    // IndustryService industryService = Provider.of<IndustryService>(context);
+
+    // return FutureBuilder(
+    //   future: industryService.getIndustries(),
+    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //     if (snapshot.hasData) {
+    //       List<Industry> data = snapshot.data;
+
+    //       return FormSelect(
+    //         multiple: false,
+    //         title: translate('field.industries'),
+    //         columns: 1,
+    //         onChanged: (String id) {
+    //           _industry = id;
+    //           _industryStream.add(id);
+    //         },
+    //         options: data.map((Industry el) {
+    //           return {'value': el.id, 'label': el.name};
+    //         }).toList(),
+    //       );
+    //     }
+
+    //     return Center(
+    //       child: CircularProgressIndicator(),
+    //     );
+    //   },
+    // );
   }
 
   Widget _buildAddressField(BuildContext context) {
