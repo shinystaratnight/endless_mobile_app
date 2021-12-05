@@ -113,6 +113,7 @@
     "field.skills": "Taidot",
     "field.skill_activity": "Toiminta",
     "field.skill_activity_amount": "Määrä",
+    "field.personal_id": "Personal Id",
     "group.title.job_information": "Työpaikan tiedot",
     "group.title.personal_details": "Henkilökohtaiset tiedot",
     "group.title.contact_details": "Yhteystiedot",

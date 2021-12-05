@@ -113,6 +113,7 @@
     "field.skills": "Oskused",
     "field.skill_activity": "Tegevus",
     "field.skill_activity_amount": "Kogus",
+    "field.personal_id": "Personal Id",
     "group.title.job_information": "Töökoha teave",
     "group.title.personal_details": "Isikuandmed",
     "group.title.contact_details": "Kontaktandmed",

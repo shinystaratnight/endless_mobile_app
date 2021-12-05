@@ -49,6 +49,7 @@ class ApiService {
     Map<String, String> headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'Origin': origin
     };
     _updateByToken(headers);
 
@@ -62,6 +63,7 @@ class ApiService {
     Map<String, String> headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'Origin': origin
     };
     _updateByToken(headers);
 
@@ -75,6 +77,7 @@ class ApiService {
     Map<String, String> headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'Origin': origin
     };
     _updateByToken(headers);
 
@@ -88,6 +91,7 @@ class ApiService {
     Map<String, String> headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'Origin': origin
     };
     _updateByToken(headers);
 

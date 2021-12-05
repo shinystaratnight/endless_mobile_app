@@ -121,6 +121,7 @@
     "field.bank_name": "Bank Name",
     "field.iban": "IBAN",
     "field.tags": "Tags",
+    "field.personal_id": "Personal Id",
     "group.title.job_information": "Job Information",
     "group.title.personal_details": "Personal Details",
     "group.title.contact_details": "Contact Details",

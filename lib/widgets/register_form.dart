@@ -52,9 +52,11 @@ class _RegisterFormState extends State<RegisterForm> {
   String _phone;
   String _birthday;
   String _industry;
+  String _personalId;
   List<dynamic> _skills;
   CountryCode _phoneCountryCode;
   Map<String, dynamic> _address;
+  bool _registered = false;
 
   final StreamController _industryStream = StreamController();
   final StreamController _fetchingStream = StreamController();
@@ -101,7 +103,7 @@ class _RegisterFormState extends State<RegisterForm> {
     _errorStream.add(null);
 
     try {
-      await contactService.register(
+      var result = await contactService.register(
         birthday: _birthday,
         email: _email,
         firstName: _firstName,
@@ -121,7 +123,14 @@ class _RegisterFormState extends State<RegisterForm> {
         iban: _iban,
         tags: _tags,
         address: _address,
+        personalId: _personalId,
       );
+
+      if (result == true) {
+        setState(() {
+          _registered = true;
+        });
+      }
     } catch (e) {
       _errorStream.add(e.toString());
     } finally {
@@ -363,6 +372,16 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
+  Widget _buildPersonalIdField(BuildContext context, [Function validator]) {
+    return Field(
+      label: translate('field.personal_id'),
+      validator: validator,
+      onSaved: (String value) {
+        _personalId = value;
+      },
+    );
+  }
+
   Widget _buildIndustryField(BuildContext context) {
     IndustryService industryService = Provider.of<IndustryService>(context);
 
@@ -548,6 +567,8 @@ class _RegisterFormState extends State<RegisterForm> {
                     _buildBankNameField(context),
                   if (form.isExist(['contact.bank_accounts.IBAN']))
                     _buildIbanField(context),
+                  if (form.isExist(['formalities.personal_id']))
+                    _buildPersonalIdField(context),
                   if (form.isExist(['skill'])) _buildIndustryField(context),
                   if (form.isExist(['skill'])) _buildSkillField(context),
                   if (form.isExist(['tag'])) _buildTagField(context),
@@ -560,19 +581,27 @@ class _RegisterFormState extends State<RegisterForm> {
                       );
                     },
                   ),
-                  StreamBuilder(
-                    stream: _fetchingStream.stream,
-                    builder: (context, snapshot) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: FormSubmitButton(
-                          disabled: snapshot.hasData && snapshot.data,
-                          onPressed: () => _register(contactService),
-                          label: translate('button.register'),
+                  _registered == false
+                      ? StreamBuilder(
+                          stream: _fetchingStream.stream,
+                          builder: (context, snapshot) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FormSubmitButton(
+                                disabled: snapshot.hasData && snapshot.data,
+                                onPressed: () => _register(contactService),
+                                label: translate('button.register'),
+                              ),
+                            );
+                          },
+                        )
+                      : Text(
+                          'You are registered!',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.green,
+                          ),
                         ),
-                      );
-                    },
-                  ),
                 ],
               ),
             ),
