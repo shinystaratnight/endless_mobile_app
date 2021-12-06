@@ -39,8 +39,7 @@ class ActivityWidgetPage extends StatelessWidget {
                   hint: const Text(
                     'Activity',
                     style: TextStyle(
-                      color: Colors.black,
-                    ),
+                      color: Colors.black, fontSize: 16),
                   ),
                   value: "Activity1",
                   items: [
@@ -96,7 +95,8 @@ class ActivityWidgetPage extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Colors.blue,
-                  textStyle: TextStyle(fontSize: 16),
+                  textStyle:
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 child: Text('SUBMIT'),
                 onPressed: () {},

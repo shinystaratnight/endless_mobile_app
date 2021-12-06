@@ -402,6 +402,14 @@ class _CandidateTimesheetNewDetailsScreenState
                             child: InkWell(
                               onTap: () {
                                 // todo call delete function
+                                setState(() {
+                                  selectedTimeDetails.startDateStr = "";
+                                  selectedTimeDetails.startTimeStr = "";
+                                  selectedTimeDetails.endDateStr = "";
+                                  selectedTimeDetails.endTimeStr = "";
+                                  selectedTimeDetails.breakTime = "";
+                                });
+                                Navigator.of(context).pop();
                               },
                               child: Icon(
                                 Icons.delete,
