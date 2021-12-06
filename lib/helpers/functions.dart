@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:piiprent/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -176,4 +177,29 @@ void showErrorDialog(BuildContext context, String title, String message,
       );
     },
   );
+}
+
+DateTime stringDateToDateTime(String date) {
+  try {
+    return DateFormat("MMM dd, yyyy").parse(date);
+  } catch (e) {
+    return null;
+  }
+}
+
+TimeOfDay stringTimeToTimeOfDay(String time) {
+  try {
+    return TimeOfDay.fromDateTime(DateFormat.jm().parse(time));
+  } catch (e) {
+    return null;
+  }
+}
+
+TimeOfDay stringBreakTimeToTimeOfDay(String breakTime) {
+  try {
+    return TimeOfDay.fromDateTime(DateFormat.Hm()
+        .parse(breakTime.replaceAll('h ', ':').replaceAll('m', '')));
+  } catch (e) {
+    return null;
+  }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/models/auth_model.dart';
@@ -40,8 +41,10 @@ class ApiService {
       'Origin': origin
     };
     _updateByToken(headers);
-
-    return await http.get(uri, headers: headers);
+    debugPrint('GET URL:: $uri');
+    var res = await http.get(uri, headers: headers);
+    debugPrint('GET URL:: $uri Response:: ${res.body}');
+    return res;
   }
 
   Future post({String path, Map<String, dynamic> body}) async {
@@ -54,8 +57,11 @@ class ApiService {
     _updateByToken(headers);
 
     String bodyEncoded = json.encode(body);
-
-    return await http.post(uri, headers: headers, body: bodyEncoded);
+    debugPrint('POST URL:: $uri');
+    debugPrint('POST RequestBody:: $bodyEncoded');
+    var res = await http.post(uri, headers: headers, body: bodyEncoded);
+    debugPrint('POST URL:: $uri Response:: ${res.body}');
+    return res;
   }
 
   Future put({String path, Map<String, dynamic> body}) async {
@@ -109,6 +115,7 @@ class ApiService {
 
   void _updateByToken(headers) {
     if (auth != null) {
+      debugPrint('JWT ${auth.access_token_jwt}');
       headers.addAll({
         HttpHeaders.authorizationHeader: 'JWT ${auth.access_token_jwt}',
       });
