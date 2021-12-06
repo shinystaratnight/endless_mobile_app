@@ -49,65 +49,62 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: PageContainer(
-          child: FutureBuilder(
-            future: companyService.getSettings(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              return Container(
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.bottomRight,
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: LanguageSelect(
-                        color: Colors.grey[500],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 45.0),
-                      child: Image.asset('images/company_banner.png'),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(35),
-                        ),
-                        border: Border.all(
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          _buildPageButton(
-                              _activeForm == 'login',
-                              translate('button.login'),
-                              () => setState(
-                                    () => _activeForm = 'login',
-                                  )),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          _buildPageButton(
-                              _activeForm == 'register',
-                              translate('button.sign_up'),
-                              () => setState(
-                                    () => _activeForm = 'register',
-                                  ))
-                        ],
-                      ),
-                    ),
-                    _activeForm == 'login'
-                        ? LoginForm(
-                            onRegister: () => setState(
-                              () => _activeForm = 'register',
-                            ),
-                          )
-                        : RegisterForm(
-                            settings: snapshot.data,
-                          ),
-                  ],
+          child: Container(
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.bottomRight,
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: LanguageSelect(
+                    color: Colors.grey[500],
+                  ),
                 ),
-              );
-            },
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 45.0),
+                  child: Image.asset('images/company_banner.png'),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(35),
+                    ),
+                    border: Border.all(
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      _buildPageButton(
+                        _activeForm == 'login',
+                        translate('button.login'),
+                        () => setState(
+                          () => _activeForm = 'login',
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      _buildPageButton(
+                        _activeForm == 'register',
+                        translate('button.sign_up'),
+                        () => setState(
+                          () => _activeForm = 'register',
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                _activeForm == 'login'
+                    ? LoginForm(
+                        onRegister: () => setState(
+                          () => _activeForm = 'register',
+                        ),
+                      )
+                    : RegisterForm(
+                        settings: companyService.settings,
+                      ),
+              ],
+            ),
           ),
         ),
       ),
