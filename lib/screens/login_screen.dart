@@ -13,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<NavigatorState> key = new GlobalKey<NavigatorState>();
   String _activeForm = 'login';
 
   Widget _buildPageButton(bool active, String title, Function onTap) {
@@ -101,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       )
                     : RegisterForm(
+                        key: key,
                         settings: companyService.settings,
                       ),
               ],

@@ -18,4 +18,8 @@ class Country {
       str: json['__str__'],
     );
   }
+
+  get name {
+    return this.str;
+  }
 }

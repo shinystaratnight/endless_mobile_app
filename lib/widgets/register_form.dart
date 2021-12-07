@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/models/application_form_model.dart';
-import 'package:piiprent/models/country_model.dart';
-import 'package:piiprent/models/industry_model.dart';
+import 'package:piiprent/models/async_dropdown_option.dart';
 import 'package:piiprent/models/settings_model.dart';
 import 'package:piiprent/models/skill_model.dart';
 import 'package:piiprent/models/tag_model.dart';
@@ -25,10 +24,11 @@ import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
 
 class RegisterForm extends StatefulWidget {
-  final IndustryService industryService = IndustryService();
   final Settings settings;
+  final GlobalKey key;
 
   RegisterForm({
+    this.key,
     this.settings,
   });
 
@@ -76,12 +76,14 @@ class _RegisterFormState extends State<RegisterForm> {
     {'value': 'female', 'label': 'Female'},
   ];
 
-  List<Map<String, dynamic>> residencyOptions = [
-    {'value': "0", 'label': "Unknown"},
-    {'value': "1", 'label': "Citizen"},
-    {'value': "2", 'label': "Permanent Resident"},
-    {'value': "3", 'label': "Temporary Resident"}
+  List residencyOptions = [
+    const AsyncDropdownOption(id: '0', name: 'Unknown'),
+    const AsyncDropdownOption(id: '1', name: 'Citizen'),
+    const AsyncDropdownOption(id: '2', name: 'Permanent Resident'),
+    const AsyncDropdownOption(id: '3', name: 'Temporary Resident'),
   ];
+
+  List<Widget> _fields = [];
 
   List<Map<String, dynamic>> transportationOptions = [
     {'value': "1", 'label': "Own Car"},
@@ -89,10 +91,90 @@ class _RegisterFormState extends State<RegisterForm> {
   ];
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _configFetching = true;
+
+  CompanyService companyService;
+  CountryService countryService;
+  IndustryService industryService;
+
+  Future _generateFields() async {
+    try {
+      ApplicationForm form = await this
+          .companyService
+          .getApplicationFormSettings(widget.settings.formId);
+
+      setState(() {
+        this._fields = [
+          if (form.isExist(['contact.title'])) _buildTitleField(context),
+          if (form.isExist(['contact.first_name', 'contact.last_name']))
+            Row(
+              children: [
+                if (form.isExist(['contact.first_name']))
+                  _buildFirstNameField(context),
+                if (form.isExist(['contact.last_name']))
+                  _buildLastNameField(context)
+              ],
+            ),
+          if (form.isExist(['contact.gender'])) _buildGenderField(context),
+          if (form.isExist(['contact.email'])) _buildEmailField(context),
+          if (form.isExist(['contact.phone_mobile']))
+            _buildPhoneNumberField(context),
+          if (form.isExist(['contact.birthday'])) _buildBirthdayField(context),
+          if (form.isExist(['contact.address.street_address']))
+            _buildAddressField(context),
+          if (form.isExist(['nationality'])) _buildNationalityField(context),
+          if (form.isExist(['residency'])) _buildResidencyField(context),
+          if (form.isExist(['transportation_to_work']))
+            _transportationToWorkField(context),
+          if (form.isExist(['height', 'weight']))
+            Row(
+              children: [
+                if (form.isExist(['height'])) _buildHeightField(context),
+                if (form.isExist(['weight'])) _buildWeightField(context)
+              ],
+            ),
+          if (form.isExist(['skill'])) _buildIndustryField(context),
+          if (form.isExist(['skill'])) _buildSkillField(context),
+          if (form.isExist(['tag'])) _buildTagField(context),
+          if (form.isExist(['contact.bank_accounts.AccountholdersName']))
+            _buildBankAccountNameField(context),
+          if (form.isExist(['contact.bank_accounts.bank_name']))
+            _buildBankNameField(context),
+          if (form.isExist(['contact.bank_accounts.IBAN']))
+            _buildIbanField(context),
+          if (form.isExist(['formalities.personal_id']))
+            _buildPersonalIdField(context),
+        ];
+        this._configFetching = false;
+      });
+
+      print(this._fields);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      var context = widget.key.currentContext;
+      this.companyService = Provider.of<CompanyService>(
+        context,
+        listen: false,
+      );
+      this.countryService = Provider.of<CountryService>(
+        context,
+        listen: false,
+      );
+      this.industryService = Provider.of<IndustryService>(
+        context,
+        listen: false,
+      );
+
+      this._generateFields();
+    });
   }
 
   _register(ContactService contactService) async {
@@ -251,50 +333,22 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   Widget _buildNationalityField(BuildContext context) {
-    CountryService countryService = Provider.of<CountryService>(context);
-
-    return FutureBuilder(
-      future: countryService.getCountries(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          List<Country> data = snapshot.data;
-
-          return FormSelect(
-            multiple: false,
-            title: translate('field.nationality'),
-            columns: 1,
-            onChanged: (String id) {
-              _nationality = id;
-            },
-            options: data.map((Country el) {
-              return {'value': el.id, 'label': el.str};
-            }).toList(),
-          );
-        }
-
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+    return AsyncDropdown(
+      label: translate('field.nationality'),
+      future: this.countryService.getCountries,
+      onChange: (dynamic val) {
+        _nationality = val['id'];
       },
     );
   }
 
   Widget _buildResidencyField(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 1,
-          child: FormSelect(
-            title: translate('field.residency'),
-            columns: 1,
-            options: residencyOptions,
-            multiple: false,
-            onChanged: (String residency) {
-              _residency = residency;
-            },
-          ),
-        )
-      ],
+    return AsyncDropdown(
+      label: translate('field.residency'),
+      future: () => Future.value(residencyOptions),
+      onChange: (dynamic val) {
+        _residency = val['id'];
+      },
     );
   }
 
@@ -385,43 +439,14 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   Widget _buildIndustryField(BuildContext context) {
-    IndustryService industryService = Provider.of<IndustryService>(context);
-
     return AsyncDropdown(
       label: translate('field.industries'),
-      future: industryService.getIndustries,
+      future: this.industryService.getIndustries,
       onChange: (dynamic val) {
-        print(val);
+        _industry = val['id'];
+        _industryStream.add(val['id']);
       },
     );
-
-    // IndustryService industryService = Provider.of<IndustryService>(context);
-
-    // return FutureBuilder(
-    //   future: industryService.getIndustries(),
-    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //     if (snapshot.hasData) {
-    //       List<Industry> data = snapshot.data;
-
-    //       return FormSelect(
-    //         multiple: false,
-    //         title: translate('field.industries'),
-    //         columns: 1,
-    //         onChanged: (String id) {
-    //           _industry = id;
-    //           _industryStream.add(id);
-    //         },
-    //         options: data.map((Industry el) {
-    //           return {'value': el.id, 'label': el.name};
-    //         }).toList(),
-    //       );
-    //     }
-
-    //     return Center(
-    //       child: CircularProgressIndicator(),
-    //     );
-    //   },
-    // );
   }
 
   Widget _buildAddressField(BuildContext context) {
@@ -433,8 +458,6 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   Widget _buildSkillField(BuildContext context) {
-    IndustryService industryService = Provider.of<IndustryService>(context);
-
     return StreamBuilder(
       stream: _industryStream.stream,
       builder: (context, snapshot) {
@@ -447,10 +470,10 @@ class _RegisterFormState extends State<RegisterForm> {
         print(snapshot.data);
 
         return FutureBuilder(
-          future: industryService.getSkills(
-            industry,
-            widget.settings.company,
-          ),
+          future: this.industryService.getSkills(
+                industry,
+                widget.settings.company,
+              ),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             var progress = const Padding(
               padding: const EdgeInsets.all(8.0),
@@ -520,113 +543,58 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   Widget build(BuildContext context) {
     ContactService contactService = Provider.of<ContactService>(context);
-    CompanyService companyService = Provider.of<CompanyService>(context);
 
-    return FutureBuilder(
-      future: companyService.getApplicationFormSettings(widget.settings.formId),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          ApplicationForm form = snapshot.data;
-
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 14.0,
-                  ),
-                  if (form.isExist(['contact.title']))
-                    _buildTitleField(context),
-                  if (form.isExist(['contact.first_name', 'contact.last_name']))
-                    Row(
-                      children: [
-                        if (form.isExist(['contact.first_name']))
-                          _buildFirstNameField(context),
-                        if (form.isExist(['contact.last_name']))
-                          _buildLastNameField(context)
-                      ],
-                    ),
-                  if (form.isExist(['contact.gender']))
-                    _buildGenderField(context),
-                  if (form.isExist(['contact.email']))
-                    _buildEmailField(context),
-                  if (form.isExist(['contact.phone_mobile']))
-                    _buildPhoneNumberField(context),
-                  if (form.isExist(['contact.birthday']))
-                    _buildBirthdayField(context),
-                  if (form.isExist(['contact.address.street_address']))
-                    _buildAddressField(context),
-                  if (form.isExist(['nationality']))
-                    _buildNationalityField(context),
-                  if (form.isExist(['residency']))
-                    _buildResidencyField(context),
-                  if (form.isExist(['transportation_to_work']))
-                    _transportationToWorkField(context),
-                  if (form.isExist(['height', 'weight']))
-                    Row(
-                      children: [
-                        if (form.isExist(['height']))
-                          _buildHeightField(context),
-                        if (form.isExist(['weight'])) _buildWeightField(context)
-                      ],
-                    ),
-                  if (form
-                      .isExist(['contact.bank_accounts.AccountholdersName']))
-                    _buildBankAccountNameField(context),
-                  if (form.isExist(['contact.bank_accounts.bank_name']))
-                    _buildBankNameField(context),
-                  if (form.isExist(['contact.bank_accounts.IBAN']))
-                    _buildIbanField(context),
-                  if (form.isExist(['formalities.personal_id']))
-                    _buildPersonalIdField(context),
-                  if (form.isExist(['skill'])) _buildIndustryField(context),
-                  if (form.isExist(['skill'])) _buildSkillField(context),
-                  if (form.isExist(['tag'])) _buildTagField(context),
-                  StreamBuilder(
-                    stream: _errorStream.stream,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 14.0,
+            ),
+            ...this._fields,
+            if (this._configFetching)
+              Center(
+                child: Padding(
+                  child: CircularProgressIndicator(),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                ),
+              ),
+            StreamBuilder(
+              stream: _errorStream.stream,
+              builder: (context, snapshot) {
+                return FormMessage(
+                  type: MessageType.Error,
+                  message: snapshot.data,
+                );
+              },
+            ),
+            _registered == false
+                ? StreamBuilder(
+                    stream: _fetchingStream.stream,
                     builder: (context, snapshot) {
-                      return FormMessage(
-                        type: MessageType.Error,
-                        message: snapshot.data,
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FormSubmitButton(
+                          disabled: (snapshot.hasData && snapshot.data) ||
+                              this._configFetching,
+                          onPressed: () => _register(contactService),
+                          label: translate('button.register'),
+                        ),
                       );
                     },
+                  )
+                : Text(
+                    'You are registered!',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.green,
+                    ),
                   ),
-                  _registered == false
-                      ? StreamBuilder(
-                          stream: _fetchingStream.stream,
-                          builder: (context, snapshot) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: FormSubmitButton(
-                                disabled: snapshot.hasData && snapshot.data,
-                                onPressed: () => _register(contactService),
-                                label: translate('button.register'),
-                              ),
-                            );
-                          },
-                        )
-                      : Text(
-                          'You are registered!',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.green,
-                          ),
-                        ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        return Center(
-          child: Padding(
-            child: CircularProgressIndicator(),
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

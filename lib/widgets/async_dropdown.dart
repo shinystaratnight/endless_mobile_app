@@ -23,6 +23,7 @@ class _AsyncDropdownState extends State<AsyncDropdown> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: DropdownFormField(
+        dropdownHeight: 180,
         dropdownItemFn: (
           dynamic item,
           int position,
@@ -40,7 +41,7 @@ class _AsyncDropdownState extends State<AsyncDropdown> {
           style: TextStyle(fontSize: 16),
         ),
         onSaved: (dynamic str) {},
-        onChanged: (dynamic str) {},
+        onChanged: widget.onChange,
         filterFn: (dynamic item, str) =>
             item['name'].toLowerCase().indexOf(str.toLowerCase()) >= 0,
         findFn: (dynamic str) async {
