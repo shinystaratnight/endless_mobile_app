@@ -81,9 +81,9 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         title: 'Piiprent',
         localizationsDelegates: [
+          localizationDelegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          localizationDelegate
         ],
         supportedLocales: localizationDelegate.supportedLocales,
         locale: localizationDelegate.currentLocale,
