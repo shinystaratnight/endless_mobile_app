@@ -18,6 +18,26 @@ class AsyncDropdown extends StatefulWidget {
 }
 
 class _AsyncDropdownState extends State<AsyncDropdown> {
+  List _options;
+
+  _fetchOptions() async {
+    try {
+      List list = await widget.future();
+
+      setState(() {
+        _options = list.map((e) => ({'id': e.id, 'name': e.name})).toList();
+      });
+    } catch (e) {
+      _options = [];
+    }
+  }
+
+  @override
+  void initState() {
+    _fetchOptions();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,11 +65,7 @@ class _AsyncDropdownState extends State<AsyncDropdown> {
         filterFn: (dynamic item, str) =>
             item['name'].toLowerCase().indexOf(str.toLowerCase()) >= 0,
         findFn: (dynamic str) async {
-          List list = await widget.future();
-
-          return list.map((e) {
-            return {'id': e.id, 'name': e.name};
-          }).toList();
+          return _options;
         },
         decoration: InputDecoration(
           labelText: widget.label,
