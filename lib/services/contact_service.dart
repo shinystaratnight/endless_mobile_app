@@ -72,9 +72,11 @@ class ContactService {
     tags,
     address,
     personalId,
+    picture,
   }) async {
     var body = {
       'contact': {
+        'picture': _parse(picture, null),
         'title': _parse(title, ''),
         'first_name': _parse(firstName, ''),
         'last_name': _parse(lastName, ''),
