@@ -5,25 +5,40 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:piiprent/helpers/colors.dart';
 
 class TimePickerBoxWidget extends StatelessWidget {
-  TimePickerBoxWidget({Key key, this.onTimeSelected, this.initialTime})
+  TimePickerBoxWidget(
+      {Key key, this.onTimeSelected, this.initialTime, this.initialDateTime})
       : super(key: key);
   final Function onTimeSelected;
   final TimeOfDay initialTime;
+  final DateTime initialDateTime;
   final RxString selectedTimeStr = 'Time'.obs;
 
   @override
   Widget build(BuildContext context) {
-    selectedTimeStr.value =
-        initialTime != null ? initialTime.format(context) : 'Time';
+    selectedTimeStr.value = initialDateTime != null
+        ? TimeOfDay(hour: initialDateTime.hour, minute: initialDateTime.minute)
+            .format(context)
+        : 'Time';
     return Expanded(
       child: InkWell(
         borderRadius: BorderRadius.circular(4.0),
         onTap: () async {
           var result = await showTimePicker(
-              context: context, initialTime: initialTime ?? TimeOfDay.now());
+            context: context,
+            initialTime: TimeOfDay(
+                hour: initialDateTime.hour, minute: initialDateTime.minute),
+          );
           if (result != null) {
             selectedTimeStr.value = result.format(context);
-            onTimeSelected?.call(selectedTimeStr.value);
+            onTimeSelected?.call(
+              DateTime(
+                initialDateTime.year,
+                initialDateTime.month,
+                initialDateTime.day,
+                result.hour,
+                result.minute,
+              ),
+            );
           }
         },
         child: Ink(

@@ -4,4 +4,9 @@ class SelectedTimeDetails {
   String endDateStr = "";
   String endTimeStr = "";
   String breakTime = "";
+
+  DateTime startDateTime;
+  DateTime endDateTime;
+  DateTime startBreakTime;
+  DateTime endBreakTime;
 }

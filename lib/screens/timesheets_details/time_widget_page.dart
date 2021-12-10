@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:piiprent/helpers/colors.dart';
+import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/functions.dart';
 import 'package:piiprent/screens/timesheets_details/selected_time_details.dart';
 import 'package:piiprent/screens/timesheets_details/widgets/date_picker_box_widget.dart';
 import 'package:piiprent/screens/timesheets_details/widgets/time_hint_widget.dart';
 
+import '../../constants.dart';
 import 'widgets/break_duration_page.dart';
 import 'widgets/time_picker_box_widget.dart';
 
 class TimeSheetWidgetPage extends StatelessWidget {
-  TimeSheetWidgetPage(this.selectedTimeDetails, {Key key}) : super(key: key);
+  TimeSheetWidgetPage(this.selectedTimeDetails, {this.times, Key key})
+      : super(key: key);
   SelectedTimeDetails selectedTimeDetails;
+  Map<String, DateTime> times;
+  String _shiftStart = TimesheetTimeKey[TimesheetTime.Start];
+  String _breakStart = TimesheetTimeKey[TimesheetTime.BreakStart];
+  String _breakEnd = TimesheetTimeKey[TimesheetTime.BreakEnd];
+  String _shiftEnd = TimesheetTimeKey[TimesheetTime.End];
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +61,38 @@ class TimeSheetWidgetPage extends StatelessWidget {
             Row(
               children: [
                 DatePickerBoxWidget(
-                  initialDate:
-                      stringDateToDateTime(selectedTimeDetails.startDateStr),
-                  onDateSelected: (String startDate) {
-                    selectedTimeDetails.startDateStr = startDate;
+                  initialDate: times[_shiftStart],
+                  onDateSelected: (DateTime startDate) {
+                    selectedTimeDetails.startDateStr = startDate.toString();
+                    selectedTimeDetails.startDateTime = startDate;
+
+                    DateTime _dateTime = DateTime(
+                      startDate.year,
+                      startDate.month,
+                      startDate.day,
+                      times[_shiftStart].hour,
+                      times[_shiftStart].minute,
+                    );
+                    times[_shiftStart] = _dateTime;
+                    print('initStartDate:: ${times[_shiftStart]}');
                   },
                 ),
                 SizedBox(width: 16),
                 TimePickerBoxWidget(
-                  initialTime:
-                      stringTimeToTimeOfDay(selectedTimeDetails.startTimeStr),
-                  onTimeSelected: (String startTime) {
-                    selectedTimeDetails.startTimeStr = startTime;
+                  initialDateTime: times[_shiftStart],
+                  onTimeSelected: (DateTime startTime) {
+                    selectedTimeDetails.startTimeStr = startTime.toString();
+                    selectedTimeDetails.startDateTime = startTime;
+
+                    DateTime _dateTime = DateTime(
+                      times[_shiftStart].year,
+                      times[_shiftStart].month,
+                      times[_shiftStart].day,
+                      startTime.hour,
+                      startTime.minute,
+                    );
+                    times[_shiftStart] = _dateTime;
+                    print('initStartDate:: ${times[_shiftStart]}');
                   },
                 ),
               ],
@@ -75,18 +103,35 @@ class TimeSheetWidgetPage extends StatelessWidget {
             Row(
               children: [
                 DatePickerBoxWidget(
-                  initialDate:
-                      stringDateToDateTime(selectedTimeDetails.endDateStr),
-                  onDateSelected: (String endDate) {
-                    selectedTimeDetails.endDateStr = endDate;
+                  initialDate: times[_shiftEnd],
+                  onDateSelected: (DateTime endDate) {
+                    selectedTimeDetails.endDateStr = endDate.toString();
+                    DateTime _dateTime = DateTime(
+                      endDate.year,
+                      endDate.month,
+                      endDate.day,
+                      times[_shiftEnd].hour,
+                      times[_shiftEnd].minute,
+                    );
+                    times[_shiftEnd] = _dateTime;
+                    print('_shiftEndDate:: ${times[_shiftEnd]}');
                   },
                 ),
                 SizedBox(width: 16),
                 TimePickerBoxWidget(
-                  initialTime:
-                      stringTimeToTimeOfDay(selectedTimeDetails.endTimeStr),
-                  onTimeSelected: (String endTime) {
-                    selectedTimeDetails.endTimeStr = endTime;
+                  initialDateTime: times[_shiftEnd],
+                  onTimeSelected: (DateTime endTime) {
+                    selectedTimeDetails.endTimeStr = endTime.toString();
+
+                    DateTime _dateTime = DateTime(
+                      times[_shiftEnd].year,
+                      times[_shiftEnd].month,
+                      times[_shiftEnd].day,
+                      endTime.hour,
+                      endTime.minute,
+                    );
+                    times[_shiftEnd] = _dateTime;
+                    print('_shiftEndTime:: ${times[_shiftEnd]}');
                   },
                 ),
               ],

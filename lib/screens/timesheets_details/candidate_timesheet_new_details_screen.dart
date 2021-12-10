@@ -414,8 +414,9 @@ class _CandidateTimesheetNewDetailsScreenState
                       )
                     : InkWell(
                         onTap: () async {
-                          var result = await Get.to(
-                              () => TimeSheetWidgetPage(selectedTimeDetails));
+                          var result = await Get.to(() => TimeSheetWidgetPage(
+                              selectedTimeDetails,
+                              times: _times));
                           if (result is SelectedTimeDetails) {
                             setState(() {
                               selectedTimeDetails = result;

@@ -13,7 +13,7 @@ class DatePickerBoxWidget extends StatelessWidget {
   final RxString dateStr = 'Date'.obs;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context1) {
     dateStr.value = initialDate != null
         ? DateFormat('MMM dd, yyyy').format(initialDate)
         : 'Date';
@@ -22,13 +22,13 @@ class DatePickerBoxWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(4.0),
         onTap: () async {
           var result = await showDatePicker(
-              context: context,
+              context: context1,
               initialDate: initialDate ?? DateTime.now(),
-              firstDate: DateTime.now(),
+              firstDate: initialDate ?? DateTime.now(),
               lastDate: DateTime(DateTime.now().year + 2));
           if (result != null) {
             dateStr.value = DateFormat('MMM dd, yyyy').format(result);
-            onDateSelected?.call(dateStr.value);
+            onDateSelected?.call(result);
           }
         },
         child: Ink(
