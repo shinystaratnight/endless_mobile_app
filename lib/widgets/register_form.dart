@@ -21,6 +21,7 @@ import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_select.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
+import 'package:piiprent/widgets/picture_field.dart';
 import 'package:provider/provider.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -55,6 +56,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String _birthday;
   String _industry;
   String _personalId;
+  String _picture;
   List<dynamic> _skills;
   CountryCode _phoneCountryCode;
   Map<String, dynamic> _address;
@@ -105,6 +107,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
       setState(() {
         this._fields = [
+          if (form.isExist(['contact.picture'])) _buildPictureField(context),
           if (form.isExist(['contact.title'])) _buildTitleField(context),
           if (form.isExist(['contact.first_name', 'contact.last_name']))
             Row(
@@ -208,18 +211,37 @@ class _RegisterFormState extends State<RegisterForm> {
         tags: _tags,
         address: _address,
         personalId: _personalId,
+        picture: _picture,
       );
 
       if (result == true) {
         setState(() {
           _registered = true;
         });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green[400],
+            content: const Text(
+              'You are registered!',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        );
       }
     } catch (e) {
       _errorStream.add(e.toString());
     } finally {
       _fetchingStream.add(false);
     }
+  }
+
+  Widget _buildPictureField(BuildContext context) {
+    return PictureField(
+      onChanged: (String val) {
+        _picture = val;
+      },
+    );
   }
 
   Widget _buildTitleField(BuildContext context) {
@@ -570,28 +592,21 @@ class _RegisterFormState extends State<RegisterForm> {
                 );
               },
             ),
-            _registered == false
-                ? StreamBuilder(
-                    stream: _fetchingStream.stream,
-                    builder: (context, snapshot) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: FormSubmitButton(
-                          disabled: (snapshot.hasData && snapshot.data) ||
-                              this._configFetching,
-                          onPressed: () => _register(contactService),
-                          label: translate('button.register'),
-                        ),
-                      );
-                    },
-                  )
-                : Text(
-                    'You are registered!',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.green,
+            if (_registered == false)
+              StreamBuilder(
+                stream: _fetchingStream.stream,
+                builder: (context, snapshot) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FormSubmitButton(
+                      disabled: (snapshot.hasData && snapshot.data) ||
+                          this._configFetching,
+                      onPressed: () => _register(contactService),
+                      label: translate('button.register'),
                     ),
-                  ),
+                  );
+                },
+              ),
           ],
         ),
       ),
