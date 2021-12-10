@@ -513,9 +513,9 @@ class _CandidateTimesheetNewDetailsScreenState
             //     )
             //   ],
             // ),
-            SizedBox(
-              height: 24,
-            ),
+            // SizedBox(
+            //   height: 24,
+            // ),
             // if ((widget.status == 4 || widget.status == 5) &&
             //     !_updated &&
             //     _hours != null)
@@ -553,9 +553,9 @@ class _CandidateTimesheetNewDetailsScreenState
                     ],
                   )
                 : SizedBox(),
-            _hours == true || widget.status != 4
-                ? this._buildTimesForm()
-                : SizedBox(),
+            // _hours == true || widget.status != 4
+            //     ? this._buildTimesForm()
+            //     : SizedBox(),
             _hours == false || widget.status != 4
                 ? SkillActivityTable(
                     hasActions:
