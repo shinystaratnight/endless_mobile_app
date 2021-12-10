@@ -203,3 +203,11 @@ TimeOfDay stringBreakTimeToTimeOfDay(String breakTime) {
     return null;
   }
 }
+
+String formatDateTime(DateTime _dateTime) {
+  try {
+    return DateFormat("dd/MM/yyyy h:mm a").format(_dateTime);
+  } catch (e) {
+    return _dateTime.toString();
+  }
+}

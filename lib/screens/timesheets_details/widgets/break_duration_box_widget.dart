@@ -4,8 +4,8 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:piiprent/helpers/colors.dart';
 
-class BreakDurationPage extends StatelessWidget {
-  BreakDurationPage({this.initialTime, this.onTimeSelected, Key key})
+class BreakDurationBoxWidget extends StatelessWidget {
+  BreakDurationBoxWidget({this.initialTime, this.onTimeSelected, Key key})
       : super(key: key);
 
   final TimeOfDay initialTime;
@@ -14,8 +14,9 @@ class BreakDurationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    selectedBreakTimeStr.value =
-        initialTime != null ? initialTime.format(context) : 'Time';
+    selectedBreakTimeStr.value = initialTime != null
+        ? '${initialTime.hour}h ${initialTime.minute}m'
+        : 'Time';
     return Expanded(
       child: InkWell(
         onTap: () async {
@@ -30,7 +31,7 @@ class BreakDurationPage extends StatelessWidget {
               initialTime: initialTime ?? TimeOfDay.now());
           if (result != null) {
             selectedBreakTimeStr.value = '${result.hour}h ${result.minute}m';
-            onTimeSelected?.call(selectedBreakTimeStr.value);
+            onTimeSelected?.call(result);
           }
         },
         child: Ink(

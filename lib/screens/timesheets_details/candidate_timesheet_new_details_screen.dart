@@ -17,8 +17,8 @@ import 'package:piiprent/widgets/group_title.dart';
 import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 
-import 'activity_widget_page.dart';
 import 'time_widget_page.dart';
+import 'widgets/duation_show_widget.dart';
 import 'widgets/timesheet_general_info_widget.dart';
 
 class CandidateTimesheetNewDetailsScreen extends StatefulWidget {
@@ -78,10 +78,15 @@ class _CandidateTimesheetNewDetailsScreenState
 
   @override
   void initState() {
+    DateTime _breakTime;
+    if (widget.shiftStart != null)
+      _breakTime =
+          widget.breakStart ?? widget.shiftStart.add(Duration(hours: 2));
+
     _times = {
       _shiftStart: widget.shiftStart,
-      _breakStart: widget.breakStart,
-      _breakEnd: widget.breakEnd,
+      _breakStart: _breakTime,
+      _breakEnd: widget.breakEnd ?? _breakTime,
       _shiftEnd: widget.shiftEnd
     };
 
@@ -133,9 +138,9 @@ class _CandidateTimesheetNewDetailsScreenState
       Map<String, String> body;
 
       if (_hours) {
-        if (!_withBreak) {
-          _times[_breakEnd] = _times[_breakStart];
-        }
+        // if (!_withBreak) {
+        //   _times[_breakEnd] = _times[_breakStart];
+        // }
 
         body =
             _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
@@ -367,62 +372,62 @@ class _CandidateTimesheetNewDetailsScreenState
                     color: AppColors.lightBlack,
                   ),
                 ),
-                (selectedTimeDetails.startDateStr != '' ||
-                        selectedTimeDetails.endDateStr != '' ||
-                        selectedTimeDetails.breakTime != '')
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: InkWell(
-                              onTap: () async {
-                                var result = await Get.to(() =>
-                                    TimeSheetWidgetPage(selectedTimeDetails));
-                                if (result is SelectedTimeDetails) {
-                                  setState(() {
-                                    selectedTimeDetails = result;
-                                  });
-                                }
-                              },
-                              child: Icon(
-                                Icons.edit,
-                                color: AppColors.green,
-                                size: 18,
+                if (widget.status == 4 && !_updated)
+                  (_times[_shiftStart] != null)
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: InkWell(
+                                onTap: () async {
+                                  var result = await Get.to(
+                                      () => TimeSheetWidgetPage(_times));
+                                  if (result is Map) {
+                                    setState(() {
+                                      _times = result;
+                                      print('updateTimes: $_times');
+                                    });
+                                  }
+                                },
+                                child: Icon(
+                                  Icons.edit,
+                                  color: AppColors.green,
+                                  size: 18,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 3.0,
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                // todo call delete function
-                              },
-                              child: Icon(
-                                Icons.delete,
-                                color: AppColors.red,
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                        ],
+                            // SizedBox(
+                            //   width: 16,
+                            // ),
+                            // Padding(
+                            //   padding: const EdgeInsets.symmetric(
+                            //     vertical: 3.0,
+                            //   ),
+                            //   child: InkWell(
+                            //     onTap: () {
+                            //       // todo call delete function
+                            //     },
+                            //     child: Icon(
+                            //       Icons.delete,
+                            //       color: AppColors.red,
+                            //       size: 18,
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
                       )
                     : InkWell(
                         onTap: () async {
-                          var result = await Get.to(() => TimeSheetWidgetPage(
-                              selectedTimeDetails,
-                              times: _times));
-                          if (result is SelectedTimeDetails) {
-                            setState(() {
-                              selectedTimeDetails = result;
-                            });
-                          }
-                        },
+                            var result =
+                                await Get.to(() => TimeSheetWidgetPage(_times));
+                            if (result is Map) {
+                              setState(() {
+                                _times = result;
+                                print('results: $_times');
+                              });
+                            }
+                          },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -455,114 +460,89 @@ class _CandidateTimesheetNewDetailsScreenState
             ),
             Column(
               children: [
-                if (selectedTimeDetails.startDateStr != "")
-                  TimeAddWidget(
-                      'START TIME',
-                      selectedTimeDetails.startDateStr +
-                          " " +
-                          selectedTimeDetails.startTimeStr),
-                if (selectedTimeDetails.endDateStr != "")
-                  TimeAddWidget(
-                      'END TIME',
-                      selectedTimeDetails.endDateStr +
-                          " " +
-                          selectedTimeDetails.endTimeStr),
-                if (selectedTimeDetails.breakTime != "")
-                  TimeAddWidget(
-                      'BREAK TIME', selectedTimeDetails.breakTime.toString())
+                TimeAddWidget('START TIME', _times[_shiftStart]),
+                TimeAddWidget('END TIME', _times[_shiftEnd]),
+                DurationShowWidget('BREAK TIME',
+                    _times[_breakEnd].difference(_times[_breakStart]))
               ],
             ),
             SizedBox(
-              height: 30,
+              height: 24,
             ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Activity',
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  Container(
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ActivityWidgetPage()),
-                            );
-                          },
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.blue,
-                            size: 12,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 13,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ActivityWidgetPage()),
-                            );
-                          },
-                          child: Text(
-                            'ADD',
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(
+            //       'Activity',
+            //       style: TextStyle(fontWeight: FontWeight.w500),
+            //     ),
+            //     if( widget.status == 4 && !_updated)
+            //     Row(
+            //       children: [
+            //         InkWell(
+            //           onTap: () {
+            //             Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) => ActivityWidgetPage()),
+            //             );
+            //           },
+            //           child: Icon(
+            //             Icons.add,
+            //             color: Colors.blue,
+            //             size: 12,
+            //           ),
+            //         ),
+            //         SizedBox(
+            //           width: 13,
+            //         ),
+            //         InkWell(
+            //           onTap: () {
+            //             Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) => ActivityWidgetPage()),
+            //             );
+            //           },
+            //           child: Text(
+            //             'ADD',
+            //             style: TextStyle(color: Colors.blue),
+            //           ),
+            //         ),
+            //       ],
+            //     )
+            //   ],
+            // ),
             SizedBox(
-              height: 30,
+              height: 24,
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: new BorderRadius.circular(8.0),
-              ),
-              width: 380,
-              height: 35,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text('Submit'),
-              ),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            Text(
-              widget.position,
-              style: TextStyle(fontSize: 22.0),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            DetailsRecord(
-              label: translate('field.shift_date'),
-              value: DateFormat('dd/MM/yyyy').format(widget.shiftDate),
-            ),
+            // if ((widget.status == 4 || widget.status == 5) &&
+            //     !_updated &&
+            //     _hours != null)
+            //   Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.blue,
+            //       borderRadius: new BorderRadius.circular(8.0),
+            //     ),
+            //     width: 380,
+            //     height: 35,
+            //     child: ElevatedButton(
+            //       onPressed: () =>
+            //           _fetching ? null : _submitForm(timesheetService),
+            //       child: Text('Submit'),
+            //     ),
+            //   ),
             widget.status == 4 && !_updated
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              _hours = true;
-                            });
-                          },
-                          child: Text(translate('button.times_only'))),
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         _hours = true;
+                      //       });
+                      //     },
+                      //     child: Text(translate('button.times_only'))),
                       ElevatedButton(
                           onPressed: () {
                             setState(() {
