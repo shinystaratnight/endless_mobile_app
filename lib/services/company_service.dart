@@ -8,6 +8,12 @@ import 'package:piiprent/services/api_service.dart';
 class CompanyService {
   final ApiService apiService = ApiService.create();
 
+  Settings _settings;
+
+  get settings {
+    return _settings;
+  }
+
   Future<Settings> getSettings() async {
     try {
       http.Response res = await apiService.get(
@@ -24,6 +30,16 @@ class CompanyService {
       }
     } catch (e) {
       return e;
+    }
+  }
+
+  Future<bool> fetchSettings() async {
+    try {
+      _settings = await getSettings();
+
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

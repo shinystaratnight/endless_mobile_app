@@ -71,9 +71,12 @@ class ContactService {
     iban,
     tags,
     address,
+    personalId,
+    picture,
   }) async {
     var body = {
       'contact': {
+        'picture': _parse(picture, null),
         'title': _parse(title, ''),
         'first_name': _parse(firstName, ''),
         'last_name': _parse(lastName, ''),
@@ -90,12 +93,17 @@ class ContactService {
       },
       'height': _parse(height, null),
       'weight': _parse(weight, null),
-      'nationality': {'id': _parse(nationality, '')},
+      'nationality': {
+        'id': _parse(nationality, ''),
+      },
       'transportation_to_work': _parse(transport, ''),
       'residency': _parse(residency, ''),
       'industry': {'id': _parse(industry, '')},
       'skill': _parse(skills, []),
-      'tag': _parse(tags, []),
+      // 'tag': _parse(tags, []),
+      'formatilies': {
+        'personal_id': _parse(personalId, ''),
+      }
     };
 
     http.Response res = await apiService.post(
@@ -103,7 +111,7 @@ class ContactService {
       body: body,
     );
 
-    if (res.statusCode == 200) {
+    if (res.statusCode == 201) {
       return true;
     } else {
       var error = ApiError.fromJson(json.decode(res.body));

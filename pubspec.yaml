@@ -44,6 +44,7 @@ dependencies:
   flutter_translate: ^3.0.1
   get: ^4.3.8
   permission_handler: ^8.3.0
+  dropdown_plus:
   flutter_localizations:
     sdk: flutter
 
