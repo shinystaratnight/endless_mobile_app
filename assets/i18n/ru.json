@@ -50,6 +50,7 @@
     "button.times_only": "Только время",
     "button.peicework": "Сдельная работа",
     "button.edit": "Редактировать",
+    "button.take_photo": "Добавить фото",
     "timesheet.status": "Статус",
     "timesheet.shift_started_at": "Начало смены",
     "timesheet.shift_ended_at": "Окончание смены",
