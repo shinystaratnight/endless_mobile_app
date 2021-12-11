@@ -22,10 +22,11 @@ class DatePickerBoxWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(4.0),
         onTap: () async {
           var result = await showDatePicker(
-              context: context1,
-              initialDate: initialDate ?? DateTime.now(),
-              firstDate: initialDate ?? DateTime.now(),
-              lastDate: DateTime(DateTime.now().year + 2));
+            context: context1,
+            initialDate: initialDate ?? DateTime.now(),
+            firstDate: DateTime(DateTime.now().year, DateTime.now().month - 2),
+            lastDate: DateTime(DateTime.now().year, DateTime.now().month + 2),
+          );
           if (result != null) {
             dateStr.value = DateFormat('MMM dd, yyyy').format(result);
             onDateSelected?.call(result);

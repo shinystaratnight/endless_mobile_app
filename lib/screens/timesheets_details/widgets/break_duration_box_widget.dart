@@ -28,7 +28,7 @@ class BreakDurationBoxWidget extends StatelessWidget {
                     child: snapshot);
               },
               context: context,
-              initialTime: initialTime ?? TimeOfDay.now());
+              initialTime: initialTime ?? TimeOfDay(hour: 0, minute: 0));
           if (result != null) {
             selectedBreakTimeStr.value = '${result.hour}h ${result.minute}m';
             onTimeSelected?.call(result);

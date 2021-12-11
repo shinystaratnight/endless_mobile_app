@@ -44,28 +44,7 @@ class TimeSheetWidgetPage extends StatelessWidget {
               size: 26.0,
             ),
             onPressed: () {
-              if (times[_shiftStart] == null) {
-                Get.snackbar('Start date required', '');
-                return;
-              }
-              if (times[_shiftEnd] == null) {
-                Get.snackbar('End date required', '');
-                return;
-              }
-              times[_breakStart] = times[_shiftStart].add(
-                Duration(
-                  hours: 2,
-                ),
-              );
-              if (breakDuration != null) {
-                times[_breakEnd] = times[_breakStart].add(
-                  Duration(
-                    hours: breakDuration.inHours,
-                    minutes: breakDuration.inMinutes % 60,
-                  ),
-                );
-              }
-              Get.back(result: times);
+              validateInputs();
             },
           ),
         ],
@@ -85,8 +64,8 @@ class TimeSheetWidgetPage extends StatelessWidget {
                       startDate.year,
                       startDate.month,
                       startDate.day,
-                      times[_shiftStart].hour ?? 0,
-                      times[_shiftStart].minute ?? 0,
+                      times[_shiftStart]?.hour ?? 0,
+                      times[_shiftStart]?.minute ?? 0,
                     );
                     times[_shiftStart] = _dateTime;
                     print('initStartDate:: ${times[_shiftStart]}');
@@ -97,9 +76,9 @@ class TimeSheetWidgetPage extends StatelessWidget {
                   initialDateTime: times[_shiftStart],
                   onTimeSelected: (DateTime startTime) {
                     DateTime _dateTime = DateTime(
-                      times[_shiftStart].year ?? DateTime.now().year,
-                      times[_shiftStart].month ?? DateTime.now().month,
-                      times[_shiftStart].day ?? DateTime.now().day,
+                      times[_shiftStart]?.year ?? DateTime.now().year,
+                      times[_shiftStart]?.month ?? DateTime.now().month,
+                      times[_shiftStart]?.day ?? DateTime.now().day,
                       startTime.hour,
                       startTime.minute,
                     );
@@ -121,8 +100,8 @@ class TimeSheetWidgetPage extends StatelessWidget {
                       endDate.year,
                       endDate.month,
                       endDate.day,
-                      times[_shiftEnd].hour ?? 0,
-                      times[_shiftEnd].minute ?? 0,
+                      times[_shiftEnd]?.hour ?? 0,
+                      times[_shiftEnd]?.minute ?? 0,
                     );
                     times[_shiftEnd] = _dateTime;
                     print('_shiftEndDate:: ${times[_shiftEnd]}');
@@ -133,9 +112,9 @@ class TimeSheetWidgetPage extends StatelessWidget {
                   initialDateTime: times[_shiftEnd],
                   onTimeSelected: (DateTime endTime) {
                     DateTime _dateTime = DateTime(
-                      times[_shiftEnd].year ?? DateTime.now().year,
-                      times[_shiftEnd].month ?? DateTime.now().month,
-                      times[_shiftEnd].day ?? DateTime.now().day,
+                      times[_shiftEnd]?.year ?? DateTime.now().year,
+                      times[_shiftEnd]?.month ?? DateTime.now().month,
+                      times[_shiftEnd]?.day ?? DateTime.now().day,
                       endTime.hour,
                       endTime.minute,
                     );
@@ -170,7 +149,7 @@ class TimeSheetWidgetPage extends StatelessWidget {
               width: double.infinity,
               child: MaterialButton(
                 onPressed: () {
-                  Get.back(result: times);
+                  validateInputs();
                 },
                 height: 40,
                 child: Text(
@@ -196,13 +175,40 @@ class TimeSheetWidgetPage extends StatelessWidget {
   TimeOfDay calculateBreakDuration() {
     try {
       Duration time = times[_breakEnd].difference(times[_breakStart]);
+      if (time != Duration.zero) {
+        print('BreakTime:: ${times[_breakEnd]} start ${times[_breakStart]}');
+        print('time:: ${time.inHours} ${time.inMinutes % 60}');
 
-      print('BreakTime:: ${times[_breakEnd]} start ${times[_breakStart]}');
-      print('time:: ${time.inHours} ${time.inMinutes % 60}');
-
-      return TimeOfDay(hour: time.inHours, minute: time.inMinutes % 60);
+        return TimeOfDay(hour: time.inHours, minute: time.inMinutes % 60);
+      }
+      return null;
     } catch (e) {
-      return TimeOfDay(hour: 0, minute: 0);
+      return null;
     }
+  }
+
+  void validateInputs() {
+    if (times[_shiftStart] == null) {
+      Get.snackbar('Start date required', '');
+      return;
+    }
+    if (times[_shiftEnd] == null) {
+      Get.snackbar('End date required', '');
+      return;
+    }
+    times[_breakStart] = times[_shiftStart].add(
+      Duration(
+        hours: 2,
+      ),
+    );
+    if (breakDuration != null) {
+      times[_breakEnd] = times[_breakStart].add(
+        Duration(
+          hours: breakDuration.inHours,
+          minutes: (breakDuration.inMinutes % 60),
+        ),
+      );
+    }
+    Get.back(result: times);
   }
 }

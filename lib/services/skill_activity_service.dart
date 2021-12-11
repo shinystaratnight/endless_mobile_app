@@ -73,7 +73,12 @@ class SkillActivityService {
     if (res.statusCode == 201) {
       return true;
     } else {
-      throw Exception('Failed to create Skill Activity');
+      String errorMessage;
+      if (res.statusCode == 400) {
+        Map<String, dynamic> responseBody = jsonDecode(res.body);
+        errorMessage = responseBody['errors']['non_field_errors'][0];
+      }
+      throw Exception(errorMessage ?? 'Failed to create Skill Activity');
     }
   }
 
