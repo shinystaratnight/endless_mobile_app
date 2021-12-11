@@ -137,17 +137,17 @@ class _CandidateTimesheetNewDetailsScreenState
       });
       Map<String, String> body;
 
-      if (_hours) {
-        // if (!_withBreak) {
-        //   _times[_breakEnd] = _times[_breakStart];
-        // }
+      // if (_hours) {
+      // if (!_withBreak) {
+      //   _times[_breakEnd] = _times[_breakStart];
+      // }
 
-        body =
-            _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
-        body['hours'] = 'true';
-      } else {
-        body = {'hours': 'false'};
-      }
+      body =
+          _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
+      body['hours'] = 'true';
+      // } else {
+      //   body = {'hours': 'false'};
+      // }
 
       bool result = await timesheetService.submitTimesheet(widget.id, body);
 
