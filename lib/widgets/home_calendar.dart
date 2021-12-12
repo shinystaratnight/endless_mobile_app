@@ -184,7 +184,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
         TableCalendar(
           focusedDay: DateTime.now(),
           firstDay: DateTime.now(),
-          lastDay: Jiffy().endOf(Units.YEAR).dateTime,
+          lastDay: Jiffy().add(years: 1).dateTime,
           currentDay: DateTime.now(),
           startingDayOfWeek: StartingDayOfWeek.monday,
           onDaySelected: (date, events) {
@@ -429,7 +429,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
         TableCalendar(
           focusedDay: DateTime.now(),
           firstDay: DateTime.now(),
-          lastDay: Jiffy().endOf(Units.YEAR).dateTime,
+          lastDay: Jiffy().add(years: 1).dateTime,
           currentDay: DateTime.now(),
           startingDayOfWeek: StartingDayOfWeek.monday,
           onDaySelected: (date, events) {
