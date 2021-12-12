@@ -65,6 +65,8 @@ class _AsyncDropdownState extends State<AsyncDropdown> {
         filterFn: (dynamic item, str) =>
             item['name'].toLowerCase().indexOf(str.toLowerCase()) >= 0,
         findFn: (dynamic str) async {
+          Scrollable.ensureVisible(context);
+
           return _options;
         },
         decoration: InputDecoration(
