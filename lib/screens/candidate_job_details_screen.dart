@@ -141,7 +141,6 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                         CameraUpdate.newCameraPosition(
                           CameraPosition(
                             target: LatLng(data.latitude, data.longitude),
-                            zoom: 15,
                           ),
                         ),
                       );
@@ -169,13 +168,16 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 height: 350.0,
                 width: 20.0,
                 child: GoogleMap(
+                  cameraTargetBounds: CameraTargetBounds.unbounded,
+                  indoorViewEnabled: true,
+                  zoomGesturesEnabled: true,
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
                       double.parse(widget.jobOffer.latitude),
                       double.parse(widget.jobOffer.longitude),
                     ),
-                    zoom: 13.0,
+                    zoom: 10,
                   ),
                   markers: Set<Marker>.of(markers.values),
                 ),
