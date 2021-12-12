@@ -76,7 +76,12 @@ class _PictureFieldState extends State<PictureField> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _imageBytes != null ? picturePreview() : emptyPicture(),
+        FormField(builder: (FormFieldState state) {
+          print(state);
+          return null;
+
+          // return _imageBytes != null ? picturePreview() : emptyPicture();
+        }),
         SizedBox(
           width: 16,
         ),
