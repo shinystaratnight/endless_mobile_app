@@ -184,13 +184,16 @@ class _ClientJobsiteDetailsScreenState
                 height: 350.0,
                 width: 20.0,
                 child: GoogleMap(
+                  cameraTargetBounds: CameraTargetBounds.unbounded,
+                  indoorViewEnabled: true,
+                  zoomGesturesEnabled: true,
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
                       widget.jobsite.latitude,
                       widget.jobsite.longitude,
                     ),
-                    zoom: 13.0,
+                    zoom: 10.0,
                   ),
                   markers: Set<Marker>.of(markers.values),
                 ),
