@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/colors.dart';
@@ -17,6 +18,7 @@ import 'package:piiprent/widgets/group_title.dart';
 import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 
+import '../candidate_skill_activity_screen.dart';
 import 'time_widget_page.dart';
 import 'widgets/duation_show_widget.dart';
 import 'widgets/timesheet_general_info_widget.dart';
@@ -301,6 +303,7 @@ class _CandidateTimesheetNewDetailsScreenState
     SkillActivityService skillActivityService =
         Provider.of<SkillActivityService>(context);
 
+    // List<SkillActivity> data = snapshot.data;
     return Scaffold(
       appBar: getCandidateAppBar(
         translate('page.title.timesheet'),
@@ -329,6 +332,7 @@ class _CandidateTimesheetNewDetailsScreenState
               'General Information',
               style: TextStyle(
                 fontSize: 16,
+                fontFamily: GoogleFonts.roboto().fontFamily,
                 fontWeight: FontWeight.w500,
                 color: AppColors.lightBlack,
               ),
@@ -363,7 +367,7 @@ class _CandidateTimesheetNewDetailsScreenState
               value: DateFormat('MMM dd, yyyy').format(widget.shiftDate),
             ),
             SizedBox(
-              height: 7,
+              height: 25,
             ),
             if (widget.status != 1)
               Row(
@@ -374,6 +378,7 @@ class _CandidateTimesheetNewDetailsScreenState
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
+                      fontFamily: GoogleFonts.roboto().fontFamily,
                       color: AppColors.lightBlack,
                     ),
                   ),
@@ -403,24 +408,24 @@ class _CandidateTimesheetNewDetailsScreenState
                                   ),
                                 ),
                               ),
-                              // SizedBox(
-                              //   width: 16,
-                              // ),
-                              // Padding(
-                              //   padding: const EdgeInsets.symmetric(
-                              //     vertical: 3.0,
-                              //   ),
-                              //   child: InkWell(
-                              //     onTap: () {
-                              //       // todo call delete function
-                              //     },
-                              //     child: Icon(
-                              //       Icons.delete,
-                              //       color: AppColors.red,
-                              //       size: 18,
-                              //     ),
-                              //   ),
-                              // ),
+                              SizedBox(
+                                width: 16,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 3.0,
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    // todo call delete function
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: AppColors.red,
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
                             ],
                           )
                         : InkWell(
@@ -477,20 +482,129 @@ class _CandidateTimesheetNewDetailsScreenState
             SizedBox(
               height: 24,
             ),
-            widget.status == 4 && !_updated
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              _hours = false;
-                            });
-                          },
-                          child: Text(translate('button.peicework')))
-                    ],
-                  )
-                : SizedBox(),
+            //Activitiy start
+            if (widget.status == 4 && !_updated)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Activity',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      fontFamily: GoogleFonts.roboto().fontFamily,
+                      color: AppColors.lightBlack,
+                    ),
+                  ),
+                  if (widget.status == 4 && !_updated)
+                    (_times[_shiftEnd] != null)
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CandidateSkillActivityScreen(),
+                                          ),
+                                        )
+                                        .then((dynamic result) {});
+                                  },
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppColors.green,
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 16,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 3.0,
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    // todo call delete function
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: AppColors.red,
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : InkWell(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CandidateSkillActivityScreen(),
+                                    ),
+                                  )
+                                  .then((dynamic result) {});
+
+                              // if (result is Map) {
+                              //   setState(() {
+                              //     _times = result;
+                              //     _hours = true;
+                              //     print('results: $_times');
+                              //   });
+                              // }
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: AppColors.blue,
+                                    size: 12,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 7,
+                                ),
+                                Text(
+                                  'ADD',
+                                  style: TextStyle(
+                                    color: AppColors.blue,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                ],
+              ),
+            SizedBox(
+              height: 18,
+            ),
+            if (_times[_shiftEnd] != null)
+              widget.status == 4 && !_updated
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // ElevatedButton(
+                        //     onPressed: () {
+                        //       setState(() {
+                        //         _hours = false;
+                        //       });
+                        //     },
+                        //     child: Text(translate('button.peicework')))
+                      ],
+                    )
+                  : SizedBox(),
             _hours == false || widget.status != 4
                 ? SkillActivityTable(
                     hasActions:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:piiprent/helpers/colors.dart';
 
 class GeneralInformationWidget extends StatelessWidget {
@@ -20,8 +21,8 @@ class GeneralInformationWidget extends StatelessWidget {
         children: [
           SvgPicture.asset(
             imageIcon,
-            width: 14,
-            height: 14,
+            width: 10,
+            height: 12,
           ),
           SizedBox(
             width: 6,
@@ -31,7 +32,9 @@ class GeneralInformationWidget extends StatelessWidget {
             child: Text(
               name,
               style: TextStyle(
+                fontFamily: GoogleFonts.roboto().fontFamily,
                 color: AppColors.grey,
+                fontWeight: FontWeight.w400,
                 fontSize: 12,
               ),
             ),
@@ -43,6 +46,8 @@ class GeneralInformationWidget extends StatelessWidget {
               style: TextStyle(
                 color: AppColors.lightBlack,
                 fontSize: 14,
+                fontFamily: GoogleFonts.roboto().fontFamily,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),

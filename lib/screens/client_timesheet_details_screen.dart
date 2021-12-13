@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
@@ -14,11 +16,9 @@ import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/evaluate.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
-import 'package:piiprent/widgets/skill_activity_table.dart';
+import 'package:piiprent/widgets/skill_activity_table_old.dart';
 import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class ClientTimesheetDetailsScreen extends StatefulWidget {
   final Timesheet timesheet;
@@ -372,7 +372,7 @@ class _ClientTimesheetDetailsScreenState
                   _evaluate(timesheetService, score);
                 },
               ),
-              SkillActivityTable(
+              SkillActivityTableOld(
                 hasActions: widget.timesheet.status == 5 && !_updated,
                 service: skillActivityService,
                 skill: widget.timesheet.positionId,

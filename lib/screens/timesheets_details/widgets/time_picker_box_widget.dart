@@ -26,8 +26,9 @@ class TimePickerBoxWidget extends StatelessWidget {
           var result = await showTimePicker(
             context: context,
             initialTime: TimeOfDay(
-                hour: initialDateTime?.hour ?? 0,
-                minute: initialDateTime?.minute ?? 0),
+              hour: initialDateTime?.hour ?? 0,
+              minute: initialDateTime?.minute ?? 0,
+            ),
           );
           if (result != null) {
             selectedTimeStr.value = result.format(context);

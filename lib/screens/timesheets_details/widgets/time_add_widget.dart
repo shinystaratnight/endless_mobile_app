@@ -6,7 +6,7 @@ class TimeAddWidget extends StatelessWidget {
   const TimeAddWidget(this.hintText, this.dateTime, {Key key})
       : super(key: key);
   final String hintText;
-  final DateTime dateTime;
+  final dynamic dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,9 @@ class TimeAddWidget extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  formatDateTime(dateTime),
+                  dateTime is DateTime
+                      ? formatDateTime(dateTime)
+                      : dateTime.toString(),
                   style: TextStyle(
                     color: AppColors.lightBlack,
                     fontSize: 14,
