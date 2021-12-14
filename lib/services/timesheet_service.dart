@@ -253,18 +253,19 @@ class TimesheetService {
           path: 'hr/timesheets-candidate/$id/submit/',
           body: body,
         );
-
-    print(id);
-    print(body);
     print(res.body);
-
+    print(res.statusCode);
     if (res.statusCode == 200) {
       return true;
     } else {
       if (res.statusCode == 400) {
         Map<String, dynamic> responseBody =
             json.decode(utf8.decode(res.bodyBytes));
-        throw responseBody['errors']['non_field_errors'][0];
+        throw responseBody['errors']['shift_started_at'] != null
+            ? responseBody['errors']['shift_started_at'][0]
+            : responseBody['errors']['non_field_errors'] != null
+                ? responseBody['errors']['non_field_errors'][0]
+                : 'Failed to submit Timesheet';
       }
       throw Exception('Failed to submit Timesheet');
     }

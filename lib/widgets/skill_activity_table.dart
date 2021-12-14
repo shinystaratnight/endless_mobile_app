@@ -54,7 +54,6 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
         'skill': widget.skill,
       });
 
-      print(data.length);
 
       setState(() {
         _fetching = false;

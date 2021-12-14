@@ -70,7 +70,6 @@ class _CandidateTimesheetNewDetailsScreenState
   String _breakEnd = TimesheetTimeKey[TimesheetTime.BreakEnd];
   String _shiftEnd = TimesheetTimeKey[TimesheetTime.End];
 
-  bool _hours;
   String _error;
   Map<String, DateTime> _times = Map();
 
@@ -87,10 +86,6 @@ class _CandidateTimesheetNewDetailsScreenState
       _breakEnd: widget.breakEnd ?? _breakTime,
       _shiftEnd: widget.shiftEnd
     };
-
-    if (widget.status == 5) {
-      _hours = true;
-    }
 
     super.initState();
   }
@@ -121,32 +116,40 @@ class _CandidateTimesheetNewDetailsScreenState
     }
   }
 
-  _submitForm(TimesheetService timesheetService) async {
+  _submitForm(TimesheetService timesheetService, bool isDelete) async {
+    if (_times.values.contains(null)) {
+      Get.snackbar("Select Time", '');
+      return;
+    }
+
     try {
       setState(() => _fetching = true);
       setState(() {
         _error = null;
       });
       Map<String, String> body;
-
-      // if (_hours) {
-      // if (!_withBreak) {
-      //   _times[_breakEnd] = _times[_breakStart];
-      // }
-
-      body =
-          _times.map((key, value) => MapEntry(key, value.toUtc().toString()));
-      body['hours'] = 'true';
-      // } else {
-      //   body = {'hours': 'false'};
-      // }
+      body = _times.map((key, value) =>
+          MapEntry(key, isDelete ? null : value.toUtc().toString()));
+      if (isDelete == false) {
+        body['hours'] = 'true';
+      }
 
       bool result = await timesheetService.submitTimesheet(widget.id, body);
-
+      if (result && isDelete) {
+        _times.forEach((key, value) {
+          if (key != _shiftStart) {
+            if (key == _breakStart || key == _breakEnd) {
+              _times[key] = _times[_shiftStart].add(Duration(hours: 2));
+            } else {
+              _times[key] = null;
+            }
+          }
+        });
+      }
       setState(() => _updated = result);
     } catch (e) {
       print(e);
-
+      Get.snackbar(e.toString(), '');
       setState(() {
         _error = e;
       });
@@ -227,7 +230,7 @@ class _CandidateTimesheetNewDetailsScreenState
             SizedBox(
               height: 12,
             ),
-            if (widget.status != 1)
+            if (widget.status == 4 || widget.status == 5)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -240,8 +243,8 @@ class _CandidateTimesheetNewDetailsScreenState
                       color: AppColors.lightBlack,
                     ),
                   ),
-                  if ((widget.status == 4 || widget.status == 5) && !_updated)
-                    (_times[_shiftEnd] != null)
+                  if (widget.status == 4 || widget.status == 5)
+                    _times[_shiftEnd] != null
                         ? Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -253,7 +256,6 @@ class _CandidateTimesheetNewDetailsScreenState
                                         () => TimeSheetWidgetPage(_times));
                                     if (result is Map) {
                                       setState(() {
-                                        _hours = true;
                                         _times = result;
                                         print('updateTimes: $_times');
                                       });
@@ -274,9 +276,8 @@ class _CandidateTimesheetNewDetailsScreenState
                                   vertical: 3.0,
                                 ),
                                 child: InkWell(
-                                  onTap: () {
-                                    // todo call delete function
-                                  },
+                                  onTap: () =>
+                                      _submitForm(timesheetService, true),
                                   child: Icon(
                                     Icons.delete,
                                     color: AppColors.red,
@@ -293,7 +294,6 @@ class _CandidateTimesheetNewDetailsScreenState
                               if (result is Map) {
                                 setState(() {
                                   _times = result;
-                                  _hours = true;
                                   print('results: $_times');
                                 });
                               }
@@ -325,12 +325,12 @@ class _CandidateTimesheetNewDetailsScreenState
                           ),
                 ],
               ),
-            SizedBox(
-              height: 18,
-            ),
             if (_times[_shiftEnd] != null)
               Column(
                 children: [
+                  SizedBox(
+                    height: 18,
+                  ),
                   TimeAddWidget('START TIME', _times[_shiftStart]),
                   TimeAddWidget('END TIME', _times[_shiftEnd]),
                   DurationShowWidget('BREAK TIME',
@@ -340,7 +340,6 @@ class _CandidateTimesheetNewDetailsScreenState
             SizedBox(
               height: 24,
             ),
-            //Activitiy start
             SkillActivityTable(
                 hasActions: widget.status == 4 || widget.status == 5,
                 service: skillActivityService,
@@ -385,12 +384,12 @@ class _CandidateTimesheetNewDetailsScreenState
                     ],
                   )
                 : Container(),
-            (widget.status == 4 || widget.status == 5) && !_updated
+            widget.status == 4 || widget.status == 5
                 ? SizedBox(
                     width: double.infinity,
                     child: FormSubmitButton(
                       label: translate('button.submit'),
-                      onPressed: () => _submitForm(timesheetService),
+                      onPressed: () => _submitForm(timesheetService, false),
                       disabled: _fetching,
                     ),
                   )
