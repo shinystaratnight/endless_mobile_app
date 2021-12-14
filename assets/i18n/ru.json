@@ -122,6 +122,7 @@
     "field.iban": "IBAN",
     "field.tags": "Теги",
     "field.personal_id": "Паспорт",
+    "field.picture": "Фото",
     "group.title.job_information": "О работе",
     "group.title.personal_details": "Персональные данные",
     "group.title.contact_details": "Контактные дынные",

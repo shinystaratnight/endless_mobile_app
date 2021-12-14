@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/application_form_model.dart';
 import 'package:piiprent/models/async_dropdown_option.dart';
 import 'package:piiprent/models/settings_model.dart';
@@ -108,24 +109,40 @@ class _RegisterFormState extends State<RegisterForm> {
       setState(() {
         this._fields = [
           if (form.isExist(['contact.picture']))
-            _buildPictureField(context, form.isRequired('contact.picture')),
+            _buildPictureField(
+              context,
+              form.isRequired('contact.picture'),
+            ),
           if (form.isExist(['contact.title']))
-            _buildTitleField(context, form.isRequired('contact.title')),
+            _buildTitleField(
+              context,
+              form.isRequired('contact.title'),
+            ),
           if (form.isExist(['contact.first_name', 'contact.last_name']))
             Row(
               children: [
                 if (form.isExist(['contact.first_name']))
                   _buildFirstNameField(
-                      context, form.isRequired('contact.first_name')),
+                    context,
+                    form.isRequired('contact.first_name'),
+                  ),
                 if (form.isExist(['contact.last_name']))
                   _buildLastNameField(
-                      context, form.isRequired('contact.last_name'))
+                    context,
+                    form.isRequired('contact.last_name'),
+                  )
               ],
             ),
           if (form.isExist(['contact.gender']))
-            _buildGenderField(context, form.isRequired('contact.gender')),
+            _buildGenderField(
+              context,
+              form.isRequired('contact.gender'),
+            ),
           if (form.isExist(['contact.email']))
-            _buildEmailField(context, form.isRequired('contact.email')),
+            _buildEmailField(
+              context,
+              form.isRequired('contact.email'),
+            ),
           if (form.isExist(['contact.phone_mobile']))
             _buildPhoneNumberField(
                 context, form.isRequired('contact.phone_mobile')),
@@ -207,6 +224,9 @@ class _RegisterFormState extends State<RegisterForm> {
     }
 
     _formKey.currentState.save();
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
     _fetchingStream.add(true);
     _errorStream.add(null);
 
@@ -259,7 +279,9 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buildPictureField(BuildContext context, bool isRequired) {
     return PictureField(
-      onChanged: (String val) {
+      label: translate('field.picture'),
+      validator: requiredValidator,
+      onSaved: (String val) {
         _picture = val;
       },
     );
@@ -307,6 +329,7 @@ class _RegisterFormState extends State<RegisterForm> {
     return Expanded(
       flex: 2,
       child: Field(
+        validator: isRequired == true ? requiredValidator : null,
         label: translate('field.first_name'),
         onSaved: (String value) {
           _firstName = value;
@@ -319,6 +342,7 @@ class _RegisterFormState extends State<RegisterForm> {
     return Expanded(
       flex: 2,
       child: Field(
+        validator: isRequired == true ? requiredValidator : null,
         label: translate('field.last_name'),
         onSaved: (String value) {
           _lastName = value;
@@ -329,6 +353,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buildEmailField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.email'),
       onSaved: (String value) {
         _email = value;
@@ -338,6 +363,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buildPhoneNumberField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.phone'),
       initialValue: '',
       onSaved: (String value) {
@@ -362,6 +388,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buildBirthdayField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.birthday'),
       datepicker: true,
       onSaved: (String value) {
@@ -413,6 +440,7 @@ class _RegisterFormState extends State<RegisterForm> {
     return Expanded(
       flex: 2,
       child: Field(
+        validator: isRequired == true ? requiredValidator : null,
         label: translate('field.height'),
         onSaved: (String height) {
           _height = height;
@@ -425,6 +453,7 @@ class _RegisterFormState extends State<RegisterForm> {
     return Expanded(
       flex: 2,
       child: Field(
+        validator: isRequired == true ? requiredValidator : null,
         label: translate('field.weight'),
         onSaved: (String weight) {
           _weight = weight;
@@ -435,6 +464,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buildBankAccountNameField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.account_holders_name'),
       onSaved: (String value) {
         _bankAccountName = value;
@@ -444,6 +474,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buildBankNameField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.bank_name'),
       onSaved: (String value) {
         _bankName = value;
@@ -453,6 +484,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buildIbanField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.iban'),
       onSaved: (String value) {
         _iban = value;
@@ -462,6 +494,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buildPersonalIdField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.personal_id'),
       onSaved: (String value) {
         _personalId = value;
