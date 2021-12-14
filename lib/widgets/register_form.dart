@@ -280,7 +280,7 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget _buildPictureField(BuildContext context, bool isRequired) {
     return PictureField(
       label: translate('field.picture'),
-      validator: requiredValidator,
+      validator: isRequired == true ? requiredValidator : null,
       onSaved: (String val) {
         _picture = val;
       },
@@ -297,6 +297,7 @@ class _RegisterFormState extends State<RegisterForm> {
             columns: 4,
             options: titleOptions,
             multiple: false,
+            validator: isRequired == true ? requiredValidator : null,
             onChanged: (String title) {
               _title = title;
             },
@@ -316,6 +317,7 @@ class _RegisterFormState extends State<RegisterForm> {
             columns: 2,
             options: genderOptions,
             multiple: false,
+            validator: isRequired == true ? requiredValidator : null,
             onChanged: (String gender) {
               _gender = gender;
             },
@@ -427,6 +429,7 @@ class _RegisterFormState extends State<RegisterForm> {
             columns: 1,
             options: transportationOptions,
             multiple: false,
+            validator: isRequired == true ? requiredValidator : null,
             onChanged: (String transport) {
               _transport = transport;
             },

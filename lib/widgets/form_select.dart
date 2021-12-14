@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/helpers/validator.dart';
 
 class FormSelect extends StatefulWidget {
   final List<Map<String, dynamic>> options;
@@ -26,12 +27,12 @@ class FormSelect extends StatefulWidget {
 class _FormSelectState extends State<FormSelect> {
   List<Option> _multipleValue = [];
   Option _value;
+  String _error;
 
   List<List<Option>> _data;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     List<List<Option>> data = [];
@@ -128,52 +129,91 @@ class _FormSelectState extends State<FormSelect> {
     bool hasScroll = _data.length > 3 && widget.columns == 1;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
           alignment: Alignment.centerLeft,
           child: Text(
-            widget.title,
+            '${widget.title} ${widget.validator == requiredValidator ? '*' : ''}', //
             style: TextStyle(color: Colors.grey[600], fontSize: 16.0),
           ),
         ),
         SizedBox(
           height: 4.0,
         ),
-        Container(
-          margin:
-              hasScroll ? const EdgeInsets.symmetric(horizontal: 8.0) : null,
-          padding: hasScroll
-              ? const EdgeInsets.all(4.0)
-              : const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 4.0),
-          decoration: BoxDecoration(
-            border: hasScroll ? Border.all(color: Colors.grey[400]) : null,
-            borderRadius: hasScroll
-                ? BorderRadius.all(
-                    Radius.circular(4.0),
-                  )
-                : null,
-          ),
-          height: hasScroll ? 160 : null,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: _data.map((e) {
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: e.map((e) {
-                    return Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(4.0),
-                        child: _buildOption(e),
-                      ),
-                    );
-                  }).toList(),
-                );
-              }).toList(),
+        FormField(
+          onSaved: (String initValue) {
+            if (!widget.multiple) {
+              widget.onSave(_multipleValue);
+            } else {
+              widget.onSave(_value);
+            }
+          },
+          validator: (String value) {
+            if (widget.validator != null) {
+              var error;
+              if (widget.multiple) {
+                error = widget.validator(_multipleValue);
+              } else {
+                error = widget.validator(_value);
+              }
+
+              setState(() {
+                _error = error;
+              });
+
+              return error;
+            }
+
+            return null;
+          },
+          builder: (FormFieldState state) => Container(
+            margin:
+                hasScroll ? const EdgeInsets.symmetric(horizontal: 8.0) : null,
+            padding: hasScroll
+                ? const EdgeInsets.all(4.0)
+                : const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 4.0),
+            decoration: BoxDecoration(
+              border: hasScroll ? Border.all(color: Colors.grey[400]) : null,
+              borderRadius: hasScroll
+                  ? BorderRadius.all(
+                      Radius.circular(4.0),
+                    )
+                  : null,
+            ),
+            height: hasScroll ? 160 : null,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: _data.map((e) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: e.map((e) {
+                      return Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(4.0),
+                          child: _buildOption(e),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ),
+        if (_error != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(
+              _error,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.red,
+              ),
+            ),
+          ),
       ],
     );
   }
