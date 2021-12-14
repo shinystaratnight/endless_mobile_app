@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/models/skill_activity_model.dart';
 import 'package:piiprent/screens/candidate_skill_activity_screen.dart';
+import 'package:piiprent/screens/timesheets_details/widgets/time_add_widget.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
-import 'package:piiprent/widgets/group_title.dart';
 
 class SkillActivityTable extends StatefulWidget {
   final bool hasActions;
@@ -52,6 +54,8 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
         'skill': widget.skill,
       });
 
+      print(data.length);
+
       setState(() {
         _fetching = false;
         _error = null;
@@ -83,166 +87,199 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
     }
   }
 
-  Widget _buildTableCell(String text,
-      [Color color = Colors.black, Widget child]) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-      child: child != null
-          ? child
-          : Text(
-              text,
-              style: TextStyle(color: color, fontSize: 16.0),
-            ),
-    );
-  }
 
-  Widget _buildTable(List<SkillActivity> data, BuildContext context) {
-    var localizationDelegate = LocalizedApp.of(context).delegate;
-    return Column(
-      children: [
-        Table(
-          columnWidths: const <int, TableColumnWidth>{
-            0: FlexColumnWidth(),
-            1: IntrinsicColumnWidth(),
-            2: FixedColumnWidth(48),
-          },
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          border: TableBorder(
-            horizontalInside: BorderSide(
-              color: Colors.grey,
-            ),
-          ),
-          children: data.length > 0
-              ? data.asMap().entries.map((e) {
-                  int i = e.key;
-                  SkillActivity skillActivity = e.value;
-
-                  if (i == 0) {
-                    return TableRow(
-                      decoration: BoxDecoration(color: Colors.grey[200]),
-                      children: [
-                        _buildTableCell(translate('field.skill_activity')),
-                        _buildTableCell(
-                          translate('field.skill_activity_amount'),
-                        ),
-                        widget.hasActions && !_fetching
-                            ? _buildTableCell('')
-                            : SizedBox(),
-                      ],
-                    );
-                  }
-
-                  return TableRow(
-                    children: [
-                      _buildTableCell(skillActivity.worktype
-                          .name(localizationDelegate.currentLocale)),
-                      _buildTableCell(skillActivity.value.toString()),
-                      Container(
-                        width: 28.0,
-                        child: widget.hasActions
-                            ? _buildTableCell(
-                                '',
-                                Colors.black,
-                                IconButton(
-                                  padding: const EdgeInsets.all(0.0),
-                                  icon: Icon(Icons.delete),
-                                  color:
-                                      _fetching ? Colors.grey[400] : Colors.red,
-                                  onPressed: () {
-                                    if (!_fetching) {
-                                      deleteSkillActivity(skillActivity.id);
-                                    }
-                                  },
-                                ),
-                              )
-                            : SizedBox(),
-                      )
-                    ],
-                  );
-                }).toList()
-              : [
-                  TableRow(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            translate('message.no_data'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      GroupTitle(title: translate('group.title.skill_activities')),
-      StreamBuilder(
-        stream: _streamController.stream,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            List<SkillActivity> data = snapshot.data;
-
-            return Container(
-              child: Column(
-                children: [
-                  this._buildTable(data, context),
-                  SizedBox(
-                    height: 16,
+    var localizationDelegate = LocalizedApp.of(context).delegate;
+    return StreamBuilder(
+      stream: _streamController.stream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          List<SkillActivity> data = snapshot.data;
+          return _fetching
+              ? Container(
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  child: Center(
+                    child: CircularProgressIndicator(),
                   ),
-                  _error != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text(
-                            translate('message.has_error'),
-                            style: TextStyle(color: Colors.red[400]),
-                          ),
-                        )
-                      : SizedBox(),
-                  widget.hasActions && !_fetching
-                      ? ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CandidateSkillActivityScreen(
-                                  timesheet: widget.timesheet,
-                                  skill: widget.skill,
-                                  companyId: widget.companyId,
+                )
+              : Column(
+                  children: [
+                    widget.hasActions
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Activity',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  fontFamily: GoogleFonts.roboto().fontFamily,
+                                  color: AppColors.lightBlack,
                                 ),
                               ),
-                            )
-                                .then((dynamic result) {
-                              if (result == true) {
-                                getSkillActivities();
-                              }
-                            });
-                          },
-                          child: Text(translate('button.add')),
-                        )
-                      : SizedBox(),
-                  _fetching
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : SizedBox(),
-                ],
-              ),
-            );
-          }
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CandidateSkillActivityScreen(
+                                              skill: widget.skill,
+                                              timesheet: widget.timesheet,
+                                              companyId: widget.companyId),
+                                    ),
+                                  )
+                                      .then((dynamic result) {
+                                    if (result == true) {
+                                      getSkillActivities();
+                                    }
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: Icon(
+                                        Icons.add,
+                                        color: AppColors.blue,
+                                        size: 12,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      'ADD',
+                                      style: TextStyle(
+                                        color: AppColors.blue,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
+                        : SizedBox(),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    ListView.builder(
+                      itemBuilder: (context, index) => Column(children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Activity',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontFamily: GoogleFonts.roboto().fontFamily,
+                                fontSize: 16,
+                                color: AppColors.lightBlack,
+                              ),
+                            ),
+                            widget.hasActions
+                                ? Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(3.0),
+                                        child: InkWell(
+                                          onTap: () async {
+                                            Navigator.of(context)
+                                                .push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CandidateSkillActivityScreen(
+                                                        timesheet:
+                                                            widget.timesheet,
+                                                        skill: widget.skill,
+                                                        companyId:
+                                                            widget.companyId,
+                                                        skillActivityModel:
+                                                            data[index]),
+                                              ),
+                                            )
+                                                .then((dynamic result) {
+                                              if (result == true) {
+                                                getSkillActivities();
+                                              }
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.edit,
+                                            color: AppColors.green,
+                                            size: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 3.0,
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            if (!_fetching) {
+                                              deleteSkillActivity(
+                                                  data[index].id);
+                                            }
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: AppColors.red,
+                                            size: 18,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox()
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        TimeAddWidget(
+                            'ACTIVITY',
+                            data[index].worktype != null
+                                ? data[index].worktype.name == null
+                                    ? ""
+                                    : data[index].worktype.name(
+                                        localizationDelegate.currentLocale)
+                                : ""),
+                        TimeAddWidget('AMOUNT', data[index].value.toString())
+                      ]),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.vertical,
+                      physics: ScrollPhysics(),
+                      itemCount: data.length,
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    _error != null
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Text(
+                              translate('message.has_error'),
+                              style: TextStyle(color: Colors.red[400]),
+                            ),
+                          )
+                        : SizedBox()
+                  ],
+                );
+        }
 
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
-    ]);
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }

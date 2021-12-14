@@ -12,13 +12,10 @@ import 'package:piiprent/screens/timesheets_details/widgets/time_add_widget.dart
 import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
-import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
-import 'package:piiprent/widgets/group_title.dart';
 import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 
-import '../candidate_skill_activity_screen.dart';
 import 'time_widget_page.dart';
 import 'widgets/duation_show_widget.dart';
 import 'widgets/timesheet_general_info_widget.dart';
@@ -73,7 +70,6 @@ class _CandidateTimesheetNewDetailsScreenState
   String _breakEnd = TimesheetTimeKey[TimesheetTime.BreakEnd];
   String _shiftEnd = TimesheetTimeKey[TimesheetTime.End];
 
-  bool _withBreak = true;
   bool _hours;
   String _error;
   Map<String, DateTime> _times = Map();
@@ -125,12 +121,6 @@ class _CandidateTimesheetNewDetailsScreenState
     }
   }
 
-  _changeTime(DateTime time, String key) {
-    setState(() {
-      _times[key] = time;
-    });
-  }
-
   _submitForm(TimesheetService timesheetService) async {
     try {
       setState(() => _fetching = true);
@@ -163,138 +153,6 @@ class _CandidateTimesheetNewDetailsScreenState
     } finally {
       setState(() => _fetching = false);
     }
-  }
-
-  Widget _buildChangeButton(DateTime date, String key) {
-    return GestureDetector(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Icon(
-            Icons.edit,
-            size: 18.0,
-            color: Colors.blue,
-          ),
-          // SvgPicture.asset("images/icons/ic_building"),
-          Padding(
-            padding: const EdgeInsets.only(left: 4.0),
-            child: Text(
-              translate('button.change'),
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 14.0,
-              ),
-            ),
-          ),
-        ],
-      ),
-      onTap: () {
-        showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.fromDateTime(date),
-        ).then((time) {
-          int hours = time.hour - date.hour;
-          int minutes = time.minute - date.minute;
-
-          if (hours > 0) {
-            date = date.add(Duration(hours: hours.abs()));
-          }
-
-          if (hours < 0) {
-            date = date.subtract(Duration(hours: hours.abs()));
-          }
-
-          if (minutes > 0) {
-            date = date.add(Duration(minutes: minutes.abs()));
-          }
-
-          if (minutes < 0) {
-            date = date.subtract(Duration(minutes: minutes.abs()));
-          }
-
-          _changeTime(
-            date,
-            key,
-          );
-        });
-      },
-    );
-  }
-
-  Widget _buildTimesForm() {
-    return Column(
-      children: [
-        GroupTitle(title: translate('group.title.times')),
-        DetailsRecord(
-          label: translate('field.shift_start_time'),
-          value: DateFormat.jm().format(_times[_shiftStart]),
-          button: (widget.status == 4 || widget.status == 5) && !_updated
-              ? _buildChangeButton(
-                  _times[_shiftStart],
-                  _shiftStart,
-                )
-              : null,
-        ),
-        _withBreak || (widget.status != 4 && widget.status != 5)
-            ? DetailsRecord(
-                label: translate('field.break_start_time'),
-                value: _times[_breakStart] == null
-                    ? '-'
-                    : DateFormat.jm().format(_times[_breakStart]),
-                button: (widget.status == 4 || widget.status == 5) && !_updated
-                    ? _buildChangeButton(
-                        _times[_breakStart],
-                        _breakStart,
-                      )
-                    : null,
-              )
-            : SizedBox(),
-        _withBreak || (widget.status != 4 && widget.status != 5)
-            ? DetailsRecord(
-                label: translate('field.break_end_time'),
-                value: _times[_breakEnd] == null
-                    ? '-'
-                    : DateFormat.jm().format(_times[_breakEnd]),
-                button: (widget.status == 4 || widget.status == 5) && !_updated
-                    ? _buildChangeButton(
-                        _times[_breakEnd],
-                        _breakEnd,
-                      )
-                    : null,
-              )
-            : SizedBox(),
-        DetailsRecord(
-          label: translate('field.shift_end_time'),
-          value: _times[_shiftEnd] == null
-              ? '-'
-              : DateFormat.jm().format(_times[_shiftEnd]),
-          button: (widget.status == 4 || widget.status == 5) && !_updated
-              ? _buildChangeButton(
-                  _times[_shiftEnd],
-                  _shiftEnd,
-                )
-              : null,
-        ),
-        (widget.status == 4 || widget.status == 5) && !_updated
-            ? Row(
-                children: [
-                  Container(
-                    child: Text(translate('timesheet.break')),
-                    margin: const EdgeInsets.only(left: 8.0),
-                  ),
-                  Switch(
-                    value: _withBreak,
-                    onChanged: (bool newValue) {
-                      setState(() {
-                        _withBreak = newValue;
-                      });
-                    },
-                  ),
-                ],
-              )
-            : SizedBox(),
-      ],
-    );
   }
 
   @override
@@ -367,7 +225,7 @@ class _CandidateTimesheetNewDetailsScreenState
               value: DateFormat('MMM dd, yyyy').format(widget.shiftDate),
             ),
             SizedBox(
-              height: 25,
+              height: 12,
             ),
             if (widget.status != 1)
               Row(
@@ -382,7 +240,7 @@ class _CandidateTimesheetNewDetailsScreenState
                       color: AppColors.lightBlack,
                     ),
                   ),
-                  if (widget.status == 4 && !_updated)
+                  if ((widget.status == 4 || widget.status == 5) && !_updated)
                     (_times[_shiftEnd] != null)
                         ? Row(
                             mainAxisSize: MainAxisSize.min,
@@ -483,137 +341,12 @@ class _CandidateTimesheetNewDetailsScreenState
               height: 24,
             ),
             //Activitiy start
-            if (widget.status == 4 && !_updated)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Activity',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      fontFamily: GoogleFonts.roboto().fontFamily,
-                      color: AppColors.lightBlack,
-                    ),
-                  ),
-                  if (widget.status == 4 && !_updated)
-                    (_times[_shiftEnd] != null)
-                        ? Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CandidateSkillActivityScreen(),
-                                          ),
-                                        )
-                                        .then((dynamic result) {});
-                                  },
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: AppColors.green,
-                                    size: 18,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 3.0,
-                                ),
-                                child: InkWell(
-                                  onTap: () {
-                                    // todo call delete function
-                                  },
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: AppColors.red,
-                                    size: 18,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : InkWell(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          CandidateSkillActivityScreen(),
-                                    ),
-                                  )
-                                  .then((dynamic result) {});
-
-                              // if (result is Map) {
-                              //   setState(() {
-                              //     _times = result;
-                              //     _hours = true;
-                              //     print('results: $_times');
-                              //   });
-                              // }
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: AppColors.blue,
-                                    size: 12,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 7,
-                                ),
-                                Text(
-                                  'ADD',
-                                  style: TextStyle(
-                                    color: AppColors.blue,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                ],
-              ),
-            SizedBox(
-              height: 18,
-            ),
-            if (_times[_shiftEnd] != null)
-              widget.status == 4 && !_updated
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // ElevatedButton(
-                        //     onPressed: () {
-                        //       setState(() {
-                        //         _hours = false;
-                        //       });
-                        //     },
-                        //     child: Text(translate('button.peicework')))
-                      ],
-                    )
-                  : SizedBox(),
-            _hours == false || widget.status != 4
-                ? SkillActivityTable(
-                    hasActions:
-                        (widget.status == 4 || widget.status == 5) && !_updated,
-                    service: skillActivityService,
-                    skill: widget.positionId,
-                    timesheet: widget.id,
-                    companyId: widget.companyId)
-                : SizedBox(),
+            SkillActivityTable(
+                hasActions: widget.status == 4 || widget.status == 5,
+                service: skillActivityService,
+                skill: widget.positionId,
+                timesheet: widget.id,
+                companyId: widget.companyId),
             widget.status == 1 && !_updated
                 ? Column(
                     children: [
@@ -652,9 +385,7 @@ class _CandidateTimesheetNewDetailsScreenState
                     ],
                   )
                 : Container(),
-            (widget.status == 4 || widget.status == 5) &&
-                    !_updated &&
-                    _hours != null
+            (widget.status == 4 || widget.status == 5) && !_updated
                 ? SizedBox(
                     width: double.infinity,
                     child: FormSubmitButton(

@@ -254,6 +254,10 @@ class TimesheetService {
           body: body,
         );
 
+    print(id);
+    print(body);
+    print(res.body);
+
     if (res.statusCode == 200) {
       return true;
     } else {
