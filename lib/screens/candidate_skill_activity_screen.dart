@@ -62,7 +62,6 @@ class _CandidateSkillActivityScreenState
             skill: widget.skillActivityModel == null ? widget.skill : null,
           ),
           widget.skillActivityModel);
-
       Navigator.pop(context, true);
     } catch (err) {
       setState(() {
