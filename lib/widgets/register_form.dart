@@ -547,21 +547,21 @@ class _RegisterFormState extends State<RegisterForm> {
       future: this.industryService.getIndustries,
       onSaved: (dynamic val) {
         _industry = val['id'];
-        _industryStream.add(val['id']);
       },
       onChange: (dynamic val) {
-        _industry = val['id'];
         _industryStream.add(val['id']);
       },
     );
   }
 
   Widget _buildAddressField(BuildContext context, bool isRequired) {
-    return AddressField(onSaved: (Map<String, dynamic> address) {
-      setState(() {
-        _address = address;
-      });
-    });
+    return AddressField(
+        validator: isRequired == true ? requiredValidator : null,
+        onSaved: (
+          Map<String, dynamic> address,
+        ) {
+          _address = address;
+        });
   }
 
   Widget _buildSkillField(BuildContext context, bool isRequired) {
@@ -574,16 +574,25 @@ class _RegisterFormState extends State<RegisterForm> {
 
         String industry = snapshot.data;
 
-        return AsyncDropdown(
-          future: () => this.industryService.getSkills(
-                industry,
-                widget.settings.company,
-              ),
-          label: translate('field.skills'),
-          validator: isRequired == true ? requiredValidator : null,
-          multiple: true,
-          onSaved: (List<dynamic> ids) {
-            _skills = ids;
+        return FutureBuilder(
+          future: Future.value(industry),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return AsyncDropdown(
+                future: () => this.industryService.getSkills(
+                      snapshot.data,
+                      widget.settings.company,
+                    ),
+                label: translate('field.skills'),
+                validator: isRequired == true ? requiredValidator : null,
+                multiple: true,
+                onSaved: (List<dynamic> ids) {
+                  _skills = ids;
+                },
+              );
+            }
+
+            return Container();
           },
         );
       },

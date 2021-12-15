@@ -33,17 +33,23 @@ class _AsyncDropdownState extends State<AsyncDropdown> {
     try {
       List list = await widget.future();
 
-      setState(() {
-        _options = list.map((e) => ({'id': e.id, 'name': e.name})).toList();
-      });
+      return list.map((e) => ({'id': e.id, 'name': e.name})).toList();
     } catch (e) {
-      _options = [];
+      return [];
     }
+  }
+
+  _initOptions() async {
+    var options = await _fetchOptions();
+
+    setState(() {
+      _options = options;
+    });
   }
 
   @override
   void initState() {
-    _fetchOptions();
+    _initOptions();
     if (widget.multiple == true) {
       _multipleValue = [];
     }
