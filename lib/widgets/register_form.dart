@@ -147,44 +147,77 @@ class _RegisterFormState extends State<RegisterForm> {
             _buildPhoneNumberField(
                 context, form.isRequired('contact.phone_mobile')),
           if (form.isExist(['contact.birthday']))
-            _buildBirthdayField(context, form.isRequired('contact.birthday')),
+            _buildBirthdayField(
+              context,
+              form.isRequired('contact.birthday'),
+            ),
           if (form.isExist(['contact.address.street_address']))
             _buildAddressField(
-                context, form.isRequired('contact.address.street_address')),
+              context,
+              form.isRequired('contact.address.street_address'),
+            ),
           if (form.isExist(['nationality']))
-            _buildNationalityField(context, form.isRequired('nationality')),
+            _buildNationalityField(
+              context,
+              form.isRequired('nationality'),
+            ),
           if (form.isExist(['residency']))
-            _buildResidencyField(context, form.isRequired('residency')),
+            _buildResidencyField(
+              context,
+              form.isRequired('residency'),
+            ),
           if (form.isExist(['transportation_to_work']))
             _transportationToWorkField(
-                context, form.isRequired('transportation_to_work')),
+              context,
+              form.isRequired('transportation_to_work'),
+            ),
           if (form.isExist(['height', 'weight']))
             Row(
               children: [
                 if (form.isExist(['height']))
-                  _buildHeightField(context, form.isRequired('height')),
+                  _buildHeightField(
+                    context,
+                    form.isRequired('height'),
+                  ),
                 if (form.isExist(['weight']))
-                  _buildWeightField(context, form.isRequired('weight'))
+                  _buildWeightField(
+                    context,
+                    form.isRequired('weight'),
+                  )
               ],
             ),
           if (form.isExist(['skill']))
-            _buildIndustryField(context, form.isRequired('skill')),
+            _buildIndustryField(
+              context,
+              form.isRequired('skill'),
+            ),
           if (form.isExist(['skill']))
-            _buildSkillField(context, form.isRequired('skill')),
+            _buildSkillField(
+              context,
+              form.isRequired('skill'),
+            ),
           if (form.isExist(['tag']))
             _buildTagField(context, form.isRequired('tag')),
           if (form.isExist(['contact.bank_accounts.AccountholdersName']))
-            _buildBankAccountNameField(context,
-                form.isRequired('contact.bank_accounts.AccountholdersName')),
+            _buildBankAccountNameField(
+              context,
+              form.isRequired('contact.bank_accounts.AccountholdersName'),
+            ),
           if (form.isExist(['contact.bank_accounts.bank_name']))
             _buildBankNameField(
-                context, form.isRequired('contact.bank_accounts.bank_name')),
+              context,
+              form.isRequired('contact.bank_accounts.bank_name'),
+            ),
           if (form.isExist(['contact.bank_accounts.IBAN']))
             _buildIbanField(
-                context, form.isRequired('contact.bank_accounts.IBAN')),
+              context,
+              form.isRequired('contact.bank_accounts.IBAN'),
+            ),
           if (form.isExist(['formalities.personal_id']))
             _buildPersonalIdField(
-                context, form.isRequired('formalities.personal_id')),
+              context,
+              form.isRequired('formalities.personal_id'),
+            ),
         ];
         this._configFetching = false;
       });
@@ -541,41 +574,16 @@ class _RegisterFormState extends State<RegisterForm> {
 
         String industry = snapshot.data;
 
-        print(snapshot.data);
-
-        return FutureBuilder(
-          future: this.industryService.getSkills(
+        return AsyncDropdown(
+          future: () => this.industryService.getSkills(
                 industry,
                 widget.settings.company,
               ),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            var progress = const Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return progress;
-            }
-
-            if (snapshot.hasData) {
-              List<Skill> data = snapshot.data;
-              return FormSelect(
-                multiple: true,
-                title: translate('field.skills'),
-                columns: 1,
-                onChanged: (List<dynamic> ids) {
-                  _skills = ids;
-                },
-                options: data.map((Skill el) {
-                  return {'value': el.id, 'label': el.name};
-                }).toList(),
-              );
-            }
-
-            return progress;
+          label: translate('field.skills'),
+          validator: isRequired == true ? requiredValidator : null,
+          multiple: true,
+          onSaved: (List<dynamic> ids) {
+            _skills = ids;
           },
         );
       },

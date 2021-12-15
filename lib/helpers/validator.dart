@@ -30,3 +30,11 @@ String requiredValidator(dynamic value) {
 
   return 'This field is required';
 }
+
+String emptyValidator(List<dynamic> value) {
+  if (value.isNotEmpty) {
+    return null;
+  }
+
+  return 'This field is required';
+}
