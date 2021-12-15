@@ -402,8 +402,9 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget _buildNationalityField(BuildContext context, bool isRequired) {
     return AsyncDropdown(
       label: translate('field.nationality'),
+      validator: isRequired == true ? requiredValidator : null,
       future: this.countryService.getCountries,
-      onChange: (dynamic val) {
+      onSaved: (dynamic val) {
         _nationality = val['id'];
       },
     );
@@ -412,8 +413,9 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget _buildResidencyField(BuildContext context, bool isRequired) {
     return AsyncDropdown(
       label: translate('field.residency'),
+      validator: isRequired == true ? requiredValidator : null,
       future: () => Future.value(residencyOptions),
-      onChange: (dynamic val) {
+      onSaved: (dynamic val) {
         _residency = val['id'];
       },
     );
@@ -508,7 +510,12 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget _buildIndustryField(BuildContext context, bool isRequired) {
     return AsyncDropdown(
       label: translate('field.industries'),
+      validator: isRequired == true ? requiredValidator : null,
       future: this.industryService.getIndustries,
+      onSaved: (dynamic val) {
+        _industry = val['id'];
+        _industryStream.add(val['id']);
+      },
       onChange: (dynamic val) {
         _industry = val['id'];
         _industryStream.add(val['id']);

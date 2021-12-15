@@ -1,5 +1,6 @@
 import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:piiprent/helpers/validator.dart';
 
 class AsyncDropdown extends StatefulWidget {
   const AsyncDropdown({
@@ -7,11 +8,15 @@ class AsyncDropdown extends StatefulWidget {
     this.label,
     this.future,
     this.onChange,
+    this.validator,
+    this.onSaved,
   }) : super(key: key);
 
   final String label;
   final Function future;
   final Function onChange;
+  final Function validator;
+  final Function onSaved;
 
   @override
   _AsyncDropdownState createState() => _AsyncDropdownState();
@@ -19,6 +24,7 @@ class AsyncDropdown extends StatefulWidget {
 
 class _AsyncDropdownState extends State<AsyncDropdown> {
   List _options;
+  String _error;
 
   _fetchOptions() async {
     try {
@@ -56,11 +62,26 @@ class _AsyncDropdownState extends State<AsyncDropdown> {
           tileColor: focused ? Color.fromARGB(20, 0, 0, 0) : Colors.transparent,
           onTap: onTap,
         ),
+        validator: (dynamic val) {
+          if (widget.validator != null) {
+            var error = widget.validator(val);
+
+            setState(() {
+              _error = error;
+            });
+
+            return error;
+          }
+
+          return null;
+        },
         displayItemFn: (dynamic item) => Text(
           (item ?? {})['name'] ?? '',
           style: TextStyle(fontSize: 16),
         ),
-        onSaved: (dynamic str) {},
+        onSaved: (dynamic val) {
+          widget.onSaved(val);
+        },
         onChanged: widget.onChange,
         filterFn: (dynamic item, str) =>
             item['name'].toLowerCase().indexOf(str.toLowerCase()) >= 0,
@@ -70,7 +91,9 @@ class _AsyncDropdownState extends State<AsyncDropdown> {
           return _options;
         },
         decoration: InputDecoration(
-          labelText: widget.label,
+          errorText: _error,
+          labelText:
+              '${widget.label} ${widget.validator == requiredValidator ? '*' : ''}',
           border: UnderlineInputBorder(
             borderSide: BorderSide(),
           ),
