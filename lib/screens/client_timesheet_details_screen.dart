@@ -422,12 +422,15 @@ class _ClientTimesheetDetailsScreenState
                       height: 350.0,
                       width: 20.0,
                       child: GoogleMap(
+                        cameraTargetBounds: CameraTargetBounds.unbounded,
+                        indoorViewEnabled: true,
+                        zoomGesturesEnabled: true,
                         initialCameraPosition: CameraPosition(
                           target: LatLng(
                             latitude,
                             longitude,
                           ),
-                          zoom: 12.0,
+                          zoom: 10.0,
                         ),
                         myLocationButtonEnabled: false,
                         polylines: polylines,
