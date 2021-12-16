@@ -44,6 +44,8 @@
 	<string>Motion updates increase battery efficiency by intelligently toggling location-services when device is detected to be moving</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We'll use the device precise location to track your job progress when you have started the Job from the App.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Some assignments require your location during working hours to be recorded!</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Some assignments require your location during working hours to be recorded!</string>
 	<key>NSMotionUsageDescription</key>
@@ -55,7 +57,6 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
-		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
