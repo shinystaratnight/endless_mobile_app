@@ -173,12 +173,16 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Activity',
+                              data[index].worktype != null
+                                  ? data[index].worktype.name == null
+                                      ? ""
+                                      : data[index].worktype.name(
+                                          localizationDelegate.currentLocale)
+                                  : "",
                               style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontFamily: GoogleFonts.roboto().fontFamily,
-                                fontSize: 16,
                                 color: AppColors.lightBlack,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             widget.hasActions
@@ -243,14 +247,6 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                           ],
                         ),
                         SizedBox(height: 20),
-                        TimeAddWidget(
-                            'ACTIVITY',
-                            data[index].worktype != null
-                                ? data[index].worktype.name == null
-                                    ? ""
-                                    : data[index].worktype.name(
-                                        localizationDelegate.currentLocale)
-                                : ""),
                         TimeAddWidget('AMOUNT', data[index].value.toString())
                       ]),
                       shrinkWrap: true,
