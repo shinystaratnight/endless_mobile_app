@@ -8,6 +8,8 @@ import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/application_form_model.dart';
 import 'package:piiprent/models/async_dropdown_option.dart';
+import 'package:piiprent/models/country_model.dart';
+import 'package:piiprent/models/industry_model.dart';
 import 'package:piiprent/models/settings_model.dart';
 import 'package:piiprent/models/skill_model.dart';
 import 'package:piiprent/models/tag_model.dart';
@@ -67,19 +69,19 @@ class _RegisterFormState extends State<RegisterForm> {
   final StreamController _fetchingStream = StreamController();
   final StreamController _errorStream = StreamController();
 
-  List<Map<String, dynamic>> titleOptions = [
-    {'value': 'Mr.', 'label': 'Mr.'},
-    {'value': 'Ms.', 'label': 'Ms.'},
-    {'value': 'Mrs.', 'label': 'Mrs.'},
-    {'value': 'Dr.', 'label': 'Dr.'},
+  List<Option> titleOptions = [
+    const Option(value: 'Mr.', label: 'Mr.'),
+    const Option(value: 'Ms.', label: 'Ms.'),
+    const Option(value: 'Mrs.', label: 'Mrs.'),
+    const Option(value: 'Dr.', label: 'Dr.'),
   ];
 
-  List<Map<String, dynamic>> genderOptions = [
-    {'value': 'male', 'label': 'Male'},
-    {'value': 'female', 'label': 'Female'},
+  List<Option> genderOptions = [
+    const Option(value: 'male', label: 'Male'),
+    const Option(value: 'female', label: 'Female'),
   ];
 
-  List residencyOptions = [
+  List<AsyncDropdownOption> residencyOptions = [
     const AsyncDropdownOption(id: '0', name: 'Unknown'),
     const AsyncDropdownOption(id: '1', name: 'Citizen'),
     const AsyncDropdownOption(id: '2', name: 'Permanent Resident'),
@@ -88,9 +90,9 @@ class _RegisterFormState extends State<RegisterForm> {
 
   List<Widget> _fields = [];
 
-  List<Map<String, dynamic>> transportationOptions = [
-    {'value': "1", 'label': "Own Car"},
-    {'value': "2", 'label': "Public Transportation"}
+  List<Option> transportationOptions = [
+    const Option(value: "1", label: "Own Car"),
+    const Option(value: "2", label: "Public Transportation")
   ];
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -252,10 +254,6 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   _register(ContactService contactService) async {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
-
     _formKey.currentState.save();
     if (!_formKey.currentState.validate()) {
       return;
@@ -331,8 +329,8 @@ class _RegisterFormState extends State<RegisterForm> {
             options: titleOptions,
             multiple: false,
             validator: isRequired == true ? requiredValidator : null,
-            onChanged: (String title) {
-              _title = title;
+            onSave: (Option title) {
+              _title = title?.value;
             },
           ),
         )
@@ -351,8 +349,8 @@ class _RegisterFormState extends State<RegisterForm> {
             options: genderOptions,
             multiple: false,
             validator: isRequired == true ? requiredValidator : null,
-            onChanged: (String gender) {
-              _gender = gender;
+            onSave: (Option gender) {
+              _gender = gender?.value;
             },
           ),
         )
@@ -433,23 +431,29 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   Widget _buildNationalityField(BuildContext context, bool isRequired) {
-    return AsyncDropdown(
+    return AsyncDropdown<Country>(
       label: translate('field.nationality'),
       validator: isRequired == true ? requiredValidator : null,
       future: this.countryService.getCountries,
-      onSaved: (dynamic val) {
-        _nationality = val['id'];
+      renderFn: (Country item) => item.name,
+      compareFn: (Country item, Country selectedItem) =>
+          item.id == selectedItem.id,
+      onSaved: (Country item) {
+        _nationality = item?.id;
       },
     );
   }
 
   Widget _buildResidencyField(BuildContext context, bool isRequired) {
-    return AsyncDropdown(
+    return AsyncDropdown<AsyncDropdownOption>(
       label: translate('field.residency'),
       validator: isRequired == true ? requiredValidator : null,
-      future: () => Future.value(residencyOptions),
-      onSaved: (dynamic val) {
-        _residency = val['id'];
+      items: residencyOptions,
+      renderFn: (AsyncDropdownOption item) => item.name,
+      compareFn: (AsyncDropdownOption item, AsyncDropdownOption selectedItem) =>
+          item.id == selectedItem.id,
+      onSaved: (AsyncDropdownOption item) {
+        _residency = item?.id;
       },
     );
   }
@@ -465,8 +469,8 @@ class _RegisterFormState extends State<RegisterForm> {
             options: transportationOptions,
             multiple: false,
             validator: isRequired == true ? requiredValidator : null,
-            onChanged: (String transport) {
-              _transport = transport;
+            onSave: (Option transport) {
+              _transport = transport?.value;
             },
           ),
         )
@@ -541,15 +545,18 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   Widget _buildIndustryField(BuildContext context, bool isRequired) {
-    return AsyncDropdown(
+    return AsyncDropdown<Industry>(
       label: translate('field.industries'),
       validator: isRequired == true ? requiredValidator : null,
       future: this.industryService.getIndustries,
-      onSaved: (dynamic val) {
-        _industry = val['id'];
+      onSaved: (Industry item) {
+        _industry = item?.id;
       },
-      onChange: (dynamic val) {
-        _industryStream.add(val['id']);
+      renderFn: (Industry item) => item.name,
+      compareFn: (Industry item, Industry selectedItem) =>
+          item.id == selectedItem.id,
+      onChanged: (Industry instance) {
+        _industryStream.add(instance?.id);
       },
     );
   }
@@ -578,16 +585,22 @@ class _RegisterFormState extends State<RegisterForm> {
           future: Future.value(industry),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return AsyncDropdown(
-                future: () => this.industryService.getSkills(
-                      snapshot.data,
-                      widget.settings.company,
-                    ),
+              return AsyncDropdown<Skill>(
+                future: (Map<String, dynamic> query) => this
+                    .industryService
+                    .getSkills(snapshot.data, widget.settings.company, query),
                 label: translate('field.skills'),
+                renderFn: (Skill item) => item.name,
+                compareFn: (Skill item, Skill selectedItem) =>
+                    item.id == selectedItem.id,
                 validator: isRequired == true ? requiredValidator : null,
                 multiple: true,
-                onSaved: (List<dynamic> ids) {
-                  _skills = ids;
+                onSaved: (List<Skill> skills) {
+                  if (skills != null) {
+                    _skills = skills.map((e) => e.id).toList();
+                  } else {
+                    skills = [];
+                  }
                 },
               );
             }
@@ -612,14 +625,14 @@ class _RegisterFormState extends State<RegisterForm> {
             multiple: true,
             title: translate('field.tags'),
             columns: 1,
-            onChanged: (List<dynamic> ids) {
+            onSave: (List<dynamic> ids) {
               _tags = ids;
             },
             options: data.map((Tag el) {
-              return {
-                'value': el.id,
-                'label': el.name,
-              };
+              return Option(
+                value: el.id,
+                label: el.name,
+              );
             }).toList(),
           );
         }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/validator.dart';
 
 class FormSelect extends StatefulWidget {
-  final List<Map<String, dynamic>> options;
+  final List<Option> options;
   final int columns;
   final bool multiple;
   final Function onSave;
@@ -39,10 +39,7 @@ class _FormSelectState extends State<FormSelect> {
     int row = 0;
     if (widget.options != null) {
       for (int i = 0; i < widget.options.length; i++) {
-        Option option = Option(
-          label: widget.options[i]['label'],
-          value: widget.options[i]['value'],
-        );
+        Option option = widget.options[i];
 
         if (i % widget.columns == 0) {
           data.add([option]);
@@ -80,7 +77,7 @@ class _FormSelectState extends State<FormSelect> {
           _multipleValue.map((Option option) => option.value).toList(),
         );
       } else {
-        widget.onChanged(_value.value);
+        widget.onChanged(_value);
       }
     }
   }
@@ -144,10 +141,12 @@ class _FormSelectState extends State<FormSelect> {
         ),
         FormField(
           onSaved: (String initValue) {
-            if (!widget.multiple) {
-              widget.onSave(_multipleValue);
-            } else {
-              widget.onSave(_value);
+            if (widget.onSave != null) {
+              if (widget.multiple) {
+                widget.onSave(_multipleValue);
+              } else {
+                widget.onSave(_value);
+              }
             }
           },
           validator: (String value) {
@@ -223,7 +222,7 @@ class Option {
   final dynamic value;
   final String label;
 
-  Option({
+  const Option({
     this.value,
     this.label,
   });

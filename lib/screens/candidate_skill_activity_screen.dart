@@ -109,11 +109,10 @@ class _CandidateSkillActivityScreenState
                           _rate = el.defaultRate;
                         },
                         options: data.map((Worktype el) {
-                          return {
-                            'value': el.id,
-                            'label':
-                                el.name(localizationDelegate.currentLocale),
-                          };
+                          return Option(
+                            value: el.id,
+                            label: el.name(localizationDelegate.currentLocale),
+                          );
                         }).toList(),
                       );
                     }

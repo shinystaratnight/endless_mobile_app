@@ -1,201 +1,158 @@
-import 'package:dropdown_plus/dropdown_plus.dart';
+import 'dart:async';
+
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/validator.dart';
 
-class AsyncDropdown extends StatefulWidget {
+class AsyncDropdown<T> extends StatefulWidget {
   const AsyncDropdown({
     Key key,
     this.label,
     this.future,
-    this.onChange,
+    this.onChanged,
     this.validator,
     this.onSaved,
     this.multiple,
+    this.items,
+    @required this.renderFn,
+    @required this.compareFn,
   }) : super(key: key);
 
   final String label;
   final Function future;
-  final Function onChange;
+  final Function onChanged;
   final Function validator;
   final Function onSaved;
   final bool multiple;
+  final List<T> items;
+  final Function renderFn;
+  final Function compareFn;
 
   @override
-  _AsyncDropdownState createState() => _AsyncDropdownState();
+  _AsyncDropdownState<T> createState() => _AsyncDropdownState<T>();
 }
 
-class _AsyncDropdownState extends State<AsyncDropdown> {
-  List _options;
-  String _error;
-  List<dynamic> _multipleValue;
-
-  _fetchOptions() async {
+class _AsyncDropdownState<T> extends State<AsyncDropdown> {
+  Future<List<T>> _fetchOptions(String query) async {
     try {
-      List list = await widget.future();
+      List list = await widget.future({'search': query});
 
-      return list.map((e) => ({'id': e.id, 'name': e.name})).toList();
+      if (list.isEmpty) {
+        return [];
+      }
+
+      return list;
     } catch (e) {
       return [];
     }
   }
 
-  _initOptions() async {
-    var options = await _fetchOptions();
-
-    setState(() {
-      _options = options;
-    });
-  }
-
   @override
   void initState() {
-    _initOptions();
-    if (widget.multiple == true) {
-      _multipleValue = [];
-    }
     super.initState();
+  }
+
+  Widget _multipleDropDown() {
+    return DropdownSearch<T>.multiSelection(
+      label:
+          '${widget.label} ${widget.validator == requiredValidator ? '*' : ''}',
+      validator: widget.validator,
+      isFilteredOnline: true,
+      mode: Mode.DIALOG,
+      onFind: widget.future != null
+          ? (text) async {
+              return await _fetchOptions(text);
+            }
+          : null,
+      itemAsString: widget.renderFn,
+      onChanged: (List<T> value) {
+        if (widget.onChanged != null) {
+          widget.onChanged(value);
+        }
+      },
+      onSaved: (List<T> value) {
+        if (widget.onSaved != null) {
+          widget.onSaved(value);
+        }
+      },
+      searchDelay: Duration(milliseconds: 800),
+      showSearchBox: widget.items == null,
+      items: widget.items as List<T>,
+      dropDownButton: Icon(
+        Icons.expand_more,
+        color: Colors.grey,
+      ),
+      dropdownSearchDecoration: InputDecoration(
+        contentPadding: EdgeInsets.all(0.0),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(),
+        ),
+      ),
+      searchFieldProps: TextFieldProps(
+        decoration: InputDecoration(
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(),
+          ),
+        ),
+      ),
+      compareFn: widget.compareFn,
+      showSelectedItems: widget.compareFn != null,
+    );
+  }
+
+  Widget _singleValueDropdown() {
+    return DropdownSearch<T>(
+      label:
+          '${widget.label} ${widget.validator == requiredValidator ? '*' : ''}',
+      validator: widget.validator,
+      isFilteredOnline: true,
+      mode: Mode.DIALOG,
+      onFind: (text) async {
+        return await _fetchOptions(text);
+      },
+      itemAsString: widget.renderFn,
+      onChanged: (T instance) {
+        if (widget.onChanged != null) {
+          widget.onChanged(instance);
+        }
+      },
+      onSaved: (T instance) {
+        if (widget.onSaved != null) {
+          widget.onSaved(instance);
+        }
+      },
+      searchDelay: Duration(milliseconds: 800),
+      showSearchBox: widget.items == null,
+      items: widget.items as List<T>,
+      dropDownButton: Icon(
+        Icons.expand_more,
+        color: Colors.grey,
+      ),
+      dropdownSearchDecoration: InputDecoration(
+        contentPadding: EdgeInsets.all(0.0),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(),
+        ),
+      ),
+      searchFieldProps: TextFieldProps(
+        decoration: InputDecoration(
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(),
+          ),
+        ),
+      ),
+      compareFn: widget.compareFn,
+      showSelectedItems: widget.compareFn != null,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: DropdownFormField(
-            dropdownItemFn: (
-              dynamic item,
-              int position,
-              bool focused,
-              bool selected,
-              Function() onTap,
-            ) {
-              return ListTile(
-                title: Text(
-                  item['name'],
-                  style: TextStyle(
-                    color: selected ? Colors.blueAccent : Colors.grey[900],
-                  ),
-                ),
-                tileColor:
-                    focused ? Color.fromARGB(20, 0, 0, 0) : Colors.transparent,
-                onTap: widget.multiple != true
-                    ? onTap
-                    : () {
-                        setState(() {
-                          _multipleValue.add(item);
-                        });
-                        onTap();
-                      },
-              );
-            },
-            validator: (dynamic val) {
-              if (widget.validator != null) {
-                var error;
-
-                if (widget.multiple == true) {
-                  error = emptyValidator(_multipleValue);
-                } else {
-                  error = widget.validator(val);
-                }
-
-                setState(() {
-                  _error = error;
-                });
-
-                return error;
-              }
-
-              return null;
-            },
-            displayItemFn: (dynamic item) {
-              if (widget.multiple == true) {
-                return Text('');
-              } else {
-                return Text(
-                  (item ?? {})['name'] ?? '',
-                  style: TextStyle(fontSize: 16),
-                );
-              }
-            },
-            onSaved: (dynamic val) {
-              if (widget.multiple == true) {
-                widget.onSaved(_multipleValue);
-              } else {
-                widget.onSaved(val);
-              }
-            },
-            onChanged: widget.onChange,
-            filterFn: (dynamic item, str) =>
-                item['name'].toLowerCase().indexOf(str.toLowerCase()) >= 0,
-            findFn: (dynamic str) async {
-              await Scrollable.ensureVisible(context);
-
-              return _options;
-            },
-            selectedFn: widget.multiple == true
-                ? (dynamic _, dynamic val) {
-                    return _multipleValue
-                        .where((element) => element['id'] == val['id'])
-                        .isNotEmpty;
-                  }
-                : null,
-            decoration: InputDecoration(
-              errorText: _error,
-              labelText:
-                  '${widget.label} ${widget.validator == requiredValidator ? '*' : ''}',
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(),
-              ),
-            ),
-          ),
-        ),
-        if (_multipleValue != null && _multipleValue.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ..._multipleValue
-                    .map(
-                      (dynamic item) => Container(
-                        padding: EdgeInsets.all(4.0),
-                        margin: EdgeInsets.symmetric(vertical: 4.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey[600]),
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(item['name']),
-                            IconButton(
-                              constraints: BoxConstraints.loose(Size(30, 30)),
-                              padding: EdgeInsets.all(4.0),
-                              splashRadius: 20.0,
-                              onPressed: () {
-                                setState(() {
-                                  _multipleValue = _multipleValue
-                                      .where((element) =>
-                                          element['id'] != item['id'])
-                                      .toList();
-                                });
-                              },
-                              icon: Icon(
-                                Icons.cancel,
-                                size: 20.0,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ],
-            ),
-          )
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: widget.multiple == true
+          ? _multipleDropDown()
+          : _singleValueDropdown(),
     );
   }
 }
