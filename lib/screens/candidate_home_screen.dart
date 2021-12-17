@@ -167,9 +167,6 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                   )
                 ],
               ),
-              SizedBox(
-                height: 25.0,
-              ),
               HomeCalendar(
                 type: CalendarType.Canddate,
                 userId: loginService.user != null ? loginService.user.id : null,

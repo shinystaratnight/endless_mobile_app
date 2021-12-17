@@ -122,6 +122,7 @@
     "field.iban": "IBAN",
     "field.tags": "Tags",
     "field.personal_id": "Isikukood",
+    "field.picture": "Picture",
     "group.title.job_information": "Töökoha teave",
     "group.title.personal_details": "Isikuandmed",
     "group.title.contact_details": "Kontaktandmed",
