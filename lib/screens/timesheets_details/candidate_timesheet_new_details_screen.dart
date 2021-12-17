@@ -134,6 +134,8 @@ class _CandidateTimesheetNewDetailsScreenState
         body['hours'] = 'true';
       }
 
+      Get.snackbar('Submitted', 'Time and activities submitted');
+
       bool result = await timesheetService.submitTimesheet(widget.id, body);
       if (result && isDelete) {
         _times.forEach((key, value) {
