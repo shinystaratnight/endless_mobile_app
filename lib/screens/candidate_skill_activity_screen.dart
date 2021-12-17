@@ -102,10 +102,10 @@ class _CandidateSkillActivityScreenState
                         multiple: false,
                         title: translate('field.skill_activity'),
                         columns: 1,
-                        onChanged: (String id) {
-                          _worktype = id;
-                          var el =
-                              data.firstWhere((element) => element.id == id);
+                        onChanged: (Option option) {
+                          _worktype = option.value;
+                          var el = data
+                              .firstWhere((element) => element.id == _worktype);
                           _rate = el.defaultRate;
                         },
                         options: data.map((Worktype el) {
