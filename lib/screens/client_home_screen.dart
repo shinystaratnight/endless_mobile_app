@@ -82,9 +82,6 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                   )
                 ],
               ),
-              SizedBox(
-                height: 25.0,
-              ),
               HomeCalendar(
                 type: CalendarType.Client,
                 role: loginService.user.activeRole.id,
