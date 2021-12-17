@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/application_form_model.dart';
 import 'package:piiprent/models/async_dropdown_option.dart';
+import 'package:piiprent/models/country_model.dart';
+import 'package:piiprent/models/industry_model.dart';
 import 'package:piiprent/models/settings_model.dart';
 import 'package:piiprent/models/skill_model.dart';
 import 'package:piiprent/models/tag_model.dart';
@@ -66,19 +69,19 @@ class _RegisterFormState extends State<RegisterForm> {
   final StreamController _fetchingStream = StreamController();
   final StreamController _errorStream = StreamController();
 
-  List<Map<String, dynamic>> titleOptions = [
-    {'value': 'Mr.', 'label': 'Mr.'},
-    {'value': 'Ms.', 'label': 'Ms.'},
-    {'value': 'Mrs.', 'label': 'Mrs.'},
-    {'value': 'Dr.', 'label': 'Dr.'},
+  List<Option> titleOptions = [
+    const Option(value: 'Mr.', label: 'Mr.'),
+    const Option(value: 'Ms.', label: 'Ms.'),
+    const Option(value: 'Mrs.', label: 'Mrs.'),
+    const Option(value: 'Dr.', label: 'Dr.'),
   ];
 
-  List<Map<String, dynamic>> genderOptions = [
-    {'value': 'male', 'label': 'Male'},
-    {'value': 'female', 'label': 'Female'},
+  List<Option> genderOptions = [
+    const Option(value: 'male', label: 'Male'),
+    const Option(value: 'female', label: 'Female'),
   ];
 
-  List residencyOptions = [
+  List<AsyncDropdownOption> residencyOptions = [
     const AsyncDropdownOption(id: '0', name: 'Unknown'),
     const AsyncDropdownOption(id: '1', name: 'Citizen'),
     const AsyncDropdownOption(id: '2', name: 'Permanent Resident'),
@@ -87,9 +90,9 @@ class _RegisterFormState extends State<RegisterForm> {
 
   List<Widget> _fields = [];
 
-  List<Map<String, dynamic>> transportationOptions = [
-    {'value': "1", 'label': "Own Car"},
-    {'value': "2", 'label': "Public Transportation"}
+  List<Option> transportationOptions = [
+    const Option(value: "1", label: "Own Car"),
+    const Option(value: "2", label: "Public Transportation")
   ];
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -107,46 +110,116 @@ class _RegisterFormState extends State<RegisterForm> {
 
       setState(() {
         this._fields = [
-          if (form.isExist(['contact.picture'])) _buildPictureField(context),
-          if (form.isExist(['contact.title'])) _buildTitleField(context),
+          if (form.isExist(['contact.picture']))
+            _buildPictureField(
+              context,
+              form.isRequired('contact.picture'),
+            ),
+          if (form.isExist(['contact.title']))
+            _buildTitleField(
+              context,
+              form.isRequired('contact.title'),
+            ),
           if (form.isExist(['contact.first_name', 'contact.last_name']))
             Row(
               children: [
                 if (form.isExist(['contact.first_name']))
-                  _buildFirstNameField(context),
+                  _buildFirstNameField(
+                    context,
+                    form.isRequired('contact.first_name'),
+                  ),
                 if (form.isExist(['contact.last_name']))
-                  _buildLastNameField(context)
+                  _buildLastNameField(
+                    context,
+                    form.isRequired('contact.last_name'),
+                  )
               ],
             ),
-          if (form.isExist(['contact.gender'])) _buildGenderField(context),
-          if (form.isExist(['contact.email'])) _buildEmailField(context),
+          if (form.isExist(['contact.gender']))
+            _buildGenderField(
+              context,
+              form.isRequired('contact.gender'),
+            ),
+          if (form.isExist(['contact.email']))
+            _buildEmailField(
+              context,
+              form.isRequired('contact.email'),
+            ),
           if (form.isExist(['contact.phone_mobile']))
-            _buildPhoneNumberField(context),
-          if (form.isExist(['contact.birthday'])) _buildBirthdayField(context),
+            _buildPhoneNumberField(
+                context, form.isRequired('contact.phone_mobile')),
+          if (form.isExist(['contact.birthday']))
+            _buildBirthdayField(
+              context,
+              form.isRequired('contact.birthday'),
+            ),
           if (form.isExist(['contact.address.street_address']))
-            _buildAddressField(context),
-          if (form.isExist(['nationality'])) _buildNationalityField(context),
-          if (form.isExist(['residency'])) _buildResidencyField(context),
+            _buildAddressField(
+              context,
+              form.isRequired('contact.address.street_address'),
+            ),
+          if (form.isExist(['nationality']))
+            _buildNationalityField(
+              context,
+              form.isRequired('nationality'),
+            ),
+          if (form.isExist(['residency']))
+            _buildResidencyField(
+              context,
+              form.isRequired('residency'),
+            ),
           if (form.isExist(['transportation_to_work']))
-            _transportationToWorkField(context),
+            _transportationToWorkField(
+              context,
+              form.isRequired('transportation_to_work'),
+            ),
           if (form.isExist(['height', 'weight']))
             Row(
               children: [
-                if (form.isExist(['height'])) _buildHeightField(context),
-                if (form.isExist(['weight'])) _buildWeightField(context)
+                if (form.isExist(['height']))
+                  _buildHeightField(
+                    context,
+                    form.isRequired('height'),
+                  ),
+                if (form.isExist(['weight']))
+                  _buildWeightField(
+                    context,
+                    form.isRequired('weight'),
+                  )
               ],
             ),
-          if (form.isExist(['skill'])) _buildIndustryField(context),
-          if (form.isExist(['skill'])) _buildSkillField(context),
-          if (form.isExist(['tag'])) _buildTagField(context),
+          if (form.isExist(['skill']))
+            _buildIndustryField(
+              context,
+              form.isRequired('skill'),
+            ),
+          if (form.isExist(['skill']))
+            _buildSkillField(
+              context,
+              form.isRequired('skill'),
+            ),
+          if (form.isExist(['tag']))
+            _buildTagField(context, form.isRequired('tag')),
           if (form.isExist(['contact.bank_accounts.AccountholdersName']))
-            _buildBankAccountNameField(context),
+            _buildBankAccountNameField(
+              context,
+              form.isRequired('contact.bank_accounts.AccountholdersName'),
+            ),
           if (form.isExist(['contact.bank_accounts.bank_name']))
-            _buildBankNameField(context),
+            _buildBankNameField(
+              context,
+              form.isRequired('contact.bank_accounts.bank_name'),
+            ),
           if (form.isExist(['contact.bank_accounts.IBAN']))
-            _buildIbanField(context),
+            _buildIbanField(
+              context,
+              form.isRequired('contact.bank_accounts.IBAN'),
+            ),
           if (form.isExist(['formalities.personal_id']))
-            _buildPersonalIdField(context),
+            _buildPersonalIdField(
+              context,
+              form.isRequired('formalities.personal_id'),
+            ),
         ];
         this._configFetching = false;
       });
@@ -181,11 +254,10 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   _register(ContactService contactService) async {
+    _formKey.currentState.save();
     if (!_formKey.currentState.validate()) {
       return;
     }
-
-    _formKey.currentState.save();
     _fetchingStream.add(true);
     _errorStream.add(null);
 
@@ -236,15 +308,17 @@ class _RegisterFormState extends State<RegisterForm> {
     }
   }
 
-  Widget _buildPictureField(BuildContext context) {
+  Widget _buildPictureField(BuildContext context, bool isRequired) {
     return PictureField(
-      onChanged: (String val) {
+      label: translate('field.picture'),
+      validator: isRequired == true ? requiredValidator : null,
+      onSaved: (String val) {
         _picture = val;
       },
     );
   }
 
-  Widget _buildTitleField(BuildContext context) {
+  Widget _buildTitleField(BuildContext context, bool isRequired) {
     return Row(
       children: [
         Expanded(
@@ -254,8 +328,9 @@ class _RegisterFormState extends State<RegisterForm> {
             columns: 4,
             options: titleOptions,
             multiple: false,
-            onChanged: (String title) {
-              _title = title;
+            validator: isRequired == true ? requiredValidator : null,
+            onSave: (Option title) {
+              _title = title?.value;
             },
           ),
         )
@@ -263,7 +338,7 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildGenderField(BuildContext context) {
+  Widget _buildGenderField(BuildContext context, bool isRequired) {
     return Row(
       children: [
         Expanded(
@@ -273,8 +348,9 @@ class _RegisterFormState extends State<RegisterForm> {
             columns: 2,
             options: genderOptions,
             multiple: false,
-            onChanged: (String gender) {
-              _gender = gender;
+            validator: isRequired == true ? requiredValidator : null,
+            onSave: (Option gender) {
+              _gender = gender?.value;
             },
           ),
         )
@@ -282,12 +358,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildFirstNameField(BuildContext context, [Function validator]) {
+  Widget _buildFirstNameField(BuildContext context, bool isRequired) {
     return Expanded(
       flex: 2,
       child: Field(
+        validator: isRequired == true ? requiredValidator : null,
         label: translate('field.first_name'),
-        validator: validator,
         onSaved: (String value) {
           _firstName = value;
         },
@@ -295,12 +371,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildLastNameField(BuildContext context, [Function validator]) {
+  Widget _buildLastNameField(BuildContext context, bool isRequired) {
     return Expanded(
       flex: 2,
       child: Field(
+        validator: isRequired == true ? requiredValidator : null,
         label: translate('field.last_name'),
-        validator: validator,
         onSaved: (String value) {
           _lastName = value;
         },
@@ -308,24 +384,24 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildEmailField(BuildContext context, [Function validator]) {
+  Widget _buildEmailField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.email'),
-      validator: validator,
       onSaved: (String value) {
         _email = value;
       },
     );
   }
 
-  Widget _buildPhoneNumberField(BuildContext context, [Function validator]) {
+  Widget _buildPhoneNumberField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.phone'),
       initialValue: '',
       onSaved: (String value) {
         _phone = '$_phoneCountryCode$value';
       },
-      validator: validator,
       leading: widget.settings != null
           ? Padding(
               padding: const EdgeInsets.only(top: 16.0),
@@ -343,38 +419,46 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildBirthdayField(BuildContext context, [Function validator]) {
+  Widget _buildBirthdayField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.birthday'),
       datepicker: true,
-      validator: validator,
       onSaved: (String value) {
         _birthday = value;
       },
     );
   }
 
-  Widget _buildNationalityField(BuildContext context) {
-    return AsyncDropdown(
+  Widget _buildNationalityField(BuildContext context, bool isRequired) {
+    return AsyncDropdown<Country>(
       label: translate('field.nationality'),
+      validator: isRequired == true ? requiredValidator : null,
       future: this.countryService.getCountries,
-      onChange: (dynamic val) {
-        _nationality = val['id'];
+      renderFn: (Country item) => item.name,
+      compareFn: (Country item, Country selectedItem) =>
+          item.id == selectedItem.id,
+      onSaved: (Country item) {
+        _nationality = item?.id;
       },
     );
   }
 
-  Widget _buildResidencyField(BuildContext context) {
-    return AsyncDropdown(
+  Widget _buildResidencyField(BuildContext context, bool isRequired) {
+    return AsyncDropdown<AsyncDropdownOption>(
       label: translate('field.residency'),
-      future: () => Future.value(residencyOptions),
-      onChange: (dynamic val) {
-        _residency = val['id'];
+      validator: isRequired == true ? requiredValidator : null,
+      items: residencyOptions,
+      renderFn: (AsyncDropdownOption item) => item.name,
+      compareFn: (AsyncDropdownOption item, AsyncDropdownOption selectedItem) =>
+          item.id == selectedItem.id,
+      onSaved: (AsyncDropdownOption item) {
+        _residency = item?.id;
       },
     );
   }
 
-  Widget _transportationToWorkField(BuildContext context) {
+  Widget _transportationToWorkField(BuildContext context, bool isRequired) {
     return Row(
       children: [
         Expanded(
@@ -384,8 +468,9 @@ class _RegisterFormState extends State<RegisterForm> {
             columns: 1,
             options: transportationOptions,
             multiple: false,
-            onChanged: (String transport) {
-              _transport = transport;
+            validator: isRequired == true ? requiredValidator : null,
+            onSave: (Option transport) {
+              _transport = transport?.value;
             },
           ),
         )
@@ -393,12 +478,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildHeightField(BuildContext context, [Function validator]) {
+  Widget _buildHeightField(BuildContext context, bool isRequired) {
     return Expanded(
       flex: 2,
       child: Field(
+        validator: isRequired == true ? requiredValidator : null,
         label: translate('field.height'),
-        validator: validator,
         onSaved: (String height) {
           _height = height;
         },
@@ -406,12 +491,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildWeightField(BuildContext context, [Function validator]) {
+  Widget _buildWeightField(BuildContext context, bool isRequired) {
     return Expanded(
       flex: 2,
       child: Field(
+        validator: isRequired == true ? requiredValidator : null,
         label: translate('field.weight'),
-        validator: validator,
         onSaved: (String weight) {
           _weight = weight;
         },
@@ -419,67 +504,74 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Widget _buildBankAccountNameField(BuildContext context,
-      [Function validator]) {
+  Widget _buildBankAccountNameField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.account_holders_name'),
-      validator: validator,
       onSaved: (String value) {
         _bankAccountName = value;
       },
     );
   }
 
-  Widget _buildBankNameField(BuildContext context, [Function validator]) {
+  Widget _buildBankNameField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.bank_name'),
-      validator: validator,
       onSaved: (String value) {
         _bankName = value;
       },
     );
   }
 
-  Widget _buildIbanField(BuildContext context, [Function validator]) {
+  Widget _buildIbanField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.iban'),
-      validator: validator,
       onSaved: (String value) {
         _iban = value;
       },
     );
   }
 
-  Widget _buildPersonalIdField(BuildContext context, [Function validator]) {
+  Widget _buildPersonalIdField(BuildContext context, bool isRequired) {
     return Field(
+      validator: isRequired == true ? requiredValidator : null,
       label: translate('field.personal_id'),
-      validator: validator,
       onSaved: (String value) {
         _personalId = value;
       },
     );
   }
 
-  Widget _buildIndustryField(BuildContext context) {
-    return AsyncDropdown(
+  Widget _buildIndustryField(BuildContext context, bool isRequired) {
+    return AsyncDropdown<Industry>(
       label: translate('field.industries'),
+      validator: isRequired == true ? requiredValidator : null,
       future: this.industryService.getIndustries,
-      onChange: (dynamic val) {
-        _industry = val['id'];
-        _industryStream.add(val['id']);
+      onSaved: (Industry item) {
+        _industry = item?.id;
+      },
+      renderFn: (Industry item) => item.name,
+      compareFn: (Industry item, Industry selectedItem) =>
+          item.id == selectedItem.id,
+      onChanged: (Industry instance) {
+        _industryStream.add(instance?.id);
       },
     );
   }
 
-  Widget _buildAddressField(BuildContext context) {
-    return AddressField(onSaved: (Map<String, dynamic> address) {
-      setState(() {
-        _address = address;
-      });
-    });
+  Widget _buildAddressField(BuildContext context, bool isRequired) {
+    return AddressField(
+        validator: isRequired == true ? requiredValidator : null,
+        onSaved: (
+          Map<String, dynamic> address,
+        ) {
+          _address = address;
+        });
   }
 
-  Widget _buildSkillField(BuildContext context) {
+  Widget _buildSkillField(BuildContext context, bool isRequired) {
     return StreamBuilder(
       stream: _industryStream.stream,
       builder: (context, snapshot) {
@@ -489,48 +581,38 @@ class _RegisterFormState extends State<RegisterForm> {
 
         String industry = snapshot.data;
 
-        print(snapshot.data);
-
         return FutureBuilder(
-          future: this.industryService.getSkills(
-                industry,
-                widget.settings.company,
-              ),
+          future: Future.value(industry),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            var progress = const Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return progress;
-            }
-
-            if (snapshot.hasData) {
-              List<Skill> data = snapshot.data;
-              return FormSelect(
+            if (snapshot.connectionState == ConnectionState.done) {
+              return AsyncDropdown<Skill>(
+                future: (Map<String, dynamic> query) => this
+                    .industryService
+                    .getSkills(snapshot.data, widget.settings.company, query),
+                label: translate('field.skills'),
+                renderFn: (Skill item) => item.name,
+                compareFn: (Skill item, Skill selectedItem) =>
+                    item.id == selectedItem.id,
+                validator: isRequired == true ? requiredValidator : null,
                 multiple: true,
-                title: translate('field.skills'),
-                columns: 1,
-                onChanged: (List<dynamic> ids) {
-                  _skills = ids;
+                onSaved: (List<Skill> skills) {
+                  if (skills != null) {
+                    _skills = skills.map((e) => e.id).toList();
+                  } else {
+                    skills = [];
+                  }
                 },
-                options: data.map((Skill el) {
-                  return {'value': el.id, 'label': el.name};
-                }).toList(),
               );
             }
 
-            return progress;
+            return Container();
           },
         );
       },
     );
   }
 
-  Widget _buildTagField(BuildContext context) {
+  Widget _buildTagField(BuildContext context, bool isRequired) {
     TagService tagService = Provider.of<TagService>(context);
 
     return FutureBuilder(
@@ -543,14 +625,14 @@ class _RegisterFormState extends State<RegisterForm> {
             multiple: true,
             title: translate('field.tags'),
             columns: 1,
-            onChanged: (List<dynamic> ids) {
+            onSave: (List<dynamic> ids) {
               _tags = ids;
             },
             options: data.map((Tag el) {
-              return {
-                'value': el.id,
-                'label': el.name,
-              };
+              return Option(
+                value: el.id,
+                label: el.name,
+              );
             }).toList(),
           );
         }

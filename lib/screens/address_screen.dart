@@ -33,6 +33,7 @@ class _AddressScreenState extends State<AddressScreen> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Field(
+                label: '',
                 onChanged: (value) {
                   if (value.isNotEmpty) {
                     autoCompleteSearch(value);

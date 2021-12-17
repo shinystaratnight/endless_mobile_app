@@ -19,7 +19,7 @@ class Country {
     );
   }
 
-  get name {
+  String get name {
     return this.str;
   }
 }

@@ -122,6 +122,7 @@
     "field.iban": "IBAN",
     "field.tags": "Tags",
     "field.personal_id": "Personal Id",
+    "field.picture": "Picture",
     "group.title.job_information": "Työpaikan tiedot",
     "group.title.personal_details": "Henkilökohtaiset tiedot",
     "group.title.contact_details": "Yhteystiedot",

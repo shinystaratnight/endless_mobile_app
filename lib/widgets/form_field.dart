@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:piiprent/helpers/validator.dart';
 
 class Field extends StatefulWidget {
   final String label;
@@ -75,7 +76,8 @@ class _FieldState extends State<Field> {
             child: TextFormField(
               controller: myController,
               decoration: InputDecoration(
-                  labelText: widget.label,
+                  labelText:
+                      '${widget.label} ${widget.validator == requiredValidator ? '*' : ''}',
                   border: UnderlineInputBorder(
                     borderSide: widget.readOnly == true
                         ? BorderSide.none
