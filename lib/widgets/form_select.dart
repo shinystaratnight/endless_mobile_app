@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/validator.dart';
 
 class FormSelect extends StatefulWidget {
@@ -106,7 +107,7 @@ class _FormSelectState extends State<FormSelect> {
             Expanded(
               flex: 1,
               child: Text(
-                option.label,
+                translate(option.label),
                 style: TextStyle(
                   fontSize: 16.0,
                   color: _value == option || _multipleValue.contains(option)
@@ -220,10 +221,16 @@ class _FormSelectState extends State<FormSelect> {
 
 class Option {
   final dynamic value;
-  final String label;
+  final String title;
+  final String translateKey;
 
   const Option({
-    this.value,
-    this.label,
+    @required this.value,
+    @required this.title,
+    this.translateKey,
   });
+
+  String get label {
+    return translateKey ?? title;
+  }
 }

@@ -1,9 +1,17 @@
+import 'package:flutter/cupertino.dart';
+
 class AsyncDropdownOption {
   final String id;
-  final String name;
+  final String label;
+  final String translateKey;
 
   const AsyncDropdownOption({
-    this.id,
-    this.name,
+    @required this.id,
+    @required this.label,
+    this.translateKey,
   });
+
+  String get name {
+    return translateKey ?? label;
+  }
 }
