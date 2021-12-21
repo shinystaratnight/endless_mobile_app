@@ -112,7 +112,7 @@ class _CandidateSkillActivityScreenOldState
                         options: data.map((Worktype el) {
                           return Option(
                             value: el.id,
-                            label: el.name(localizationDelegate.currentLocale),
+                            title: el.name(localizationDelegate.currentLocale),
                           );
                         }).toList(),
                       );

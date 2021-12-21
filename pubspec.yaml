@@ -45,6 +45,7 @@ dependencies:
   get: ^4.3.8
   permission_handler: ^8.3.0
   dropdown_search:
+  iso_countries: ^2.1.0
   flutter_localizations:
     sdk: flutter
 

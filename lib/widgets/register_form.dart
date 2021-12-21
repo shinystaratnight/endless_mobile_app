@@ -70,29 +70,61 @@ class _RegisterFormState extends State<RegisterForm> {
   final StreamController _errorStream = StreamController();
 
   List<Option> titleOptions = [
-    const Option(value: 'Mr.', label: 'Mr.'),
-    const Option(value: 'Ms.', label: 'Ms.'),
-    const Option(value: 'Mrs.', label: 'Mrs.'),
-    const Option(value: 'Dr.', label: 'Dr.'),
+    const Option(value: 'Mr.', title: 'Mr.'),
+    const Option(value: 'Ms.', title: 'Ms.'),
+    const Option(value: 'Mrs.', title: 'Mrs.'),
+    const Option(value: 'Dr.', title: 'Dr.'),
   ];
 
   List<Option> genderOptions = [
-    const Option(value: 'male', label: 'Male'),
-    const Option(value: 'female', label: 'Female'),
+    const Option(
+      value: 'male',
+      title: 'Male',
+      translateKey: 'gender.male',
+    ),
+    const Option(
+      value: 'female',
+      title: 'Female',
+      translateKey: 'gender.female',
+    ),
   ];
 
   List<AsyncDropdownOption> residencyOptions = [
-    const AsyncDropdownOption(id: '0', name: 'Unknown'),
-    const AsyncDropdownOption(id: '1', name: 'Citizen'),
-    const AsyncDropdownOption(id: '2', name: 'Permanent Resident'),
-    const AsyncDropdownOption(id: '3', name: 'Temporary Resident'),
+    const AsyncDropdownOption(
+      id: '0',
+      label: 'Unknown',
+      translateKey: 'residency.unknown',
+    ),
+    const AsyncDropdownOption(
+      id: '1',
+      label: 'Citizen',
+      translateKey: 'residency.citizen',
+    ),
+    const AsyncDropdownOption(
+      id: '2',
+      label: 'Permanent Resident',
+      translateKey: 'residency.permanent_resident',
+    ),
+    const AsyncDropdownOption(
+      id: '3',
+      label: 'Temporary Resident',
+      translateKey: 'residency.temporary_resident',
+    ),
   ];
 
   List<Widget> _fields = [];
 
   List<Option> transportationOptions = [
-    const Option(value: "1", label: "Own Car"),
-    const Option(value: "2", label: "Public Transportation")
+    const Option(
+      value: "1",
+      title: "Own Car",
+      translateKey: 'transport.own_car',
+    ),
+    const Option(
+      value: "2",
+      title: "Public Transportation",
+      translateKey: 'transport.public',
+    )
   ];
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -449,7 +481,7 @@ class _RegisterFormState extends State<RegisterForm> {
       label: translate('field.residency'),
       validator: isRequired == true ? requiredValidator : null,
       items: residencyOptions,
-      renderFn: (AsyncDropdownOption item) => item.name,
+      renderFn: (AsyncDropdownOption item) => translate(item.name),
       compareFn: (AsyncDropdownOption item, AsyncDropdownOption selectedItem) =>
           item.id == selectedItem.id,
       onSaved: (AsyncDropdownOption item) {
@@ -631,7 +663,7 @@ class _RegisterFormState extends State<RegisterForm> {
             options: data.map((Tag el) {
               return Option(
                 value: el.id,
-                label: el.name,
+                title: el.name,
               );
             }).toList(),
           );
