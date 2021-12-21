@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:piiprent/widgets/form_field.dart';
@@ -97,54 +98,72 @@ class _FilterDialogState extends State<FilterDialog> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Wrap(
+          // alignment: WrapAlignment.start,
           children: [
-            ElevatedButton(
-              // backgroundColor: Colors.blue,
-              onPressed: _setToday,
-              child: Text(translate('dialog.today'),
-                  style: TextStyle(color: Colors.white)),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
+                onPressed: _setToday,
+                child: Text(translate('dialog.today'),
+                    style: TextStyle(color: Colors.white)),
+              ),
             ),
-            SizedBox(
-              width: 8.0,
+            // SizedBox(
+            //   width: 8.0,
+            // ),
+
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
+                onPressed: _setYesterday,
+                child: Text(translate('dialog.yesterday'),
+                    style: TextStyle(color: Colors.white)),
+              ),
             ),
-            ElevatedButton(
-              // backgroundColor: Colors.blue,
-              onPressed: _setYesterday,
-              child: Text(translate('dialog.yesterday'),
-                  style: TextStyle(color: Colors.white)),
+            // SizedBox(
+            //   width: 8.0,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
+                onPressed: _setThisWeek,
+                child: Text(translate('dialog.this_week'),
+                    style: TextStyle(color: Colors.white)),
+              ),
             ),
-            SizedBox(
-              width: 8.0,
+            // SizedBox(
+            //   width: 8.0,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
+                onPressed: _setLastWeek,
+                child: Text(translate('dialog.last_week'),
+                    style: TextStyle(color: Colors.white)),
+              ),
             ),
-            ElevatedButton(
-              // backgroundColor: Colors.blue,
-              onPressed: _setThisWeek,
-              child: Text(translate('dialog.this_week'),
-                  style: TextStyle(color: Colors.white)),
+            // SizedBox(
+            //   width: 8.0,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
+                onPressed: _setThisMonth,
+                child: Text(translate('dialog.this_month'),
+                    style: TextStyle(color: Colors.white)),
+              ),
             ),
-            SizedBox(
-              width: 8.0,
-            ),
-            ElevatedButton(
-              // backgroundColor: Colors.blue,
-              onPressed: _setLastWeek,
-              child: Text(translate('dialog.last_week'),
-                  style: TextStyle(color: Colors.white)),
-            ),
-            SizedBox(
-              width: 8.0,
-            ),
-            ElevatedButton(
-              // backgroundColor: Colors.blue,
-              onPressed: _setThisMonth,
-              child: Text(translate('dialog.this_month'),
-                  style: TextStyle(color: Colors.white)),
-            ),
-            SizedBox(
-              width: 8.0,
-            ),
+            // SizedBox(
+            //   width: 8.0,
+            // ),
             ElevatedButton(
               // backgroundColor: Colors.blue,
               onPressed: _setLastMonth,
