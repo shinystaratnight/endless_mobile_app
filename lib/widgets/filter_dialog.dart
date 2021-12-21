@@ -98,67 +98,60 @@ class _FilterDialogState extends State<FilterDialog> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              ElevatedButton(
-                // color: Colors.blueAccent,
-                onPressed: _setToday,
-                child: Text(translate('dialog.today'),
-                    style: TextStyle(color: Colors.white)),
-              ),
-              SizedBox(
-                width: 8.0,
-              ),
-              ElevatedButton(
-                // color: Colors.blueAccent,
-                onPressed: _setYesterday,
-                child: Text(translate('dialog.yesterday'),
-                    style: TextStyle(color: Colors.white)),
-              ),
-              SizedBox(
-                width: 8.0,
-              ),
-              ElevatedButton(
-                // color: Colors.blueAccent,
-                onPressed: _setThisWeek,
-                child: Text(translate('dialog.this_week'),
-                    style: TextStyle(color: Colors.white)),
-              )
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              ElevatedButton(
-                // color: Colors.blueAccent,
-                onPressed: _setLastWeek,
-                child: Text(translate('dialog.last_week'),
-                    style: TextStyle(color: Colors.white)),
-              ),
-              SizedBox(
-                width: 8.0,
-              ),
-              ElevatedButton(
-                // color: Colors.blueAccent,
-                onPressed: _setThisMonth,
-                child: Text(translate('dialog.this_month'),
-                    style: TextStyle(color: Colors.white)),
-              ),
-              SizedBox(
-                width: 8.0,
-              ),
-              ElevatedButton(
-                // color: Colors.blueAccent,
-                onPressed: _setLastMonth,
-                child: Text(translate('dialog.last_month'),
-                    style: TextStyle(color: Colors.white)),
-              )
-            ],
-          ),
+        Wrap(
+          children: [
+            ElevatedButton(
+              // backgroundColor: Colors.blue,
+              onPressed: _setToday,
+              child: Text(translate('dialog.today'),
+                  style: TextStyle(color: Colors.white)),
+            ),
+            SizedBox(
+              width: 8.0,
+            ),
+            ElevatedButton(
+              // backgroundColor: Colors.blue,
+              onPressed: _setYesterday,
+              child: Text(translate('dialog.yesterday'),
+                  style: TextStyle(color: Colors.white)),
+            ),
+            SizedBox(
+              width: 8.0,
+            ),
+            ElevatedButton(
+              // backgroundColor: Colors.blue,
+              onPressed: _setThisWeek,
+              child: Text(translate('dialog.this_week'),
+                  style: TextStyle(color: Colors.white)),
+            ),
+            SizedBox(
+              width: 8.0,
+            ),
+            ElevatedButton(
+              // backgroundColor: Colors.blue,
+              onPressed: _setLastWeek,
+              child: Text(translate('dialog.last_week'),
+                  style: TextStyle(color: Colors.white)),
+            ),
+            SizedBox(
+              width: 8.0,
+            ),
+            ElevatedButton(
+              // backgroundColor: Colors.blue,
+              onPressed: _setThisMonth,
+              child: Text(translate('dialog.this_month'),
+                  style: TextStyle(color: Colors.white)),
+            ),
+            SizedBox(
+              width: 8.0,
+            ),
+            ElevatedButton(
+              // backgroundColor: Colors.blue,
+              onPressed: _setLastMonth,
+              child: Text(translate('dialog.last_month'),
+                  style: TextStyle(color: Colors.white)),
+            )
+          ],
         ),
         StreamBuilder(
           stream: stream,
