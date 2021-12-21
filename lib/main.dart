@@ -38,9 +38,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   var delegate = await LocalizationDelegate.create(
-    fallbackLocale: 'en_US',
+    fallbackLocale: 'en',
     supportedLocales: [
-      'en_US',
+      'en',
       'et',
       'fi',
       'ru',

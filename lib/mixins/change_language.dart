@@ -25,7 +25,7 @@ class ChangeLanguage {
         actions: <Widget>[
           CupertinoActionSheetAction(
             child: Text(translate('language.name.en')),
-            onPressed: () => Navigator.pop(context, 'en_US'),
+            onPressed: () => Navigator.pop(context, 'en'),
           ),
           CupertinoActionSheetAction(
             child: Text(translate('language.name.et')),
