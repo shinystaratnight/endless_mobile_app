@@ -52,6 +52,8 @@
     "button.peicework": "Piecework or combined",
     "button.edit": "Edit",
     "button.take_photo": "Add photo",
+    "button.next": "Next",
+    "button.back": "Back",
     "timesheet.status": "Status",
     "timesheet.shift_started_at": "Shift Started At",
     "timesheet.shift_ended_at": "Shift Ended At",
@@ -124,6 +126,7 @@
     "field.tags": "Tags",
     "field.personal_id": "Personal Id",
     "field.picture": "Picture",
+    "field.required": "This field is required",
     "group.title.job_information": "Job Information",
     "group.title.personal_details": "Personal Details",
     "group.title.contact_details": "Contact Details",
@@ -140,5 +143,10 @@
     "group.title.jobsite_information": "Jobsite information",
     "group.title.fulfilled": "Fulfilled",
     "group.title.unfulfilled": "Unfulfilled",
-    "group.title.skill_activities": "Skill Activities"
+    "group.title.skill_activities": "Skill Activities",
+    "stepper.general": "General info",
+    "stepper.additional": "Additional info",
+    "stepper.financial": "Financial info",
+    "stepper.industry": "Industry & skills"
 }
+

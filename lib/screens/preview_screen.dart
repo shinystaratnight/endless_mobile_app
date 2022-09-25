@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/screens/auth/login_screen.dart';
 import 'package:piiprent/services/company_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     } else if (role == RoleType.Client) {
       Navigator.pushNamed(context, '/client_home');
     } else {
-      Navigator.pushNamed(context, '/login');
+      Navigator.pushNamed(context, LoginScreen.name);
     }
   }
 

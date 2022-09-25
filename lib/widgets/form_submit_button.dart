@@ -17,7 +17,7 @@ class FormSubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return MaterialButton(
       padding: EdgeInsets.symmetric(
         horizontal: horizontalPadding,
         vertical: 10,

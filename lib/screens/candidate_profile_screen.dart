@@ -626,7 +626,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   SizedBox(
                     height: 15.0,
                   ),
-                  RaisedButton(
+                  MaterialButton(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 60, vertical: 10),
                     color: Colors.blueAccent,

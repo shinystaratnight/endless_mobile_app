@@ -65,7 +65,7 @@ class _AsyncDropdownState<T> extends State<AsyncDropdown> {
             }
           : null,
       itemAsString: widget.renderFn,
-      onChanged: (List<T> value) {
+      onChange: (List<T> value) {
         if (widget.onChanged != null) {
           widget.onChanged(value);
         }
@@ -75,8 +75,8 @@ class _AsyncDropdownState<T> extends State<AsyncDropdown> {
           widget.onSaved(value);
         }
       },
-      searchDelay: Duration(milliseconds: 800),
-      showSearchBox: widget.items == null,
+      // searchDelay: Duration(milliseconds: 800),
+      // showSearchBox: widget.items == null,
       items: widget.items as List<T>,
       dropDownButton: Icon(
         Icons.expand_more,

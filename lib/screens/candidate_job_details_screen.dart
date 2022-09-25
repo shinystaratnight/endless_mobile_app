@@ -128,7 +128,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               SizedBox(
                 height: 15.0,
               ),
-              RaisedButton(
+              MaterialButton(
                 color: Colors.white,
                 child: Text(translate('button.show')),
                 onPressed: () async {
@@ -150,7 +150,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                   });
                 },
               ),
-              RaisedButton(
+              MaterialButton(
                 color: Colors.white,
                 child: Text(translate('button.direct_me')),
                 onPressed: () async {

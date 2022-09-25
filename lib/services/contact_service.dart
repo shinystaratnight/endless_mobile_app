@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/models/api_error_model.dart';
@@ -115,6 +117,17 @@ class ContactService {
       return true;
     } else {
       var error = ApiError.fromJson(json.decode(res.body));
+      print('======');
+
+      ScaffoldMessenger.of(navigator.context).showSnackBar(
+        SnackBar(
+          backgroundColor: warningColor,
+          content: Text(
+            error.messages.join(' '),
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
       throw Exception(error.messages.join(' '));
     }
   }

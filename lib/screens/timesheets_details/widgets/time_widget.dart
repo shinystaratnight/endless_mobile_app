@@ -26,7 +26,7 @@ class _TimeButtonWidgetState extends State<TimeButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FlatButton(
+      child: TextButton(
         child: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(

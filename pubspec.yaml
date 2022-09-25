@@ -37,17 +37,22 @@ dependencies:
   jiffy:
   timezone:
   signature: ^4.1.1
-  background_location: ^0.8.1
+  background_location:
+    git:
+      url: https://github.com/hilalbaig/background_location.git
+      ref: master
   location:
   country_code_picker: ^2.0.2
   map_launcher: ^2.1.1
   flutter_translate: ^3.0.1
   get: ^4.3.8
   permission_handler: ^8.3.0
-  dropdown_search:
+  dropdown_search: ^1.0.0
   iso_countries: ^2.1.0
+#  keyboard_visibility:
   flutter_localizations:
     sdk: flutter
+
 
 
 

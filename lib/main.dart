@@ -4,6 +4,8 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:piiprent/screens/address_screen.dart';
+import 'package:piiprent/screens/auth/login_screen.dart';
+import 'package:piiprent/screens/auth/register_screen.dart';
 import 'package:piiprent/screens/candidate_home_screen.dart';
 import 'package:piiprent/screens/candidate_job_offers_screen.dart';
 import 'package:piiprent/screens/candidate_jobs_screen.dart';
@@ -15,7 +17,6 @@ import 'package:piiprent/screens/client_jobsites_screen.dart';
 import 'package:piiprent/screens/client_profile_screen.dart';
 import 'package:piiprent/screens/client_timesheets_screen.dart';
 import 'package:piiprent/screens/forgot_password_screen.dart';
-import 'package:piiprent/screens/login_screen.dart';
 import 'package:piiprent/screens/preview_screen.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/company_service.dart';
@@ -95,7 +96,9 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{
-          '/login': (BuildContext context) => LoginScreen(),
+          LoginScreen.name: (BuildContext context) => LoginScreen(),
+          RegistrationScreen.name: (BuildContext context) =>
+              RegistrationScreen(),
           '/candidate_home': (BuildContext context) => CandidateHomeScreen(),
           '/candidate_jobs': (BuildContext context) => CandidateJobsScreen(),
           '/candidate_job_offers': (BuildContext context) =>
@@ -110,7 +113,8 @@ class MyApp extends StatelessWidget {
           '/client_timesheets': (BuildContext context) =>
               ClientTimesheetsScreen(),
           '/client_jobsites': (BuildContext context) => ClientJobsitesScreen(),
-          '/forgot_password': (BuildContext context) => ForgotPasswordScreen(),
+          ForgotPasswordScreen.name: (BuildContext context) =>
+              ForgotPasswordScreen(),
           '/address': (BuildContext context) => AddressScreen(),
         },
         home: PreviewScreen(),
