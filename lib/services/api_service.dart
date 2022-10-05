@@ -52,15 +52,20 @@ class ApiService {
     Map<String, String> headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Origin': origin
+      'Origin': origin,
+      // 'Cookie': 'sessionid=vop55wzfz859b8lz65k5qz9f6lzw2zwy'
     };
     _updateByToken(headers);
 
+    debugPrint('POST Header:: $headers');
+
     String bodyEncoded = json.encode(body);
+
     debugPrint('POST URL:: $uri');
-    debugPrint('POST RequestBody:: $bodyEncoded');
+
     var res = await http.post(uri, headers: headers, body: bodyEncoded);
     debugPrint('POST URL:: $uri Response:: ${res.body}');
+
     return res;
   }
 

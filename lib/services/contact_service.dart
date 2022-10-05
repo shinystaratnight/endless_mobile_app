@@ -53,31 +53,30 @@ class ContactService {
     }
   }
 
-  Future<bool> register({
-    title,
-    email,
-    phone,
-    firstName,
-    birthday,
-    lastName,
-    industry,
-    skills,
-    gender,
-    residency,
-    nationality,
-    transport,
-    height,
-    weight,
-    bankAccountName,
-    bankName,
-    iban,
-    tags,
-    address,
-    personalId,
-    picture,
-  }) async {
+  Future<bool> register(
+      {title,
+      email,
+      phone,
+      firstName,
+      birthday,
+      lastName,
+      industry,
+      skills,
+      gender,
+      residency,
+      nationality,
+      transport,
+      height,
+      weight,
+      bankAccountName,
+      bankName,
+      iban,
+      tags,
+      address,
+      personalId,
+      picture}) async {
     var body = {
-      'contact': {
+      "contact": {
         'picture': _parse(picture, null),
         'title': _parse(title, ''),
         'first_name': _parse(firstName, ''),
@@ -85,27 +84,67 @@ class ContactService {
         'birthday': _parse(birthday, ''),
         'phone_mobile': _parse(phone, ''),
         'email': _parse(email, ''),
-        'bank_accounts': {
+        'gender': _parse(gender, ''),
+        'address': {'street_address': _parse(address, '')},
+        "bank_accounts": {
           'AccountholdersName': _parse(bankAccountName, ''),
           'IBAN': _parse(iban, ''),
           'bank_name': _parse(bankName, ''),
-        },
-        'gender': _parse(gender, ''),
-        'address': {'street_address': _parse(address, '')}
+        }
       },
-      'height': _parse(height, null),
-      'weight': _parse(weight, null),
       'nationality': {
         'id': _parse(nationality, ''),
       },
-      'transportation_to_work': _parse(transport, ''),
       'residency': _parse(residency, ''),
-      'industry': {'id': _parse(industry, '')},
-      'skill': _parse(skills, []),
-      // 'tag': _parse(tags, []),
+      'transportation_to_work': _parse(transport, ''),
+      'height': _parse(height, null),
+      'weight': _parse(weight, null),
       'formatilies': {
         'personal_id': _parse(personalId, ''),
-      }
+      },
+      'industry': {'id': _parse(industry, '')},
+      'skill': _parse(skills, []),
+      "tests": [
+        {
+          "acceptance_test_question": "9f5c24c5-6377-45a7-95e0-6c4c31716ce5",
+          "answer": "8e1b4fc4-5420-421d-a7d7-059d6c32650e"
+        },
+        {
+          "acceptance_test_question": "eb02425e-2f13-42ec-ba72-072f1262c82b",
+          "answer": "362b44e6-fa64-4e88-b1db-87fc31951356"
+        },
+        {
+          "acceptance_test_question": "fbfd70de-0807-40a5-bf36-3dc00e72824f",
+          "answer": "12beafd6-492b-4b32-abde-03aa02802d50"
+        },
+        {
+          "acceptance_test_question": "4b33ca8f-1c8e-45be-be91-fc58371066e2",
+          "answer": ""
+        },
+        {
+          "acceptance_test_question": "994783b0-87d6-404c-a866-f6b70cb32ede",
+          "answer_text": "",
+          "score": ""
+        },
+        {
+          "acceptance_test_question": "28023546-b75f-487d-8638-fa08ac320f61",
+          "answer": ""
+        },
+        {
+          "acceptance_test_question": "a41de089-4212-449d-9481-913b7be7b4ad",
+          "answer": []
+        },
+        {
+          "acceptance_test_question": "c44efcfa-4740-4a6f-88fd-3e1465b868d4",
+          "answer_text": "",
+          "score": ""
+        },
+        {
+          "acceptance_test_question": "d58d4f88-d86b-497e-a107-60923621e8ca",
+          "answer_text": "",
+          "score": ""
+        }
+      ]
     };
 
     http.Response res = await apiService.post(
@@ -117,8 +156,7 @@ class ContactService {
       return true;
     } else {
       var error = ApiError.fromJson(json.decode(res.body));
-      print('======');
-
+      debugPrint('Error ::${error.messages}');
       ScaffoldMessenger.of(navigator.context).showSnackBar(
         SnackBar(
           backgroundColor: warningColor,

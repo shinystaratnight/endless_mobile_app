@@ -6,17 +6,20 @@ class CustomTextFieldWIthoutLabel extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
   final Function validator;
+  final bool passowrd;
   const CustomTextFieldWIthoutLabel({
     Key key,
     this.hint,
     this.onChanged,
     this.controller,
     this.validator,
+    this.passowrd,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: passowrd??false,
       validator: validator,
       controller: TextEditingController(),
       onChanged: onChanged,

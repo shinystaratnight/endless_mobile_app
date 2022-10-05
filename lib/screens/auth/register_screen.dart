@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/models/application_form_model.dart';
@@ -53,7 +55,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String _industry;
   String _personalId;
   String _picture;
-  List<dynamic> _skills;
+  List<Map<String, dynamic>> _skills;
   CountryCode _phoneCountryCode;
   Map<String, dynamic> _address;
   bool _registered = false;
@@ -279,6 +281,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   List<Skill> _allSkill;
 
   bool _registrationInProcess = false;
+  CustomPopupMenuController popupController = CustomPopupMenuController();
+
   @override
   Widget build(BuildContext context) {
     ContactService contactService = Provider.of<ContactService>(context);
@@ -298,7 +302,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           child: PrimaryOutlineButton(
                             btnText: translate('button.back'),
                             onPressed: () {
-                              pageIndex--;
+                              if (pageIndex != 1) pageIndex--;
                               setState(() {});
                             },
                           ),
@@ -380,6 +384,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               actions: [
                 LanguageSelect(
+                  controller: popupController,
                   color: whiteColor,
                 )
               ],
@@ -583,7 +588,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               .name;
                           _industry = _industries
                               .firstWhere((element) => element.id == value[0])
-                              .name;
+                              .id;
 
                           industryService
                               .getSkills(
@@ -710,7 +715,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   );
                                 }).then((value) {
                               if (value != null) {
-                                _skills = value;
+                                _skills = [];
+                                value[0].forEach((element) {
+                                  _skills.add({'id': element.toString()});
+                                });
+
                                 skillsController.text = _allSkill
                                     .where((element) =>
                                         value[0].contains(element.id))
@@ -835,7 +844,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       PrimaryOutlineButton(
-                        btnText: 'Add photo',
+                        btnText: translate('button.take_photo'),
                         onPressed: () {
                           _takePicture(1);
                         },
@@ -1268,7 +1277,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     controller: addressController,
                     hint: translate('field.address').toUpperCase(),
                     onTap: () {
-                      Navigator.pushNamed(context, '/address').then((value) {
+                      Navigator.pushNamed(context, '/address')
+                          .then((value) async {
                         if (value != null) {
                           addressController.text =
                               (value as Map<String, dynamic>)['streetAddress'];
@@ -1276,6 +1286,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             _address =
                                 (value as Map<String, dynamic>)['address'];
                           });
+
+                          final root = await getApplicationDocumentsDirectory();
+
+                          File file = File('${root.path}/address.txt');
+                          file.writeAsString(_address.toString());
                         }
                       });
                     },

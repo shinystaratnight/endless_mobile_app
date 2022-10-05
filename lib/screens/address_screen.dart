@@ -68,11 +68,24 @@ class _AddressScreenState extends State<AddressScreen> {
                             final decodedResponse = json.decode(value);
                             final Map<String, dynamic> address =
                                 decodedResponse['result'];
+
+                            final Map<String, dynamic> address0 = address;
+                            address0['geometry']['viewport'] = {
+                              "south": address['geometry']['viewport']
+                                  ['southwest']['lat'],
+                              "west": address['geometry']['viewport']
+                                  ['southwest']['lng'],
+                              "north": address['geometry']['viewport']
+                                  ['northeast']['lat'],
+                              "east": address['geometry']['viewport']
+                                  ['northeast']['lng']
+                            };
                             final String streetAddress =
                                 address['formatted_address'];
+
                             Navigator.pop(context, {
                               'streetAddress': streetAddress,
-                              'address': address,
+                              'address': address0,
                             });
                           },
                         ).catchError(

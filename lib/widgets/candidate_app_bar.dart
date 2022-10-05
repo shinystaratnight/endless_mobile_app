@@ -1,3 +1,4 @@
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:piiprent/screens/candidate_notification_screen.dart';
 import 'package:piiprent/widgets/language-select.dart';
@@ -11,7 +12,9 @@ Widget getCandidateAppBar(
 }) {
   return AppBar(
     actions: [
-      LanguageSelect(),
+      LanguageSelect(
+        controller: CustomPopupMenuController(),
+      ),
       showNotification
           ? Stack(
               alignment: Alignment.center,

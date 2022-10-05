@@ -54,6 +54,7 @@
     "button.take_photo": "Add photo",
     "button.next": "Next",
     "button.back": "Back",
+    "button.done": "Done",
     "timesheet.status": "Status",
     "timesheet.shift_started_at": "Shift Started At",
     "timesheet.shift_ended_at": "Shift Ended At",

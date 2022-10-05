@@ -13,10 +13,12 @@ import 'package:piiprent/helpers/enums.dart';
 
 // Piiprent
 const String companyId = 'bbeed8cd-1b64-4c88-b0ae-5723bdd44ac3';
-const String clientId = 'wCGDXWbZFxhULVjnPYMxXkujONUHYHJnlH3mNKNM';
-const String apiUrl = 'https://api.piipai.com';
+const String clientId = 'MMtPUqBFwBDo3kVEQl6mzVm6e8h5OHclTsDcraUj';
+// const String apiUrl = 'https://api.piipai.com';
+const String apiUrl = 'https://api.piipaitest.com';
 const String formId = '58558379-4d7d-410c-8dad-19ed7d30b72e';
-const String origin = 'https://piiprent.piipai.com';
+// const String origin = 'https://piiprent.piipai.com';
+const String origin = 'https://piiprent.piipaitest.com';
 const String googleApiKey = 'AIzaSyBqirIAPcDQ3kNaDyAk_qgFOn_oQmkMTg4';
 
 const int listLimit = 5;

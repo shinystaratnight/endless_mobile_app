@@ -1,6 +1,7 @@
 enum RoleType {
   Candidate,
   Client,
+  Manager,
 }
 
 enum MessageType {

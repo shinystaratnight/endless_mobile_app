@@ -1,18 +1,20 @@
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
-import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/role_model.dart';
 import 'package:piiprent/screens/auth/register_screen.dart';
-import 'package:piiprent/screens/forgot_password_screen.dart';
-import 'package:piiprent/screens/widgets/custom_text_field_without_label.dart';
 import 'package:piiprent/screens/widgets/primary_button.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
-import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/language-select.dart';
 import 'package:provider/provider.dart';
+
+import '../../helpers/validator.dart';
+import '../../widgets/form_message.dart';
+import '../forgot_password_screen.dart';
+import '../widgets/custom_text_field_without_label.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String name = '/LoginScreen';
@@ -34,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    _formKey.currentState.save();
+    // _formKey.currentState.save();
 
     setState(() {
       _fetching = true;
@@ -64,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  CustomPopupMenuController popupController = CustomPopupMenuController();
   @override
   Widget build(BuildContext context) {
     LoginService loginService = Provider.of<LoginService>(context);
@@ -71,31 +74,82 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Column(
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: SafeArea(
-                    bottom: false,
-                    child: LanguageSelect(
-                      color: Colors.grey[500],
+      body: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: SafeArea(
+                      bottom: false,
+                      child: LanguageSelect(
+                        controller: popupController,
+                        color: Colors.grey[500],
+                      ),
                     ),
                   ),
-                ),
-                Image.asset(
-                  'images/company_banner.png',
-                  width: 200,
-                  // height: 44,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 100,
-            ),
-            Container(
+                  Image.asset(
+                    'images/company_banner.png',
+                    width: 200,
+                    // height: 44,
+                  ),
+                ],
+              ),
+
+              // SizedBox(
+              //   height: (MediaQuery.of(context).size.height -
+              //               (622 +
+              //                   MediaQuery.of(context).padding.bottom +
+              //                   MediaQuery.of(context).padding.top)) >
+              //           0
+              //       ? MediaQuery.of(context).size.height -
+              //           (622 +
+              //               MediaQuery.of(context).padding.bottom +
+              //               MediaQuery.of(context).padding.top +
+              //               15)
+              //       : 35,
+              // ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(translate('text.login_page'),
+                      style: TextStyle(
+                          color: greyColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400)),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, RegistrationScreen.name);
+                    },
+                    child: Text(translate('link.register_here'),
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: primaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
+                  ),
+                  SafeArea(
+                    top: false,
+                    child: SizedBox(
+                      height: 15,
+                    ),
+                  ),
+                ],
+              ),
+              // RegisterForm(
+              //   key: key,
+              //   settings: companyService.settings,
+              // ),
+            ],
+          ),
+          Center(
+            child: Container(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Form(
                 key: _formKey,
@@ -125,6 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 5,
                     ),
                     CustomTextFieldWIthoutLabel(
+                      passowrd: true,
                       hint: translate('field.password'),
                       onChanged: (v) {
                         _password = v;
@@ -166,53 +221,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     offset: Offset(0, 4))
               ], color: Colors.white, borderRadius: BorderRadius.circular(14)),
             ),
-            SizedBox(
-              height: (MediaQuery.of(context).size.height -
-                          (622 +
-                              MediaQuery.of(context).padding.bottom +
-                              MediaQuery.of(context).padding.top)) >
-                      0
-                  ? MediaQuery.of(context).size.height -
-                      (622 +
-                          MediaQuery.of(context).padding.bottom +
-                          MediaQuery.of(context).padding.top)
-                  : 35,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(translate('text.login_page'),
-                    style: TextStyle(
-                        color: greyColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400)),
-                SizedBox(
-                  width: 5,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, RegistrationScreen.name);
-                  },
-                  child: Text(translate('link.register_here'),
-                      style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400)),
-                ),
-                SafeArea(
-                  top: false,
-                  child: SizedBox(
-                    width: 10,
-                  ),
-                ),
-              ],
-            ),
-            // RegisterForm(
-            //   key: key,
-            //   settings: companyService.settings,
-            // ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

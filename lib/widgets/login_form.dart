@@ -45,6 +45,8 @@ class _LoginFormState extends State<LoginForm> {
       RoleType type = await loginService.login(_username, _password);
 
       if (type == RoleType.Candidate) {
+        debugPrint('type :: $type');
+
         Navigator.pushNamed(context, '/candidate_home');
 
         return;
