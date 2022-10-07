@@ -9,14 +9,18 @@ class CustomTextFieldWIthLabel extends StatelessWidget {
   final Function validator;
   final VoidCallback onTap;
   final bool required;
+  final bool capital;
+  final TextInputType type;
   const CustomTextFieldWIthLabel({
     Key key,
+    this.type,
     this.hint,
     this.onChanged,
     this.controller,
     this.validator,
     this.onTap,
     this.required = true,
+    this.capital,
   }) : super(key: key);
 
   @override
@@ -59,6 +63,9 @@ class CustomTextFieldWIthLabel extends StatelessWidget {
             height: 10,
           ),
           TextFormField(
+            textCapitalization:
+                capital != null ? TextCapitalization.characters : null,
+            keyboardType: type ?? TextInputType.text,
             onTap: onTap,
             readOnly: onTap != null,
             validator: required ? requiredValidator : null,

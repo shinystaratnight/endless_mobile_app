@@ -761,6 +761,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 if (form
                     .isExist(['contact.bank_accounts.AccountholdersName'])) ...[
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.text,
                     controller: accountHolderController,
                     hint: translate('field.account_holders_name').toUpperCase(),
                     onChanged: (v) {
@@ -770,6 +771,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ],
                 if (form.isExist(['contact.bank_accounts.bank_name'])) ...[
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.text,
                     controller: bankNameController,
                     hint: translate('field.bank_name').toUpperCase(),
                     onChanged: (v) {
@@ -779,6 +781,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ],
                 if (form.isExist(['contact.bank_accounts.IBAN'])) ...[
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.text,
                     controller: ibanController,
                     hint: translate('field.iban').toUpperCase(),
                     onChanged: (v) {
@@ -788,6 +791,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ],
                 if (form.isExist(['formalities.personal_id'])) ...[
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.text,
                     controller: personalIDController,
                     hint: translate('field.personal_id').toUpperCase(),
                     onChanged: (v) {
@@ -867,6 +871,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 if (form
                     .isExist(['contact.first_name', 'contact.last_name'])) ...[
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.text,
                     controller: firstNameController,
                     hint: translate('field.first_name').toUpperCase(),
                     onChanged: (v) {
@@ -874,6 +879,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     },
                   ),
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.text,
                     controller: lastNameController,
                     hint: translate('field.last_name').toUpperCase(),
                     onChanged: (v) {
@@ -1020,7 +1026,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             width: 5,
                           ),
                           Text(
-                            '✱',
+                            '',
                             style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
@@ -1080,6 +1086,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     children: [
                       Expanded(
                         child: CustomTextFieldWIthLabel(
+                          type: TextInputType.number,
                           controller: kgController,
                           hint: translate('field.weight').toUpperCase() + ',KG',
                           onChanged: (v) {
@@ -1092,6 +1099,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                       Expanded(
                         child: CustomTextFieldWIthLabel(
+                          type: TextInputType.number,
                           controller: cmController,
                           hint: translate('field.height').toUpperCase() + ',CM',
                           onChanged: (v) {
@@ -1103,6 +1111,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                 if (form.isExist(['contact.email'])) ...[
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.emailAddress,
                     controller: emailController,
                     hint: translate('field.email').toUpperCase(),
                     onChanged: (v) {
@@ -1202,6 +1211,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             Expanded(
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 controller: phoneController,
                                 validator: (v) {},
                                 onChanged: (v) {
@@ -1274,6 +1284,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               children: [
                 if (form.isExist(['contact.address.street_address'])) ...[
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.text,
                     controller: addressController,
                     hint: translate('field.address').toUpperCase(),
                     onTap: () {
@@ -1298,6 +1309,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ],
                 if (form.isExist(['nationality'])) ...[
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.text,
                     controller: nationalityController,
                     hint: translate('field.nationality').toUpperCase(),
                     onTap: () {
@@ -1394,6 +1406,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ],
                 if (form.isExist(['residency'])) ...[
                   CustomTextFieldWIthLabel(
+                    type: TextInputType.text,
                     controller: residencyController,
                     hint: translate('field.residency').toUpperCase(),
                     onTap: () {

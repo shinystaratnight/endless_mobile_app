@@ -40,7 +40,7 @@ class LoginService {
           await apiService.post(path: '/auth/login/', body: body);
 
       if (res.statusCode == 400) {
-        throw 'Invalid credentials given.';
+        throw 'Email or Password is not valid';
       }
 
       if (res.statusCode != 200) {
