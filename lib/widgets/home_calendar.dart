@@ -182,6 +182,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return Column(
       children: [
         TableCalendar(
+          // calendarFormat: CalendarFormat.month,
+          rowHeight: 40,
           focusedDay: DateTime.now(),
           firstDay: DateTime.now(),
           lastDay: Jiffy().add(years: 1).dateTime,
@@ -228,13 +230,19 @@ class _HomeCalendarState extends State<HomeCalendar> {
             ).then((available) => _updateAvailability(date, available, id));
           },
           calendarBuilders: CalendarBuilders(
+            outsideBuilder:
+                (BuildContext context, DateTime day, DateTime focusedDay) =>
+                    SizedBox(),
+            disabledBuilder:
+                (BuildContext context, DateTime day, DateTime focusedDay) =>
+                    day.month == DateTime.now().month ? null : SizedBox(),
             markerBuilder: (context, date, events) {
               if (_candidateAvailable != null) {
                 if (_candidateAvailable[date] != null) {
                   return Positioned(
                     bottom: 2,
                     child: _buildCircle(
-                      radius: 4.0,
+                      radius: 3.0,
                       color: Colors.green[400],
                     ),
                   );
@@ -246,7 +254,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                   return Positioned(
                     bottom: 2,
                     child: _buildCircle(
-                      radius: 4.0,
+                      radius: 3.0,
                       color: Colors.red[400],
                     ),
                   );

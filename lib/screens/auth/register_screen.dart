@@ -52,6 +52,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String _email;
   String _phone;
   String _birthday;
+  bool _birthdayIsEmpty = false;
+  bool _numberisEmpty = false;
   String _industry;
   String _personalId;
   String _picture;
@@ -317,18 +319,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 : translate('button.next'),
                             onPressed: () {
                               if (pageIndex == 1) {
-                                if (generalPageKey.currentState.validate()) {
+                                if (_birthday == null) {
+                                  _birthdayIsEmpty = true;
+                                  setState(() {});
+                                }
+                                if (_phone == null) {
+                                  _phoneIsNull = true;
+                                } else {
+                                  _phoneIsNull = false;
+                                }
+                                if (generalPageKey.currentState.validate() &&
+                                    !_birthdayIsEmpty &&
+                                    !_phoneIsNull) {
                                   if (_title != null &&
                                       _gender != null &&
                                       _phone != null) {
                                     setState(() {
                                       pageIndex++;
                                     });
-                                  } else {
-                                    if (_phone == null) {
-                                      _phoneIsNull = true;
-                                    }
-                                    setState(() {});
                                   }
                                 }
                               }
@@ -761,6 +769,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 if (form
                     .isExist(['contact.bank_accounts.AccountholdersName'])) ...[
                   CustomTextFieldWIthLabel(
+                    capital: true,
                     type: TextInputType.text,
                     controller: accountHolderController,
                     hint: translate('field.account_holders_name').toUpperCase(),
@@ -1026,7 +1035,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             width: 5,
                           ),
                           Text(
-                            '',
+                            '*',
                             style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
@@ -1045,6 +1054,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             firstDate: DateTime(1900),
                             lastDate: DateTime.now(),
                           ).then((value) {
+                            _birthdayIsEmpty = false;
                             _birthday = DateFormat('dd/MM/yyyy').format(value);
                             setState(() {});
                           });
@@ -1072,9 +1082,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           height: 49,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: hintColor, width: 1)),
+                              border: Border.all(
+                                  color: _birthdayIsEmpty
+                                      ? warningColor
+                                      : hintColor,
+                                  width: 1)),
                         ),
-                      )
+                      ),
+                      if (_birthdayIsEmpty)
+                        Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 20),
+                            child: Text(
+                              translate('field.required'),
+                              style: TextStyle(
+                                  color: warningColor,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12),
+                            )),
                     ],
                   ),
                   SizedBox(

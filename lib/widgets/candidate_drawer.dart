@@ -53,7 +53,7 @@ class CandidateDrawer extends StatelessWidget {
                           loginService.user.name,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 14,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w600,
                             color: Colors.black,

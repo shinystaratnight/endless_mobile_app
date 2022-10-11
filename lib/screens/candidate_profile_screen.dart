@@ -34,6 +34,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   int _height;
   int _weight;
   String _firstName;
+  String _address;
   String _lastName;
   String _email;
   String _phoneNumber;
@@ -114,6 +115,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
       bool result = await candidateService.updatePersonalDetails(
         id: id,
         contactId: contactId,
+        address: _address == null ? candidate.address : _address,
         height: _height == null ? candidate.height : _height,
         weight: _weight == null ? candidate.weight : _weight,
         firstName: _firstName == null ? candidate.firstName : _firstName,
@@ -233,13 +235,13 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             ),
           ],
         ),
-        Container(
-          child: Field(
-            label: translate('field.bmi'),
-            initialValue: candidate.bmi,
-            readOnly: true,
-          ),
-        ),
+        // Container(
+        //   child: Field(
+        //     label: translate('field.bmi'),
+        //     initialValue: candidate.bmi,
+        //     readOnly: true,
+        //   ),
+        // ),
         Container(
           child: Field(
             label: translate('field.birthday'),
@@ -303,7 +305,10 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           child: Field(
             label: translate('field.address'),
             initialValue: candidate.address,
-            readOnly: true,
+            readOnly: !edit,
+            onChanged: (String v) {
+              _address = v;
+            },
           ),
         ),
         edit
@@ -538,20 +543,18 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${candidate.firstName} ${candidate.lastName}',
-                        style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                      ScoreBadge(
-                        score: candidate.averageScore,
-                      )
-                    ],
+                  Text(
+                    '${candidate.firstName} ${candidate.lastName}',
+                    style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 75,
+                    child: ScoreBadge(
+                      score: candidate.averageScore,
+                    ),
                   ),
                   Center(
                     child: Text(
@@ -562,7 +565,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   SizedBox(height: 10.0),
                   Center(
                     child: Text(
-                      candidate.designation,
+                      candidate.designation ?? '',
                       style: TextStyle(
                         fontSize: 24.0,
                         color: Colors.grey[700],
@@ -614,15 +617,15 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   SizedBox(
                     height: 15.0,
                   ),
-                  _buildScore(candidate.averageScores),
-                  SizedBox(
-                    height: 15.0,
-                  ),
+                  // _buildScore(candidate.averageScores),
+                  // SizedBox(
+                  //   height: 15.0,
+                  // ),
                   _buildResidency(candidate),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  _buildTags(candidate.tags),
+                  // SizedBox(
+                  //   height: 15.0,
+                  // ),
+                  // _buildTags(candidate.tags),
                   SizedBox(
                     height: 15.0,
                   ),

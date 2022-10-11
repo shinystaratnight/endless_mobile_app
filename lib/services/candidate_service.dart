@@ -116,6 +116,7 @@ class CandidateService {
     String firstName,
     String lastName,
     String email,
+    String address,
     String phoneMobile,
   }) async {
     Map<String, dynamic> body = {
@@ -125,6 +126,7 @@ class CandidateService {
         'last_name': lastName,
         'email': email,
         'phone_mobile': phoneMobile,
+        'address': address,
       },
       'height': height,
       'weight': weight,

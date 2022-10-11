@@ -24,7 +24,6 @@ class CustomTextFieldWIthoutLabel extends StatelessWidget {
       keyboardType: type,
       obscureText: passowrd ?? false,
       validator: validator,
-      controller: TextEditingController(),
       onChanged: onChanged,
       style: TextStyle(color: activeTextColor, fontSize: 16),
       decoration: InputDecoration(

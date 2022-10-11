@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:piiprent/screens/address_screen.dart';
 import 'package:piiprent/screens/auth/login_screen.dart';
 import 'package:piiprent/screens/auth/register_screen.dart';
-import 'package:piiprent/screens/candidate_home_screen.dart';
+import 'package:piiprent/screens/candidate/candidate_home_screen.dart';
 import 'package:piiprent/screens/candidate_job_offers_screen.dart';
 import 'package:piiprent/screens/candidate_jobs_screen.dart';
 import 'package:piiprent/screens/candidate_profile_screen.dart';

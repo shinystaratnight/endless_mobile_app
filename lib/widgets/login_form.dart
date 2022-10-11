@@ -3,7 +3,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/role_model.dart';
-import 'package:piiprent/screens/candidate_home_screen.dart';
+import 'package:piiprent/screens/candidate/candidate_home_screen.dart';
 import 'package:piiprent/screens/client_home_screen.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';

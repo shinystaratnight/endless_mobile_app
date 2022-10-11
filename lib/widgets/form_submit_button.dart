@@ -18,6 +18,7 @@ class FormSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
+      disabledColor: color,
       padding: EdgeInsets.symmetric(
         horizontal: horizontalPadding,
         vertical: 10,
@@ -28,7 +29,15 @@ class FormSubmitButton extends StatelessWidget {
       disabledTextColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       onPressed: disabled ? null : onPressed,
-      child: Text(label, style: TextStyle(fontSize: 16)),
+      child: disabled ?? false
+          ? SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            )
+          : Text(label, style: TextStyle(fontSize: 16)),
     );
   }
 }

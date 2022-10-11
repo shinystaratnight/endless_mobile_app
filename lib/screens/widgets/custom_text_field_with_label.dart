@@ -63,8 +63,9 @@ class CustomTextFieldWIthLabel extends StatelessWidget {
             height: 10,
           ),
           TextFormField(
-            textCapitalization:
-                capital != null ? TextCapitalization.characters : null,
+            textCapitalization: capital != null
+                ? TextCapitalization.characters
+                : TextCapitalization.none,
             keyboardType: type ?? TextInputType.text,
             onTap: onTap,
             readOnly: onTap != null,
