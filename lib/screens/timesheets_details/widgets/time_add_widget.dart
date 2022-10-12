@@ -15,39 +15,25 @@ class TimeAddWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(
-            Icons.circle,
-            size: 5,
-            color: Colors.blue,
-          ),
-          SizedBox(
-            width: 6,
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              hintText,
-              style: TextStyle(
-                color: AppColors.grey,
-                fontSize: 12,
-              ),
+          Text(
+            hintText + ': ',
+            style: TextStyle(
+              color: AppColors.grey,
+              fontSize: 12,
             ),
           ),
-          Expanded(
-            flex: 8,
-            child: Row(
-              children: [
-                Text(
-                  dateTime is DateTime
-                      ? formatDateTime(dateTime)
-                      : dateTime.toString(),
-                  style: TextStyle(
-                    color: AppColors.lightBlack,
-                    fontSize: 14,
-                  ),
+          Row(
+            children: [
+              Text(
+                dateTime is DateTime
+                    ? formatDateTime(dateTime)
+                    : dateTime.toString(),
+                style: TextStyle(
+                  color: AppColors.lightBlack,
+                  fontSize: 14,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

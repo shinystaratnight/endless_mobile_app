@@ -51,6 +51,7 @@ dependencies:
   iso_countries: ^2.1.0
   path_provider: ^2.0.0
   custom_pop_up_menu: ^1.2.4
+  cached_network_image:
 #  keyboard_visibility:
   flutter_localizations:
     sdk: flutter

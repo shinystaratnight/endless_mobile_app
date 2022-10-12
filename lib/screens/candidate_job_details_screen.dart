@@ -48,6 +48,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
+    debugPrint(widget.jobOffer.latitude + widget.jobOffer.longitude);
   }
 
   @override
@@ -128,28 +129,28 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               SizedBox(
                 height: 15.0,
               ),
-              MaterialButton(
-                color: Colors.white,
-                child: Text(translate('button.show')),
-                onPressed: () async {
-                  showConcernDialog(() async {
-                    try {
-                      LocationData data = await _location.getLocation();
-
-                      _add(data.latitude, data.longitude);
-                      _mapController.animateCamera(
-                        CameraUpdate.newCameraPosition(
-                          CameraPosition(
-                            target: LatLng(data.latitude, data.longitude),
-                          ),
-                        ),
-                      );
-                    } catch (e) {
-                      print(e);
-                    }
-                  });
-                },
-              ),
+              // MaterialButton(
+              //   color: Colors.white,
+              //   child: Text(translate('button.show')),
+              //   onPressed: () async {
+              //     showConcernDialog(() async {
+              //       try {
+              //         LocationData data = await _location.getLocation();
+              //
+              //         _add(data.latitude, data.longitude);
+              //         _mapController.animateCamera(
+              //           CameraUpdate.newCameraPosition(
+              //             CameraPosition(
+              //               target: LatLng(data.latitude, data.longitude),
+              //             ),
+              //           ),
+              //         );
+              //       } catch (e) {
+              //         print(e);
+              //       }
+              //     });
+              //   },
+              // ),
               MaterialButton(
                 color: Colors.white,
                 child: Text(translate('button.direct_me')),
@@ -169,15 +170,15 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 width: 20.0,
                 child: GoogleMap(
                   cameraTargetBounds: CameraTargetBounds.unbounded,
-                  indoorViewEnabled: true,
-                  zoomGesturesEnabled: true,
+                  // indoorViewEnabled: true,
+                  // zoomGesturesEnabled: true,
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
                       double.parse(widget.jobOffer.latitude),
                       double.parse(widget.jobOffer.longitude),
                     ),
-                    zoom: 10,
+                    zoom: 2,
                   ),
                   markers: Set<Marker>.of(markers.values),
                 ),

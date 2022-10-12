@@ -19,36 +19,32 @@ class GeneralInformationWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SvgPicture.asset(
-            imageIcon,
-            width: 10,
-            height: 12,
-          ),
-          SizedBox(
-            width: 6,
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              name,
-              style: TextStyle(
-                fontFamily: GoogleFonts.roboto().fontFamily,
-                color: AppColors.grey,
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
-              ),
+          if (imageIcon != null)
+            SvgPicture.asset(
+              imageIcon,
+              width: 10,
+              height: 12,
+            ),
+          if (imageIcon != null)
+            SizedBox(
+              width: 6,
+            ),
+          Text(
+            name + ": ",
+            style: TextStyle(
+              fontFamily: GoogleFonts.roboto().fontFamily,
+              color: AppColors.grey,
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
             ),
           ),
-          Expanded(
-            flex: 6,
-            child: Text(
-              value,
-              style: TextStyle(
-                color: AppColors.lightBlack,
-                fontSize: 14,
-                fontFamily: GoogleFonts.roboto().fontFamily,
-                fontWeight: FontWeight.w400,
-              ),
+          Text(
+            value,
+            style: TextStyle(
+              color: AppColors.lightBlack,
+              fontSize: 14,
+              fontFamily: GoogleFonts.roboto().fontFamily,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ],

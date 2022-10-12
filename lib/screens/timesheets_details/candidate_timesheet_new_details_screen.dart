@@ -23,7 +23,7 @@ import 'widgets/timesheet_general_info_widget.dart';
 class CandidateTimesheetNewDetailsScreen extends StatefulWidget {
   final String position;
   final String jobsite;
-  final String clientContact;
+  final String name;
   final String address;
   final DateTime shiftDate;
   final DateTime shiftStart;
@@ -39,7 +39,7 @@ class CandidateTimesheetNewDetailsScreen extends StatefulWidget {
   CandidateTimesheetNewDetailsScreen({
     this.position = '',
     this.jobsite,
-    this.clientContact,
+    this.name,
     this.address,
     this.shiftDate,
     this.shiftStart,
@@ -206,28 +206,28 @@ class _CandidateTimesheetNewDetailsScreenState
               height: 12,
             ),
             GeneralInformationWidget(
-              imageIcon: 'images/icons/ic_profile.svg',
+              // imageIcon: 'images/icons/ic_profile.svg',
               name: 'SUPERVISIOR',
-              value: widget.clientContact,
+              value: widget.name,
             ),
             GeneralInformationWidget(
-                imageIcon: 'images/icons/ic_building.svg',
+                // imageIcon: 'images/icons/ic_building.svg',
                 name: 'COMPANY',
                 value: widget.companyStr),
+            // GeneralInformationWidget(
+            //     // imageIcon: 'images/icons/ic_work.svg',
+            //     name: 'JOBSITE',
+            //     value: widget.jobsite),
             GeneralInformationWidget(
-                imageIcon: 'images/icons/ic_work.svg',
-                name: 'JOBSITE',
-                value: widget.jobsite),
-            GeneralInformationWidget(
-                imageIcon: 'images/icons/ic_building.svg',
+                // imageIcon: 'images/icons/ic_building.svg',
                 name: 'ADDRESS',
                 value: widget.address),
             GeneralInformationWidget(
-                imageIcon: 'images/icons/ic_support.svg',
+                // imageIcon: 'images/icons/ic_support.svg',
                 name: 'POSITION',
                 value: widget.position),
             GeneralInformationWidget(
-              imageIcon: 'images/icons/ic_calendar.svg',
+              // imageIcon: 'images/icons/ic_calendar.svg',
               name: 'SHIFT DATE',
               value: DateFormat('MMM dd, yyyy').format(widget.shiftDate),
             ),

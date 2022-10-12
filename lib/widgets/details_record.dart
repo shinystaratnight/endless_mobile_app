@@ -15,12 +15,9 @@ class DetailsRecord extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Text(label),
-          ),
-          Text(':'),
-          Expanded(
             child: Row(
               children: [
+                Text(label + ":"),
                 SizedBox(
                   width: 8.0,
                 ),

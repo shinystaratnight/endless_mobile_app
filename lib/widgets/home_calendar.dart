@@ -182,12 +182,15 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return Column(
       children: [
         TableCalendar(
+          headerStyle:
+              HeaderStyle(titleCentered: true, formatButtonVisible: false),
           // calendarFormat: CalendarFormat.month,
           rowHeight: 40,
           focusedDay: DateTime.now(),
-          firstDay: DateTime.now(),
+          firstDay: DateTime.now().subtract(Duration(days: 365)),
           lastDay: Jiffy().add(years: 1).dateTime,
           currentDay: DateTime.now(),
+
           startingDayOfWeek: StartingDayOfWeek.monday,
           onDaySelected: (date, events) {
             String id = _candidateAvailable[date] != null
@@ -322,21 +325,20 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: data
             .map(
-              (el) => Expanded(
-                child: Row(
-                  children: [
-                    _buildCircle(radius: 8.0, color: el['color']),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    Text(
-                      translate(el['label']),
-                      style: TextStyle(fontSize: 16.0),
-                    )
-                  ],
-                ),
+              (el) => Row(
+                children: [
+                  _buildCircle(radius: 8.0, color: el['color']),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    translate(el['label']),
+                    style: TextStyle(fontSize: 16.0),
+                  )
+                ],
               ),
             )
             .toList(),

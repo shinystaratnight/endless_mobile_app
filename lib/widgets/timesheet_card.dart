@@ -49,7 +49,7 @@ class TimesheetCard extends StatelessWidget {
             builder: (context) => CandidateTimesheetNewDetailsScreen(
               position: position,
               jobsite: jobsite,
-              clientContact: clientContact,
+              name: clientContact,
               address: address,
               shiftDate: shiftDate,
               shiftStart: shiftStart,
@@ -96,9 +96,15 @@ class TimesheetCard extends StatelessWidget {
                   company,
                   style: TextStyle(fontSize: 22.0, color: Colors.white),
                 ),
-                Text(
-                  clientContact,
-                  style: TextStyle(color: Colors.white),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - (40 + 32),
+                  child: Expanded(
+                    child: Text(
+                      clientContact + clientContact,
+                      // overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
                 Row(
                   children: [

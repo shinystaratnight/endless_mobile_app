@@ -550,12 +550,13 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       fontSize: 18.0,
                     ),
                   ),
-                  SizedBox(
-                    width: 75,
-                    child: ScoreBadge(
-                      score: candidate.averageScore,
+                  if (candidate.averageScore != 'null')
+                    SizedBox(
+                      width: 75,
+                      child: ScoreBadge(
+                        score: candidate.averageScore,
+                      ),
                     ),
-                  ),
                   Center(
                     child: Text(
                       candidate.address,
