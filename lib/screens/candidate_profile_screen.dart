@@ -557,24 +557,24 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                         score: candidate.averageScore,
                       ),
                     ),
-                  Center(
-                    child: Text(
-                      candidate.address,
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
-                  Center(
-                    child: Text(
-                      candidate.designation ?? '',
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ),
+                  // Center(
+                  //   child: Text(
+                  //     candidate.address,
+                  //     style: TextStyle(fontSize: 16.0),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 10.0),
+                  // Center(
+                  //   child: Text(
+                  //     candidate.designation ?? '',
+                  //     style: TextStyle(
+                  //       fontSize: 24.0,
+                  //       color: Colors.grey[700],
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
-                    height: 15.0,
+                    height: 20.0,
                   ),
                   Form(
                     key: _detailsFormKey,

@@ -44,7 +44,9 @@ class _ClientJobsiteDetailsScreenState
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
+   setState(() {
+     _mapController = controller;
+   });
   }
 
   @override

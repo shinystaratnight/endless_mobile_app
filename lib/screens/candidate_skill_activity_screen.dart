@@ -226,6 +226,8 @@ class _CandidateSkillActivityScreenState
                         keyboardType: TextInputType.number,
                         style: TextStyle(
                           color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18,
                         ),
                       )),
                   FormMessage(

@@ -15,7 +15,7 @@ class PrimaryOutlineButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 164,
+      width: MediaQuery.of(context).size.width/2-20,
       height: 43,
       child: Container(
         decoration: BoxDecoration(

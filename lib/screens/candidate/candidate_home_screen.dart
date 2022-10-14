@@ -54,6 +54,11 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   }
 
   _getCurrentPosition(dynamic activeTimesheets) async {
+    await BackgroundLocation.setAndroidNotification(
+      title: "Background Location Service",
+      message: "Fetching your current location",
+      icon: "@mipmap/ic_launcher",
+    );
     await BackgroundLocation.startLocationService(distanceFilter: 5.0);
     // Start location service here or do something else
     BackgroundLocation.getLocationUpdates((location) async {

@@ -302,29 +302,16 @@ class _CandidateTimesheetNewDetailsScreenState
                                 });
                               }
                             },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: AppColors.blue,
-                                    size: 12,
-                                  ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 3),
+                              child: Text(
+                                'ADD',
+                                style: TextStyle(
+                                  color: AppColors.blue,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
                                 ),
-                                SizedBox(
-                                  width: 7,
-                                ),
-                                Text(
-                                  'ADD',
-                                  style: TextStyle(
-                                    color: AppColors.blue,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                 ],

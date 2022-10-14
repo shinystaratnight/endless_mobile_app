@@ -8,6 +8,7 @@
     <application
         android:label="PiipRent"
         android:icon="@mipmap/ic_launcher">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -43,9 +44,11 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data 
-            android:name="com.google.android.geo.API_KEY" 
-            android:value="AIzaSyCD0O5t8CBhVmB5w0ogHkxF2eez8Yr6_0Q"/>
+<!--        <meta-data -->
+<!--            android:name="com.google.android.geo.API_KEY" -->
+<!--            android:value="AIzaSyCD0O5t8CBhVmB5w0ogHkxF2eez8Yr6_0Q"/>-->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAxyHw2X7fcUZNdjBTqWI5AACtO2lNmkeg"/>
     </application>
 
     <!-- Required to fetch data from the internet. -->

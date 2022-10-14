@@ -74,155 +74,159 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
             children: [
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: SafeArea(
-                      bottom: false,
-                      child: LanguageSelect(
-                        controller: popupController,
-                        color: Colors.grey[500],
+                  Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: SafeArea(
+                          bottom: false,
+                          child: LanguageSelect(
+                            controller: popupController,
+                            color: Colors.grey[500],
+                          ),
+                        ),
                       ),
-                    ),
+                      Image.asset(
+                        'images/company_banner.png',
+                        width: 200,
+                        // height: 44,
+                      ),
+                    ],
                   ),
-                  Image.asset(
-                    'images/company_banner.png',
-                    width: 200,
-                    // height: 44,
-                  ),
-                ],
-              ),
 
-              // SizedBox(
-              //   height: (MediaQuery.of(context).size.height -
-              //               (622 +
-              //                   MediaQuery.of(context).padding.bottom +
-              //                   MediaQuery.of(context).padding.top)) >
-              //           0
-              //       ? MediaQuery.of(context).size.height -
-              //           (622 +
-              //               MediaQuery.of(context).padding.bottom +
-              //               MediaQuery.of(context).padding.top +
-              //               15)
-              //       : 35,
-              // ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(translate('text.login_page'),
-                      style: TextStyle(
-                          color: greyColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400)),
-                  SizedBox(
-                    width: 5,
+                  // SizedBox(
+                  //   height: (MediaQuery.of(context).size.height -
+                  //               (622 +
+                  //                   MediaQuery.of(context).padding.bottom +
+                  //                   MediaQuery.of(context).padding.top)) >
+                  //           0
+                  //       ? MediaQuery.of(context).size.height -
+                  //           (622 +
+                  //               MediaQuery.of(context).padding.bottom +
+                  //               MediaQuery.of(context).padding.top +
+                  //               15)
+                  //       : 35,
+                  // ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(translate('text.login_page'),
+                          style: TextStyle(
+                              color: greyColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400)),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, RegistrationScreen.name);
+                        },
+                        child: Text(translate('link.register_here'),
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: primaryColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400)),
+                      ),
+                      SafeArea(
+                        top: false,
+                        child: SizedBox(
+                          height: 15,
+                        ),
+                      ),
+                    ],
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, RegistrationScreen.name);
-                    },
-                    child: Text(translate('link.register_here'),
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400)),
-                  ),
-                  SafeArea(
-                    top: false,
-                    child: SizedBox(
-                      height: 15,
-                    ),
-                  ),
+                  // RegisterForm(
+                  //   key: key,
+                  //   settings: companyService.settings,
+                  // ),
                 ],
               ),
-              // RegisterForm(
-              //   key: key,
-              //   settings: companyService.settings,
-              // ),
-            ],
-          ),
-          Center(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 32,
+              Center(
+                child: Container(
+                  margin: EdgeInsets.only(top: 56),
+                  padding: EdgeInsets.only(left: 15,right: 15,top: 15),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Text(
+                          translate('button.login'),
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24),
+                        ),
+                        SizedBox(
+                          height: 32,
+                        ),
+                        CustomTextFieldWIthoutLabel(
+                          hint: translate('field.email'),
+                          onChanged: (v) {
+                            _username = v;
+                          },
+                          validator: emailValidator,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        CustomTextFieldWIthoutLabel(
+                          passowrd: true,
+                          hint: translate('field.password'),
+                          onChanged: (v) {
+                            _password = v;
+                          },
+                        ),
+                        Spacer(),
+                        FormMessage(type: MessageType.Error, message: _formError),
+                        Spacer(),
+                        PrimaryButton(
+                          btnText: translate('button.login'),
+                          onPressed: () => _onLogin(loginService, contactService),
+                          loading: _fetching,
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, ForgotPasswordScreen.name);
+                          },
+                          child: Text(
+                            translate('link.forgot_password'),
+                            style: TextStyle(color: primaryColor, fontSize: 14),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                      ],
                     ),
-                    Text(
-                      translate('button.login'),
-                      style: TextStyle(
-                          color: primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24),
-                    ),
-                    SizedBox(
-                      height: 32,
-                    ),
-                    CustomTextFieldWIthoutLabel(
-                      hint: translate('field.email'),
-                      onChanged: (v) {
-                        _username = v;
-                      },
-                      validator: emailValidator,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    CustomTextFieldWIthoutLabel(
-                      passowrd: true,
-                      hint: translate('field.password'),
-                      onChanged: (v) {
-                        _password = v;
-                      },
-                    ),
-                    Spacer(),
-                    FormMessage(type: MessageType.Error, message: _formError),
-                    Spacer(),
-                    PrimaryButton(
-                      btnText: translate('button.login'),
-                      onPressed: () => _onLogin(loginService, contactService),
-                      loading: _fetching,
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, ForgotPasswordScreen.name);
-                      },
-                      child: Text(
-                        translate('link.forgot_password'),
-                        style: TextStyle(color: primaryColor, fontSize: 14),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                  ],
+                  ),
+                  height: 345,
+                  width: MediaQuery.of(context).size.width - 32,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: Color(0xff5D7CAC).withOpacity(.13),
+                        blurRadius: 38,
+                        spreadRadius: 0,
+                        offset: Offset(0, 4))
+                  ], color: Colors.white, borderRadius: BorderRadius.circular(14)),
                 ),
               ),
-              height: 345,
-              width: MediaQuery.of(context).size.width - 32,
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: Color(0xff5D7CAC).withOpacity(.13),
-                    blurRadius: 38,
-                    spreadRadius: 0,
-                    offset: Offset(0, 4))
-              ], color: Colors.white, borderRadius: BorderRadius.circular(14)),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

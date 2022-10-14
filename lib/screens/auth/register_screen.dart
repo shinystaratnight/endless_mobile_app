@@ -494,13 +494,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text('Please Wait While We Register Your Account...'),
-                    CircularProgressIndicator()
+                    SizedBox(width: 30,height: 30,child: CircularProgressIndicator())
                   ],
                 ),
                 height: 50,
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 10),
               ),
             )
         ],
@@ -862,9 +862,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           _takePicture(1);
                         },
                       ),
-                      SizedBox(
-                        width: 15,
-                      ),
+                      Spacer(),
                       PrimaryOutlineButton(
                         btnText: 'Camera',
                         onPressed: () {
@@ -1596,9 +1594,10 @@ class CustomOptionPicker extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.only(right: label == 'Dr.' ? 0 : 5, bottom: 10),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                width: 10,
+                width: 5,
               ),
               Icon(
                 title == label
@@ -1609,12 +1608,15 @@ class CustomOptionPicker extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-              Text(
-                label,
-                style: TextStyle(
-                    color: title == label ? whiteColor : hintColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
+              SizedBox(
+                width: MediaQuery.of(context).size.width/2-63,
+                child: Text(
+                  label,
+                  style: TextStyle(
+                      color: title == label ? whiteColor : hintColor,
+                      fontSize: MediaQuery.of(context).size.height/100*2.34,
+                      fontWeight: FontWeight.w500),
+                ),
               )
             ],
           ),
