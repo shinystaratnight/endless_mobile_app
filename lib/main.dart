@@ -1,8 +1,11 @@
+import 'package:background_location/background_location.dart';
+// import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:piiprent/login_provider.dart';
 import 'package:piiprent/screens/address_screen.dart';
 import 'package:piiprent/screens/auth/login_screen.dart';
 import 'package:piiprent/screens/auth/register_screen.dart';
@@ -37,6 +40,11 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await BackgroundLocation.setAndroidNotification(
+    title: "Background Location Service",
+    message: "Fetching your current location",
+    icon: "@mipmap/ic_launcher",
+  );
 
   var delegate = await LocalizationDelegate.create(
     fallbackLocale: 'en',
@@ -51,6 +59,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create:(_)=>LoginProvider()),
         Provider<IndustryService>(create: (_) => IndustryService()),
         Provider<LoginService>(create: (_) => LoginService()),
         Provider<JobOfferService>(create: (_) => JobOfferService()),
@@ -81,6 +90,12 @@ class MyApp extends StatelessWidget {
       state: LocalizationProvider.of(context).state,
       child: GetMaterialApp(
         title: 'Piiprent',
+        useInheritedMediaQuery: true,
+        //locale: DevicePreview.locale(context),
+        //builder: DevicePreview.appBuilder,
+        //theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        //todo: uncomment localizations
         localizationsDelegates: [
           localizationDelegate,
           GlobalMaterialLocalizations.delegate,
@@ -89,7 +104,7 @@ class MyApp extends StatelessWidget {
         supportedLocales: localizationDelegate.supportedLocales,
         locale: localizationDelegate.currentLocale,
         theme: new ThemeData(
-          accentColor: Colors.blueAccent,
+          //accentColor: Colors.blueAccent,
           scaffoldBackgroundColor: Colors.grey[100],
           textTheme:
               GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),

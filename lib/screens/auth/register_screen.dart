@@ -7,6 +7,7 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -253,8 +254,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     if (image != null) {
       imageFile = File(image.path);
-      final bytes = await image.readAsBytes();
-      _picture = 'data:image/jpeg;base64,${base64.encode(bytes)}';
+      var result = await FlutterImageCompress.compressWithFile(
+        imageFile.absolute.path,
+        minWidth: 150,
+        minHeight: 150,
+        quality: 40,
+        rotate: 90,
+      );
+      print('original file size: ${imageFile.lengthSync()}');
+      print('compressed file size: ${result.length}');
+      //final bytes = await image.readAsBytes();
+      _picture = 'data:image/jpeg;base64,${base64.encode(result)}';
       setState(() {});
     }
   }
@@ -493,8 +503,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text('Please Wait While We Register Your Account...'),
-                    SizedBox(width: 30,height: 30,child: CircularProgressIndicator())
+                    InkWell(onDoubleTap: (){},child: Text('Please Wait While We Register Your Account...'),),
+                    SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: CircularProgressIndicator())
                   ],
                 ),
                 height: 50,
@@ -1606,16 +1619,19 @@ class CustomOptionPicker extends StatelessWidget {
                 color: title == label ? whiteColor : hintColor,
               ),
               SizedBox(
-                width: 10,
+                width: 5,
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width/2-63,
-                child: Text(
-                  label,
-                  style: TextStyle(
-                      color: title == label ? whiteColor : hintColor,
-                      fontSize: MediaQuery.of(context).size.height/100*2.34,
-                      fontWeight: FontWeight.w500),
+              Expanded(
+                child: Container(
+                  child: Text(
+                    label,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: title == label ? whiteColor : hintColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500),
+                  ),
                 ),
               )
             ],

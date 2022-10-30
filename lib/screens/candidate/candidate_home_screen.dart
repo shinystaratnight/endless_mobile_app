@@ -59,6 +59,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
       message: "Fetching your current location",
       icon: "@mipmap/ic_launcher",
     );
+
     await BackgroundLocation.startLocationService(distanceFilter: 5.0);
     // Start location service here or do something else
     BackgroundLocation.getLocationUpdates((location) async {
@@ -104,82 +105,121 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
     NotificationService notificationService =
         Provider.of<NotificationService>(context);
     LoginService loginService = Provider.of<LoginService>(context);
-
+    Orientation orientation = MediaQuery.of(context).orientation;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: CandidateDrawer(dashboard: true),
       appBar: getCandidateAppBar(translate('page.title.dashboard'), context),
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: PageContainer(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: HomeScreenButton(
-                      color: Colors.blue[700],
-                      icon: Icon(
-                        Icons.person,
-                        color: Colors.blue[700],
-                      ),
-                      path: '/candidate_profile',
-                      text: translate('page.title.profile'),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: HomeScreenButton(
-                      color: Colors.orange[700],
-                      icon: Icon(
-                        Icons.local_offer,
-                        color: Colors.orange[700],
-                      ),
-                      path: '/candidate_job_offers',
-                      text: translate('page.title.job_offers'),
-                      stream: notificationService.jobOfferStream,
-                      update: notificationService.checkJobOfferNotifications,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: HomeScreenButton(
-                      color: Colors.amber[700],
-                      icon: Icon(
-                        Icons.business_center,
-                        color: Colors.amber[700],
-                      ),
-                      path: '/candidate_jobs',
-                      text: translate('page.title.jobs'),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: HomeScreenButton(
-                      color: Colors.green[700],
-                      icon: Icon(
-                        Icons.query_builder,
-                        color: Colors.green[700],
-                      ),
-                      path: '/candidate_timesheets',
-                      text: translate('page.title.timesheets'),
-                      stream: notificationService.timesheetStream,
-                      update: notificationService.checkTimesheetNotifications,
-                    ),
-                  )
-                ],
-              ),
-              HomeCalendar(
-                type: CalendarType.Canddate,
-                userId: loginService.user != null ? loginService.user.id : null,
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: orientation == Orientation.landscape && size.width > 1000?MainAxisAlignment.center:MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 26,),
+                orientation == Orientation.landscape && size.width > 1000
+                    ? Align(
+                        alignment: Alignment.center,
+                        child: _buildProfileRow(notificationService),
+                      )
+                    : _buildProfileRow(notificationService),
+                orientation == Orientation.landscape && size.width > 1000
+                    ? Align(
+                        alignment: Alignment.center,
+                        child: _buildJobsRow(notificationService),
+                      )
+                    : _buildJobsRow(notificationService),
+                orientation == Orientation.landscape && size.width > 1000
+                    ? Align(
+                        alignment: Alignment.center,
+                        child: _buildHomeCalendar(loginService),
+                      )
+                    : _buildHomeCalendar(loginService),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  _buildProfileRow(notificationService) => Container(
+    constraints: BoxConstraints(
+      maxWidth: 1250,
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 1,
+              child: HomeScreenButton(
+                color: Colors.blue[700],
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.blue[700],
+                ),
+                path: '/candidate_profile',
+                text: translate('page.title.profile'),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: HomeScreenButton(
+                color: Colors.orange[700],
+                icon: Icon(
+                  Icons.local_offer,
+                  color: Colors.orange[700],
+                ),
+                path: '/candidate_job_offers',
+                text: translate('page.title.job_offers'),
+                stream: notificationService.jobOfferStream,
+                update: notificationService.checkJobOfferNotifications,
+              ),
+            ),
+          ],
+        ),
+  );
+
+  _buildJobsRow(notificationService) => Container(
+    constraints: BoxConstraints(
+      maxWidth: 1250,
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 1,
+              child: HomeScreenButton(
+                color: Colors.amber[700],
+                icon: Icon(
+                  Icons.business_center,
+                  color: Colors.amber[700],
+                ),
+                path: '/candidate_jobs',
+                text: translate('page.title.jobs'),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: HomeScreenButton(
+                color: Colors.green[700],
+                icon: Icon(
+                  Icons.query_builder,
+                  color: Colors.green[700],
+                ),
+                path: '/candidate_timesheets',
+                text: translate('page.title.timesheets'),
+                stream: notificationService.timesheetStream,
+                update: notificationService.checkTimesheetNotifications,
+              ),
+            )
+          ],
+        ),
+  );
+
+  _buildHomeCalendar(loginService) => HomeCalendar(
+        type: CalendarType.Canddate,
+        userId: loginService.user != null ? loginService.user.id : null,
+      );
 }

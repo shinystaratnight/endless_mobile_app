@@ -98,12 +98,10 @@ class TimesheetCard extends StatelessWidget {
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - (40 + 32),
-                  child: Expanded(
-                    child: Text(
-                      clientContact + clientContact,
-                      // overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: Text(
+                    clientContact + clientContact,
+                    // overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
                 Row(

@@ -35,7 +35,6 @@ class BreakDurationBoxWidget extends StatelessWidget {
           }
         },
         child: Ink(
-          height: 56,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
           decoration: BoxDecoration(
             color: AppColors.lightBlue,

@@ -155,7 +155,7 @@ class _CandidateSkillActivityScreenState
                 children: [
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                    height: 60,
+                    height: 67,
                     decoration: BoxDecoration(
                       color: Color(0xffEEF6FF),
                       border: Border.all(
@@ -173,6 +173,7 @@ class _CandidateSkillActivityScreenState
                       underline: SizedBox(),
                       hint: Text(
                         hint,
+                        maxLines: 1,
                         style: TextStyle(color: Colors.black, fontSize: 16),
                       ),
                       items: data.map((e) {

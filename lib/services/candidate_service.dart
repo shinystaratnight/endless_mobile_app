@@ -180,4 +180,28 @@ class CandidateService {
       return false;
     }
   }
+
+  Future<http.Response> getStatistics({
+  String contactId,
+    DateTime startedAt0,
+    DateTime startedAt1
+  }) async {
+    Map<String, dynamic> params = {
+      "started_at_0":'${startedAt0.year}-${startedAt0.month}-${startedAt0.day}',
+      "started_at_1":'${startedAt1.year}-${startedAt1.month}-${startedAt1.day}',
+    };
+
+    try {
+      http.Response res =
+      await apiService.get(path: '/candidate/statistics/$contactId/',params:params);
+
+      if (res.statusCode == 200) {
+        return res;
+      } else {
+        throw Exception('no data error');
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

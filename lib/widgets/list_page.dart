@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/screens/more_button.dart';
@@ -45,6 +46,7 @@ class _ListPageState<T> extends State<ListPage<T>> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     if (_listService == null) {
       return Container(
         width: 0,
@@ -66,24 +68,57 @@ class _ListPageState<T> extends State<ListPage<T>> {
 
           return RefreshIndicator(
             child: ListView.builder(
-              itemCount: data.length + 1,
-              itemBuilder: (BuildContext context, int index) {
-                if (index == data.length) {
-                  return MoreButton(
-                    isShow: _listService.canFetchMore,
-                    stream: _listService.fetchStream,
-                    onPressed: () => _listService.fetchMore(),
-                  );
-                }
-
-                T instance = data[index];
-
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: widget.getChild(instance, _listService.reset),
+          itemCount: data.length + 1,
+            itemBuilder: (BuildContext context, int index) {
+              if (index == data.length) {
+                return MoreButton(
+                  isShow: _listService.canFetchMore,
+                  stream: _listService.fetchStream,
+                  onPressed: () => _listService.fetchMore(),
                 );
-              },
-            ),
+              }
+
+              T instance = data[index];
+
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: widget.getChild(instance, _listService.reset),
+              );
+            },
+          ),
+            // child: LayoutBuilder(
+            //   builder: (context, constraints) {
+            //     return OrientationBuilder(builder: (context, orientation) {
+            //       return GridView.builder(
+            //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //           childAspectRatio: orientation == Orientation.landscape
+            //               ?  5 / 4.6
+            //               :  5 / 3.45,
+            //           crossAxisCount: size.width > 550
+            //               ?  2
+            //               : 1,
+            //         ),
+            //         itemCount: data.length + 1,
+            //         itemBuilder: (context, index) {
+            //           if (index == data.length) {
+            //             return MoreButton(
+            //               isShow: _listService.canFetchMore,
+            //               stream: _listService.fetchStream,
+            //               onPressed: () => _listService.fetchMore(),
+            //             );
+            //           }
+            //
+            //           T instance = data[index];
+            //
+            //           return Padding(
+            //             padding: const EdgeInsets.all(16.0),
+            //             child: widget.getChild(instance, _listService.reset),
+            //           );
+            //         },
+            //       );
+            //     });
+            //   },
+            // ),
             onRefresh: () => _listService.reset(),
           );
         }
@@ -92,6 +127,25 @@ class _ListPageState<T> extends State<ListPage<T>> {
           return Container(
             child: Text(translate('message.has_error')),
           );
+          // return ListView.builder(
+          //   itemCount: data.length + 1,
+          //   itemBuilder: (BuildContext context, int index) {
+          //     if (index == data.length) {
+          //       return MoreButton(
+          //         isShow: _listService.canFetchMore,
+          //         stream: _listService.fetchStream,
+          //         onPressed: () => _listService.fetchMore(),
+          //       );
+          //     }
+          //
+          //     T instance = data[index];
+          //
+          //     return Padding(
+          //       padding: const EdgeInsets.all(16.0),
+          //       child: widget.getChild(instance, _listService.reset),
+          //     );
+          //   },
+          // );
         }
 
         return Center(

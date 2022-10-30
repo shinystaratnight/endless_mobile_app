@@ -23,8 +23,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         dashboard: true,
       ),
       appBar: getClientAppBar(translate('page.title.dashboard'), context),
-      body: SingleChildScrollView(
-        child: PageContainer(
+      body: PageContainer(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Row(

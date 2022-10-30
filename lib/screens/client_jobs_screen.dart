@@ -18,16 +18,18 @@ class ClientJobsScreen extends StatelessWidget {
     return Scaffold(
       appBar: getClientAppBar(translate('page.title.jobs'), context),
       drawer: ClientDrawer(),
-      body: ListPage<Job>(
-        action: jobService.getClientJobs,
-        params: {
-          'role': loginService.user.activeRole.id,
-        },
-        getChild: (Job instance, Function reset) {
-          return ClientJobCard(
-            job: instance,
-          );
-        },
+      body: SafeArea(
+        child: ListPage<Job>(
+          action: jobService.getClientJobs,
+          params: {
+            'role': loginService.user.activeRole.id,
+          },
+          getChild: (Job instance, Function reset) {
+            return ClientJobCard(
+              job: instance,
+            );
+          },
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/login_provider.dart';
 import 'package:piiprent/models/role_model.dart';
 import 'package:piiprent/screens/auth/register_screen.dart';
 import 'package:piiprent/screens/widgets/primary_button.dart';
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-
+   LoginProvider loginProvider = Provider.of<LoginProvider>(context,listen: false);
     // _formKey.currentState.save();
 
     setState(() {
@@ -47,6 +48,14 @@ class _LoginScreenState extends State<LoginScreen> {
       RoleType type = await loginService.login(_username, _password);
 
       if (type == RoleType.Candidate) {
+        if (loginProvider.image == null)
+          Provider.of<ContactService>(context, listen: false)
+              .getContactPicture(
+              loginService.user.userId)
+              .then((value) {
+            loginProvider.image = value;
+            setState(() {});
+          });
         Navigator.pushNamed(context, '/candidate_home');
 
         return;
@@ -54,6 +63,14 @@ class _LoginScreenState extends State<LoginScreen> {
         List<Role> roles = await contactService.getRoles();
         roles[0].active = true;
         loginService.user.roles = roles;
+        if (loginProvider.image == null)
+          Provider.of<ContactService>(context, listen: false)
+              .getContactPicture(
+              loginService.user.userId)
+              .then((value) {
+            loginProvider.image = value;
+            setState(() {});
+          });
 
         Navigator.pushNamed(context, '/client_home');
         return;
@@ -156,6 +173,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   margin: EdgeInsets.only(top: 56),
                   padding: EdgeInsets.only(left: 15,right: 15,top: 15),
+                  width: MediaQuery.of(context).size.width-32,
+                  constraints: BoxConstraints(
+                    maxWidth: 550,
+                    maxHeight: 550
+                  ),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -214,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   height: 345,
-                  width: MediaQuery.of(context).size.width - 32,
+                  //width: MediaQuery.of(context).size.width - 32,
                   decoration: BoxDecoration(boxShadow: [
                     BoxShadow(
                         color: Color(0xff5D7CAC).withOpacity(.13),

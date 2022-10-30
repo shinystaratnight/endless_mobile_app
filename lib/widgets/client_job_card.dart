@@ -54,7 +54,7 @@ class ClientJobCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(translate('timesheet.status')),
+          Text(translate('timesheet.status'),style: TextStyle(fontSize: 13),),
           SizedBox(
             width: 4.0,
           ),
@@ -62,7 +62,7 @@ class ClientJobCard extends StatelessWidget {
             flex: 1,
             child: Text(
               label,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
           Icon(

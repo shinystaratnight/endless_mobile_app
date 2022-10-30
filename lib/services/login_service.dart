@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:background_location/background_location.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
@@ -12,7 +13,7 @@ import 'package:piiprent/services/api_service.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginService {
+class LoginService{
   final ApiService apiService = ApiService.create();
   final ContactService contactService = ContactService();
   User _user;

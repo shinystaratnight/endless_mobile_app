@@ -20,7 +20,6 @@ class ApiService {
   get auth {
     return this._auth;
   }
-
   ApiService();
 
   factory ApiService.create() {

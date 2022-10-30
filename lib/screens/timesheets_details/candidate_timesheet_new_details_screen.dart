@@ -16,6 +16,7 @@ import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/toast.dart';
 import 'time_widget_page.dart';
 import 'widgets/duation_show_widget.dart';
 import 'widgets/timesheet_general_info_widget.dart';
@@ -87,6 +88,9 @@ class _CandidateTimesheetNewDetailsScreenState
       _shiftEnd: widget.shiftEnd
     };
 
+
+
+
     super.initState();
   }
 
@@ -118,7 +122,8 @@ class _CandidateTimesheetNewDetailsScreenState
 
   _submitForm(TimesheetService timesheetService, bool isDelete) async {
     if (_times.values.contains(null)) {
-      Get.snackbar("Select Time", '');
+      //Get.snackbar("Select Time", '');
+      toast("Select Time");
       return;
     }
 
@@ -135,7 +140,7 @@ class _CandidateTimesheetNewDetailsScreenState
       }
 
       if (isDelete == false) {
-        Get.snackbar('Submitted', 'Time and activities submitted');
+        toast('Time and activities submitting');
       }
 
       bool result = await timesheetService.submitTimesheet(widget.id, body);
@@ -153,7 +158,7 @@ class _CandidateTimesheetNewDetailsScreenState
       setState(() => _updated = result);
     } catch (e) {
       print(e);
-      Get.snackbar(e.toString(), '');
+     // Get.snackbar(e.toString(), '');
       setState(() {
         _error = e;
       });
@@ -167,7 +172,9 @@ class _CandidateTimesheetNewDetailsScreenState
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
     SkillActivityService skillActivityService =
         Provider.of<SkillActivityService>(context);
-
+     print('breakstart: $_breakStart');
+     print('breakend: $_breakEnd');
+     print('breakstart - breakend: ${_times[_breakStart].difference(_times[_breakEnd])}');
     // List<SkillActivity> data = snapshot.data;
     return Scaffold(
       appBar: getCandidateAppBar(
@@ -337,6 +344,7 @@ class _CandidateTimesheetNewDetailsScreenState
                 skill: widget.positionId,
                 timesheet: widget.id,
                 companyId: widget.companyId),
+
             widget.status == 1 && !_updated
                 ? Column(
                     children: [

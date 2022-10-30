@@ -52,15 +52,6 @@ class _CandidateSkillActivityScreenOldState
     });
 
     try {
-      //TODO pass value accroding isedit or not
-      // await service.createSkillActivity(SkillActivityBody(
-      //   rate: double.parse(_rate),
-      //   worktype: _worktype,
-      //   value: _value,
-      //   timesheet: widget.timesheet,
-      //   skill: widget.skill,
-      // ));
-
       Navigator.pop(context, true);
     } catch (err) {
       setState(() {
@@ -81,8 +72,13 @@ class _CandidateSkillActivityScreenOldState
     var localizationDelegate = LocalizedApp.of(context).delegate;
 
     return Scaffold(
-      appBar:
-          AppBar(title: Text(translate('page.title.create_skill_activity'))),
+      appBar: AppBar(
+        title: Text(
+          translate(
+            'page.title.create_skill_activity',
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: PageContainer(
           child: Form(

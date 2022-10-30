@@ -9,6 +9,7 @@ class DurationShowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -22,7 +23,7 @@ class DurationShowWidget extends StatelessWidget {
         Row(
           children: [
             Text(
-              '${duration.inHours}h ${duration.inMinutes % 60}m',
+             '${duration.inHours}h ${duration.inMinutes % 60}m',
               style: TextStyle(
                 color: AppColors.lightBlack,
                 fontSize: 14,

@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +26,8 @@ import 'package:piiprent/widgets/profile_group.dart';
 import 'package:piiprent/widgets/score_badge.dart';
 import 'package:piiprent/widgets/stars.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/candidate_drawer.dart';
 
 class CandidateProfileScreen extends StatefulWidget {
   const CandidateProfileScreen({Key key}) : super(key: key);
@@ -56,9 +62,18 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     BuildContext context,
   ) async {
     final XFile image = await _picker.pickImage(source: ImageSource.gallery);
-
+    File imageFile = File(image.path);
     if (image != null) {
-      final bytes = await image.readAsBytes();
+      var bytes = await FlutterImageCompress.compressWithFile(
+        imageFile.absolute.path,
+        minWidth: 150,
+        minHeight: 150,
+        quality: 40,
+        rotate: 0,
+      );
+      print('original file size: ${imageFile.lengthSync()}');
+      print('compressed file size: ${bytes.length}');
+      // final bytes = await image.readAsBytes();
       final picture = 'data:image/jpeg;base64,${base64.encode(bytes)}';
       final String contactId = candidate.contact.id;
 
@@ -205,7 +220,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           children: [
             Expanded(
               child: Field(
-                label: translate('field.height'),
+                label: '${translate('field.height')} (cm)',
                 type: TextInputType.number,
                 initialValue: candidate.height.toString(),
                 readOnly: !edit,
@@ -222,7 +237,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             ),
             Expanded(
               child: Field(
-                label: translate('field.weight'),
+                label: '${translate('field.weight')} (kg)',
                 initialValue: candidate.weight.toString(),
                 readOnly: !edit,
                 validator: numberValidator,
@@ -492,169 +507,264 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   Widget build(BuildContext context) {
     CandidateService candidateService = Provider.of<CandidateService>(context);
     LoginService loginService = Provider.of<LoginService>(context);
+    Size size = MediaQuery.of(context).size;
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return Scaffold(
+              appBar:
+                  getCandidateAppBar(translate('page.title.profile'), context),
+              body: FutureBuilder(
+                future: candidateService.getCandidate(loginService.user.id),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-    return Scaffold(
-      appBar: getCandidateAppBar(translate('page.title.profile'), context),
-      body: FutureBuilder(
-        future: candidateService.getCandidate(loginService.user.id),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
+                  Candidate candidate = snapshot.data;
+
+                  return SafeArea(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                        child: orientation == Orientation.landscape
+                            ? size.width > 900
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                      top: size.height * 0.17,
+                                    ),
+                                    child: _landscapeView(
+                                      candidateService,
+                                      candidate,
+                                      size,
+                                    ),
+                                  )
+                                : _landscapeView(
+                                    candidateService, candidate, size,)
+                            : _portraitView(candidateService, candidate, size,),
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
-          }
+          },
+        );
+      },
+    );
+  }
 
-          Candidate candidate = snapshot.data;
-
-          return SingleChildScrollView(
-            child: PageContainer(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () => _onTapImage(
-                        candidateService,
-                        candidate,
-                        context,
-                      ),
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          shape: BoxShape.circle,
-                          image: candidate.contact.userAvatarUrl() != null
-                              ? DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: _imageBytes != null
-                                      ? MemoryImage(_imageBytes)
-                                      : NetworkImage(
-                                          candidate.contact.userAvatarUrl(),
-                                        ),
-                                )
-                              : null,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    '${candidate.firstName} ${candidate.lastName}',
-                    style: TextStyle(
-                      color: Colors.blueAccent,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  if (candidate.averageScore != 'null')
-                    SizedBox(
-                      width: 75,
-                      child: ScoreBadge(
-                        score: candidate.averageScore,
-                      ),
-                    ),
-                  // Center(
-                  //   child: Text(
-                  //     candidate.address,
-                  //     style: TextStyle(fontSize: 16.0),
-                  //   ),
-                  // ),
-                  // SizedBox(height: 10.0),
-                  // Center(
-                  //   child: Text(
-                  //     candidate.designation ?? '',
-                  //     style: TextStyle(
-                  //       fontSize: 24.0,
-                  //       color: Colors.grey[700],
-                  //     ),
-                  //   ),
-                  // ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Form(
-                    key: _detailsFormKey,
-                    child: _buildPersonalDetails(
-                      candidate,
-                      _editMap['details'],
-                      () {
-                        bool isEdit = _editMap['details'];
-                        setState(
-                          () {
-                            _editMap['details'] = !isEdit;
-                            _editMap = _editMap;
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Form(
-                    key: _contactFormKey,
-                    child: _buildContactDetails(
-                      candidate,
-                      _editMap['contact'],
-                      () {
-                        bool isEdit = _editMap['contact'];
-                        setState(
-                          () {
-                            _editMap['contact'] = !isEdit;
-                            _editMap = _editMap;
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  _buildSkills(candidate.skills),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  // _buildScore(candidate.averageScores),
-                  // SizedBox(
-                  //   height: 15.0,
-                  // ),
-                  _buildResidency(candidate),
-                  // SizedBox(
-                  //   height: 15.0,
-                  // ),
-                  // _buildTags(candidate.tags),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  MaterialButton(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 60, vertical: 10),
-                    color: Colors.blueAccent,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ChangePasswordScreen(),
-                        ),
+  Widget _landscapeView(candidateService, candidate, size) => Row(
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildProfileImage(context, candidateService, candidate, size),
+                _buildChangePassword(),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            flex: 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 20.0,
+                ),
+                Form(
+                  key: _detailsFormKey,
+                  child: _buildPersonalDetails(
+                    candidate,
+                    _editMap['details'],
+                    () {
+                      bool isEdit = _editMap['details'];
+                      setState(
+                        () {
+                          _editMap['details'] = !isEdit;
+                          _editMap = _editMap;
+                        },
                       );
                     },
-                    child: Text(
-                      translate('button.change_password'),
-                      style: TextStyle(fontSize: 16),
-                    ),
                   ),
-                ],
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Form(
+                  key: _contactFormKey,
+                  child: _buildContactDetails(
+                    candidate,
+                    _editMap['contact'],
+                    () {
+                      bool isEdit = _editMap['contact'];
+                      setState(
+                        () {
+                          _editMap['contact'] = !isEdit;
+                          _editMap = _editMap;
+                        },
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                _buildSkills(candidate.skills),
+                SizedBox(
+                  height: 15.0,
+                ),
+                _buildResidency(candidate),
+              ],
+            ),
+          ),
+        ],
+      );
+  _portraitView(candidateService, candidate,Size size) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: size.width>900?size.width*0.1:8.0),
+      child: Column(
+          children: [
+            _buildProfileImage(context, candidateService, candidate, size),
+            Form(
+              key: _detailsFormKey,
+              child: _buildPersonalDetails(
+                candidate,
+                _editMap['details'],
+                () {
+                  bool isEdit = _editMap['details'];
+                  setState(
+                    () {
+                      _editMap['details'] = !isEdit;
+                      _editMap = _editMap;
+                    },
+                  );
+                },
               ),
             ),
-          );
-        },
-      ),
+            SizedBox(
+              height: 15.0,
+            ),
+            Form(
+              key: _contactFormKey,
+              child: _buildContactDetails(
+                candidate,
+                _editMap['contact'],
+                () {
+                  bool isEdit = _editMap['contact'];
+                  setState(
+                    () {
+                      _editMap['contact'] = !isEdit;
+                      _editMap = _editMap;
+                    },
+                  );
+                },
+              ),
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
+            _buildSkills(candidate.skills),
+            SizedBox(
+              height: 15.0,
+            ),
+            _buildResidency(candidate),
+            _buildChangePassword(),
+          ],
+        ),
+    );
+  }
+
+  _buildChangePassword() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 15.0,
+        ),
+        MaterialButton(
+          padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+          color: Colors.blueAccent,
+          textColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ChangePasswordScreen(),
+              ),
+            );
+          },
+          child: Text(
+            translate('button.change_password'),
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildProfileImage(BuildContext context, CandidateService candidateService,
+      candidate, Size size) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 20.0,
+        ),
+        Center(
+          child: InkWell(
+            onTap: () => _onTapImage(
+              candidateService,
+              candidate,
+              context,
+            ),
+            child: Container(
+              height: size.width > 798 && size.height > 480 ? 300 : 130,
+              width: size.width > 798 && size.height > 480 ? 300 : 130,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(
+                    size.width > 798 && size.height > 480 ? 180 : 60),
+                child: CachedNetworkImage(
+                  imageUrl: candidate.contact.userAvatarUrl(),
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) => Container(
+                    height: size.width > 798 && size.height > 480 ? 300 : 130,
+                    width: size.width > 798 && size.height > 480 ? 300 : 130,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(child: new CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) => ImageContainer(
+                    content: Center(child: new Icon(Icons.error)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 10.0,
+        ),
+        Text(
+          '${candidate.firstName} ${candidate.lastName}',
+          style: TextStyle(
+            color: Colors.blueAccent,
+            fontSize: 18.0,
+          ),
+        ),
+        SizedBox(
+          height: 20.0,
+        ),
+      ],
     );
   }
 }

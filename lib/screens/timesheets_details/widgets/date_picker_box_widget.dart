@@ -6,10 +6,23 @@ import 'package:intl/intl.dart';
 import 'package:piiprent/helpers/colors.dart';
 
 class DatePickerBoxWidget extends StatelessWidget {
-  DatePickerBoxWidget({Key key, this.onDateSelected, this.initialDate})
+  DatePickerBoxWidget(
+      {Key key,
+      this.onDateSelected,
+      this.initialDate,
+      this.horPad,
+      this.verPad,
+      this.fontSize,
+      this.imageHeight,
+      this.imageWidth})
       : super(key: key);
   final Function onDateSelected;
   final DateTime initialDate;
+  double horPad;
+  double verPad;
+  double fontSize;
+  double imageHeight;
+  double imageWidth;
   final RxString dateStr = 'Date'.obs;
 
   @override
@@ -33,8 +46,8 @@ class DatePickerBoxWidget extends StatelessWidget {
           }
         },
         child: Ink(
-          height: 56,
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          padding: EdgeInsets.symmetric(
+              horizontal: horPad ?? 16, vertical: verPad ?? 18),
           decoration: BoxDecoration(
             color: AppColors.lightBlue,
             border: Border.all(
@@ -49,15 +62,16 @@ class DatePickerBoxWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Obx(
-                    () => Text(
+                () => Text(
                   dateStr.value,
-                  style: TextStyle(fontSize: 16, color: AppColors.lightBlack),
+                  style: TextStyle(
+                      fontSize: fontSize ?? 16, color: AppColors.lightBlack),
                 ),
               ),
               SvgPicture.asset(
                 "images/icons/ic_date.svg",
-                height: 20,
-                width: 18,
+                height: imageHeight ?? 20,
+                width: imageWidth ?? 18,
               ),
             ],
           ),
