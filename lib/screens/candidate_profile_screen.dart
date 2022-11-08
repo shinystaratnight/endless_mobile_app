@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -21,13 +19,13 @@ import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
-import 'package:piiprent/widgets/page_container.dart';
 import 'package:piiprent/widgets/profile_group.dart';
 import 'package:piiprent/widgets/score_badge.dart';
 import 'package:piiprent/widgets/stars.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/candidate_drawer.dart';
+import '../widgets/size_config.dart';
 
 class CandidateProfileScreen extends StatefulWidget {
   const CandidateProfileScreen({Key key}) : super(key: key);
@@ -199,7 +197,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
             SizedBox(
-              width: 8.0,
+              width: SizeConfig.widthMultiplier*1.95,
+              //width: 8.0,
             ),
             Expanded(
               child: Field(
@@ -233,7 +232,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
             SizedBox(
-              width: 8.0,
+              width: SizeConfig.widthMultiplier*1.95,
+              //width: 8.0,
             ),
             Expanded(
               child: Field(
@@ -355,7 +355,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(e.skill.name),
+                  Text(e.skill.name,style: TextStyle(fontSize: SizeConfig.heightMultiplier*2.14),),
                   ScoreBadge(score: e.score),
                 ],
               ),
@@ -444,7 +444,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
             SizedBox(
-              width: 8.0,
+              width: SizeConfig.widthMultiplier*1.95,
+              //width: 8.0,
             ),
             Expanded(
               child: Field(
@@ -466,7 +467,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                     ),
                   ),
                   SizedBox(
-                    width: 8.0,
+                    width: SizeConfig.widthMultiplier*1.95,
+                    //width: 8.0,
                   ),
                   Expanded(
                     child: Field(
@@ -512,6 +514,9 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
       builder: (context, orientation) {
         return LayoutBuilder(
           builder: (context, constraints) {
+            SizeConfig().init(constraints, orientation);
+            print('height: ${SizeConfig.heightMultiplier}');
+            print('width: ${SizeConfig.widthMultiplier}');
             return Scaffold(
               appBar:
                   getCandidateAppBar(translate('page.title.profile'), context),
@@ -534,7 +539,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                             ? size.width > 900
                                 ? Padding(
                                     padding: EdgeInsets.only(
-                                      top: size.height * 0.17,
+                                      top:SizeConfig.heightMultiplier*0.12,
                                     ),
                                     child: _landscapeView(
                                       candidateService,
@@ -543,8 +548,15 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                                     ),
                                   )
                                 : _landscapeView(
-                                    candidateService, candidate, size,)
-                            : _portraitView(candidateService, candidate, size,),
+                                    candidateService,
+                                    candidate,
+                                    size,
+                                  )
+                            : _portraitView(
+                                candidateService,
+                                candidate,
+                                size,
+                              ),
                       ),
                     ),
                   );
@@ -558,18 +570,23 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   }
 
   Widget _landscapeView(candidateService, candidate, size) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _buildProfileImage(context, candidateService, candidate, size),
-                _buildChangePassword(),
-              ],
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildProfileImage(context, candidateService, candidate, size),
+                  _buildChangePassword(),
+                ],
+              ),
             ),
           ),
           SizedBox(
-            width: 15,
+            width: SizeConfig.widthMultiplier*1.17,
+            //width: 15,
           ),
           Expanded(
             flex: 2,
@@ -577,7 +594,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 20.0,
+                  height: SizeConfig.heightMultiplier*1.06,
+                  //height: 20.0,
                 ),
                 Form(
                   key: _detailsFormKey,
@@ -596,7 +614,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 15.0,
+                  height: SizeConfig.heightMultiplier*0.79,
+                  //height: 15.0,
                 ),
                 Form(
                   key: _contactFormKey,
@@ -615,11 +634,13 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 15.0,
+                  height: SizeConfig.heightMultiplier*0.79,
+                  //height: 15.0,
                 ),
                 _buildSkills(candidate.skills),
                 SizedBox(
-                  height: 15.0,
+                  height: SizeConfig.heightMultiplier*0.79,
+                  //height: 15.0,
                 ),
                 _buildResidency(candidate),
               ],
@@ -627,58 +648,62 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           ),
         ],
       );
-  _portraitView(candidateService, candidate,Size size) {
+  _portraitView(candidateService, candidate, Size size) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: size.width>900?size.width*0.1:8.0),
+      padding: EdgeInsets.symmetric(
+          horizontal: size.width > 900 ? size.width * 0.1 : 8.0),
       child: Column(
-          children: [
-            _buildProfileImage(context, candidateService, candidate, size),
-            Form(
-              key: _detailsFormKey,
-              child: _buildPersonalDetails(
-                candidate,
-                _editMap['details'],
-                () {
-                  bool isEdit = _editMap['details'];
-                  setState(
-                    () {
-                      _editMap['details'] = !isEdit;
-                      _editMap = _editMap;
-                    },
-                  );
-                },
-              ),
+        children: [
+          _buildProfileImage(context, candidateService, candidate, size),
+          Form(
+            key: _detailsFormKey,
+            child: _buildPersonalDetails(
+              candidate,
+              _editMap['details'],
+              () {
+                bool isEdit = _editMap['details'];
+                setState(
+                  () {
+                    _editMap['details'] = !isEdit;
+                    _editMap = _editMap;
+                  },
+                );
+              },
             ),
-            SizedBox(
-              height: 15.0,
+          ),
+          SizedBox(
+            height: SizeConfig.heightMultiplier*0.79,
+            //height: 15.0,
+          ),
+          Form(
+            key: _contactFormKey,
+            child: _buildContactDetails(
+              candidate,
+              _editMap['contact'],
+              () {
+                bool isEdit = _editMap['contact'];
+                setState(
+                  () {
+                    _editMap['contact'] = !isEdit;
+                    _editMap = _editMap;
+                  },
+                );
+              },
             ),
-            Form(
-              key: _contactFormKey,
-              child: _buildContactDetails(
-                candidate,
-                _editMap['contact'],
-                () {
-                  bool isEdit = _editMap['contact'];
-                  setState(
-                    () {
-                      _editMap['contact'] = !isEdit;
-                      _editMap = _editMap;
-                    },
-                  );
-                },
-              ),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            _buildSkills(candidate.skills),
-            SizedBox(
-              height: 15.0,
-            ),
-            _buildResidency(candidate),
-            _buildChangePassword(),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: SizeConfig.heightMultiplier*0.79,
+            //height: 15.0,
+          ),
+          _buildSkills(candidate.skills),
+          SizedBox(
+            height: SizeConfig.heightMultiplier*0.79,
+            //height: 15.0,
+          ),
+          _buildResidency(candidate),
+          _buildChangePassword(),
+        ],
+      ),
     );
   }
 
@@ -686,14 +711,22 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     return Column(
       children: [
         SizedBox(
-          height: 15.0,
+          height: SizeConfig.heightMultiplier * 2.19,
+          //  height: 15.0,
         ),
         MaterialButton(
-          padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+          //padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.widthMultiplier * 14.59,
+              vertical: SizeConfig.heightMultiplier * 1.46
+          ),
           color: Colors.blueAccent,
           textColor: Colors.white,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              RoundedRectangleBorder(
+                  //borderRadius: BorderRadius.circular(20)
+                  borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*2.92)
+              ),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -701,22 +734,58 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             );
           },
-          child: Text(
-            translate('button.change_password'),
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
+          child: FittedBox(
+            child: Text(
+              translate('button.change_password'),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                //fontSize: 16,
+                fontSize: SizeConfig.textMultiplier*2.34
+              ),
+            ),
           ),
         ),
       ],
     );
   }
+  // _buildSwitchAccount() {
+  //   return Column(
+  //     children: [
+  //       SizedBox(
+  //         height: 15.0,
+  //       ),
+  //       MaterialButton(
+  //         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+  //         color: Colors.blueAccent,
+  //         textColor: Colors.white,
+  //         shape:
+  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+  //         onPressed: () {
+  //           showCupertinoModalBottomSheet(context: context, builder:(context){
+  //             return Column(
+  //               children: [
+  //
+  //               ],
+  //             );
+  //           },);
+  //         },
+  //         child: Text(
+  //           'Switch Account', //todo: add translator text
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(fontSize: 16),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   _buildProfileImage(BuildContext context, CandidateService candidateService,
       candidate, Size size) {
     return Column(
       children: [
         SizedBox(
-          height: 20.0,
+      //height:20,
+          height: SizeConfig.heightMultiplier * 2.42,
         ),
         Center(
           child: InkWell(
@@ -726,17 +795,21 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               context,
             ),
             child: Container(
-              height: size.width > 798 && size.height > 480 ? 300 : 130,
-              width: size.width > 798 && size.height > 480 ? 300 : 130,
+              height: SizeConfig.heightMultiplier * 19.03,
+              width: SizeConfig.widthMultiplier * 32.63,
+              //height: size.width > 798 && size.height > 480 ? 300 : 130,
+              //width: size.width > 798 && size.height > 480 ? 300 : 130,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(
-                    size.width > 798 && size.height > 480 ? 180 : 60),
+                //borderRadius: BorderRadius.circular(60),
+                borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*20.78),
                 child: CachedNetworkImage(
                   imageUrl: candidate.contact.userAvatarUrl(),
                   fit: BoxFit.fill,
                   placeholder: (context, url) => Container(
-                    height: size.width > 798 && size.height > 480 ? 300 : 130,
-                    width: size.width > 798 && size.height > 480 ? 300 : 130,
+                    height: SizeConfig.heightMultiplier * 19.03,
+                    width: SizeConfig.widthMultiplier * 32.63,
+                    //height: size.width > 798 && size.height > 480 ? 300 : 130,
+                    //width: size.width > 798 && size.height > 480 ? 300 : 130,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -752,17 +825,20 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           ),
         ),
         SizedBox(
-          height: 10.0,
+          height: SizeConfig.heightMultiplier * 1.26,
+          //height: 10.0,
         ),
         Text(
           '${candidate.firstName} ${candidate.lastName}',
           style: TextStyle(
-            color: Colors.blueAccent,
-            fontSize: 18.0,
-          ),
+              color: Colors.blueAccent,
+              fontSize: SizeConfig.heightMultiplier * 2.63
+              //fontSize: 18.0,
+              ),
         ),
         SizedBox(
-          height: 20.0,
+          //height:20,
+          height: SizeConfig.heightMultiplier * 1.42,
         ),
       ],
     );

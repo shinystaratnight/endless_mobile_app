@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/models/client_contact_model.dart';
@@ -12,6 +11,7 @@ import 'package:piiprent/widgets/profile_group.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/candidate_drawer.dart';
+import '../widgets/size_config.dart';
 
 class ClientProfileScreen extends StatelessWidget {
   Widget _buildContactExpandable(ClientContact contact) {
@@ -47,6 +47,8 @@ class ClientProfileScreen extends StatelessWidget {
         return OrientationBuilder(
           builder: (context, orientation) {
             Size size = Size(constraints.maxWidth, constraints.maxHeight);
+            SizeConfig().init(constraints, orientation);
+
             return Scaffold(
               appBar: getClientAppBar(translate('page.title.profile'), context),
               body: FutureBuilder(
@@ -65,9 +67,7 @@ class ClientProfileScreen extends StatelessWidget {
                     child: size.width > 798 && size.height > 360
                         ? Container(
                             width: size.width,
-                            height: orientation == Orientation.portrait
-                                ? size.height * 0.65
-                                : size.height,
+                            height:size.height,
                             child: Center(
                               child: _buildProfileWidget(
                                   context, size, contact, orientation),
@@ -91,7 +91,9 @@ class ClientProfileScreen extends StatelessWidget {
       width: size.width,
       constraints: BoxConstraints(maxWidth: 650),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        //padding: EdgeInsets.symmetric(horizontal: 15.0),
+        padding:
+            EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier * 3.65),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -101,17 +103,27 @@ class ClientProfileScreen extends StatelessWidget {
                         Expanded(
                           child: Column(
                             children: [
-                              _buildImageAndContactDetails(context, contact,size,orientation),
+                              _buildImageAndContactDetails(
+                                  context, contact, size, orientation),
                               SizedBox(
-                                height: 15.0,
+                                height: SizeConfig.heightMultiplier * 2.19,
+                                //height: 15.0,
                               ),
                               MaterialButton(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 60, vertical: 10),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      SizeConfig.widthMultiplier * 14.60,
+                                  vertical: SizeConfig.heightMultiplier * 1.46,
+                                  // horizontal: 60,
+                                  // vertical: 10,
+                                ),
                                 color: Colors.blueAccent,
                                 textColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  //borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(
+                                    SizeConfig.heightMultiplier * 2.92,
+                                  ),
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).push(
@@ -123,30 +135,49 @@ class ClientProfileScreen extends StatelessWidget {
                                 },
                                 child: Text(
                                   translate('button.change_password'),
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(
+                                    fontSize:
+                                        SizeConfig.heightMultiplier * 2.34,
+                                    //fontSize: 16,
+                                  ),
                                 ),
+                              ),
+                              SizedBox(
+                                height: SizeConfig.heightMultiplier * 2.34,
+                                //height: 15.0,
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(width: 15,),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 3.65,
+                          //width: 15,
+                        ),
                         Expanded(child: _buildContactExpandable(contact))
                       ],
                     )
                   : Column(
                       children: [
-                        _buildImageAndContactDetails(context, contact,size,orientation),
+                        _buildImageAndContactDetails(
+                            context, contact, size, orientation),
                         _buildContactExpandable(contact),
                         SizedBox(
-                          height: 15.0,
+                          height: SizeConfig.heightMultiplier * 2.34,
+                          //height: 15.0,
                         ),
                         MaterialButton(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 60, vertical: 10),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.widthMultiplier * 14.60,
+                            vertical: SizeConfig.heightMultiplier * 1.46,
+                            // horizontal: 60,
+                            // vertical: 10,
+                          ),
                           color: Colors.blueAccent,
                           textColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                            //borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.heightMultiplier * 2.92),
                           ),
                           onPressed: () {
                             Navigator.of(context).push(
@@ -157,8 +188,14 @@ class ClientProfileScreen extends StatelessWidget {
                           },
                           child: Text(
                             translate('button.change_password'),
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(
+                                //fontSize: 16,
+                                fontSize: SizeConfig.heightMultiplier * 2.34),
                           ),
+                        ),
+                        SizedBox(
+                          height: SizeConfig.heightMultiplier * 4.34,
+                          //height: 15.0,
                         ),
                       ],
                     ),
@@ -169,61 +206,85 @@ class ClientProfileScreen extends StatelessWidget {
     );
   }
 
-  _buildImageAndContactDetails(context, contact,Size size,Orientation orientation) {
+  _buildImageAndContactDetails(
+      context, contact, Size size, Orientation orientation) {
     return Column(
       children: [
         SizedBox(
-          height: 20.0,
+          height: SizeConfig.heightMultiplier * 2.92,
+          //height: 20.0,
         ),
         Center(
           child: Container(
-            height:size.width>950 && size.height>450?300: 100,
-            width:size.width>950 && size.height>450?300: 100,
+            height: SizeConfig.heightMultiplier * 18.04,
+            width: SizeConfig.widthMultiplier * 30.33,
+            // height: size.width > 950 && size.height > 450 ? 300 : 100,
+            // width: size.width > 950 && size.height > 450 ? 300 : 100,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(size.width>950 && size.height>450?180:60),
+              borderRadius: BorderRadius.circular(
+                  // size.width > 950 && size.height > 450 ? 180 : 60
+                  SizeConfig.heightMultiplier * 8.78),
               child: CachedNetworkImage(
-                imageUrl: contact.avatar,
+                imageUrl: contact.avatar ?? '',
                 fit: BoxFit.fill,
                 placeholder: (context, url) => Container(
-                  height:size.width>950 && size.height>450?300: 100,
-                  width:size.width>950 && size.height>450?300: 100,
+                  height: SizeConfig.heightMultiplier * 18.04,
+                  width: SizeConfig.widthMultiplier * 30.33,
+                  // height: size.width > 950 && size.height > 450 ? 300 : 100,
+                  // width: size.width > 950 && size.height > 450 ? 300 : 100,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                      child: new CircularProgressIndicator(),),
+                    child: new CircularProgressIndicator(),
+                  ),
                 ),
-                errorWidget: (context, url, error) =>
-                    ImageContainer(
-                      content: Center(child: new Icon(Icons.error),),
-                    ),
+                errorWidget: (context, url, error) => ImageContainer(
+                  content: Container(
+                    color: Colors.grey[400],
+                    child: new Icon(Icons.error),
+                  ),
+                ),
               ),
             ),
           ),
         ),
         SizedBox(
-          height: 10.0,
+          height: SizeConfig.heightMultiplier * 1.46,
+          // height: 10.0,
         ),
         Text(
           contact.fullName,
-          style: TextStyle(color: Colors.blueAccent, fontSize: 18.0),
+          style: TextStyle(
+            color: Colors.blueAccent,
+            fontSize: SizeConfig.heightMultiplier * 2.64,
+            //fontSize: 18.0,
+          ),
         ),
         Center(
           child: Text(
             contact.company,
-            style: TextStyle(fontSize: 16.0),
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Center(
-          child: Text(
-            contact.jobTitle,
-            style: TextStyle(fontSize: 16.0),
+            style: TextStyle(fontSize: SizeConfig.heightMultiplier * 2.34
+                //fontSize: 16.0,
+                ),
           ),
         ),
         SizedBox(
-          height: 15.0,
+          height: SizeConfig.heightMultiplier * 1.46,
+          // height: 10.0,
+        ),
+        Center(
+          child: Text(
+            contact.jobTitle,
+            style: TextStyle(fontSize: SizeConfig.heightMultiplier * 2.34
+                //fontSize: 16.0,
+                ),
+          ),
+        ),
+        SizedBox(
+          height: SizeConfig.heightMultiplier * 2.34,
+          //height: 15.0,
         ),
       ],
     );

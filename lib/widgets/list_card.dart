@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class ListCard extends StatelessWidget {
   final Widget header;
@@ -18,14 +19,21 @@ class ListCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
-                Radius.circular(10.0),
+                //Radius.circular(10.0),
+                Radius.circular(SizeConfig.heightMultiplier * 1.46),
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 3,
-                  blurRadius: 5,
-                  offset: Offset(0, 2),
+                  //spreadRadius: 3,
+                  spreadRadius: SizeConfig.heightMultiplier * 0.43,
+                  //blurRadius: 5,
+                  blurRadius: SizeConfig.heightMultiplier * 0.73,
+                  offset: Offset(
+                    0,
+                    //2,
+                    SizeConfig.heightMultiplier*0.29
+                  ),
                 ),
               ],
             ),
@@ -36,20 +44,33 @@ class ListCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
+                      //Radius.circular(10.0),
+                      Radius.circular(SizeConfig.heightMultiplier * 1.46),
                     ),
                   ),
-                  child: Padding(padding: EdgeInsets.all(10.0), child: header),
+                  child: Padding(
+                    //padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.46),
+                    child: header,
+                  ),
                 ),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0),
+                      // bottomLeft: Radius.circular(10.0),
+                      // bottomRight: Radius.circular(10.0),
+                      bottomLeft:
+                          Radius.circular(SizeConfig.heightMultiplier * 1.46),
+                      bottomRight:
+                          Radius.circular(SizeConfig.heightMultiplier * 1.46),
                     ),
                   ),
-                  child: Padding(padding: EdgeInsets.all(10.0), child: body),
+                  child: Padding(
+                    //padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.46),
+                    child: body,
+                  ),
                 ),
               ],
             ),

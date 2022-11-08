@@ -9,6 +9,7 @@ import 'package:piiprent/models/carrier_model.dart';
 import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/job_service.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../models/candidate_work_statistics.dart';
@@ -61,6 +62,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
   bool _isCustomCounter = false;
   DateTime fromDate = DateTime.now();
   DateTime toDate = DateTime.now();
+
+  DateTime _currentDay;
 
   _initCandidateCalendar() async {
     if (widget.userId == null) {
@@ -142,6 +145,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
     super.initState();
     // _calendarController = CalendarController();
     currentIndex = 3;
+    _currentDay = DateTime(DateTime.now().year, DateTime.now().month - 1,
+        DateTime.now().day);
 
     if (widget.type == CalendarType.Canddate) {
       _initCandidateCalendar();
@@ -227,50 +232,81 @@ class _HomeCalendarState extends State<HomeCalendar> {
       constraints: BoxConstraints(
         maxWidth: 1250,
       ),
-      child: Column(
+      child: ListView(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         children: [
+          Text('candidate'),
           TableCalendar(
+            availableGestures: AvailableGestures.none,
+            //  simpleSwipeConfig: const SimpleSwipeConfig(
+            //   verticalThreshold: 25.0,
+            //   swipeDetectionBehavior: SwipeDetectionBehavior.continuousDistinct,
+            // ),
             headerStyle:
                 HeaderStyle(titleCentered: true, formatButtonVisible: false),
             // calendarFormat: CalendarFormat.month,
             rowHeight: 40,
             //todo: revert to one month later for ruslanzaharov1105@gmail.com, later remove it
-            focusedDay: DateTime(DateTime.now().year, DateTime.now().month - 1,
-                DateTime.now().day),
+            focusedDay: _currentDay,
             firstDay: DateTime.now().subtract(Duration(days: 365)),
             lastDay: Jiffy().add(years: 1).dateTime,
-            currentDay: DateTime(DateTime.now().year, DateTime.now().month - 1,
-                DateTime.now().day),
+            currentDay: _currentDay,
 
             startingDayOfWeek: StartingDayOfWeek.monday,
             onDaySelected: (date, events) {
-              String id = _candidateAvailable[date] != null
-                  ? _candidateAvailable[date][0].id
-                  : _candidateUnavailable[date] != null
-                      ? _candidateUnavailable[date][0].id
-                      : null;
-
+              String id;
+              if (_candidateAvailable != null) {
+                id = _candidateAvailable[date] != null
+                    ? _candidateAvailable[date][0].id
+                    : null;
+              }
+              _currentDay = date;
               showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                   actions: [
-                    ElevatedButton(
-                      onPressed: _candidateAvailable[date] == null
+                    InkWell(
+                      onTap: _candidateAvailable[date] == null
                           ? () {
                               Navigator.of(context)
                                   .pop(CarrrierStatus.Available);
                             }
                           : null,
-                      child: Text(translate('button.available')),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                        ),
+                        padding: EdgeInsets.all(12),
+                        child: Text(
+                          translate('button.available'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: _candidateUnavailable[date] == null
+                    InkWell(
+                      onTap: _candidateUnavailable[date] == null
                           ? () {
                               Navigator.of(context)
                                   .pop(CarrrierStatus.Unavailable);
                             }
                           : null,
-                      child: Text(translate('button.unavailable')),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                        ),
+                        padding: EdgeInsets.all(12),
+                        child: Text(
+                          translate('button.unavailable'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                   title: Text(id != null
@@ -338,30 +374,32 @@ class _HomeCalendarState extends State<HomeCalendar> {
                         alignment: WrapAlignment.center,
                         runSpacing: 10,
                         children: [
-                          ...List.generate(counterButtons.length, (index) => CounterButton(
-                            index: index,
-                            last: counterButtons.length - 1,
-                            title: counterButtons[index],
-                            onTapped: currentIndex == index,
-                            onPressed: () async {
-                              setState(() {
-                                currentIndex = index;
-                                _isLoading = true;
-                                _isCustomCounter = false;
-                              });
-                              if (index == 5) {
-                                setState(() {
-                                  _isCustomCounter = true;
-                                });
-                              }
-                              if (!_isCustomCounter) {
-                                await _calculateEarning(index);
-                              }
-                              setState(() {
-                                _isLoading = false;
-                              });
-                            },
-                          ))
+                          ...List.generate(
+                              counterButtons.length,
+                              (index) => CounterButton(
+                                    index: index,
+                                    last: counterButtons.length - 1,
+                                    title: counterButtons[index],
+                                    onTapped: currentIndex == index,
+                                    onPressed: () async {
+                                      setState(() {
+                                        currentIndex = index;
+                                        _isLoading = true;
+                                        _isCustomCounter = false;
+                                      });
+                                      if (index == 5) {
+                                        setState(() {
+                                          _isCustomCounter = true;
+                                        });
+                                      }
+                                      if (!_isCustomCounter) {
+                                        await _calculateEarning(index);
+                                      }
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                    },
+                                  ))
                         ],
                       ),
                     ),
@@ -405,7 +443,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      '${_candidateWorkStates.hourlyWork.totalHours}h ${_candidateWorkStates.hourlyWork.totalMinutes}m',
+                                      '${(_candidateWorkStates.hourlyWork.totalHours ?? 0).toInt()}h ${_candidateWorkStates.hourlyWork.totalMinutes ?? 0}m',
                                       style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400),
@@ -502,32 +540,31 @@ class _HomeCalendarState extends State<HomeCalendar> {
     var data = [
       {
         'color': Colors.green[400],
-        'label': translate('group.title.fulfilled'),
+        'label': translate('button.available'),
       },
       {
         'color': Colors.red[400],
-        'label': translate('group.title.unfulfilled'),
+        'label': translate('button.unavailable'),
       }
     ];
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: data
             .map(
-              (el) => Expanded(
-                child: Row(
-                  children: [
-                    _buildCircle(radius: 8.0, color: el['color']),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    Text(
-                      translate(el['label']),
-                      style: TextStyle(fontSize: 16.0),
-                    )
-                  ],
-                ),
+              (el) => Row(
+                children: [
+                  _buildCircle(radius: 8.0, color: el['color']),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    translate(el['label']),
+                    style: TextStyle(fontSize: 16.0),
+                  )
+                ],
               ),
             )
             .toList(),
@@ -584,10 +621,18 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
   Widget _buildTableCell(String text, [Color color = Colors.black]) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      //padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      padding: EdgeInsets.symmetric(
+        vertical: SizeConfig.heightMultiplier * 1.17,
+        horizontal: SizeConfig.widthMultiplier * 0.97,
+      ),
       child: Text(
         text,
-        style: TextStyle(color: color, fontSize: 16.0),
+        style: TextStyle(
+          color: color,
+          //fontSize: 16.0,
+          fontSize: SizeConfig.heightMultiplier * 2.34,
+        ),
       ),
     );
   }
@@ -604,15 +649,22 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 6.0),
-          margin: const EdgeInsets.only(top: 14.0),
+          //padding: const EdgeInsets.symmetric(vertical: 6.0),
+          //margin: const EdgeInsets.only(top: 14.0),
+          padding: EdgeInsets.symmetric(
+            vertical: SizeConfig.heightMultiplier * 0.87,
+          ),
+          margin: EdgeInsets.only(
+            top: SizeConfig.heightMultiplier * 2.05,
+          ),
           width: double.infinity,
           alignment: Alignment.center,
           decoration: BoxDecoration(color: Colors.blue),
           child: Text(
             translate('table.shifts'),
             style: TextStyle(
-              fontSize: 16.0,
+              //fontSize: 16.0,
+              fontSize: SizeConfig.heightMultiplier * 2.34,
               color: Colors.black,
             ),
           ),
@@ -659,73 +711,85 @@ class _HomeCalendarState extends State<HomeCalendar> {
   }
 
   Widget _buildClientCalendar(BuildContext context) {
-    return Column(
-      children: [
-        TableCalendar(
-          headerStyle:
-          HeaderStyle(titleCentered: true, formatButtonVisible: false),
-          //todo: revert to one month later for ruslanzaharov1105@gmail.com, later remove it
-          focusedDay: DateTime(DateTime.now().year, DateTime.now().month - 1,
-              DateTime.now().day),
-          firstDay: DateTime.now().subtract(Duration(days: 365)),
-          lastDay: Jiffy().add(years: 1).dateTime,
-          currentDay: DateTime(DateTime.now().year, DateTime.now().month - 1,
-              DateTime.now().day),
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          onDaySelected: (date, events) {
-            List<Shift> shifts = [];
-            _clientFulfilledShifts.values
-                .forEach((shift) => shifts.forEach((element) {
-                      shifts.add(element);
-                    }));
-            _clientUnfulfilledShifts.values
-                .forEach((shift) => shifts.forEach((element) {
-                      shifts.add(element);
-                    }));
-
-            setState(() {
-              _shifts = shifts;
-            });
-          },
-          calendarBuilders: CalendarBuilders(
-            outsideBuilder:
-                (BuildContext context, DateTime day, DateTime focusedDay) =>
-                SizedBox(),
-            disabledBuilder:
-                (BuildContext context, DateTime day, DateTime focusedDay) =>
-            day.month == DateTime.now().month ? null : SizedBox(),
-            markerBuilder: (context, date, events) {
-              if (_clientFulfilledShifts != null) {
-                if (_clientFulfilledShifts[date] != null) {
-                  return Positioned(
-                    bottom: 2,
-                    child: _buildCircle(
-                      radius: 4.0,
-                      color: Colors.green[400],
-                    ),
-                  );
-                }
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: 1250,
+      ),
+      child: ListView(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        children: [
+          Text('client'),
+          TableCalendar(
+            availableGestures: AvailableGestures.none,
+            headerStyle:
+                HeaderStyle(titleCentered: true, formatButtonVisible: false),
+            //todo: revert to one month later for ruslanzaharov1105@gmail.com, later remove it
+            focusedDay: _currentDay,
+            firstDay: DateTime.now().subtract(Duration(days: 365)),
+            lastDay: Jiffy().add(years: 1).dateTime,
+            currentDay: _currentDay,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            onDaySelected: (date, events) {
+              List<Shift> shifts = [];
+              if(_clientFulfilledShifts != null){
+                _clientFulfilledShifts.values
+                    .forEach((shift) => shifts.forEach((element) {
+                  shifts.add(element);
+                }));
+              }
+              if(_clientUnfulfilledShifts != null){
+                _clientUnfulfilledShifts.values
+                    .forEach((shift) => shifts.forEach((element) {
+                  shifts.add(element);
+                }));
               }
 
-              if (_clientUnfulfilledShifts != null) {
-                if (_clientUnfulfilledShifts[date] != null) {
-                  return Positioned(
-                    bottom: 2,
-                    child: _buildCircle(
-                      radius: 4.0,
-                      color: Colors.red[400],
-                    ),
-                  );
-                }
-              }
-
-              return SizedBox();
+              setState(() {
+                _shifts = shifts;
+                _currentDay = date;
+              });
             },
+            calendarBuilders: CalendarBuilders(
+              outsideBuilder:
+                  (BuildContext context, DateTime day, DateTime focusedDay) =>
+                      SizedBox(),
+              disabledBuilder:
+                  (BuildContext context, DateTime day, DateTime focusedDay) =>
+                      day.month == DateTime.now().month ? null : SizedBox(),
+              markerBuilder: (context, date, events) {
+                if (_clientFulfilledShifts != null) {
+                  if (_clientFulfilledShifts[date] != null) {
+                    return Positioned(
+                      bottom: 2,
+                      child: _buildCircle(
+                        radius: SizeConfig.heightMultiplier * 0.58,
+                        color: Colors.green[400],
+                      ),
+                    );
+                  }
+                }
+
+                if (_clientUnfulfilledShifts != null) {
+                  if (_clientUnfulfilledShifts[date] != null) {
+                    return Positioned(
+                      bottom: 2,
+                      child: _buildCircle(
+                        radius: SizeConfig.heightMultiplier * 0.58,
+                        color: Colors.red[400],
+                      ),
+                    );
+                  }
+                }
+
+                return SizedBox();
+              },
+            ),
           ),
-        ),
-        _buildTable(_shifts),
-        _buildClientLegend(),
-      ],
+          _buildTable(_shifts),
+          _buildClientLegend(),
+        ],
+      ),
     );
   }
 
@@ -745,7 +809,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
   _calculateEarning(int index) async {
     DateTime now = DateTime.now();
     //todo: revert to one month later for ruslanzaharov1105@gmail.com
-    now = DateTime(now.year,now.month-1,now.day);
+    now = DateTime(now.year, now.month - 1, now.day);
     int lastDay = DateTime(now.year, now.month + 1, 0).day;
     DateTime firstDate = DateTime(now.year, now.month - 1, 1);
     DateTime lastDate = DateTime(now.year, now.month - 1, lastDay);
@@ -936,7 +1000,7 @@ class CounterButton extends StatefulWidget {
 }
 
 class _CounterButtonState extends State<CounterButton> {
-  double radius =3;
+  double radius = 3;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

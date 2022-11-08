@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:background_location/background_location.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';

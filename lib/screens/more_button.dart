@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class MoreButton extends StatelessWidget {
   final bool isShow;
@@ -19,6 +20,9 @@ class MoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints = BoxConstraints(maxHeight: size.height,maxWidth: size.width);
     if (!isShow) {
       return SizedBox();
     }
@@ -35,7 +39,7 @@ class MoreButton extends StatelessWidget {
         return _buildWrapper(
           ElevatedButton(
             onPressed: onPressed,
-            child: Text(translate('button.load')),
+            child: Text(translate('button.load'),style: TextStyle(fontSize: SizeConfig.heightMultiplier*2.34),),
           ),
         );
       },

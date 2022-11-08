@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class DetailsRecord extends StatelessWidget {
   final String label;
@@ -10,28 +11,48 @@ class DetailsRecord extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+      padding: EdgeInsets.symmetric(
+        // horizontal: 8.0,
+        // vertical: 12.0,
+        horizontal: SizeConfig.widthMultiplier * 1.94,
+        vertical: SizeConfig.heightMultiplier * 1.76,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Row(
               children: [
-                Text(label + ":"),
+                Text(
+                  label + ":",
+                  style:
+                      TextStyle(fontSize: SizeConfig.heightMultiplier * 2.34),
+                ),
                 SizedBox(
-                  width: 8.0,
+                  //width: 8.0,
+                  width: SizeConfig.widthMultiplier * 1.94,
                 ),
                 Expanded(
                   child: Row(
                     children: this.button != null
                         ? [
-                            Text(value != null ? value : ''),
+                            Text(
+                              value != null ? value : '',
+                              style: TextStyle(
+                                fontSize: SizeConfig.heightMultiplier * 2.34,
+                              ),
+                            ),
                             SizedBox(width: 8.0),
                             Expanded(child: this.button)
                           ]
                         : [
                             Expanded(
-                              child: Text(value != null ? value : ''),
+                              child: Text(
+                                value != null ? value : '',
+                                style: TextStyle(
+                                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                                ),
+                              ),
                             ),
                           ],
                   ),

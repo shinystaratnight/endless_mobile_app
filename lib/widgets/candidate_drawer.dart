@@ -1,11 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/login_provider.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
 
 //String img;
@@ -44,7 +43,9 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
   Widget build(BuildContext context) {
     LoginService loginService = Provider.of<LoginService>(context);
     ContactService contactService = Provider.of<ContactService>(context);
-
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    SizeConfig().init(BoxConstraints(maxWidth: size.width,maxHeight: size.height), orientation);
     return Container(
       width: 250,
       decoration: BoxDecoration(color: Colors.white),
@@ -61,38 +62,56 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
                     Consumer<LoginProvider>(
                       builder: (_, login, __) {
                         return Container(
-                          height: 100,
-                          width: 100,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: CachedNetworkImage(
-                              imageUrl: login.image,
-                              fit: BoxFit.fill,
-                              placeholder: (context, url) => Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
+                          height:SizeConfig.heightMultiplier*14.64,
+                          width: SizeConfig.widthMultiplier*24.33,
+                          // height: 100,
+                          // width: 100,
+                          child: login.image == ''
+                              ? ClipRRect(
+                            //borderRadius: BorderRadius.circular(60),
+                            borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*8.78),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.person,
+                                      //size: 30,
+                                      size: SizeConfig.heightMultiplier*4.78,
+                                    ),
+                                  ),
+                                )
+                              : ClipRRect(
+                            //borderRadius: BorderRadius.circular(60),
+                            borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*8.78),
+                                  child: CachedNetworkImage(
+                                    imageUrl: login.image,
+                                    fit: BoxFit.fill,
+                                    progressIndicatorBuilder:
+                                        (context, val, progress) {
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          value: progress.progress,
+                                        ),
+                                      );
+                                    },
+                                    errorWidget: (context, url, error) =>
+                                        ImageContainer(
+                                      content:
+                                          Center(child: new Icon(Icons.error)),
+                                    ),
+                                  ),
                                 ),
-                                child: Center(
-                                    child: new CircularProgressIndicator()),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  ImageContainer(
-                                content: Center(child: new Icon(Icons.error)),
-                              ),
-                            ),
-                          ),
                         );
                       },
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier*1.46,
+                      //height: 10,
+                    ),
                     Text(
                       loginService.user != null ? loginService.user.name : '',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 14,
+                        //fontSize: 14,
+                        fontSize: SizeConfig.heightMultiplier*2.05,
                         overflow: TextOverflow.ellipsis,
                         fontWeight: FontWeight.w600,
                         color: Colors.black,
@@ -106,7 +125,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
             !widget.dashboard
                 ? ListTile(
                     title: Text(translate('page.title.dashboard'),
-                        style: _textStyle),
+                        style: _textStyle.copyWith(fontSize: SizeConfig.textMultiplier*2.64)),
                     onTap: () =>
                         Navigator.pushNamed(context, '/candidate_home'),
                   )
@@ -117,7 +136,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
                   )
                 : SizedBox(),
             ListTile(
-              title: Text(translate('page.title.profile'), style: _textStyle),
+              title: Text(translate('page.title.profile'), style: _textStyle.copyWith(fontSize: SizeConfig.textMultiplier*2.64)),
               onTap: () => Navigator.pushNamed(context, '/candidate_profile'),
             ),
             Divider(
@@ -125,7 +144,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
             ),
             ListTile(
               title:
-                  Text(translate('page.title.job_offers'), style: _textStyle),
+                  Text(translate('page.title.job_offers'), style: _textStyle.copyWith(fontSize: SizeConfig.textMultiplier*2.64)),
               onTap: () =>
                   Navigator.pushNamed(context, '/candidate_job_offers'),
             ),
@@ -133,7 +152,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
               color: Colors.grey[300],
             ),
             ListTile(
-              title: Text(translate('page.title.jobs'), style: _textStyle),
+              title: Text(translate('page.title.jobs'), style: _textStyle.copyWith(fontSize: SizeConfig.textMultiplier*2.64)),
               onTap: () => Navigator.pushNamed(context, '/candidate_jobs'),
             ),
             Divider(
@@ -141,7 +160,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
             ),
             ListTile(
               title:
-                  Text(translate('page.title.timesheets'), style: _textStyle),
+                  Text(translate('page.title.timesheets'), style: _textStyle.copyWith(fontSize: SizeConfig.textMultiplier*2.64)),
               onTap: () =>
                   Navigator.pushNamed(context, '/candidate_timesheets'),
             ),
@@ -149,7 +168,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
               color: Colors.grey[300],
             ),
             ListTile(
-              title: Text(translate('button.logout'), style: _textStyle),
+              title: Text(translate('button.logout'), style: _textStyle.copyWith(fontSize: SizeConfig.textMultiplier*2.64)),
               onTap: () => {
                 loginService
                     .logout()
@@ -172,8 +191,10 @@ class ImageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      width: 100,
+      height:SizeConfig.heightMultiplier*13.04,
+      width: SizeConfig.widthMultiplier*30.63,
+      // height: 100,
+      // width: 100,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black, width: 0.2),
       ),

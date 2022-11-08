@@ -113,29 +113,39 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
       body: SafeArea(
         child: PageContainer(
           child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: orientation == Orientation.landscape && size.width > 1000?MainAxisAlignment.center:MainAxisAlignment.start,
+              mainAxisAlignment:
+                  orientation == Orientation.landscape && size.width > 1000
+                      ? MainAxisAlignment.center
+                      :
+                  MainAxisAlignment.start,
               children: [
-                SizedBox(height: 26,),
+                SizedBox(
+                  height: 26,
+                ),
                 orientation == Orientation.landscape && size.width > 1000
                     ? Align(
                         alignment: Alignment.center,
                         child: _buildProfileRow(notificationService),
                       )
-                    : _buildProfileRow(notificationService),
+                    :
+                _buildProfileRow(notificationService),
                 orientation == Orientation.landscape && size.width > 1000
                     ? Align(
                         alignment: Alignment.center,
                         child: _buildJobsRow(notificationService),
                       )
-                    : _buildJobsRow(notificationService),
-                orientation == Orientation.landscape && size.width > 1000
-                    ? Align(
-                        alignment: Alignment.center,
-                        child: _buildHomeCalendar(loginService),
-                      )
-                    : _buildHomeCalendar(loginService),
+                    :
+                _buildJobsRow(notificationService),
+                if (orientation == Orientation.landscape && size.width > 1000)
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(child: _buildHomeCalendar(loginService)),
+                  )
+                else
+                  _buildHomeCalendar(loginService),
               ],
             ),
           ),
@@ -145,11 +155,11 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   }
 
   _buildProfileRow(notificationService) => Container(
-    constraints: BoxConstraints(
-      maxWidth: 1250,
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+        constraints: BoxConstraints(
+          maxWidth: 1250,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               flex: 1,
@@ -179,14 +189,14 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
             ),
           ],
         ),
-  );
+      );
 
   _buildJobsRow(notificationService) => Container(
-    constraints: BoxConstraints(
-      maxWidth: 1250,
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+        constraints: BoxConstraints(
+          maxWidth: 1250,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               flex: 1,
@@ -216,9 +226,9 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
             )
           ],
         ),
-  );
+      );
 
-  _buildHomeCalendar(loginService) => HomeCalendar(
+  Widget _buildHomeCalendar(loginService) => HomeCalendar(
         type: CalendarType.Canddate,
         userId: loginService.user != null ? loginService.user.id : null,
       );

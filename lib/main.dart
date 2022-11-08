@@ -1,4 +1,5 @@
 import 'package:background_location/background_location.dart';
+import 'package:device_preview/device_preview.dart';
 // import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -36,6 +37,7 @@ import 'package:piiprent/services/skill_service.dart';
 import 'package:piiprent/services/tag_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/services/worktype_service.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -57,26 +59,64 @@ void main() async {
   );
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create:(_)=>LoginProvider()),
-        Provider<IndustryService>(create: (_) => IndustryService()),
-        Provider<LoginService>(create: (_) => LoginService()),
-        Provider<JobOfferService>(create: (_) => JobOfferService()),
-        Provider<JobService>(create: (_) => JobService()),
-        Provider<TimesheetService>(create: (_) => TimesheetService()),
-        Provider<ContactService>(create: (_) => ContactService()),
-        Provider<CandidateService>(create: (_) => CandidateService()),
-        Provider<NotificationService>(create: (_) => NotificationService()),
-        Provider<CompanyService>(create: (_) => CompanyService()),
-        Provider<JobsiteService>(create: (_) => JobsiteService()),
-        Provider<SkillActivityService>(create: (_) => SkillActivityService()),
-        Provider<WorktypeService>(create: (_) => WorktypeService()),
-        Provider<SkillService>(create: (_) => SkillService()),
-        Provider<CountryService>(create: (_) => CountryService()),
-        Provider<TagService>(create: (_) => TagService()),
-      ],
-      child: LocalizedApp(delegate, MyApp()),
+    DevicePreview(
+      enabled: false,
+      builder: (_) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => LoginProvider(),
+          ),
+          Provider<IndustryService>(
+            create: (_) => IndustryService(),
+          ),
+          Provider<LoginService>(
+            create: (_) => LoginService(),
+          ),
+          Provider<JobOfferService>(
+            create: (_) => JobOfferService(),
+          ),
+          Provider<JobService>(
+            create: (_) => JobService(),
+          ),
+          Provider<TimesheetService>(
+            create: (_) => TimesheetService(),
+          ),
+          Provider<ContactService>(
+            create: (_) => ContactService(),
+          ),
+          Provider<CandidateService>(
+            create: (_) => CandidateService(),
+          ),
+          Provider<NotificationService>(
+            create: (_) => NotificationService(),
+          ),
+          Provider<CompanyService>(
+            create: (_) => CompanyService(),
+          ),
+          Provider<JobsiteService>(
+            create: (_) => JobsiteService(),
+          ),
+          Provider<SkillActivityService>(
+            create: (_) => SkillActivityService(),
+          ),
+          Provider<WorktypeService>(
+            create: (_) => WorktypeService(),
+          ),
+          Provider<SkillService>(
+            create: (_) => SkillService(),
+          ),
+          Provider<CountryService>(
+            create: (_) => CountryService(),
+          ),
+          Provider<TagService>(
+            create: (_) => TagService(),
+          ),
+        ],
+        child: LocalizedApp(
+          delegate,
+          MyApp(),
+        ),
+      ),
     ),
   );
 }
@@ -91,14 +131,11 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         title: 'Piiprent',
         useInheritedMediaQuery: true,
-        //locale: DevicePreview.locale(context),
-        //builder: DevicePreview.appBuilder,
-        //theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
-        //todo: uncomment localizations
         localizationsDelegates: [
           localizationDelegate,
           GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: localizationDelegate.supportedLocales,
@@ -132,7 +169,12 @@ class MyApp extends StatelessWidget {
               ForgotPasswordScreen(),
           '/address': (BuildContext context) => AddressScreen(),
         },
-        home: PreviewScreen(),
+        home: LayoutBuilder(builder: (context,constraints){
+          return OrientationBuilder(builder:(context,orientation){
+            SizeConfig().init(constraints, orientation);
+            return  PreviewScreen();
+          },);
+        }, ),
       ),
     );
   }

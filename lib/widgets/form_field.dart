@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/helpers/validator.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class Field extends StatefulWidget {
   final String label;
@@ -78,11 +79,13 @@ class _FieldState extends State<Field> {
               decoration: InputDecoration(
                   labelText:
                       '${widget.label} ${widget.validator == requiredValidator ? '*' : ''}',
+                  labelStyle: TextStyle(fontSize: SizeConfig.textMultiplier*2.34),
                   border: UnderlineInputBorder(
                     borderSide: widget.readOnly == true
                         ? BorderSide.none
                         : BorderSide(),
                   )),
+
               onChanged: widget.onChanged,
               onTap: widget.datepicker
                   ? () {
@@ -114,6 +117,7 @@ class _FieldState extends State<Field> {
                 color: widget.datepicker || widget.readOnly
                     ? Colors.grey[600]
                     : Colors.black,
+                fontSize: SizeConfig.textMultiplier*2.34
               ),
             ),
           ),

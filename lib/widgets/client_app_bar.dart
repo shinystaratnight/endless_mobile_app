@@ -1,6 +1,7 @@
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+
 import 'package:flutter/material.dart';
 import 'package:piiprent/widgets/language-select.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 Widget getClientAppBar(
   String title,
@@ -11,10 +12,9 @@ Widget getClientAppBar(
   return AppBar(
     actions: [
       LanguageSelect(
-        controller: CustomPopupMenuController(),
       ),
     ],
-    title: Text(title),
+    title: Text(title,style: TextStyle(fontSize: SizeConfig.heightMultiplier*2.34),),
     bottom: tabs != null ? TabBar(tabs: tabs) : null,
     leading: leading != null ? leading : null,
   );

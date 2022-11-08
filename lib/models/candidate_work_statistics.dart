@@ -44,7 +44,7 @@ class CandidateWorkState {
 }
 
 class HourlyWork {
-  int totalHours;
+  double totalHours;
   int totalMinutes;
   int totalEarned;
 

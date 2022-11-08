@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,7 +25,8 @@ class CandidateJobDetailsScreen extends StatefulWidget {
 }
 
 class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
-  GoogleMapController _mapController;
+  //GoogleMapController _mapController;
+  Completer<GoogleMapController> _mapController = Completer();
   Location _location = Location();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -47,7 +50,7 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
+    _mapController.complete(controller);
     debugPrint(widget.jobOffer.latitude + widget.jobOffer.longitude);
   }
 

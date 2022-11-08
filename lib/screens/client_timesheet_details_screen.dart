@@ -20,6 +20,8 @@ import 'package:piiprent/widgets/skill_activity_table_old.dart';
 import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
 
+import '../widgets/size_config.dart';
+
 class ClientTimesheetDetailsScreen extends StatefulWidget {
   final Timesheet timesheet;
 
@@ -129,16 +131,21 @@ class _ClientTimesheetDetailsScreenState
         children: [
           Icon(
             Icons.edit,
-            size: 18.0,
+            // size: 18.0,
+            size: SizeConfig.heightMultiplier * 2.64,
             color: Colors.blue,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 4.0),
+            padding: EdgeInsets.only(
+              //left:4.0,
+              left: SizeConfig.widthMultiplier * 0.97,
+            ),
             child: Text(
               translate('button.change'),
               style: TextStyle(
                 color: Colors.blue,
-                fontSize: 14.0,
+                //fontSize: 14.0,
+                fontSize: SizeConfig.heightMultiplier * 2.05,
               ),
             ),
           ),
@@ -184,22 +191,33 @@ class _ClientTimesheetDetailsScreenState
 
     if (widget.timesheet.signatureScheme && widget.timesheet.status == 5) {
       return Container(
-        margin: const EdgeInsets.only(bottom: 15.0),
+        margin: EdgeInsets.only(
+          bottom: SizeConfig.heightMultiplier * 2.34,
+          //bottom: 15.0
+        ),
         child: Column(
           children: [
             GroupTitle(title: translate('group.title.signature')),
             Signature(
               controller: _controller,
-              width: 309,
-              height: 149,
+              // width: 309,
+              // height: 149,
+              width: SizeConfig.widthMultiplier * 75.18,
+              height: SizeConfig.heightMultiplier * 21.81,
               backgroundColor: Colors.grey[300],
             ),
             SizedBox(
-              height: 10,
+              //height: 10,
+              height: SizeConfig.heightMultiplier * 1.46,
             ),
             ElevatedButton(
               onPressed: () => _controller.clear(),
-              child: Text(translate('button.clear')),
+              child: Text(
+                translate('button.clear'),
+                style: TextStyle(
+                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                ),
+              ),
             )
           ],
         ),
@@ -208,9 +226,14 @@ class _ClientTimesheetDetailsScreenState
 
     if (widget.timesheet.signatureScheme && widget.timesheet.status != 5) {
       return Container(
-        margin: const EdgeInsets.only(top: 10.0),
-        width: 309,
-        height: 149,
+        margin: EdgeInsets.only(
+          //top: 10.0,
+          top: SizeConfig.heightMultiplier * 1.46,
+        ),
+        // width: 309,
+        // height: 149,
+        width: SizeConfig.widthMultiplier * 75.18,
+        height: SizeConfig.heightMultiplier * 21.81,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -240,6 +263,12 @@ class _ClientTimesheetDetailsScreenState
         Provider.of<SkillActivityService>(context);
     var localizationDelegate = LocalizedApp.of(context).delegate;
 
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints =
+        BoxConstraints(maxWidth: size.width, maxHeight: size.height);
+    SizeConfig().init(constraints, orientation);
+
     return Scaffold(
       appBar: getClientAppBar(
         translate('page.title.timesheet'),
@@ -247,9 +276,10 @@ class _ClientTimesheetDetailsScreenState
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.keyboard_arrow_left,
-                size: 36.0,
+                //size: 36.0,
+                size: SizeConfig.heightMultiplier * 3.27,
               ),
               onPressed: () {
                 Navigator.pop(context,
@@ -261,19 +291,25 @@ class _ClientTimesheetDetailsScreenState
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(
+            //10.0,
+            SizeConfig.heightMultiplier * 1.46,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height: SizeConfig.heightMultiplier * 2.34,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: 120,
-                    width: 120,
+                    // height: 120,
+                    // width: 120,
+                    height: SizeConfig.heightMultiplier * 17.57,
+                    width: SizeConfig.widthMultiplier * 29.20,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
@@ -291,22 +327,35 @@ class _ClientTimesheetDetailsScreenState
                 ],
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height: SizeConfig.heightMultiplier * 2.34,
               ),
               Text(
                 widget.timesheet.candidateName,
-                style: TextStyle(fontSize: 22.0, color: Colors.blue),
+                style: TextStyle(
+                  //fontSize: 22.0,
+                  fontSize: SizeConfig.heightMultiplier * 3.22,
+                  color: Colors.blue,
+                ),
                 textAlign: TextAlign.center,
               ),
               Text(
-                widget.timesheet.position(localizationDelegate.currentLocale),
-                style: TextStyle(fontSize: 18.0),
+                widget.timesheet.position(
+                  localizationDelegate.currentLocale,
+                ),
+                style: TextStyle(
+                  //fontSize: 18.0,
+                  fontSize: SizeConfig.heightMultiplier * 2.64,
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height: SizeConfig.heightMultiplier * 2.34,
               ),
-              GroupTitle(title: translate('group.title.times')),
+              GroupTitle(
+                title: translate('group.title.times'),
+              ),
               DetailsRecord(
                 label: translate('field.shift_date'),
                 value: _times[_shiftStart] != null
@@ -314,7 +363,9 @@ class _ClientTimesheetDetailsScreenState
                     : '-',
               ),
               DetailsRecord(
-                label: translate('field.shift_start_time'),
+                label: translate(
+                  'field.shift_start_time',
+                ),
                 value: _times[_shiftStart] != null
                     ? DateFormat.jm().format(_times[_shiftStart])
                     : '-',
@@ -326,7 +377,9 @@ class _ClientTimesheetDetailsScreenState
                     : null,
               ),
               DetailsRecord(
-                label: translate('field.break_start_time'),
+                label: translate(
+                  'field.break_start_time',
+                ),
                 value: _times[_breakStart] != null
                     ? DateFormat.jm().format(_times[_breakStart])
                     : '-',
@@ -338,7 +391,9 @@ class _ClientTimesheetDetailsScreenState
                     : null,
               ),
               DetailsRecord(
-                label: translate('field.break_end_time'),
+                label: translate(
+                  'field.break_end_time',
+                ),
                 value: _times[_breakEnd] != null
                     ? DateFormat.jm().format(_times[_breakEnd])
                     : '-',
@@ -350,7 +405,9 @@ class _ClientTimesheetDetailsScreenState
                     : null,
               ),
               DetailsRecord(
-                label: translate('field.shift_end_time'),
+                label: translate(
+                  'field.shift_end_time',
+                ),
                 value: _times[_shiftEnd] != null
                     ? DateFormat.jm().format(_times[_shiftEnd])
                     : '-',
@@ -362,7 +419,9 @@ class _ClientTimesheetDetailsScreenState
                     : null,
               ),
               DetailsRecord(
-                label: translate('field.jobsite'),
+                label: translate(
+                  'field.jobsite',
+                ),
                 value: widget.timesheet.jobsite,
               ),
               Evaluate(
@@ -379,7 +438,11 @@ class _ClientTimesheetDetailsScreenState
                 timesheet: widget.timesheet.id,
                 companyId: widget.timesheet.clientId,
               ),
-              GroupTitle(title: translate('group.title.tracking')),
+              GroupTitle(
+                title: translate(
+                  'group.title.tracking',
+                ),
+              ),
               FutureBuilder(
                 future: timesheetService.getTrackingData(
                   widget.timesheet.candidateId,
@@ -398,7 +461,16 @@ class _ClientTimesheetDetailsScreenState
 
                   if (snapshot.hasData) {
                     if (snapshot.data.length == 0) {
-                      return Center(child: Text(translate('message.no_data')));
+                      return Center(
+                        child: Text(
+                          translate(
+                            'message.no_data',
+                          ),
+                          style: TextStyle(
+                            fontSize: SizeConfig.heightMultiplier * 2.34,
+                          ),
+                        ),
+                      );
                     }
 
                     double latitude = snapshot.data[0].latitude;
@@ -419,8 +491,10 @@ class _ClientTimesheetDetailsScreenState
                     );
 
                     return SizedBox(
-                      height: 350.0,
-                      width: 20.0,
+                      // height: 350.0,
+                      // width: 20.0,
+                      height: SizeConfig.heightMultiplier * 51.24,
+                      width: SizeConfig.widthMultiplier * 4.86,
                       child: GoogleMap(
                         cameraTargetBounds: CameraTargetBounds.unbounded,
                         indoorViewEnabled: true,

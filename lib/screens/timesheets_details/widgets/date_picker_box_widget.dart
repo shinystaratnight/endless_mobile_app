@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/helpers/colors.dart';
 
-class DatePickerBoxWidget extends StatelessWidget {
+class DatePickerBoxWidget extends StatefulWidget {
   DatePickerBoxWidget(
       {Key key,
       this.onDateSelected,
@@ -23,12 +22,18 @@ class DatePickerBoxWidget extends StatelessWidget {
   double fontSize;
   double imageHeight;
   double imageWidth;
+
+  @override
+  State<DatePickerBoxWidget> createState() => _DatePickerBoxWidgetState();
+}
+
+class _DatePickerBoxWidgetState extends State<DatePickerBoxWidget> {
   final RxString dateStr = 'Date'.obs;
 
   @override
   Widget build(BuildContext context1) {
-    dateStr.value = initialDate != null
-        ? DateFormat('MMM dd, yyyy').format(initialDate)
+    dateStr.value = widget.initialDate != null
+        ? DateFormat('MMM dd, yyyy').format(widget.initialDate)
         : 'Date';
     return Expanded(
       child: InkWell(
@@ -36,18 +41,18 @@ class DatePickerBoxWidget extends StatelessWidget {
         onTap: () async {
           var result = await showDatePicker(
             context: context1,
-            initialDate: initialDate ?? DateTime.now(),
+            initialDate: widget.initialDate ?? DateTime.now(),
             firstDate: DateTime(DateTime.now().year, DateTime.now().month - 2),
             lastDate: DateTime(DateTime.now().year, DateTime.now().month + 2),
           );
           if (result != null) {
             dateStr.value = DateFormat('MMM dd, yyyy').format(result);
-            onDateSelected?.call(result);
+            widget.onDateSelected?.call(result);
           }
         },
         child: Ink(
           padding: EdgeInsets.symmetric(
-              horizontal: horPad ?? 16, vertical: verPad ?? 18),
+              horizontal: widget.horPad ?? 16, vertical: widget.verPad ?? 18),
           decoration: BoxDecoration(
             color: AppColors.lightBlue,
             border: Border.all(
@@ -65,13 +70,13 @@ class DatePickerBoxWidget extends StatelessWidget {
                 () => Text(
                   dateStr.value,
                   style: TextStyle(
-                      fontSize: fontSize ?? 16, color: AppColors.lightBlack),
+                      fontSize: widget.fontSize ?? 16, color: AppColors.lightBlack),
                 ),
               ),
               SvgPicture.asset(
                 "images/icons/ic_date.svg",
-                height: imageHeight ?? 20,
-                width: imageWidth ?? 18,
+                height: widget.imageHeight ?? 20,
+                width: widget.imageWidth ?? 18,
               ),
             ],
           ),

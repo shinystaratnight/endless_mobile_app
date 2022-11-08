@@ -4,6 +4,7 @@ import 'package:piiprent/models/job_model.dart';
 import 'package:piiprent/screens/client_job_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class ClientJobCard extends StatelessWidget {
   final Job job;
@@ -37,38 +38,53 @@ class ClientJobCard extends StatelessWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 4.0,
+      margin: EdgeInsets.symmetric(
+        horizontal: SizeConfig.widthMultiplier * 0.97,
+        //horizontal:4.0,
       ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8.0,
-        vertical: 4.0,
+      padding: EdgeInsets.symmetric(
+        // horizontal: 8.0,
+        // vertical: 4.0,
+        horizontal: SizeConfig.widthMultiplier * 1.94,
+        vertical: SizeConfig.textMultiplier * 0.58,
       ),
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.blue,
         ),
         borderRadius: BorderRadius.all(
-          Radius.circular(4.0),
+          //Radius.circular(4.0),
+          Radius.circular( SizeConfig.textMultiplier * 0.58),
         ),
       ),
       child: Row(
         children: [
-          Text(translate('timesheet.status'),style: TextStyle(fontSize: 13),),
+          Text(
+            translate('timesheet.status'),
+            style: TextStyle(
+              //fontSize: 13,
+              fontSize: SizeConfig.heightMultiplier * 1.90,
+            ),
+          ),
           SizedBox(
-            width: 4.0,
+            //width: 4.0,
+            width: SizeConfig.widthMultiplier * 0.97,
           ),
           Expanded(
             flex: 1,
             child: Text(
               label,
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
             ),
           ),
           Icon(
             icon,
             color: color,
-            size: 20.0,
+            //size: 20.0,
+            size: SizeConfig.heightMultiplier * 2.93,
           ),
         ],
       ),
@@ -77,6 +93,11 @@ class ClientJobCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints =
+        BoxConstraints(maxWidth: size.width, maxHeight: size.height);
+    SizeConfig().init(constraints, orientation);
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
@@ -103,17 +124,23 @@ class ClientJobCard extends StatelessWidget {
                   Text(
                     job.jobsite,
                     style: TextStyle(
-                      fontSize: 18.0,
+                      //fontSize: 18.0,
+                      fontSize: SizeConfig.textMultiplier * 2.64,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(
-                    height: 8.0,
+                    height: SizeConfig.textMultiplier * 1.17,
+                    //height: 8.0,
                   ),
                   Text(
                     job.contact,
-                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                    style: TextStyle(
+                      //fontSize: 16.0,
+                      fontSize: SizeConfig.textMultiplier * 2.34,
+                      color: Colors.white,
+                    ),
                   )
                 ],
               ),
@@ -126,28 +153,35 @@ class ClientJobCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 2.0,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.widthMultiplier * 1.94,
+                        vertical: SizeConfig.textMultiplier * 0.29,
+                        // horizontal: 8.0,
+                        // vertical: 2.0,
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.white,
                         ),
                         borderRadius: BorderRadius.all(
-                          Radius.circular(14.0),
+                          Radius.circular(
+                            //14.0,
+                            SizeConfig.heightMultiplier * 2.05,
+                          ),
                         ),
                       ),
                       child: Text(
                         job.status,
                         style: TextStyle(
-                          fontSize: 14.0,
+                          //fontSize: 14.0,
+                          fontSize: SizeConfig.heightMultiplier * 2.05,
                           color: Colors.white,
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 8.0,
+                      height: SizeConfig.textMultiplier * 1.17,
+                      //height: 8.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -155,22 +189,32 @@ class ClientJobCard extends StatelessWidget {
                         Text(
                           translate('table.workers'),
                           style: TextStyle(
-                            fontSize: 14.0,
+                            //fontSize: 14.0,
+                            fontSize: SizeConfig.heightMultiplier * 2.05,
                             color: Colors.white,
                           ),
                         ),
                         Container(
-                          height: 20.0,
-                          width: 20.0,
-                          margin: const EdgeInsets.only(left: 8.0),
+                          height: SizeConfig.heightMultiplier * 2.93,
+                          width: SizeConfig.widthMultiplier * 4.87,
+                          // height: 20.0,
+                          // width: 20.0,
+                          //margin: const EdgeInsets.only(left: 8.0),
+                          margin: EdgeInsets.only(
+                              left: SizeConfig.widthMultiplier * 1.94),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(25.0),
+                            borderRadius: BorderRadius.circular(
+                              //25.0,
+                              SizeConfig.heightMultiplier * 3.66,
+                            ),
                           ),
                           child: Text(
                             job.workers.toString(),
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: SizeConfig.heightMultiplier * 2.34),
                           ),
                         )
                       ],
@@ -187,8 +231,18 @@ class ClientJobCard extends StatelessWidget {
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(translate('timesheet.position')),
-                  Text(job.translations['position']['en']),
+                  Text(
+                    translate('timesheet.position'),
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
+                  ),
+                  Text(
+                    job.translations['position']['en'],
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
+                  ),
                 ],
               ),
             ),

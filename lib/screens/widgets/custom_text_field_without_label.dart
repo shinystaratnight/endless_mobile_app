@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/constants.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class CustomTextFieldWIthoutLabel extends StatelessWidget {
   final String hint;
@@ -25,20 +26,40 @@ class CustomTextFieldWIthoutLabel extends StatelessWidget {
       obscureText: passowrd ?? false,
       validator: validator,
       onChanged: onChanged,
-      style: TextStyle(color: activeTextColor, fontSize: 16),
+      style: TextStyle(
+        color: activeTextColor,
+        //fontSize: 16,
+        fontSize: SizeConfig.heightMultiplier * 2.34,
+      ),
       decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: hintColor, width: 1.0),
-            borderRadius: BorderRadius.circular(8),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: hintColor, width: 1.0),
+          //borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(
+            SizeConfig.heightMultiplier * 1.17,
           ),
-          focusColor: primaryColor,
-          fillColor: whiteColor,
-          filled: true,
-          isDense: true,
-          hintText: hint,
-          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          hintStyle: TextStyle(color: hintColor, fontSize: 16),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+        ),
+        focusColor: primaryColor,
+        fillColor: whiteColor,
+        filled: true,
+        isDense: true,
+        hintText: hint,
+        contentPadding: EdgeInsets.symmetric(
+          // horizontal: 20,
+          // vertical: 16,
+          horizontal:SizeConfig.widthMultiplier*4.86,
+          vertical: SizeConfig.heightMultiplier*2.34,
+        ),
+        hintStyle: TextStyle(
+          color: hintColor,
+          //fontSize: 16,
+          fontSize: SizeConfig.heightMultiplier*2.34,
+        ),
+        border: OutlineInputBorder(
+          //borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*1.17),
+        ),
+      ),
     );
   }
 }

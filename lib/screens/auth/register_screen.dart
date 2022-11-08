@@ -12,7 +12,6 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-// import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/models/application_form_model.dart';
 import 'package:piiprent/models/industry_model.dart';
@@ -28,6 +27,8 @@ import 'package:piiprent/services/industry_service.dart';
 import 'package:piiprent/widgets/form_select.dart';
 import 'package:piiprent/widgets/language-select.dart';
 import 'package:provider/provider.dart';
+
+import '../../widgets/size_config.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static final String name = '/Registration';
@@ -54,7 +55,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String _phone;
   String _birthday;
   bool _birthdayIsEmpty = false;
-  bool _numberisEmpty = false;
   String _industry;
   String _personalId;
   String _picture;
@@ -109,7 +109,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     ),
   ];
 
-  List<Widget> _fields = [];
+  // List<Widget> _fields = [];
 
   List<Option> transportationOptions = [
     const Option(
@@ -218,7 +218,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         setState(() {
           _registrationInProcess = true;
         });
-        await ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.green[400],
             content: const Text(
@@ -227,6 +227,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
           ),
         );
+        //todo: show the candidate acceptance form
         Navigator.pop(context);
       }
     } catch (e) {
@@ -299,6 +300,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     ContactService contactService = Provider.of<ContactService>(context);
 
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints =
+        BoxConstraints(maxHeight: size.height, maxWidth: size.width);
+
+    SizeConfig().init(constraints, orientation);
+
     return Material(
       color: Colors.transparent,
       child: Stack(
@@ -320,7 +328,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                         ),
                         SizedBox(
-                          width: 15,
+                          //width: 15,
+                          width: SizeConfig.widthMultiplier * 3.65,
                         ),
                         Expanded(
                           child: PrimaryButton(
@@ -373,20 +382,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         )
                       ],
                     ),
-                    height: 78 + MediaQuery.of(context).padding.bottom,
+                    //height: 78 + MediaQuery.of(context).padding.bottom,
+                    height: (SizeConfig.heightMultiplier * 11.42) +
+                        MediaQuery.of(context).padding.bottom,
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.black.withOpacity(.1),
-                            offset: Offset(0, -2),
-                            blurRadius: 12)
+                          color: Colors.black.withOpacity(.1),
+                          offset: Offset(0, -2),
+                          //blurRadius: 12,
+                          blurRadius: SizeConfig.heightMultiplier * 1.76,
+                        )
                       ],
                       color: Colors.white,
                     ),
                     padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).padding.bottom,
-                        right: 16,
-                        left: 16),
+                      bottom: MediaQuery.of(context).padding.bottom,
+                      right: SizeConfig.widthMultiplier * 3.89,
+                      left: SizeConfig.widthMultiplier * 3.89,
+                      // right: 16,
+                      //   left: 16,
+                    ),
                   )
                 : null,
             appBar: AppBar(
@@ -396,13 +412,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               title: Text(
                 'Registration',
                 style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
+                  //fontSize: 22,
+                  fontSize: SizeConfig.heightMultiplier * 2.22,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
               ),
               actions: [
                 LanguageSelect(
-                  controller: popupController,
                   color: whiteColor,
                 )
               ],
@@ -422,9 +439,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 width: MediaQuery.of(context).size.width,
                               ),
                               Positioned(
-                                top: 29,
-                                right: 40,
-                                left: 40,
+                                top: SizeConfig.heightMultiplier * 4.25,
+                                right: SizeConfig.widthMultiplier * 9.73,
+                                left: SizeConfig.widthMultiplier * 9.73,
+                                // top: 29,
+                                // right: 40,
+                                // left: 40,
                                 child: Row(
                                   children: [
                                     ...List.generate(
@@ -442,9 +462,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 ),
                               ),
                               Positioned(
-                                top: 15,
-                                right: 16,
-                                left: 16,
+                                top: SizeConfig.heightMultiplier * 2.34,
+                                right: SizeConfig.widthMultiplier * 3.89,
+                                left: SizeConfig.widthMultiplier * 3.89,
+                                // top: 15,
+                                // right: 16,
+                                // left: 16,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -478,7 +501,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                             ],
                           ),
-                          height: 102,
+                          //height: 102,
+                          height: SizeConfig.heightMultiplier * 14.93,
                           color: Color(0xffFBFBFD),
                         ),
                         if (pageIndex == 1) buildGeneralInfo(),
@@ -503,7 +527,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    InkWell(onDoubleTap: (){},child: Text('Please Wait While We Register Your Account...'),),
+                    InkWell(
+                      onDoubleTap: () {},
+                      child:
+                          Text('Please Wait While We Register Your Account...'),
+                    ),
                     SizedBox(
                         width: 30,
                         height: 30,
@@ -838,10 +866,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       child: Column(
         children: [
           SizedBox(
-            height: 35.0,
+            //height: 35.0,
+            height: SizeConfig.heightMultiplier * 5.12,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(
+              //horizontal: 16,
+              horizontal: SizeConfig.widthMultiplier*3.89,
+            ),
             child: Column(
               children: [
                 if (form.isExist(['contact.picture'])) ...[

@@ -6,6 +6,7 @@ import 'package:piiprent/models/skill_activity_model.dart';
 import 'package:piiprent/screens/candidate_skill_activity_screen.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/widgets/group_title.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class SkillActivityTableOld extends StatefulWidget {
   final bool hasActions;
@@ -88,12 +89,20 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
   Widget _buildTableCell(String text,
       [Color color = Colors.black, Widget child]) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      //padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      padding: EdgeInsets.symmetric(
+        vertical: SizeConfig.heightMultiplier * 1.17,
+        horizontal: SizeConfig.widthMultiplier * 0.97,
+      ),
       child: child != null
           ? child
           : Text(
               text,
-              style: TextStyle(color: color, fontSize: 16.0),
+              style: TextStyle(
+                color: color,
+                //fontSize: 16.0,
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
             ),
     );
   }
@@ -140,14 +149,18 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
                           .name(localizationDelegate.currentLocale)),
                       _buildTableCell(skillActivity.value.toString()),
                       Container(
-                        width: 28.0,
+                        //width: 28.0,
+                        width: SizeConfig.widthMultiplier * 6.81,
                         child: widget.hasActions
                             ? _buildTableCell(
                                 '',
                                 Colors.black,
                                 IconButton(
                                   padding: const EdgeInsets.all(0.0),
-                                  icon: Icon(Icons.delete),
+                                  icon: Icon(
+                                    Icons.delete,
+                                    size: SizeConfig.heightMultiplier * 3.66,
+                                  ),
                                   color:
                                       _fetching ? Colors.grey[400] : Colors.red,
                                   onPressed: () {
@@ -170,6 +183,9 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
                         child: Center(
                           child: Text(
                             translate('message.no_data'),
+                            style: TextStyle(
+                              fontSize: SizeConfig.heightMultiplier * 2.34,
+                            ),
                           ),
                         ),
                       ),
@@ -183,6 +199,12 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints =
+        BoxConstraints(maxWidth: size.width, maxHeight: size.height);
+    SizeConfig().init(constraints, orientation);
+
     return Column(children: [
       GroupTitle(title: translate('group.title.skill_activities')),
       StreamBuilder(
@@ -196,14 +218,20 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
                 children: [
                   this._buildTable(data, context),
                   SizedBox(
-                    height: 16,
+                    height: SizeConfig.heightMultiplier * 2.34,
+                    //height: 16,
                   ),
                   _error != null
                       ? Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
+                          padding: EdgeInsets.only(
+                            //bottom: 8.0,
+                            bottom: SizeConfig.heightMultiplier * 1.17,
+                          ),
                           child: Text(
                             translate('message.has_error'),
-                            style: TextStyle(color: Colors.red[400]),
+                            style: TextStyle(
+                                color: Colors.red[400],
+                                fontSize: SizeConfig.heightMultiplier * 2.34),
                           ),
                         )
                       : SizedBox(),
@@ -227,7 +255,12 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
                               }
                             });
                           },
-                          child: Text(translate('button.add')),
+                          child: Text(
+                            translate('button.add'),
+                            style: TextStyle(
+                              fontSize: SizeConfig.heightMultiplier * 2.34,
+                            ),
+                          ),
                         )
                       : SizedBox(),
                   _fetching
