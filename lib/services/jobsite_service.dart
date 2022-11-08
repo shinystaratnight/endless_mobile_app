@@ -17,7 +17,7 @@ class JobsiteService {
     }
 
     http.Response res =
-        await apiService.get(path: '/hr/jobsites/', params: params);
+        await apiService.get(path: '/hr/jobsites/client_contact_jobsite/', params: params);
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
