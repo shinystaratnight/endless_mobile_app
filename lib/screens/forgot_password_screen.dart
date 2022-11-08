@@ -3,6 +3,7 @@ import 'package:piiprent/widgets/forgot_password_form.dart';
 import 'package:piiprent/widgets/page_container.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
+  static final String name = '/forgot_password';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

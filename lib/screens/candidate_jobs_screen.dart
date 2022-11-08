@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';

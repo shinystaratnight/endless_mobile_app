@@ -16,7 +16,7 @@ class ApiError {
       status: json['status'],
       errors: errors,
       messages: errors.values.map((element) {
-        return element[0];
+        return element;
       }).toList(),
     );
   }

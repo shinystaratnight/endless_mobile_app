@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class FormSubmitButton extends StatelessWidget {
   final bool disabled;
@@ -17,18 +18,38 @@ class FormSubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return MaterialButton(
+      disabledColor: color,
       padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: 10,
-      ),
+          horizontal: SizeConfig.widthMultiplier * (horizontalPadding / 4.11),
+          vertical: SizeConfig.heightMultiplier * 1.46
+          //vertical: 10,
+          ),
       color: color,
       textColor: Colors.white,
       // disabledColor: Colors.blue[200],
       disabledTextColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(
+       // borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*2.92),
+      ),
       onPressed: disabled ? null : onPressed,
-      child: Text(label, style: TextStyle(fontSize: 16)),
+      child: disabled ?? false
+          ? SizedBox(
+              height: SizeConfig.heightMultiplier * 2.93,
+              width: SizeConfig.widthMultiplier * 4.87,
+              // height: 20,
+              // width: 20,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            )
+          : Text(
+              label,
+              style: TextStyle(fontSize: SizeConfig.heightMultiplier * 2.34
+                  //fontSize: 16,
+                  ),
+            ),
     );
   }
 }

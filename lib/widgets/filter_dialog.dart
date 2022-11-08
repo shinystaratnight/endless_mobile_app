@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:piiprent/widgets/form_field.dart';
 import 'dart:async';
-import 'package:jiffy/jiffy.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:piiprent/widgets/form_field.dart';
 
 class FilterDialog extends StatefulWidget {
   final DateTime from;
@@ -96,68 +96,79 @@ class _FilterDialogState extends State<FilterDialog> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              ElevatedButton(
-                // color: Colors.blueAccent,
+        Wrap(
+          // alignment: WrapAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
                 onPressed: _setToday,
                 child: Text(translate('dialog.today'),
                     style: TextStyle(color: Colors.white)),
               ),
-              SizedBox(
-                width: 8.0,
-              ),
-              ElevatedButton(
-                // color: Colors.blueAccent,
+            ),
+            // SizedBox(
+            //   width: 8.0,
+            // ),
+
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
                 onPressed: _setYesterday,
                 child: Text(translate('dialog.yesterday'),
                     style: TextStyle(color: Colors.white)),
               ),
-              SizedBox(
-                width: 8.0,
-              ),
-              ElevatedButton(
-                // color: Colors.blueAccent,
+            ),
+            // SizedBox(
+            //   width: 8.0,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
                 onPressed: _setThisWeek,
                 child: Text(translate('dialog.this_week'),
                     style: TextStyle(color: Colors.white)),
-              )
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              ElevatedButton(
-                // color: Colors.blueAccent,
+              ),
+            ),
+            // SizedBox(
+            //   width: 8.0,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
                 onPressed: _setLastWeek,
                 child: Text(translate('dialog.last_week'),
                     style: TextStyle(color: Colors.white)),
               ),
-              SizedBox(
-                width: 8.0,
-              ),
-              ElevatedButton(
-                // color: Colors.blueAccent,
+            ),
+            // SizedBox(
+            //   width: 8.0,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ElevatedButton(
+                // backgroundColor: Colors.blue,
                 onPressed: _setThisMonth,
                 child: Text(translate('dialog.this_month'),
                     style: TextStyle(color: Colors.white)),
               ),
-              SizedBox(
-                width: 8.0,
-              ),
-              ElevatedButton(
-                // color: Colors.blueAccent,
-                onPressed: _setLastMonth,
-                child: Text(translate('dialog.last_month'),
-                    style: TextStyle(color: Colors.white)),
-              )
-            ],
-          ),
+            ),
+            // SizedBox(
+            //   width: 8.0,
+            // ),
+            ElevatedButton(
+              // backgroundColor: Colors.blue,
+              onPressed: _setLastMonth,
+              child: Text(translate('dialog.last_month'),
+                  style: TextStyle(color: Colors.white)),
+            )
+          ],
         ),
         StreamBuilder(
           stream: stream,

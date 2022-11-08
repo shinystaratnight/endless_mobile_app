@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
+import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/models/industry_model.dart';
 import 'package:piiprent/models/skill_model.dart';
@@ -9,12 +9,16 @@ import 'package:piiprent/services/api_service.dart';
 class IndustryService {
   final ApiService apiService = ApiService.create();
 
-  Future<List<Industry>> getIndustries() async {
+  Future<List<Industry>> getIndustries([Map<String, dynamic> query]) async {
     Map<String, dynamic> params = {
       'limit': '-1',
       'fields': Industry.requestFields,
       'company': companyId,
     };
+
+    if (query != null) {
+      params = {...params, ...query};
+    }
 
     http.Response res = await apiService.get(
       path: '/pricing/industries/',
@@ -35,14 +39,19 @@ class IndustryService {
 
   Future<List<Skill>> getSkills(
     String industry,
-    String company,
-  ) async {
+    String company, [
+    Map<String, dynamic> query,
+  ]) async {
     Map<String, dynamic> params = {
       'limit': '-1',
       'fields': Skill.requestFields,
       'industry': industry,
       'company': company,
     };
+
+    if (query != null) {
+      params = {...params, ...query};
+    }
 
     http.Response res = await apiService.get(
       path: '/skills/skills/',

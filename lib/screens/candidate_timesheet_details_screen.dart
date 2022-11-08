@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
@@ -8,9 +9,8 @@ import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
-import 'package:piiprent/widgets/skill_activity_table.dart';
+import 'package:piiprent/widgets/skill_activity_table_old.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class CandidateTimesheetDetailsScreen extends StatefulWidget {
   final String position;
@@ -348,7 +348,7 @@ class _CandidateTimesheetDetailsScreenState
                   ? this._buildTimesForm()
                   : SizedBox(),
               _hours == false || widget.status != 4
-                  ? SkillActivityTable(
+                  ? SkillActivityTableOld(
                       hasActions: (widget.status == 4 || widget.status == 5) &&
                           !_updated,
                       service: skillActivityService,

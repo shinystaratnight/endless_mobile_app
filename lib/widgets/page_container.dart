@@ -7,8 +7,13 @@ class PageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      // constraints: BoxConstraints(
+      //   maxWidth: 1250,
+      //   maxHeight: 2600
+      // ),
       child: child,
     );
   }

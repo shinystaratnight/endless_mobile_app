@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:get/get.dart';
 
 class ChangeLanguage {
   void showDemoActionSheet({BuildContext context, Widget child}) {
@@ -7,7 +8,11 @@ class ChangeLanguage {
       context: context,
       builder: (BuildContext context) => child,
     ).then(
-      (String value) => changeLocale(context, value),
+      (String value) {
+        changeLocale(context, value);
+        var locale = Locale(value, '');
+        Get.updateLocale(locale);
+      },
     );
   }
 
@@ -20,7 +25,7 @@ class ChangeLanguage {
         actions: <Widget>[
           CupertinoActionSheetAction(
             child: Text(translate('language.name.en')),
-            onPressed: () => Navigator.pop(context, 'en_US'),
+            onPressed: () => Navigator.pop(context, 'en'),
           ),
           CupertinoActionSheetAction(
             child: Text(translate('language.name.et')),

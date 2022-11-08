@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/services/login_service.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/widgets/client_app_bar.dart';
-
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/filter_dialog_button.dart';
 import 'package:piiprent/widgets/group_title.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
 
 class ClientJobDetailsScreen extends StatefulWidget {
@@ -41,10 +41,19 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
 
   Widget _buildTableCell(String text, [Color color = Colors.black]) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      padding: EdgeInsets.symmetric(
+        // vertical: 8.0,
+        // horizontal: 4.0,
+        vertical: SizeConfig.heightMultiplier * 1.17,
+        horizontal: SizeConfig.widthMultiplier * 0.97,
+      ),
       child: Text(
         text,
-        style: TextStyle(color: color, fontSize: 16.0),
+        style: TextStyle(
+          color: color,
+          //fontSize: 16.0,
+          fontSize: SizeConfig.heightMultiplier * 2.34,
+        ),
       ),
     );
   }
@@ -53,14 +62,18 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 6.0),
+          padding: EdgeInsets.symmetric(
+            //vertical: 6.0,
+            vertical: SizeConfig.heightMultiplier * 0.87,
+          ),
           width: double.infinity,
           alignment: Alignment.center,
           decoration: BoxDecoration(color: Colors.blue),
           child: Text(
             translate('table.shifts'),
             style: TextStyle(
-              fontSize: 16.0,
+              //fontSize: 16.0,
+              fontSize: SizeConfig.heightMultiplier * 2.34,
               color: Colors.white,
             ),
           ),
@@ -107,7 +120,12 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
-                          child: Text(translate('message.no_data')),
+                          child: Text(
+                            translate('message.no_data'),
+                            style: TextStyle(
+                              fontSize: SizeConfig.heightMultiplier * 2.34,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -123,6 +141,12 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
     JobService jobService = Provider.of<JobService>(context);
     LoginService loginService = Provider.of<LoginService>(context);
 
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints =
+        BoxConstraints(maxWidth: size.width, maxHeight: size.height);
+    SizeConfig().init(constraints, orientation);
+
     return Scaffold(
       appBar: getClientAppBar(translate('page.title.job'), context),
       floatingActionButton: FilterDialogButton(
@@ -136,25 +160,37 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(
+            //10.0,
+            SizeConfig.heightMultiplier * 1.46,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(
-                height: 25.0,
+                //height: 25.0,
+                height: SizeConfig.heightMultiplier * 3.66,
               ),
               Text(
                 widget.position,
-                style: TextStyle(fontSize: 22.0),
+                style: TextStyle(
+                  //fontSize: 22.0,
+                  fontSize: SizeConfig.heightMultiplier * 3.22,
+                ),
                 textAlign: TextAlign.center,
               ),
               Text(
                 widget.jobsite,
-                style: TextStyle(fontSize: 18.0, color: Colors.grey[500]),
+                style: TextStyle(
+                  //fontSize: 18.0,
+                  fontSize: SizeConfig.heightMultiplier * 2.64,
+                  color: Colors.grey[500],
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height: SizeConfig.heightMultiplier * 2.34,
               ),
               GroupTitle(title: translate('group.title.tags')),
               widget.tags.length > 0
@@ -163,7 +199,8 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
                   : SizedBox(),
               GroupTitle(title: translate('group.title.job_information')),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height: SizeConfig.heightMultiplier * 2.34,
               ),
               DetailsRecord(
                   label: translate('field.site_supervisor'),
@@ -179,7 +216,8 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
               DetailsRecord(
                   label: translate('field.note'), value: widget.notes),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height: SizeConfig.heightMultiplier * 2.34,
               ),
               FutureBuilder(
                 future: jobService.getShifts({
@@ -199,7 +237,12 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
 
                   if (snapshot.hasError) {
                     return Center(
-                      child: Text(translate('message.has_error')),
+                      child: Text(
+                        translate('message.has_error'),
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
                     );
                   }
 

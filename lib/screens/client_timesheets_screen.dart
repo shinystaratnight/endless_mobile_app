@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
@@ -8,8 +11,8 @@ import 'package:piiprent/widgets/client_timesheet_card.dart';
 import 'package:piiprent/widgets/filter_dialog_button.dart';
 import 'package:piiprent/widgets/list_page.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
-import 'package:flutter_translate/flutter_translate.dart';
+
+import '../widgets/size_config.dart';
 
 class ClientTimesheetsScreen extends StatelessWidget {
   final StreamController _updateStream = StreamController.broadcast();
@@ -18,6 +21,12 @@ class ClientTimesheetsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
     LoginService loginService = Provider.of<LoginService>(context);
+
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints =
+        BoxConstraints(maxWidth: size.width, maxHeight: size.height);
+    SizeConfig().init(constraints, orientation);
 
     return DefaultTabController(
       length: 2,
@@ -32,8 +41,16 @@ class ClientTimesheetsScreen extends StatelessWidget {
                 children: [
                   Icon(Icons.assignment),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(translate('page.title.timesheets.unapproved')),
+                    //padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.widthMultiplier * 1.95,
+                    ),
+                    child: Text(
+                      translate('page.title.timesheets.unapproved'),
+                      style: TextStyle(
+                        fontSize: SizeConfig.heightMultiplier * 2.34,
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -44,8 +61,13 @@ class ClientTimesheetsScreen extends StatelessWidget {
                 children: [
                   Icon(Icons.query_builder),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(translate('page.title.timesheets.history')),
+                    //padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.widthMultiplier * 1.95,
+                    ),
+                    child: Text(translate('page.title.timesheets.history'),style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),),
                   )
                 ],
               ),

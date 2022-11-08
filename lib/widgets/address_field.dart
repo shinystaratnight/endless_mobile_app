@@ -6,9 +6,11 @@ import 'package:piiprent/widgets/form_field.dart';
 
 class AddressField extends StatefulWidget {
   final Function onSaved;
+  final Function validator;
 
   AddressField({
     this.onSaved,
+    this.validator,
   });
 
   @override
@@ -22,29 +24,34 @@ class _AddressFieldState extends State<AddressField> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Field(
           readOnly: true,
           label: translate('field.address'),
+          validator: widget.validator,
           onSaved: (String value) {
             widget.onSaved(_address);
           },
           setStream: _addressStreamController.stream,
         ),
-        ElevatedButton(
-          child: Text('Choose Address'),
-          onPressed: () {
-            Navigator.pushNamed(context, '/address').then((value) {
-              if (value != null) {
-                _addressStreamController
-                    .add((value as Map<String, dynamic>)['streetAddress']);
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ElevatedButton(
+            child: Text('Choose Address'),
+            onPressed: () {
+              Navigator.pushNamed(context, '/address').then((value) {
+                if (value != null) {
+                  _addressStreamController
+                      .add((value as Map<String, dynamic>)['streetAddress']);
 
-                setState(() {
-                  _address = (value as Map<String, dynamic>)['address'];
-                });
-              }
-            });
-          },
+                  setState(() {
+                    _address = (value as Map<String, dynamic>)['address'];
+                  });
+                }
+              });
+            },
+          ),
         )
       ],
     );

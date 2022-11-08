@@ -1,6 +1,7 @@
-// import 'package:background_location/background_location.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:background_location/background_location.dart';
+import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/jwt_decode.dart';
@@ -11,7 +12,7 @@ import 'package:piiprent/services/api_service.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginService {
+class LoginService{
   final ApiService apiService = ApiService.create();
   final ContactService contactService = ContactService();
   User _user;
@@ -21,6 +22,12 @@ class LoginService {
   }
 
   Future<RoleType> login(String username, String password) async {
+    // Map<String, dynamic> body = {
+    //   'client_id': clientId,
+    //   'username': username,
+    //   'password': password,
+    //   'grant_type': 'password'
+    // };
     Map<String, dynamic> body = {
       'client_id': clientId,
       'username': username,
@@ -30,10 +37,10 @@ class LoginService {
 
     try {
       http.Response res =
-          await apiService.post(path: '/oauth2/token/', body: body);
+          await apiService.post(path: '/auth/login/', body: body);
 
       if (res.statusCode == 400) {
-        throw 'Invalid credentials given.';
+        throw 'Email or Password is not valid';
       }
 
       if (res.statusCode != 200) {
@@ -41,6 +48,7 @@ class LoginService {
       }
 
       Auth auth = Auth.fromJson(json.decode(utf8.decode(res.bodyBytes)));
+
       apiService.auth = auth;
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -51,17 +59,7 @@ class LoginService {
 
       return _user.type;
     } catch (e) {
-      if (e == null) {
-        throw 'Something went wrong';
-      }
-
-      String message = e['message'];
-
-      if (message == null) {
-        throw 'Something went wrong';
-      }
-
-      throw message;
+      throw e?.toString() ?? 'Something went wrong';
     }
   }
 
@@ -140,7 +138,7 @@ class LoginService {
 
   Future<bool> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // BackgroundLocation.stopLocationService();
+    BackgroundLocation.stopLocationService();
     prefs.clear();
     _user = null;
     apiService.auth = null;

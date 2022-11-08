@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/jobsite_model.dart';
 import 'package:piiprent/screens/client_jobsite_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class JobsiteCard extends StatelessWidget {
   final Function update;
@@ -32,14 +33,16 @@ class JobsiteCard extends StatelessWidget {
             Text(
               jobsite.name,
               style: TextStyle(
-                fontSize: 22.0,
+                //fontSize: 22.0,
+                fontSize: SizeConfig.heightMultiplier * 3.22,
                 color: Colors.white,
               ),
             ),
             Text(
               jobsite.company,
               style: TextStyle(
-                fontSize: 16.0,
+                //fontSize: 16.0,
+                fontSize: SizeConfig.heightMultiplier * 2.34,
                 color: Colors.white,
               ),
             )
@@ -53,8 +56,15 @@ class JobsiteCard extends StatelessWidget {
                   Icon(
                     Icons.location_on,
                     color: Colors.blue,
+                    //size: 25,
+                    size: SizeConfig.heightMultiplier * 3.22,
                   ),
-                  Text(jobsite.address),
+                  Text(
+                    jobsite.address,
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -62,10 +72,20 @@ class JobsiteCard extends StatelessWidget {
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(translate('field.start_date')),
-                  Text(jobsite.startDate != null
-                      ? DateFormat('dd/MM/yyyy').format(jobsite.startDate)
-                      : ''),
+                  Text(
+                    translate('field.start_date'),
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
+                  ),
+                  Text(
+                    jobsite.startDate != null
+                        ? DateFormat('dd/MM/yyyy').format(jobsite.startDate)
+                        : '',
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -74,10 +94,20 @@ class JobsiteCard extends StatelessWidget {
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(translate('field.end_date')),
-                  Text(jobsite.endDate != null
-                      ? DateFormat.jm().format(jobsite.endDate)
-                      : ''),
+                  Text(
+                    translate('field.end_date'),
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
+                  ),
+                  Text(
+                    jobsite.endDate != null
+                        ? DateFormat.jm().format(jobsite.endDate)
+                        : '',
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
+                  ),
                 ],
               ),
             ),

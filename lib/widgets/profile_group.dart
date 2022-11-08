@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class ProfileGroup extends StatefulWidget {
   final String title;
@@ -35,11 +36,15 @@ class _ProfileGroupState extends State<ProfileGroup> {
         GestureDetector(
           onTap: _onTap,
           child: Container(
-            height: 44.0,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            height: SizeConfig.heightMultiplier * 6.44,
+            //height: 44.0,
+            //padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.widthMultiplier * 3.89),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
-                Radius.circular(25.0),
+                //Radius.circular(25.0),
+                Radius.circular(SizeConfig.heightMultiplier*3.66),
               ),
               border: Border.all(
                 width: 1,
@@ -49,7 +54,13 @@ class _ProfileGroupState extends State<ProfileGroup> {
             ),
             child: Row(
               children: [
-                Text(widget.title, style: TextStyle(fontSize: 16.0)),
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    //fontSize: 16.0,
+                    fontSize: SizeConfig.heightMultiplier*2.34,
+                  ),
+                ),
                 Expanded(
                   child: SizedBox(),
                 ),
@@ -63,14 +74,16 @@ class _ProfileGroupState extends State<ProfileGroup> {
                               ? Colors.blue[400]
                               : Colors.black,
                         ),
-                        iconSize: 22.0,
+                        //iconSize: 22.0,
+                        iconSize: SizeConfig.heightMultiplier*3.22,
                       )
                     : SizedBox(),
                 Icon(
                   _showContent
                       ? Icons.keyboard_arrow_up
                       : Icons.keyboard_arrow_down,
-                  size: 26.0,
+                  //size: 26.0,
+                  size: SizeConfig.heightMultiplier*3.80,
                   color: Colors.grey[700],
                 )
               ],

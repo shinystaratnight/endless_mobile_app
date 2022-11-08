@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:piiprent/helpers/functions.dart';
 
 class Skill {
@@ -32,6 +33,9 @@ class Skill {
   }
 
   String get name {
-    return translations['name']['en'];
+    String locale = Get.locale.languageCode;
+    String translatedName = translations['name'][locale];
+
+    return translatedName ?? translations['name']['en'];
   }
 }

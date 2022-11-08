@@ -1,12 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/models/carrier_model.dart';
 import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/job_service.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+
+import '../models/candidate_work_statistics.dart';
+import '../screens/timesheets_details/widgets/date_picker_box_widget.dart';
 
 enum CalendarType {
   Canddate,
@@ -46,9 +53,30 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
   List<Shift> _shifts;
 
+  int currentIndex = 0;
+
+  bool _isLoading = true;
+
+  CandidateWorkState _candidateWorkStates = CandidateWorkState();
+
+  bool _isCustomCounter = false;
+  DateTime fromDate = DateTime.now();
+  DateTime toDate = DateTime.now();
+
+  DateTime _currentDay;
+
   _initCandidateCalendar() async {
     if (widget.userId == null) {
       return;
+    }
+
+    var data = await _candidateService.getStatistics(
+        contactId: widget.userId,
+        startedAt0: DateTime.now(),
+        startedAt1: DateTime.now());
+    if (data != null) {
+      _candidateWorkStates =
+          CandidateWorkState.fromJson(json.decode(data.body));
     }
 
     try {
@@ -70,6 +98,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
             });
           }
         });
+        _isLoading = false;
       });
     } catch (e) {
       print(e);
@@ -81,7 +110,14 @@ class _HomeCalendarState extends State<HomeCalendar> {
       List<Shift> shifts = await _jobService.getClientShifts({
         'role': widget.role,
       });
-
+      var data = await _candidateService.getStatistics(
+          contactId: widget.userId,
+          startedAt0: DateTime.now(),
+          startedAt1: DateTime.now());
+      if (data != null) {
+        _candidateWorkStates =
+            CandidateWorkState.fromJson(json.decode(data.body));
+      }
       _clientFulfilledShifts = {};
       _clientUnfulfilledShifts = {};
 
@@ -97,6 +133,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
             });
           }
         });
+        _isLoading = false;
       });
     } catch (e) {
       print(e);
@@ -107,6 +144,9 @@ class _HomeCalendarState extends State<HomeCalendar> {
   void initState() {
     super.initState();
     // _calendarController = CalendarController();
+    currentIndex = 3;
+    _currentDay = DateTime(DateTime.now().year, DateTime.now().month - 1,
+        DateTime.now().day);
 
     if (widget.type == CalendarType.Canddate) {
       _initCandidateCalendar();
@@ -178,120 +218,353 @@ class _HomeCalendarState extends State<HomeCalendar> {
     }
   }
 
-  Widget _buildCandidateCalendar(BuildContext context) {
-    return Column(
-      children: [
-        TableCalendar(
-          focusedDay: DateTime.now(),
-          firstDay: DateTime.now(),
-          lastDay: Jiffy().endOf(Units.YEAR).dateTime,
-          currentDay: DateTime.now(),
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          onDaySelected: (date, events) {
-            String id = _candidateAvailable[date] != null
-                ? _candidateAvailable[date][0].id
-                : _candidateUnavailable[date] != null
-                    ? _candidateUnavailable[date][0].id
-                    : null;
+  List<String> counterButtons = [
+    'Last month',
+    'This Month',
+    'This week',
+    'Today',
+    'This Year',
+    'Custom'
+  ];
 
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                actions: [
-                  ElevatedButton(
-                    onPressed: _candidateAvailable[date] == null
-                        ? () {
-                            Navigator.of(context).pop(CarrrierStatus.Available);
-                          }
-                        : null,
-                    child: Text(translate('button.available')),
+  Widget _buildCandidateCalendar(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: 1250,
+      ),
+      child: ListView(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        children: [
+          Text('candidate'),
+          TableCalendar(
+            availableGestures: AvailableGestures.none,
+            //  simpleSwipeConfig: const SimpleSwipeConfig(
+            //   verticalThreshold: 25.0,
+            //   swipeDetectionBehavior: SwipeDetectionBehavior.continuousDistinct,
+            // ),
+            headerStyle:
+                HeaderStyle(titleCentered: true, formatButtonVisible: false),
+            // calendarFormat: CalendarFormat.month,
+            rowHeight: 40,
+            //todo: revert to one month later for ruslanzaharov1105@gmail.com, later remove it
+            focusedDay: _currentDay,
+            firstDay: DateTime.now().subtract(Duration(days: 365)),
+            lastDay: Jiffy().add(years: 1).dateTime,
+            currentDay: _currentDay,
+
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            onDaySelected: (date, events) {
+              String id;
+              if (_candidateAvailable != null) {
+                id = _candidateAvailable[date] != null
+                    ? _candidateAvailable[date][0].id
+                    : null;
+              }
+              _currentDay = date;
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  actions: [
+                    InkWell(
+                      onTap: _candidateAvailable[date] == null
+                          ? () {
+                              Navigator.of(context)
+                                  .pop(CarrrierStatus.Available);
+                            }
+                          : null,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                        ),
+                        padding: EdgeInsets.all(12),
+                        child: Text(
+                          translate('button.available'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: _candidateUnavailable[date] == null
+                          ? () {
+                              Navigator.of(context)
+                                  .pop(CarrrierStatus.Unavailable);
+                            }
+                          : null,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                        ),
+                        padding: EdgeInsets.all(12),
+                        child: Text(
+                          translate('button.unavailable'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                  title: Text(id != null
+                      ? translate('dialog.update')
+                      : translate('dialog.confirm')),
+                  contentPadding: const EdgeInsets.all(8.0),
+                  titlePadding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 10.0,
                   ),
-                  ElevatedButton(
-                    onPressed: _candidateUnavailable[date] == null
-                        ? () {
-                            Navigator.of(context)
-                                .pop(CarrrierStatus.Unavailable);
-                          }
-                        : null,
-                    child: Text(translate('button.unavailable')),
-                  ),
-                ],
-                title: Text(id != null
-                    ? translate('dialog.update')
-                    : translate('dialog.confirm')),
-                contentPadding: const EdgeInsets.all(8.0),
-                titlePadding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 10.0,
+                ),
+              ).then((available) => _updateAvailability(date, available, id));
+            },
+            calendarBuilders: CalendarBuilders(
+              outsideBuilder:
+                  (BuildContext context, DateTime day, DateTime focusedDay) =>
+                      SizedBox(),
+              disabledBuilder:
+                  (BuildContext context, DateTime day, DateTime focusedDay) =>
+                      day.month == DateTime.now().month ? null : SizedBox(),
+              markerBuilder: (context, date, events) {
+                if (_candidateAvailable != null) {
+                  if (_candidateAvailable[date] != null) {
+                    return Positioned(
+                      bottom: 2,
+                      child: _buildCircle(
+                        radius: 3.0,
+                        color: Colors.green[400],
+                      ),
+                    );
+                  }
+                }
+
+                if (_candidateUnavailable != null) {
+                  if (_candidateUnavailable[date] != null) {
+                    return Positioned(
+                      bottom: 2,
+                      child: _buildCircle(
+                        radius: 3.0,
+                        color: Colors.red[400],
+                      ),
+                    );
+                  }
+                }
+
+                return SizedBox();
+              },
+            ),
+          ),
+          _buildCandidateLegend(),
+          SizedBox(
+            height: 10,
+          ),
+          Material(
+            elevation: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        runSpacing: 10,
+                        children: [
+                          ...List.generate(
+                              counterButtons.length,
+                              (index) => CounterButton(
+                                    index: index,
+                                    last: counterButtons.length - 1,
+                                    title: counterButtons[index],
+                                    onTapped: currentIndex == index,
+                                    onPressed: () async {
+                                      setState(() {
+                                        currentIndex = index;
+                                        _isLoading = true;
+                                        _isCustomCounter = false;
+                                      });
+                                      if (index == 5) {
+                                        setState(() {
+                                          _isCustomCounter = true;
+                                        });
+                                      }
+                                      if (!_isCustomCounter) {
+                                        await _calculateEarning(index);
+                                      }
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                    },
+                                  ))
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _buildCustomDate(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    if (_isLoading)
+                      Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    else
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildReportHeader(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Hourly',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '${(_candidateWorkStates.hourlyWork.totalHours ?? 0).toInt()}h ${_candidateWorkStates.hourlyWork.totalMinutes ?? 0}m',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      '\$${_candidateWorkStates.hourlyWork.totalEarned}',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            calculateTotal(),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      )
+                  ],
                 ),
               ),
-            ).then((available) => _updateAvailability(date, available, id));
-          },
-          calendarBuilders: CalendarBuilders(
-            markerBuilder: (context, date, events) {
-              if (_candidateAvailable != null) {
-                if (_candidateAvailable[date] != null) {
-                  return Positioned(
-                    bottom: 2,
-                    child: _buildCircle(
-                      radius: 4.0,
-                      color: Colors.green[400],
-                    ),
-                  );
-                }
-              }
-
-              if (_candidateUnavailable != null) {
-                if (_candidateUnavailable[date] != null) {
-                  return Positioned(
-                    bottom: 2,
-                    child: _buildCircle(
-                      radius: 4.0,
-                      color: Colors.red[400],
-                    ),
-                  );
-                }
-              }
-
-              return SizedBox();
-            },
+            ),
           ),
-        ),
-        _buildCandidateLegend(),
-      ],
+        ],
+      ),
     );
   }
+
+  Widget buildReportHeader() => Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Activity',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Amount',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'Earned',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+        ],
+      );
+  Widget calculateTotal() => Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Shifts: ${_candidateWorkStates.shiftsTotal}',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+              ),
+            ),
+          ),
+          Text(
+            'Total:  \$${_candidateWorkStates.hourlyWork.totalEarned}',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
+        ],
+      );
 
   Widget _buildClientLegend() {
     var data = [
       {
         'color': Colors.green[400],
-        'label': translate('group.title.fulfilled'),
+        'label': translate('button.available'),
       },
       {
         'color': Colors.red[400],
-        'label': translate('group.title.unfulfilled'),
+        'label': translate('button.unavailable'),
       }
     ];
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: data
             .map(
-              (el) => Expanded(
-                child: Row(
-                  children: [
-                    _buildCircle(radius: 8.0, color: el['color']),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    Text(
-                      translate(el['label']),
-                      style: TextStyle(fontSize: 16.0),
-                    )
-                  ],
-                ),
+              (el) => Row(
+                children: [
+                  _buildCircle(radius: 8.0, color: el['color']),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    translate(el['label']),
+                    style: TextStyle(fontSize: 16.0),
+                  )
+                ],
               ),
             )
             .toList(),
@@ -314,21 +587,20 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: data
             .map(
-              (el) => Expanded(
-                child: Row(
-                  children: [
-                    _buildCircle(radius: 8.0, color: el['color']),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    Text(
-                      translate(el['label']),
-                      style: TextStyle(fontSize: 16.0),
-                    )
-                  ],
-                ),
+              (el) => Row(
+                children: [
+                  _buildCircle(radius: 8.0, color: el['color']),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    translate(el['label']),
+                    style: TextStyle(fontSize: 16.0),
+                  )
+                ],
               ),
             )
             .toList(),
@@ -349,10 +621,18 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
   Widget _buildTableCell(String text, [Color color = Colors.black]) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      //padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      padding: EdgeInsets.symmetric(
+        vertical: SizeConfig.heightMultiplier * 1.17,
+        horizontal: SizeConfig.widthMultiplier * 0.97,
+      ),
       child: Text(
         text,
-        style: TextStyle(color: color, fontSize: 16.0),
+        style: TextStyle(
+          color: color,
+          //fontSize: 16.0,
+          fontSize: SizeConfig.heightMultiplier * 2.34,
+        ),
       ),
     );
   }
@@ -369,16 +649,23 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 6.0),
-          margin: const EdgeInsets.only(top: 14.0),
+          //padding: const EdgeInsets.symmetric(vertical: 6.0),
+          //margin: const EdgeInsets.only(top: 14.0),
+          padding: EdgeInsets.symmetric(
+            vertical: SizeConfig.heightMultiplier * 0.87,
+          ),
+          margin: EdgeInsets.only(
+            top: SizeConfig.heightMultiplier * 2.05,
+          ),
           width: double.infinity,
           alignment: Alignment.center,
           decoration: BoxDecoration(color: Colors.blue),
           child: Text(
             translate('table.shifts'),
             style: TextStyle(
-              fontSize: 16.0,
-              color: Colors.white,
+              //fontSize: 16.0,
+              fontSize: SizeConfig.heightMultiplier * 2.34,
+              color: Colors.black,
             ),
           ),
         ),
@@ -424,62 +711,85 @@ class _HomeCalendarState extends State<HomeCalendar> {
   }
 
   Widget _buildClientCalendar(BuildContext context) {
-    return Column(
-      children: [
-        TableCalendar(
-          focusedDay: DateTime.now(),
-          firstDay: DateTime.now(),
-          lastDay: Jiffy().endOf(Units.YEAR).dateTime,
-          currentDay: DateTime.now(),
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          onDaySelected: (date, events) {
-            List<Shift> shifts = [];
-            _clientFulfilledShifts.values
-                .forEach((shift) => shifts.forEach((element) {
-                      shifts.add(element);
-                    }));
-            _clientUnfulfilledShifts.values
-                .forEach((shift) => shifts.forEach((element) {
-                      shifts.add(element);
-                    }));
-
-            setState(() {
-              _shifts = shifts;
-            });
-          },
-          calendarBuilders: CalendarBuilders(
-            markerBuilder: (context, date, events) {
-              if (_clientFulfilledShifts != null) {
-                if (_clientFulfilledShifts[date] != null) {
-                  return Positioned(
-                    bottom: 2,
-                    child: _buildCircle(
-                      radius: 4.0,
-                      color: Colors.green[400],
-                    ),
-                  );
-                }
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: 1250,
+      ),
+      child: ListView(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        children: [
+          Text('client'),
+          TableCalendar(
+            availableGestures: AvailableGestures.none,
+            headerStyle:
+                HeaderStyle(titleCentered: true, formatButtonVisible: false),
+            //todo: revert to one month later for ruslanzaharov1105@gmail.com, later remove it
+            focusedDay: _currentDay,
+            firstDay: DateTime.now().subtract(Duration(days: 365)),
+            lastDay: Jiffy().add(years: 1).dateTime,
+            currentDay: _currentDay,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            onDaySelected: (date, events) {
+              List<Shift> shifts = [];
+              if(_clientFulfilledShifts != null){
+                _clientFulfilledShifts.values
+                    .forEach((shift) => shifts.forEach((element) {
+                  shifts.add(element);
+                }));
+              }
+              if(_clientUnfulfilledShifts != null){
+                _clientUnfulfilledShifts.values
+                    .forEach((shift) => shifts.forEach((element) {
+                  shifts.add(element);
+                }));
               }
 
-              if (_clientUnfulfilledShifts != null) {
-                if (_clientUnfulfilledShifts[date] != null) {
-                  return Positioned(
-                    bottom: 2,
-                    child: _buildCircle(
-                      radius: 4.0,
-                      color: Colors.red[400],
-                    ),
-                  );
-                }
-              }
-
-              return SizedBox();
+              setState(() {
+                _shifts = shifts;
+                _currentDay = date;
+              });
             },
+            calendarBuilders: CalendarBuilders(
+              outsideBuilder:
+                  (BuildContext context, DateTime day, DateTime focusedDay) =>
+                      SizedBox(),
+              disabledBuilder:
+                  (BuildContext context, DateTime day, DateTime focusedDay) =>
+                      day.month == DateTime.now().month ? null : SizedBox(),
+              markerBuilder: (context, date, events) {
+                if (_clientFulfilledShifts != null) {
+                  if (_clientFulfilledShifts[date] != null) {
+                    return Positioned(
+                      bottom: 2,
+                      child: _buildCircle(
+                        radius: SizeConfig.heightMultiplier * 0.58,
+                        color: Colors.green[400],
+                      ),
+                    );
+                  }
+                }
+
+                if (_clientUnfulfilledShifts != null) {
+                  if (_clientUnfulfilledShifts[date] != null) {
+                    return Positioned(
+                      bottom: 2,
+                      child: _buildCircle(
+                        radius: SizeConfig.heightMultiplier * 0.58,
+                        color: Colors.red[400],
+                      ),
+                    );
+                  }
+                }
+
+                return SizedBox();
+              },
+            ),
           ),
-        ),
-        _buildTable(_shifts),
-        _buildClientLegend(),
-      ],
+          _buildTable(_shifts),
+          _buildClientLegend(),
+        ],
+      ),
     );
   }
 
@@ -494,5 +804,255 @@ class _HomeCalendarState extends State<HomeCalendar> {
     }
 
     return Container(width: 0.0, height: 0.0);
+  }
+
+  _calculateEarning(int index) async {
+    DateTime now = DateTime.now();
+    //todo: revert to one month later for ruslanzaharov1105@gmail.com
+    now = DateTime(now.year, now.month - 1, now.day);
+    int lastDay = DateTime(now.year, now.month + 1, 0).day;
+    DateTime firstDate = DateTime(now.year, now.month - 1, 1);
+    DateTime lastDate = DateTime(now.year, now.month - 1, lastDay);
+    if (index == 0) {
+      lastDay = DateTime(now.year, now.month, 0).day;
+      firstDate = DateTime(now.year, now.month - 1, 1);
+      lastDate = DateTime(now.year, now.month - 1, lastDay);
+    } else if (index == 1) {
+      lastDay = DateTime(now.year, now.month + 1, 0).day;
+      firstDate = DateTime(now.year, now.month, 1);
+      lastDate = DateTime(now.year, now.month, lastDay);
+    } else if (index == 2) {
+      firstDate = findFirstDateOfTheWeek(now);
+      lastDate = findLastDateOfTheWeek(now);
+    } else if (index == 3) {
+      firstDate = now;
+      lastDate = now;
+    } else if (index == 4) {
+      firstDate = DateTime(now.year, 1, 1);
+      lastDate = DateTime(now.year, 12, 31);
+    } else {
+      firstDate = fromDate;
+      lastDate = toDate;
+    }
+
+    try {
+      var data = await _candidateService.getStatistics(
+          contactId: widget.userId,
+          startedAt0: firstDate,
+          startedAt1: lastDate);
+      if (data != null) {
+        _candidateWorkStates =
+            CandidateWorkState.fromJson(json.decode(data.body));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+  }
+
+  DateTime findLastDateOfTheWeek(DateTime dateTime) {
+    return dateTime
+        .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
+  }
+
+  _buildCustomDate() {
+    return Visibility(
+      visible: _isCustomCounter,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3.6,
+                  height: 60,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'From',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      DatePickerBoxWidget(
+                        horPad: 6,
+                        verPad: 9,
+                        fontSize: 12,
+                        imageHeight: 13,
+                        imageWidth: 13,
+                        initialDate: fromDate,
+                        onDateSelected: (DateTime startDate) {
+                          DateTime _dateTime = DateTime(
+                            startDate.year,
+                            startDate.month,
+                            startDate.day,
+                            fromDate?.hour ?? 0,
+                            fromDate?.minute ?? 0,
+                          );
+                          fromDate = _dateTime;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3.6,
+                  height: 60,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'To',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      DatePickerBoxWidget(
+                        horPad: 6,
+                        verPad: 9,
+                        fontSize: 12,
+                        imageHeight: 13,
+                        imageWidth: 13,
+                        initialDate: toDate,
+                        onDateSelected: (DateTime startDate) {
+                          DateTime _dateTime = DateTime(
+                            startDate.year,
+                            startDate.month,
+                            startDate.day,
+                            toDate?.hour ?? 0,
+                            toDate?.minute ?? 0,
+                          );
+                          toDate = _dateTime;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: InkWell(
+                      onTap: () async {
+                        setState(() {
+                          _isLoading = true;
+                          _isCustomCounter = false;
+                        });
+                        await _calculateEarning(5);
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      },
+                      child: Container(
+                        height: 44,
+                        decoration: BoxDecoration(
+                            color: Colors.purple,
+                            borderRadius: BorderRadius.all(Radius.circular(7)),
+                            border: Border.all(color: Colors.white)),
+                        child: Center(
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(fontSize: 13, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CounterButton extends StatefulWidget {
+  const CounterButton(
+      {Key key,
+      this.title,
+      this.onPressed,
+      this.onTapped,
+      this.index,
+      this.last})
+      : super(key: key);
+  final String title;
+  final Function() onPressed;
+  final bool onTapped;
+  final int index;
+  final int last;
+  @override
+  State<CounterButton> createState() => _CounterButtonState();
+}
+
+class _CounterButtonState extends State<CounterButton> {
+  double radius = 3;
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return InkWell(
+      onTap: () {
+        widget.onPressed();
+        setState(() {});
+      },
+      child: Container(
+        width: size.width > 650
+            ? size.width < 1355
+                ? size.width / 6.6
+                : size.width / 9.2
+            : size.width / 3.6,
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+        decoration: BoxDecoration(
+          color: widget.onTapped ? AppColors.darkBlue : Colors.white,
+          // borderRadius: widget.index == widget.last || widget.index == 0
+          //     ? BorderRadius.only(
+          //         topLeft: widget.index == 0
+          //             ? Radius.circular(radius)
+          //             : Radius.circular(2),
+          //         bottomLeft: widget.index == 0
+          //             ? Radius.circular(radius)
+          //             : Radius.circular(2),
+          //         bottomRight: widget.index == widget.last
+          //             ? Radius.circular(radius)
+          //             : Radius.circular(2),
+          //         topRight: widget.index == widget.last
+          //             ? Radius.circular(radius)
+          //             : Radius.circular(2),
+          //       )
+          //     : BorderRadius.circular(1),
+          border: Border.all(
+            color: widget.onTapped ? AppColors.blueBorder : Colors.black,
+            width: 0.3,
+          ),
+        ),
+        child: Center(
+          child: FittedBox(
+            child: Text(
+              widget.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14,
+                color: widget.onTapped ? Colors.white : Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

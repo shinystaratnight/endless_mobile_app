@@ -24,7 +24,15 @@ String numberValidator(String value) {
 }
 
 String requiredValidator(dynamic value) {
-  if (value != null) {
+  if (value != null && value != '') {
+    return null;
+  }
+
+  return 'This field is required';
+}
+
+String emptyValidator(List<dynamic> value) {
+  if (value.isNotEmpty) {
     return null;
   }
 

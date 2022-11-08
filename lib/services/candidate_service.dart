@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:intl/intl.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:piiprent/models/candidate_model.dart';
 import 'package:piiprent/models/carrier_model.dart';
-
 import 'package:piiprent/services/api_service.dart';
 
 class CandidateService {
@@ -116,6 +116,7 @@ class CandidateService {
     String firstName,
     String lastName,
     String email,
+    String address,
     String phoneMobile,
   }) async {
     Map<String, dynamic> body = {
@@ -125,6 +126,7 @@ class CandidateService {
         'last_name': lastName,
         'email': email,
         'phone_mobile': phoneMobile,
+        'address': address,
       },
       'height': height,
       'weight': weight,
@@ -176,6 +178,30 @@ class CandidateService {
       }
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<http.Response> getStatistics({
+  String contactId,
+    DateTime startedAt0,
+    DateTime startedAt1
+  }) async {
+    Map<String, dynamic> params = {
+      "started_at_0":'${startedAt0.year}-${startedAt0.month}-${startedAt0.day}',
+      "started_at_1":'${startedAt1.year}-${startedAt1.month}-${startedAt1.day}',
+    };
+
+    try {
+      http.Response res =
+      await apiService.get(path: '/candidate/statistics/$contactId/',params:params);
+
+      if (res.statusCode == 200) {
+        return res;
+      } else {
+        throw Exception('no data error');
+      }
+    } catch (e) {
+      return null;
     }
   }
 }

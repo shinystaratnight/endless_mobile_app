@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.piiprent">
+    package="com.piiprent">
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -7,9 +7,13 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:label="PiipRent"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        >
+
+
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -42,10 +46,18 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data 
-            android:name="com.google.android.geo.API_KEY" 
-            android:value="AIzaSyCD0O5t8CBhVmB5w0ogHkxF2eez8Yr6_0Q"/>
+<!--        <meta-data -->
+<!--            android:name="com.google.android.geo.API_KEY" -->
+<!--            android:value="AIzaSyCD0O5t8CBhVmB5w0ogHkxF2eez8Yr6_0Q"/>-->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDOj0wPyqDVGkenZ1nTixXxgdbDzB9vYCc"/>
+
     </application>
+<!--    <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--        <background android:drawable="@color/ic_launcher_background" />-->
+<!--        <foreground android:drawable="@mipmap/ic_launcher_foreground" />-->
+<!--    </adaptive-icon>-->
+
 
     <!-- Required to fetch data from the internet. -->
     <uses-permission android:name="android.permission.INTERNET" />

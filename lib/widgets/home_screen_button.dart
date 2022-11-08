@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class HomeScreenButton extends StatefulWidget {
   final Icon icon;
@@ -36,17 +37,28 @@ class _HomeScreenButtonState extends State<HomeScreenButton> {
       child: Stack(
         children: [
           Container(
-            margin: EdgeInsets.all(8.0),
-            padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 10.0),
+            //margin: EdgeInsets.all(8.0),
+            margin: EdgeInsets.all(SizeConfig.heightMultiplier * 1.17),
+            //padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 10.0),
+            padding: EdgeInsets.symmetric(
+              vertical: SizeConfig.heightMultiplier * 2.05,
+              horizontal: SizeConfig.widthMultiplier * 2.43,
+            ),
             child: Row(
               children: [
                 widget.icon != null
                     ? Container(
-                        margin: const EdgeInsets.only(right: 10.0),
-                        padding: const EdgeInsets.all(5.0),
+                        //margin: const EdgeInsets.only(right: 10.0),
+                        margin: EdgeInsets.only(
+                            right: SizeConfig.widthMultiplier * 2.43),
+                        padding:
+                            EdgeInsets.all(SizeConfig.heightMultiplier * 0.73),
+                        //padding: const EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(25.0),
+                          //borderRadius: BorderRadius.circular(25.0),
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.heightMultiplier * 3.66),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.3),
@@ -59,14 +71,24 @@ class _HomeScreenButtonState extends State<HomeScreenButton> {
                         child: widget.icon,
                       )
                     : SizedBox(
-                        height: 35.0,
+                        //height: 35.0,
+                        height: SizeConfig.heightMultiplier * 5.12,
                       ),
-                Text(widget.text, style: TextStyle(color: Colors.white)),
+                Text(
+                  widget.text,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                  ),
+                ),
               ],
             ),
             decoration: BoxDecoration(
               color: widget.color,
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              //borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: BorderRadius.all(
+                Radius.circular(SizeConfig.heightMultiplier * 1.46),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
@@ -87,8 +109,10 @@ class _HomeScreenButtonState extends State<HomeScreenButton> {
                         right: 3.0,
                         child: Container(
                           alignment: Alignment.topRight,
-                          height: 16.0,
-                          width: 16.0,
+                          // height: 16.0,
+                          // width: 16.0,
+                          height: SizeConfig.heightMultiplier*2.34,
+                          width: SizeConfig.widthMultiplier*3.89,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.red[300],

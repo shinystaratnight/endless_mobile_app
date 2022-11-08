@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/role_model.dart';
-import 'package:piiprent/screens/candidate_home_screen.dart';
+import 'package:piiprent/screens/candidate/candidate_home_screen.dart';
 import 'package:piiprent/screens/client_home_screen.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
@@ -10,7 +11,6 @@ import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class LoginForm extends StatefulWidget {
   final Function onRegister;
@@ -45,6 +45,8 @@ class _LoginFormState extends State<LoginForm> {
       RoleType type = await loginService.login(_username, _password);
 
       if (type == RoleType.Candidate) {
+        debugPrint('type :: $type');
+
         Navigator.pushNamed(context, '/candidate_home');
 
         return;
@@ -58,8 +60,8 @@ class _LoginFormState extends State<LoginForm> {
       }
     } catch (e) {
       setState(() {
-        _formError = e;
         _fetching = false;
+        _formError = e?.toString() ?? 'Unexpected error occurred.';
       });
     }
   }

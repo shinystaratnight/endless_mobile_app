@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class Evaluate extends StatefulWidget {
   final int score;
@@ -32,11 +33,20 @@ class _EvaluateState extends State<Evaluate> {
             }
           : () {},
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 3.0),
-        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+        margin:EdgeInsets.symmetric(
+            //horizontal: 3.0,
+            horizontal:SizeConfig.widthMultiplier*0.72,
+        ),
+        padding:EdgeInsets.symmetric(
+            // horizontal: 6.0,
+            // vertical: 4.0,
+          horizontal:SizeConfig.widthMultiplier*1.46,
+            vertical:SizeConfig.heightMultiplier*0.59,
+        ),
         child: Icon(
           Icons.star,
-          size: 22,
+          //size: 22,
+          size:SizeConfig.heightMultiplier*3.22,
           color: active ? Colors.amber : Colors.grey,
         ),
       ),
@@ -61,18 +71,33 @@ class _EvaluateState extends State<Evaluate> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints =
+        BoxConstraints(maxWidth: size.width, maxHeight: size.height);
+    SizeConfig().init(constraints, orientation);
+
     return Container(
-      width: 300,
-      margin: const EdgeInsets.symmetric(vertical: 15.0),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12.0,
-        vertical: 5.0,
+      //width: 300,
+      width: SizeConfig.widthMultiplier * 72.99,
+      margin: EdgeInsets.symmetric(
+        //vertical: 15.0,
+        vertical: SizeConfig.heightMultiplier * 2.34,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeConfig.widthMultiplier * 1.76,
+        vertical: SizeConfig.heightMultiplier * 0.73,
+        // horizontal: 12.0,
+        // vertical: 5.0,
       ),
       decoration: widget.active
           ? BoxDecoration(
               border: Border.all(color: Colors.blue),
               borderRadius: BorderRadius.all(
-                Radius.circular(20.0),
+                //Radius.circular(20.0),
+                Radius.circular(
+                  SizeConfig.heightMultiplier * 2.93,
+                ),
               ),
             )
           : null,
@@ -83,7 +108,10 @@ class _EvaluateState extends State<Evaluate> {
                   flex: 1,
                   child: Text(
                     translate('timesheet.evaluate'),
-                    style: TextStyle(fontSize: 18.0),
+                    style: TextStyle(
+                      //fontSize: 18.0,
+                      fontSize:SizeConfig.heightMultiplier*2.64,
+                    ),
                   ),
                 )
               : SizedBox(),

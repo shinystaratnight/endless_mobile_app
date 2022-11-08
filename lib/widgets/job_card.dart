@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/screens/candidate_job_details_screen.dart';
@@ -8,7 +9,6 @@ import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class JobCard extends StatefulWidget {
   final Function update;
@@ -68,6 +68,8 @@ class _JobCardState extends State<JobCard> {
       });
     }
   }
+
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -178,21 +180,29 @@ class _JobCardState extends State<JobCard> {
                               children: [
                                 FormSubmitButton(
                                   label: translate('button.accept'),
-                                  onPressed: () => _acceptJobOffer(
-                                    jobOfferService,
-                                    notificationService,
-                                  ),
-                                  disabled: _fetching,
+                                  onPressed: () {
+                                    index = 1;
+                                    setState(() {});
+                                    return _acceptJobOffer(
+                                      jobOfferService,
+                                      notificationService,
+                                    );
+                                  },
+                                  disabled: (_fetching && index == 1),
                                   color: Colors.green[400],
                                   horizontalPadding: 20,
                                 ),
                                 FormSubmitButton(
                                   label: translate('button.reject'),
-                                  onPressed: () => _declineJobOffer(
-                                    jobOfferService,
-                                    notificationService,
-                                  ),
-                                  disabled: _fetching,
+                                  onPressed: () {
+                                    index = 2;
+                                    setState(() {});
+                                    return _declineJobOffer(
+                                      jobOfferService,
+                                      notificationService,
+                                    );
+                                  },
+                                  disabled: (_fetching && index == 2),
                                   color: Colors.red[400],
                                   horizontalPadding: 20,
                                 ),

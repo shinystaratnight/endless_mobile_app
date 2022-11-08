@@ -1,14 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:piiprent/models/job_offer_model.dart';
-import 'package:piiprent/widgets/candidate_app_bar.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'dart:async';
 
-import 'package:piiprent/widgets/details_record.dart';
-import 'package:piiprent/widgets/group_title.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:map_launcher/map_launcher.dart';
+import 'package:piiprent/helpers/functions.dart';
+import 'package:piiprent/models/job_offer_model.dart';
+import 'package:piiprent/widgets/candidate_app_bar.dart';
+import 'package:piiprent/widgets/details_record.dart';
+import 'package:piiprent/widgets/group_title.dart';
 
 class CandidateJobDetailsScreen extends StatefulWidget {
   final JobOffer jobOffer;
@@ -23,7 +25,8 @@ class CandidateJobDetailsScreen extends StatefulWidget {
 }
 
 class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
-  GoogleMapController _mapController;
+  //GoogleMapController _mapController;
+  Completer<GoogleMapController> _mapController = Completer();
   Location _location = Location();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -47,7 +50,8 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
+    _mapController.complete(controller);
+    debugPrint(widget.jobOffer.latitude + widget.jobOffer.longitude);
   }
 
   @override
@@ -57,6 +61,20 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
       double.parse(widget.jobOffer.latitude),
       double.parse(widget.jobOffer.longitude),
     );
+  }
+
+  void showConcernDialog(Function allowed) {
+    showProminentDisclosureDialog(context, (bool isAllowed) {
+      if (isAllowed == true) {
+        allowed();
+      } else if (isAllowed == false) {
+        showDenyAlertDialog(context, (bool isAllowed) {
+          if (isAllowed == true) {
+            showConcernDialog(allowed);
+          }
+        });
+      }
+    });
   }
 
   @override
@@ -114,28 +132,29 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               SizedBox(
                 height: 15.0,
               ),
-              RaisedButton(
-                color: Colors.white,
-                child: Text(translate('button.show')),
-                onPressed: () async {
-                  try {
-                    LocationData data = await _location.getLocation();
-
-                    _add(data.latitude, data.longitude);
-                    _mapController.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: LatLng(data.latitude, data.longitude),
-                          zoom: 15,
-                        ),
-                      ),
-                    );
-                  } catch (e) {
-                    print(e);
-                  }
-                },
-              ),
-              RaisedButton(
+              // MaterialButton(
+              //   color: Colors.white,
+              //   child: Text(translate('button.show')),
+              //   onPressed: () async {
+              //     showConcernDialog(() async {
+              //       try {
+              //         LocationData data = await _location.getLocation();
+              //
+              //         _add(data.latitude, data.longitude);
+              //         _mapController.animateCamera(
+              //           CameraUpdate.newCameraPosition(
+              //             CameraPosition(
+              //               target: LatLng(data.latitude, data.longitude),
+              //             ),
+              //           ),
+              //         );
+              //       } catch (e) {
+              //         print(e);
+              //       }
+              //     });
+              //   },
+              // ),
+              MaterialButton(
                 color: Colors.white,
                 child: Text(translate('button.direct_me')),
                 onPressed: () async {
@@ -153,13 +172,16 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 height: 350.0,
                 width: 20.0,
                 child: GoogleMap(
+                  cameraTargetBounds: CameraTargetBounds.unbounded,
+                  // indoorViewEnabled: true,
+                  // zoomGesturesEnabled: true,
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
                       double.parse(widget.jobOffer.latitude),
                       double.parse(widget.jobOffer.longitude),
                     ),
-                    zoom: 13.0,
+                    zoom: 2,
                   ),
                   markers: Set<Marker>.of(markers.values),
                 ),

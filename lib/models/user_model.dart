@@ -62,6 +62,8 @@ RoleType getRole(String contactType) {
       return RoleType.Candidate;
     case 'client':
       return RoleType.Client;
+    case 'manager':
+      return RoleType.Manager;
     default:
       throw 'Unknown role';
   }

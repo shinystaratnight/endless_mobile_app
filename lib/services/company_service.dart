@@ -1,11 +1,18 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:piiprent/models/application_form_model.dart';
 import 'package:piiprent/models/settings_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:piiprent/services/api_service.dart';
 
 class CompanyService {
   final ApiService apiService = ApiService.create();
+
+  Settings _settings;
+
+  get settings {
+    return _settings;
+  }
 
   Future<Settings> getSettings() async {
     try {
@@ -23,6 +30,16 @@ class CompanyService {
       }
     } catch (e) {
       return e;
+    }
+  }
+
+  Future<bool> fetchSettings() async {
+    try {
+      _settings = await getSettings();
+
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

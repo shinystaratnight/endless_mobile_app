@@ -1,5 +1,7 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/timesheet_model.dart';
 import 'package:piiprent/models/tracking_model.dart';
@@ -53,6 +55,8 @@ class TimesheetService {
     http.Response res =
         await apiService.get(path: '/hr/timesheets-candidate/', params: params);
 
+
+
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> results = body['results'];
@@ -76,6 +80,9 @@ class TimesheetService {
 
     http.Response res = await apiService.get(
         path: '/hr/timesheets/unapproved/', params: params);
+    debugPrint('==========================================');
+    debugPrint('response:::  ${res.body}');
+    debugPrint('==========================================');
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
@@ -252,14 +259,19 @@ class TimesheetService {
           path: 'hr/timesheets-candidate/$id/submit/',
           body: body,
         );
-
+    print(res.body);
+    print(res.statusCode);
     if (res.statusCode == 200) {
       return true;
     } else {
       if (res.statusCode == 400) {
         Map<String, dynamic> responseBody =
             json.decode(utf8.decode(res.bodyBytes));
-        throw responseBody['errors']['non_field_errors'][0];
+        throw responseBody['errors']['shift_started_at'] != null
+            ? responseBody['errors']['shift_started_at'][0]
+            : responseBody['errors']['non_field_errors'] != null
+                ? responseBody['errors']['non_field_errors'][0]
+                : 'Failed to submit Timesheet';
       }
       throw Exception('Failed to submit Timesheet');
     }

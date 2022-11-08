@@ -1,10 +1,11 @@
-import 'package:http/http.dart' as http;
-import 'package:piiprent/models/job_model.dart';
 import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:piiprent/models/job_model.dart';
 import 'package:piiprent/models/job_offer_model.dart';
 import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/api_service.dart';
-import 'package:intl/intl.dart';
 
 class JobService {
   final ApiService apiService = ApiService.create();

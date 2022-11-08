@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/jobsite_model.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/widgets/client_app_bar.dart';
-
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/group_title.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../widgets/size_config.dart';
 
 class ClientJobsiteDetailsScreen extends StatefulWidget {
   final Jobsite jobsite;
@@ -22,7 +25,8 @@ class ClientJobsiteDetailsScreen extends StatefulWidget {
 
 class _ClientJobsiteDetailsScreenState
     extends State<ClientJobsiteDetailsScreen> {
-  GoogleMapController _mapController;
+ // GoogleMapController _mapController;
+  Completer<GoogleMapController> _mapController = Completer();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   int _id = 1;
@@ -45,7 +49,9 @@ class _ClientJobsiteDetailsScreenState
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
+   setState(() {
+     _mapController.complete(controller);
+   });
   }
 
   @override
@@ -59,6 +65,13 @@ class _ClientJobsiteDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
+
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints =
+    BoxConstraints(maxWidth: size.width, maxHeight: size.height);
+    SizeConfig().init(constraints, orientation);
+
     return Scaffold(
       appBar: getClientAppBar(
         translate('page.title.jobsite'),
@@ -66,9 +79,10 @@ class _ClientJobsiteDetailsScreenState
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.keyboard_arrow_left,
-                size: 36.0,
+                //size: 36.0,
+                size:SizeConfig.heightMultiplier*3.27,
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -79,28 +93,37 @@ class _ClientJobsiteDetailsScreenState
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(
+              //16.0,
+              SizeConfig.heightMultiplier*2.34
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(
-                height: 25.0,
+                //height: 25.0,
+                height:SizeConfig.heightMultiplier*3.66,
               ),
               Text(
                 widget.jobsite.name,
-                style: TextStyle(fontSize: 22.0),
+                style: TextStyle(
+                  //fontSize: 22.0,
+                  fontSize:SizeConfig.heightMultiplier*3.22,
+                ),
                 textAlign: TextAlign.center,
               ),
               Text(
                 widget.jobsite.company,
                 style: TextStyle(
-                  fontSize: 18.0,
+                  //fontSize: 18.0,
+                  fontSize:SizeConfig.heightMultiplier*2.64,
                   color: Colors.grey[500],
                 ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               // TODO: Add tags
               // GroupTitle(title: 'Tags'),
@@ -108,7 +131,8 @@ class _ClientJobsiteDetailsScreenState
                 title: translate('group.title.primary_contact'),
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               DetailsRecord(
                 label: translate('field.name'),
@@ -123,13 +147,15 @@ class _ClientJobsiteDetailsScreenState
                 value: widget.jobsite.primaryContact.phoneMobile,
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               GroupTitle(
                 title: translate('group.title.jobsite_information'),
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               DetailsRecord(
                 label: translate('field.industry'),
@@ -152,13 +178,15 @@ class _ClientJobsiteDetailsScreenState
                 value: widget.jobsite.notes,
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               GroupTitle(
                 title: translate('group.title.portfolio_manager'),
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               DetailsRecord(
                 label: translate('field.name'),
@@ -173,28 +201,39 @@ class _ClientJobsiteDetailsScreenState
                 value: widget.jobsite.portfolioManager.phoneMobile,
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               GroupTitle(
                 title: translate('group.title.map'),
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               SizedBox(
-                height: 350.0,
-                width: 20.0,
+                // height: 350.0,
+                // width: 20.0,
+                height:SizeConfig.heightMultiplier*51.24,
+                width:SizeConfig.widthMultiplier*4.87,
                 child: GoogleMap(
+                  cameraTargetBounds: CameraTargetBounds.unbounded,
+                  indoorViewEnabled: true,
+                  zoomGesturesEnabled: true,
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(
                       widget.jobsite.latitude,
                       widget.jobsite.longitude,
                     ),
-                    zoom: 13.0,
+                    zoom: 10.0,
                   ),
                   markers: Set<Marker>.of(markers.values),
                 ),
+              ),
+              SizedBox(
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*4.34,
               ),
             ],
           ),

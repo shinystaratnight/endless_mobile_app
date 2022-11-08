@@ -1,7 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/validator.dart';
 import 'package:piiprent/models/average_scores_model.dart';
@@ -14,14 +19,13 @@ import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
-import 'package:piiprent/widgets/page_container.dart';
 import 'package:piiprent/widgets/profile_group.dart';
 import 'package:piiprent/widgets/score_badge.dart';
 import 'package:piiprent/widgets/stars.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:image_picker/image_picker.dart';
+
+import '../widgets/candidate_drawer.dart';
+import '../widgets/size_config.dart';
 
 class CandidateProfileScreen extends StatefulWidget {
   const CandidateProfileScreen({Key key}) : super(key: key);
@@ -34,6 +38,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   int _height;
   int _weight;
   String _firstName;
+  String _address;
   String _lastName;
   String _email;
   String _phoneNumber;
@@ -55,9 +60,18 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     BuildContext context,
   ) async {
     final XFile image = await _picker.pickImage(source: ImageSource.gallery);
-
+    File imageFile = File(image.path);
     if (image != null) {
-      final bytes = await image.readAsBytes();
+      var bytes = await FlutterImageCompress.compressWithFile(
+        imageFile.absolute.path,
+        minWidth: 150,
+        minHeight: 150,
+        quality: 40,
+        rotate: 0,
+      );
+      print('original file size: ${imageFile.lengthSync()}');
+      print('compressed file size: ${bytes.length}');
+      // final bytes = await image.readAsBytes();
       final picture = 'data:image/jpeg;base64,${base64.encode(bytes)}';
       final String contactId = candidate.contact.id;
 
@@ -114,6 +128,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
       bool result = await candidateService.updatePersonalDetails(
         id: id,
         contactId: contactId,
+        address: _address == null ? candidate.address : _address,
         height: _height == null ? candidate.height : _height,
         weight: _weight == null ? candidate.weight : _weight,
         firstName: _firstName == null ? candidate.firstName : _firstName,
@@ -182,7 +197,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
             SizedBox(
-              width: 8.0,
+              width: SizeConfig.widthMultiplier*1.95,
+              //width: 8.0,
             ),
             Expanded(
               child: Field(
@@ -203,7 +219,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           children: [
             Expanded(
               child: Field(
-                label: translate('field.height'),
+                label: '${translate('field.height')} (cm)',
                 type: TextInputType.number,
                 initialValue: candidate.height.toString(),
                 readOnly: !edit,
@@ -216,11 +232,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
             SizedBox(
-              width: 8.0,
+              width: SizeConfig.widthMultiplier*1.95,
+              //width: 8.0,
             ),
             Expanded(
               child: Field(
-                label: translate('field.weight'),
+                label: '${translate('field.weight')} (kg)',
                 initialValue: candidate.weight.toString(),
                 readOnly: !edit,
                 validator: numberValidator,
@@ -233,13 +250,13 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             ),
           ],
         ),
-        Container(
-          child: Field(
-            label: translate('field.bmi'),
-            initialValue: candidate.bmi,
-            readOnly: true,
-          ),
-        ),
+        // Container(
+        //   child: Field(
+        //     label: translate('field.bmi'),
+        //     initialValue: candidate.bmi,
+        //     readOnly: true,
+        //   ),
+        // ),
         Container(
           child: Field(
             label: translate('field.birthday'),
@@ -303,7 +320,10 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           child: Field(
             label: translate('field.address'),
             initialValue: candidate.address,
-            readOnly: true,
+            readOnly: !edit,
+            onChanged: (String v) {
+              _address = v;
+            },
           ),
         ),
         edit
@@ -335,7 +355,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(e.skill.name),
+                  Text(e.skill.name,style: TextStyle(fontSize: SizeConfig.heightMultiplier*2.14),),
                   ScoreBadge(score: e.score),
                 ],
               ),
@@ -424,7 +444,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
             SizedBox(
-              width: 8.0,
+              width: SizeConfig.widthMultiplier*1.95,
+              //width: 8.0,
             ),
             Expanded(
               child: Field(
@@ -446,7 +467,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                     ),
                   ),
                   SizedBox(
-                    width: 8.0,
+                    width: SizeConfig.widthMultiplier*1.95,
+                    //width: 8.0,
                   ),
                   Expanded(
                     child: Field(
@@ -487,170 +509,338 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   Widget build(BuildContext context) {
     CandidateService candidateService = Provider.of<CandidateService>(context);
     LoginService loginService = Provider.of<LoginService>(context);
+    Size size = MediaQuery.of(context).size;
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            SizeConfig().init(constraints, orientation);
+            print('height: ${SizeConfig.heightMultiplier}');
+            print('width: ${SizeConfig.widthMultiplier}');
+            return Scaffold(
+              appBar:
+                  getCandidateAppBar(translate('page.title.profile'), context),
+              body: FutureBuilder(
+                future: candidateService.getCandidate(loginService.user.id),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-    return Scaffold(
-      appBar: getCandidateAppBar(translate('page.title.profile'), context),
-      body: FutureBuilder(
-        future: candidateService.getCandidate(loginService.user.id),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
+                  Candidate candidate = snapshot.data;
+
+                  return SafeArea(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                        child: orientation == Orientation.landscape
+                            ? size.width > 900
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                      top:SizeConfig.heightMultiplier*0.12,
+                                    ),
+                                    child: _landscapeView(
+                                      candidateService,
+                                      candidate,
+                                      size,
+                                    ),
+                                  )
+                                : _landscapeView(
+                                    candidateService,
+                                    candidate,
+                                    size,
+                                  )
+                            : _portraitView(
+                                candidateService,
+                                candidate,
+                                size,
+                              ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
-          }
+          },
+        );
+      },
+    );
+  }
 
-          Candidate candidate = snapshot.data;
-
-          return SingleChildScrollView(
-            child: PageContainer(
+  Widget _landscapeView(candidateService, candidate, size) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Align(
+              alignment: Alignment.topCenter,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () => _onTapImage(
-                        candidateService,
-                        candidate,
-                        context,
-                      ),
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          shape: BoxShape.circle,
-                          image: candidate.contact.userAvatarUrl() != null
-                              ? DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: _imageBytes != null
-                                      ? MemoryImage(_imageBytes)
-                                      : NetworkImage(
-                                          candidate.contact.userAvatarUrl(),
-                                        ),
-                                )
-                              : null,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${candidate.firstName} ${candidate.lastName}',
-                        style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                      ScoreBadge(
-                        score: candidate.averageScore,
-                      )
-                    ],
-                  ),
-                  Center(
-                    child: Text(
-                      candidate.address,
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
-                  Center(
-                    child: Text(
-                      candidate.designation,
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Form(
-                    key: _detailsFormKey,
-                    child: _buildPersonalDetails(
-                      candidate,
-                      _editMap['details'],
-                      () {
-                        bool isEdit = _editMap['details'];
-                        setState(
-                          () {
-                            _editMap['details'] = !isEdit;
-                            _editMap = _editMap;
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Form(
-                    key: _contactFormKey,
-                    child: _buildContactDetails(
-                      candidate,
-                      _editMap['contact'],
-                      () {
-                        bool isEdit = _editMap['contact'];
-                        setState(
-                          () {
-                            _editMap['contact'] = !isEdit;
-                            _editMap = _editMap;
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  _buildSkills(candidate.skills),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  _buildScore(candidate.averageScores),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  _buildResidency(candidate),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  _buildTags(candidate.tags),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  RaisedButton(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 60, vertical: 10),
-                    color: Colors.blueAccent,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ChangePasswordScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      translate('button.change_password'),
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
+                  _buildProfileImage(context, candidateService, candidate, size),
+                  _buildChangePassword(),
                 ],
               ),
             ),
-          );
-        },
+          ),
+          SizedBox(
+            width: SizeConfig.widthMultiplier*1.17,
+            //width: 15,
+          ),
+          Expanded(
+            flex: 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: SizeConfig.heightMultiplier*1.06,
+                  //height: 20.0,
+                ),
+                Form(
+                  key: _detailsFormKey,
+                  child: _buildPersonalDetails(
+                    candidate,
+                    _editMap['details'],
+                    () {
+                      bool isEdit = _editMap['details'];
+                      setState(
+                        () {
+                          _editMap['details'] = !isEdit;
+                          _editMap = _editMap;
+                        },
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.heightMultiplier*0.79,
+                  //height: 15.0,
+                ),
+                Form(
+                  key: _contactFormKey,
+                  child: _buildContactDetails(
+                    candidate,
+                    _editMap['contact'],
+                    () {
+                      bool isEdit = _editMap['contact'];
+                      setState(
+                        () {
+                          _editMap['contact'] = !isEdit;
+                          _editMap = _editMap;
+                        },
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.heightMultiplier*0.79,
+                  //height: 15.0,
+                ),
+                _buildSkills(candidate.skills),
+                SizedBox(
+                  height: SizeConfig.heightMultiplier*0.79,
+                  //height: 15.0,
+                ),
+                _buildResidency(candidate),
+              ],
+            ),
+          ),
+        ],
+      );
+  _portraitView(candidateService, candidate, Size size) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: size.width > 900 ? size.width * 0.1 : 8.0),
+      child: Column(
+        children: [
+          _buildProfileImage(context, candidateService, candidate, size),
+          Form(
+            key: _detailsFormKey,
+            child: _buildPersonalDetails(
+              candidate,
+              _editMap['details'],
+              () {
+                bool isEdit = _editMap['details'];
+                setState(
+                  () {
+                    _editMap['details'] = !isEdit;
+                    _editMap = _editMap;
+                  },
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: SizeConfig.heightMultiplier*0.79,
+            //height: 15.0,
+          ),
+          Form(
+            key: _contactFormKey,
+            child: _buildContactDetails(
+              candidate,
+              _editMap['contact'],
+              () {
+                bool isEdit = _editMap['contact'];
+                setState(
+                  () {
+                    _editMap['contact'] = !isEdit;
+                    _editMap = _editMap;
+                  },
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: SizeConfig.heightMultiplier*0.79,
+            //height: 15.0,
+          ),
+          _buildSkills(candidate.skills),
+          SizedBox(
+            height: SizeConfig.heightMultiplier*0.79,
+            //height: 15.0,
+          ),
+          _buildResidency(candidate),
+          _buildChangePassword(),
+        ],
       ),
+    );
+  }
+
+  _buildChangePassword() {
+    return Column(
+      children: [
+        SizedBox(
+          height: SizeConfig.heightMultiplier * 2.19,
+          //  height: 15.0,
+        ),
+        MaterialButton(
+          //padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.widthMultiplier * 14.59,
+              vertical: SizeConfig.heightMultiplier * 1.46
+          ),
+          color: Colors.blueAccent,
+          textColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(
+                  //borderRadius: BorderRadius.circular(20)
+                  borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*2.92)
+              ),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ChangePasswordScreen(),
+              ),
+            );
+          },
+          child: FittedBox(
+            child: Text(
+              translate('button.change_password'),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                //fontSize: 16,
+                fontSize: SizeConfig.textMultiplier*2.34
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  // _buildSwitchAccount() {
+  //   return Column(
+  //     children: [
+  //       SizedBox(
+  //         height: 15.0,
+  //       ),
+  //       MaterialButton(
+  //         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+  //         color: Colors.blueAccent,
+  //         textColor: Colors.white,
+  //         shape:
+  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+  //         onPressed: () {
+  //           showCupertinoModalBottomSheet(context: context, builder:(context){
+  //             return Column(
+  //               children: [
+  //
+  //               ],
+  //             );
+  //           },);
+  //         },
+  //         child: Text(
+  //           'Switch Account', //todo: add translator text
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(fontSize: 16),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  _buildProfileImage(BuildContext context, CandidateService candidateService,
+      candidate, Size size) {
+    return Column(
+      children: [
+        SizedBox(
+      //height:20,
+          height: SizeConfig.heightMultiplier * 2.42,
+        ),
+        Center(
+          child: InkWell(
+            onTap: () => _onTapImage(
+              candidateService,
+              candidate,
+              context,
+            ),
+            child: Container(
+              height: SizeConfig.heightMultiplier * 19.03,
+              width: SizeConfig.widthMultiplier * 32.63,
+              //height: size.width > 798 && size.height > 480 ? 300 : 130,
+              //width: size.width > 798 && size.height > 480 ? 300 : 130,
+              child: ClipRRect(
+                //borderRadius: BorderRadius.circular(60),
+                borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*20.78),
+                child: CachedNetworkImage(
+                  imageUrl: candidate.contact.userAvatarUrl(),
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) => Container(
+                    height: SizeConfig.heightMultiplier * 19.03,
+                    width: SizeConfig.widthMultiplier * 32.63,
+                    //height: size.width > 798 && size.height > 480 ? 300 : 130,
+                    //width: size.width > 798 && size.height > 480 ? 300 : 130,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(child: new CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) => ImageContainer(
+                    content: Center(child: new Icon(Icons.error)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: SizeConfig.heightMultiplier * 1.26,
+          //height: 10.0,
+        ),
+        Text(
+          '${candidate.firstName} ${candidate.lastName}',
+          style: TextStyle(
+              color: Colors.blueAccent,
+              fontSize: SizeConfig.heightMultiplier * 2.63
+              //fontSize: 18.0,
+              ),
+        ),
+        SizedBox(
+          //height:20,
+          height: SizeConfig.heightMultiplier * 1.42,
+        ),
+      ],
     );
   }
 }
