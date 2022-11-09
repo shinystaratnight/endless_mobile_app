@@ -1,6 +1,5 @@
 import 'package:background_location/background_location.dart';
 import 'package:device_preview/device_preview.dart';
-// import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -60,7 +59,7 @@ void main() async {
 
   runApp(
     DevicePreview(
-      enabled: false,
+      enabled: true,
       builder: (_) => MultiProvider(
         providers: [
           ChangeNotifierProvider(
@@ -169,12 +168,16 @@ class MyApp extends StatelessWidget {
               ForgotPasswordScreen(),
           '/address': (BuildContext context) => AddressScreen(),
         },
-        home: LayoutBuilder(builder: (context,constraints){
-          return OrientationBuilder(builder:(context,orientation){
-            SizeConfig().init(constraints, orientation);
-            return  PreviewScreen();
-          },);
-        }, ),
+        home: LayoutBuilder(
+          builder: (context, constraints) {
+            return OrientationBuilder(
+              builder: (context, orientation) {
+                SizeConfig().init(constraints, orientation);
+                return PreviewScreen();
+              },
+            );
+          },
+        ),
       ),
     );
   }
