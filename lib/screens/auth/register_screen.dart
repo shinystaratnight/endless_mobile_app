@@ -523,25 +523,43 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             Center(
               child: Container(
                 decoration: BoxDecoration(
-                    color: whiteColor, borderRadius: BorderRadius.circular(8)),
+                  color: whiteColor,
+                  borderRadius: BorderRadius.circular(
+                    //8,
+                    SizeConfig.heightMultiplier * 1.17,
+                  ),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     InkWell(
                       onDoubleTap: () {},
-                      child:
-                          Text('Please Wait While We Register Your Account...'),
+                      child: Text(
+                        'Please Wait While We Register Your Account...',
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
                     ),
                     SizedBox(
-                        width: 30,
-                        height: 30,
+                        // width: 30,
+                        // height: 30,
+                        height: SizeConfig.heightMultiplier * 4.39,
+                        width: SizeConfig.widthMultiplier * 7.30,
                         child: CircularProgressIndicator())
                   ],
                 ),
-                height: 50,
+                height: SizeConfig.heightMultiplier * 7.32,
+                //height: 50,
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                margin: EdgeInsets.symmetric(
+                  //horizontal: 20,
+                  horizontal: SizeConfig.widthMultiplier * 4.87,
+                ),
+                padding: EdgeInsets.symmetric(
+                  //horizontal: 10,
+                  horizontal: SizeConfig.widthMultiplier * 2.43,
+                ),
               ),
             )
         ],
@@ -555,10 +573,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       child: Column(
         children: [
           SizedBox(
-            height: 15.0,
+            //height: 15.0,
+            height: SizeConfig.heightMultiplier * 2.34,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(
+              //horizontal: 16,
+              horizontal: SizeConfig.widthMultiplier * 3.89,
+            ),
             child: Column(
               children: [
                 if (form.isExist(['skill'])) ...[
@@ -574,41 +596,80 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: Center(
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 16),
+                                    horizontal:
+                                        SizeConfig.widthMultiplier * 3.89,
+                                    vertical:
+                                        SizeConfig.heightMultiplier * 2.34,
+                                    // horizontal: 16,
+                                    // vertical: 16,
+                                  ),
                                   child: StatefulBuilder(
                                     builder: (context, setState) => Column(
                                       children: [
-                                        Text(translate('field.industry')),
+                                        Text(
+                                          translate('field.industry'),
+                                          style: TextStyle(
+                                              fontSize:
+                                                  SizeConfig.heightMultiplier *
+                                                      2.34),
+                                        ),
                                         SizedBox(
-                                          height: 10,
+                                          //height: 10,
+                                          height: SizeConfig.heightMultiplier *
+                                              1.46,
                                         ),
                                         Expanded(
-                                            child: ListView(
-                                          children: [
-                                            ..._industries.map((e) =>
-                                                GestureDetector(
+                                          child: ListView(
+                                            children: [
+                                              ..._industries.map(
+                                                (e) => GestureDetector(
                                                   onTap: () {
                                                     Navigator.pop(
                                                         context, [e.id]);
                                                   },
                                                   child: Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 5),
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 10,
-                                                              horizontal: 10),
-                                                      decoration: BoxDecoration(
-                                                          color: primaryColor
-                                                              .withOpacity(.3),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8)),
-                                                      child: Text(e.name)),
-                                                ))
-                                          ],
-                                        )),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                      //vertical: 5,
+                                                      vertical: SizeConfig
+                                                              .heightMultiplier *
+                                                          0.73,
+                                                    ),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      vertical: SizeConfig
+                                                              .heightMultiplier *
+                                                          1.46,
+                                                      horizontal: SizeConfig
+                                                              .widthMultiplier *
+                                                          2.43,
+                                                      // vertical: 10,
+                                                      // horizontal: 10,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: primaryColor
+                                                          .withOpacity(.3),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        //8,
+                                                        SizeConfig
+                                                                .heightMultiplier *
+                                                            1.17,
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      e.name,
+                                                      style: TextStyle(
+                                                          fontSize: SizeConfig
+                                                                  .heightMultiplier *
+                                                              2.34),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         PrimaryButton(
                                           btnText: translate('button.cancel'),
                                           onPressed: () {
@@ -619,13 +680,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     ),
                                   ),
                                   margin: EdgeInsets.symmetric(
-                                      horizontal:
-                                          MediaQuery.of(context).size.width *
-                                              .1),
+                                    horizontal:
+                                        MediaQuery.of(context).size.width * .1,
+                                  ),
                                   decoration: BoxDecoration(
-                                      color: whiteColor,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  height: 320,
+                                    color: whiteColor,
+                                    borderRadius: BorderRadius.circular(
+                                      //8,
+                                      SizeConfig.heightMultiplier * 1.17,
+                                    ),
+                                  ),
+                                  //height: 320,
+                                  height: SizeConfig.heightMultiplier * 46.85,
                                   width: MediaQuery.of(context).size.width * .8,
                                 ),
                               ),
@@ -668,22 +734,33 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     child: Center(
                                       child: Container(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 16),
+                                          horizontal:
+                                              SizeConfig.widthMultiplier * 3.89,
+                                          vertical:
+                                              SizeConfig.heightMultiplier *
+                                                  2.34,
+                                          // horizontal: 16,
+                                          // vertical: 16,
+                                        ),
                                         child: StatefulBuilder(
                                           builder: (context, setState) =>
                                               Column(
                                             children: [
                                               Text(translate('field.skills')),
                                               SizedBox(
-                                                height: 10,
+                                                //height: 10,
+                                                height: SizeConfig
+                                                        .heightMultiplier *
+                                                    1.46,
                                               ),
                                               Expanded(
-                                                  child: StatefulBuilder(
-                                                builder: (context, setState) =>
-                                                    ListView(
-                                                  children: [
-                                                    ..._allSkill.map((e) =>
-                                                        GestureDetector(
+                                                child: StatefulBuilder(
+                                                  builder:
+                                                      (context, setState) =>
+                                                          ListView(
+                                                    children: [
+                                                      ..._allSkill.map(
+                                                        (e) => GestureDetector(
                                                           onTap: () {
                                                             if (selectedSkill
                                                                 .contains(
@@ -696,45 +773,72 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                             setState(() {});
                                                           },
                                                           child: Container(
-                                                              margin:
-                                                                  EdgeInsets
-                                                                      .symmetric(
-                                                                          vertical:
-                                                                              5),
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          10,
-                                                                      horizontal:
-                                                                          10),
-                                                              decoration: BoxDecoration(
-                                                                  color: primaryColor
-                                                                      .withOpacity(
-                                                                          .3),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8)),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Text(e.name),
-                                                                  if (selectedSkill
-                                                                      .contains(
-                                                                          e.id))
-                                                                    Icon(
-                                                                      Icons
-                                                                          .check_circle,
-                                                                      size: 15,
-                                                                    )
-                                                                ],
-                                                              )),
-                                                        ))
-                                                  ],
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                              //vertical: 5,
+                                                              vertical: SizeConfig
+                                                                      .heightMultiplier *
+                                                                  0.73,
+                                                            ),
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                              vertical: SizeConfig
+                                                                      .heightMultiplier *
+                                                                  1.46,
+                                                              horizontal: SizeConfig
+                                                                      .widthMultiplier *
+                                                                  2.43,
+                                                              // vertical: 10,
+                                                              // horizontal: 10,
+                                                            ),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: primaryColor
+                                                                  .withOpacity(
+                                                                      .3),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                //8,
+                                                                SizeConfig
+                                                                        .heightMultiplier *
+                                                                    1.17,
+                                                              ),
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  e.name,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        SizeConfig.heightMultiplier *
+                                                                            2.34,
+                                                                  ),
+                                                                ),
+                                                                if (selectedSkill
+                                                                    .contains(
+                                                                        e.id))
+                                                                  Icon(
+                                                                    Icons
+                                                                        .check_circle,
+                                                                    //size: 15,
+                                                                    size: SizeConfig
+                                                                            .heightMultiplier *
+                                                                        2.34,
+                                                                  ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              )),
+                                              ),
                                               PrimaryButton(
                                                 btnText:
                                                     translate('button.done'),
@@ -752,10 +856,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                     .width *
                                                 .1),
                                         decoration: BoxDecoration(
-                                            color: whiteColor,
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        height: 320,
+                                          color: whiteColor,
+                                          borderRadius: BorderRadius.circular(
+                                            //8,
+                                            SizeConfig.heightMultiplier * 1.17,
+                                          ),
+                                        ),
+                                        //height: 320,
+                                        height:
+                                            SizeConfig.heightMultiplier * 46.85,
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 .8,
@@ -785,7 +894,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                 ],
                 SizedBox(
-                  height: 100 + MediaQuery.of(context).padding.bottom,
+                  height: (SizeConfig.heightMultiplier * 14.64) +
+                      MediaQuery.of(context).padding.bottom,
                 ),
               ],
             ),
@@ -801,10 +911,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       child: Column(
         children: [
           SizedBox(
-            height: 15.0,
+            //height: 15.0,
+            height: SizeConfig.heightMultiplier * 2.19,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(
+              //horizontal: 16,
+              horizontal: SizeConfig.widthMultiplier * 3.89,
+            ),
             child: Column(
               children: [
                 if (form
@@ -850,7 +964,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                 ],
                 SizedBox(
-                  height: 100 + MediaQuery.of(context).padding.bottom,
+                  //height: 100 + MediaQuery.of(context).padding.bottom,
+                  height: (SizeConfig.heightMultiplier * 14.64) +
+                      MediaQuery.of(context).padding.bottom,
                 ),
               ],
             ),
@@ -872,14 +988,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           Padding(
             padding: EdgeInsets.symmetric(
               //horizontal: 16,
-              horizontal: SizeConfig.widthMultiplier*3.89,
+              horizontal: SizeConfig.widthMultiplier * 3.89,
             ),
             child: Column(
               children: [
                 if (form.isExist(['contact.picture'])) ...[
                   Container(
-                    height: 150,
-                    width: 150,
+                    height: SizeConfig.heightMultiplier * 21.96,
+                    width: SizeConfig.widthMultiplier * 36.49,
+                    // height: 150,
+                    // width: 150,
                     child: imageFile != null
                         ? Image.file(
                             imageFile,
@@ -887,16 +1005,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           )
                         : Icon(
                             CupertinoIcons.person_fill,
-                            size: 90,
+                            //size: 90,
+                            size: SizeConfig.heightMultiplier * 13.17,
                             color: primaryColor,
                           ),
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: primaryColor.withOpacity(.1)),
+                      shape: BoxShape.circle,
+                      color: primaryColor.withOpacity(.1),
+                    ),
                   ),
                   SizedBox(
-                    height: 25,
+                    //height: 25,
+                    height: SizeConfig.heightMultiplier * 3.66,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -917,7 +1038,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ],
                   ),
                   SizedBox(
-                    height: 40,
+                    //height: 40,
+                    height: SizeConfig.heightMultiplier * 5.85,
                   ),
                 ],
                 if (form
@@ -939,7 +1061,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     },
                   ),
                   SizedBox(
-                    height: 10,
+                    //height: 10,
+                    height: SizeConfig.heightMultiplier * 1.46,
                   ),
                 ],
                 if (form.isExist(['contact.gender'])) ...[
@@ -952,29 +1075,36 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             radius: 2.5,
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             translate('field.title').toUpperCase(),
                             style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: greyColor),
+                              //fontSize: 12,
+                              fontSize: SizeConfig.heightMultiplier * 1.75,
+                              fontWeight: FontWeight.w400,
+                              color: greyColor,
+                            ),
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             '✱',
                             style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: warningColor),
+                              //fontSize: 10,
+                              fontSize: SizeConfig.heightMultiplier * 1.46,
+                              fontWeight: FontWeight.w400,
+                              color: warningColor,
+                            ),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        //height: 10,
+                        height: SizeConfig.heightMultiplier * 1.46,
                       ),
                       Row(
                         children: [
@@ -996,7 +1126,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    //height: 10,
+                    height: SizeConfig.heightMultiplier * 1.46,
                   ),
                   Column(
                     children: [
@@ -1007,29 +1138,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             radius: 2.5,
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             translate('field.gender').toUpperCase(),
                             style: TextStyle(
-                                fontSize: 12,
+                                //fontSize: 12,
+                                fontSize: SizeConfig.heightMultiplier * 1.75,
                                 fontWeight: FontWeight.w400,
                                 color: greyColor),
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             '✱',
                             style: TextStyle(
-                                fontSize: 10,
+                                //fontSize: 10,
+                                fontSize: SizeConfig.heightMultiplier * 1.46,
                                 fontWeight: FontWeight.w400,
                                 color: warningColor),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        //height: 10,
+                        height: SizeConfig.heightMultiplier * 1.46,
                       ),
                       Row(
                         children: [
@@ -1051,7 +1187,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: SizeConfig.heightMultiplier * 1.46,
+                    //height: 10,
                   ),
                 ],
                 if (form.isExist(['contact.birthday'])) ...[
@@ -1065,29 +1202,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             radius: 2.5,
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             translate('field.birthday').toUpperCase(),
                             style: TextStyle(
-                                fontSize: 12,
+                                //fontSize: 12,
+                                fontSize: SizeConfig.heightMultiplier * 1.75,
                                 fontWeight: FontWeight.w400,
                                 color: greyColor),
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             '*',
                             style: TextStyle(
-                                fontSize: 10,
+                                //fontSize: 10,
+                                fontSize: SizeConfig.heightMultiplier * 1.46,
                                 fontWeight: FontWeight.w400,
                                 color: warningColor),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: SizeConfig.heightMultiplier * 1.46,
+                        //height: 10,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -1112,41 +1254,61 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   _birthday ??
                                       translate('field.birthday').toUpperCase(),
                                   style: TextStyle(
-                                      color: activeTextColor, fontSize: 16),
+                                    color: activeTextColor,
+                                    //fontSize: 16,
+                                    fontSize:
+                                        SizeConfig.heightMultiplier * 2.34,
+                                  ),
                                 ),
                               ),
                               Icon(
                                 CupertinoIcons.calendar,
                                 color: primaryColor,
+                                size: SizeConfig.heightMultiplier * 3.66,
                               )
                             ],
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          height: 49,
+                          padding: EdgeInsets.symmetric(
+                            //horizontal: 16,
+                            horizontal: SizeConfig.widthMultiplier * 3.89,
+                          ),
+                          //height: 49,
+                          height: SizeConfig.heightMultiplier * 7.17,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                  color: _birthdayIsEmpty
-                                      ? warningColor
-                                      : hintColor,
-                                  width: 1)),
+                            borderRadius: BorderRadius.circular(
+                                //8,
+                                SizeConfig.heightMultiplier * 1.17),
+                            border: Border.all(
+                              color:
+                                  _birthdayIsEmpty ? warningColor : hintColor,
+                              width: 1,
+                            ),
+                          ),
                         ),
                       ),
                       if (_birthdayIsEmpty)
                         Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            child: Text(
-                              translate('field.required'),
-                              style: TextStyle(
-                                  color: warningColor,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12),
-                            )),
+                          margin: EdgeInsets.symmetric(
+                            // vertical: 5,
+                            // horizontal: 20,
+                            vertical: SizeConfig.heightMultiplier * 0.73,
+                            horizontal: SizeConfig.widthMultiplier * 4.87,
+                          ),
+                          child: Text(
+                            translate('field.required'),
+                            style: TextStyle(
+                              color: warningColor,
+                              fontWeight: FontWeight.normal,
+                              //fontSize: 12,
+                              fontSize: SizeConfig.heightMultiplier * 1.75,
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: SizeConfig.heightMultiplier * 1.46,
+                    //height: 10,
                   ),
                 ],
                 if (form.isExist(['height', 'weight']))
@@ -1163,7 +1325,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                       ),
                       SizedBox(
-                        width: 8,
+                        //width: 8,
+                        width: SizeConfig.widthMultiplier * 1.95,
                       ),
                       Expanded(
                         child: CustomTextFieldWIthLabel(
@@ -1187,7 +1350,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     },
                   ),
                   SizedBox(
-                    height: 10,
+                    height: SizeConfig.heightMultiplier * 1.46,
+                    //height: 10,
                   ),
                 ],
                 if (form.isExist(['contact.phone_mobile'])) ...[
@@ -1201,29 +1365,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             radius: 2.5,
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             translate('field.phone').toUpperCase(),
                             style: TextStyle(
-                                fontSize: 12,
+                                //fontSize: 12,
+                                fontSize: SizeConfig.heightMultiplier * 1.75,
                                 fontWeight: FontWeight.w400,
                                 color: greyColor),
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             '✱',
                             style: TextStyle(
-                                fontSize: 10,
+                                //fontSize: 10,
+                                fontSize: SizeConfig.heightMultiplier * 1.46,
                                 fontWeight: FontWeight.w400,
                                 color: warningColor),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: SizeConfig.heightMultiplier * 1.46,
+                        //height: 10,
                       ),
                       Container(
                         child: Row(
@@ -1231,8 +1400,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             GestureDetector(
                               onTap: () {},
                               child: SizedBox(
-                                width: 80,
+                                //width: 80,
+                                width: SizeConfig.widthMultiplier * 19.46,
                                 child: CountryCodePicker(
+                                  textStyle: TextStyle(
+                                    fontSize:
+                                        SizeConfig.heightMultiplier * 2.34,
+                                  ),
                                   dialogSize: Size(
                                       MediaQuery.of(context).size.width - 40,
                                       MediaQuery.of(context).size.height -
@@ -1243,23 +1417,40 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                   .padding
                                                   .top)),
                                   searchDecoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: hintColor, width: 1.0),
-                                        borderRadius: BorderRadius.circular(8),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: hintColor,
+                                        width: 1.0,
                                       ),
-                                      focusColor: primaryColor,
-                                      fillColor: whiteColor,
-                                      filled: true,
-                                      isDense: true,
-                                      hintText: 'Search Country',
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 16),
-                                      hintStyle: TextStyle(
-                                          color: hintColor, fontSize: 16),
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8))),
+                                      borderRadius: BorderRadius.circular(
+                                          //8,
+                                          SizeConfig.heightMultiplier * 1.17),
+                                    ),
+                                    focusColor: primaryColor,
+                                    fillColor: whiteColor,
+                                    filled: true,
+                                    isDense: true,
+                                    hintText: 'Search Country',
+                                    contentPadding: EdgeInsets.symmetric(
+                                      // horizontal: 20,
+                                      // vertical: 16,
+                                      horizontal:
+                                          SizeConfig.widthMultiplier * 3.89,
+                                      vertical:
+                                          SizeConfig.heightMultiplier * 2.34,
+                                    ),
+                                    hintStyle: TextStyle(
+                                      color: hintColor,
+                                      //fontSize: 16,
+                                      fontSize:
+                                          SizeConfig.heightMultiplier * 2.34,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          //8,
+                                          SizeConfig.heightMultiplier * 1.17),
+                                    ),
+                                  ),
                                   padding: EdgeInsets.zero,
                                   onInit: (prefix) =>
                                       _phoneCountryCode = prefix,
@@ -1289,49 +1480,83 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   setState(() {});
                                 },
                                 style: TextStyle(
-                                    color: activeTextColor, fontSize: 16),
+                                  color: activeTextColor,
+                                  //fontSize: 16,
+                                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                                ),
                                 decoration: InputDecoration(
-                                    focusColor: primaryColor,
-                                    fillColor: whiteColor,
-                                    filled: true,
-                                    isDense: true,
-                                    hintText: 'XXXXXXXXXXX',
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 16),
-                                    hintStyle: TextStyle(
-                                        color: hintColor, fontSize: 16),
-                                    border: InputBorder.none),
+                                  focusColor: primaryColor,
+                                  fillColor: whiteColor,
+                                  filled: true,
+                                  isDense: true,
+                                  hintText: 'XXXXXXXXXXX',
+                                  contentPadding: EdgeInsets.symmetric(
+                                    // horizontal: 20,
+                                    // vertical: 16,
+                                    horizontal:
+                                        SizeConfig.widthMultiplier * 3.89,
+                                    vertical:
+                                        SizeConfig.heightMultiplier * 2.34,
+                                  ),
+                                  hintStyle: TextStyle(
+                                    color: hintColor,
+                                    //fontSize: 16,
+                                    fontSize:
+                                        SizeConfig.heightMultiplier * 2.34,
+                                  ),
+                                  border: InputBorder.none,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        padding: EdgeInsets.only(right: 20),
-                        height: 49,
+                        padding: EdgeInsets.only(
+                          right: 20,
+                        ),
+                        //height: 49,
+                        height: SizeConfig.heightMultiplier * 7.17,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                                color: _phoneIsNull ? warningColor : hintColor,
-                                width: 1)),
+                          borderRadius: BorderRadius.circular(
+                              //8,
+                              SizeConfig.heightMultiplier * 1.17),
+                          border: Border.all(
+                            color: _phoneIsNull ? warningColor : hintColor,
+                            width: 1,
+                          ),
+                        ),
                       ),
                       if (_phoneIsNull)
                         Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            child: Text(
-                              translate('field.required'),
-                              style: TextStyle(
-                                  color: warningColor,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12),
-                            )),
+                          margin: EdgeInsets.symmetric(
+                            // vertical: 5,
+                            // horizontal: 20,
+                            vertical: SizeConfig.heightMultiplier * 0.73,
+                            horizontal: SizeConfig.widthMultiplier * 3.89,
+                          ),
+                          child: Text(
+                            translate('field.required'),
+                            style: TextStyle(
+                              color: warningColor,
+                              fontWeight: FontWeight.normal,
+                              //fontSize: 12,
+                              fontSize: SizeConfig.heightMultiplier * 1.75,
+                            ),
+                          ),
+                        ),
                       SizedBox(
-                        height: 100 + MediaQuery.of(context).padding.bottom,
+                        //height: 100 + MediaQuery.of(context).padding.bottom,
+                        height: (SizeConfig.heightMultiplier * 14.64) +
+                            MediaQuery.of(context).padding.bottom,
                       ),
                     ],
                   ),
                 ]
               ],
             ),
+          ),
+          SizedBox(
+            //height: 15.0,
+            height: SizeConfig.heightMultiplier * 8.34,
           ),
         ],
       ),
@@ -1344,10 +1569,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       child: Column(
         children: [
           SizedBox(
-            height: 15.0,
+            //height: 15.0,
+            height: SizeConfig.heightMultiplier * 2.34,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(
+              //horizontal: 16,
+              horizontal: SizeConfig.widthMultiplier * 3.89,
+            ),
             child: Column(
               children: [
                 if (form.isExist(['contact.address.street_address'])) ...[
@@ -1389,59 +1618,98 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: Center(
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 16),
+                                    // horizontal: 16,
+                                    // vertical: 16,
+                                    horizontal:
+                                        SizeConfig.widthMultiplier * 3.89,
+                                    vertical:
+                                        SizeConfig.heightMultiplier * 2.34,
+                                  ),
                                   child: StatefulBuilder(
                                     builder: (context, setState) => Column(
                                       children: [
-                                        Text(translate('field.nationality')),
+                                        Text(
+                                          translate('field.nationality'),
+                                          style: TextStyle(
+                                            fontSize:
+                                                SizeConfig.heightMultiplier *
+                                                    2.34,
+                                          ),
+                                        ),
                                         SizedBox(
-                                          height: 10,
+                                          //height: 10,
+                                          height: SizeConfig.heightMultiplier *
+                                              1.46,
                                         ),
                                         Expanded(
-                                            child: ListView(
-                                          children: [
-                                            // CustomTextFieldWIthoutLabel(
-                                            //   controller:
-                                            //       nationalityControllerSearch,
-                                            //   hint: 'Search',
-                                            //   onChanged: (v) {
-                                            //     nationalityControllerSearch.text =
-                                            //         v;
-                                            //     setState(() {});
-                                            //   },
-                                            // ),
+                                          child: ListView(
+                                            children: [
+                                              // CustomTextFieldWIthoutLabel(
+                                              //   controller:
+                                              //       nationalityControllerSearch,
+                                              //   hint: 'Search',
+                                              //   onChanged: (v) {
+                                              //     nationalityControllerSearch.text =
+                                              //         v;
+                                              //     setState(() {});
+                                              //   },
+                                              // ),
 
-                                            ...countries
-                                                .map((e) => e['name'])
-                                                .toList()
-                                                .map((e) => GestureDetector(
+                                              ...countries
+                                                  .map((e) => e['name'])
+                                                  .toList()
+                                                  .map(
+                                                    (e) => GestureDetector(
                                                       onTap: () {
                                                         Navigator.pop(
                                                             context, [e]);
                                                       },
                                                       child: Container(
-                                                          margin:
-                                                              EdgeInsets.symmetric(
-                                                                  vertical: 5),
-                                                          padding:
-                                                              EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          10,
-                                                                      horizontal:
-                                                                          10),
-                                                          decoration: BoxDecoration(
-                                                              color: primaryColor
-                                                                  .withOpacity(
-                                                                      .3),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8)),
-                                                          child: Text(e)),
-                                                    )),
-                                          ],
-                                        )),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                          //vertical: 5,
+                                                          vertical: SizeConfig
+                                                                  .heightMultiplier *
+                                                              0.73,
+                                                        ),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                          vertical: SizeConfig
+                                                                  .heightMultiplier *
+                                                              1.46,
+                                                          horizontal: SizeConfig
+                                                                  .widthMultiplier *
+                                                              2.43,
+                                                          // vertical: 10,
+                                                          // horizontal: 10,
+                                                        ),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: primaryColor
+                                                              .withOpacity(.3),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            //8,
+                                                            SizeConfig
+                                                                    .heightMultiplier *
+                                                                1.17,
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          e,
+                                                          style: TextStyle(
+                                                            fontSize: SizeConfig
+                                                                    .heightMultiplier *
+                                                                2.34,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                            ],
+                                          ),
+                                        ),
                                         PrimaryButton(
                                           btnText: translate('button.cancel'),
                                           onPressed: () {
@@ -1456,8 +1724,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                           MediaQuery.of(context).size.width *
                                               .1),
                                   decoration: BoxDecoration(
-                                      color: whiteColor,
-                                      borderRadius: BorderRadius.circular(8)),
+                                    color: whiteColor,
+                                    borderRadius: BorderRadius.circular(
+                                        //8,
+                                        SizeConfig.heightMultiplier * 1.17),
+                                  ),
                                   height:
                                       MediaQuery.of(context).size.height * .8,
                                   width: MediaQuery.of(context).size.width * .8,
@@ -1486,41 +1757,79 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: Center(
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 16),
+                                    // horizontal: 16,
+                                    // vertical: 16,
+                                    horizontal:
+                                        SizeConfig.widthMultiplier * 3.89,
+                                    vertical:
+                                        SizeConfig.heightMultiplier * 2.34,
+                                  ),
                                   child: StatefulBuilder(
                                     builder: (context, setState) => Column(
                                       children: [
-                                        Text(translate('field.residency')),
+                                        Text(
+                                          translate('field.residency'),
+                                          style: TextStyle(
+                                              fontSize:
+                                                  SizeConfig.heightMultiplier *
+                                                      2.34),
+                                        ),
                                         SizedBox(
-                                          height: 10,
+                                          //height: 10,
+                                          height: SizeConfig.heightMultiplier *
+                                              1.46,
                                         ),
                                         Expanded(
-                                            child: ListView(
-                                          children: [
-                                            ...residencyOptions.map((e) =>
-                                                GestureDetector(
+                                          child: ListView(
+                                            children: [
+                                              ...residencyOptions.map(
+                                                (e) => GestureDetector(
                                                   onTap: () {
                                                     Navigator.pop(
                                                         context, [e.value]);
                                                   },
                                                   child: Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 5),
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 10,
-                                                              horizontal: 10),
-                                                      decoration: BoxDecoration(
-                                                          color: primaryColor
-                                                              .withOpacity(.3),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8)),
-                                                      child: Text(e.title)),
-                                                ))
-                                          ],
-                                        )),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                      //vertical: 5,
+                                                      vertical: SizeConfig
+                                                              .heightMultiplier *
+                                                          0.73,
+                                                    ),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      // vertical: 10,
+                                                      // horizontal: 10,
+                                                      vertical: SizeConfig
+                                                              .heightMultiplier *
+                                                          1.46,
+                                                      horizontal: SizeConfig
+                                                              .widthMultiplier *
+                                                          2.43,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: primaryColor
+                                                          .withOpacity(.3),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              // 8,
+                                                              SizeConfig
+                                                                      .heightMultiplier *
+                                                                  1.17),
+                                                    ),
+                                                    child: Text(
+                                                      e.title,
+                                                      style: TextStyle(
+                                                          fontSize: SizeConfig
+                                                                  .heightMultiplier *
+                                                              2.34),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         PrimaryButton(
                                           btnText: translate('button.cancel'),
                                           onPressed: () {
@@ -1535,9 +1844,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                           MediaQuery.of(context).size.width *
                                               .1),
                                   decoration: BoxDecoration(
-                                      color: whiteColor,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  height: 320,
+                                    color: whiteColor,
+                                    borderRadius: BorderRadius.circular(
+                                      //8,
+                                      SizeConfig.heightMultiplier * 1.17,
+                                    ),
+                                  ),
+                                  //height: 320,
+                                  height: SizeConfig.heightMultiplier * 48.85,
                                   width: MediaQuery.of(context).size.width * .8,
                                 ),
                               ),
@@ -1558,7 +1872,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   Column(
                     children: [
                       SizedBox(
-                        height: 10,
+                        //height: 10,
+                        height: SizeConfig.heightMultiplier * 1.46,
                       ),
                       Row(
                         children: [
@@ -1567,29 +1882,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             radius: 2.5,
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             translate('field.transport').toUpperCase(),
                             style: TextStyle(
-                                fontSize: 12,
+                                //fontSize: 12,
+                                fontSize: SizeConfig.heightMultiplier * 1.75,
                                 fontWeight: FontWeight.w400,
                                 color: greyColor),
                           ),
                           SizedBox(
-                            width: 5,
+                            //width: 5,
+                            width: SizeConfig.widthMultiplier * 1.22,
                           ),
                           Text(
                             '✱',
                             style: TextStyle(
-                                fontSize: 10,
+                                //fontSize: 10,
+                                fontSize: SizeConfig.heightMultiplier * 1.46,
                                 fontWeight: FontWeight.w400,
                                 color: warningColor),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        //height: 10,
+                        height: SizeConfig.heightMultiplier * 1.46,
                       ),
                       Row(
                         children: [
@@ -1612,7 +1932,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ],
                   ),
                 SizedBox(
-                  height: 100 + MediaQuery.of(context).padding.bottom,
+                  //height: 100 + MediaQuery.of(context).padding.bottom,
+                  height: (SizeConfig.heightMultiplier * 14.64) +
+                      MediaQuery.of(context).padding.bottom,
                 ),
               ],
             ),
@@ -1637,12 +1959,17 @@ class CustomOptionPicker extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         child: Container(
-          margin: EdgeInsets.only(right: label == 'Dr.' ? 0 : 5, bottom: 10),
+          margin: EdgeInsets.only(
+            right: label == 'Dr.' ? 0 : 5,
+            //bottom: 10,
+            bottom: SizeConfig.heightMultiplier * 1.46,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                width: 5,
+                //width: 5,
+                width: SizeConfig.widthMultiplier * 1.22,
               ),
               Icon(
                 title == label
@@ -1651,7 +1978,8 @@ class CustomOptionPicker extends StatelessWidget {
                 color: title == label ? whiteColor : hintColor,
               ),
               SizedBox(
-                width: 5,
+                //width: 5,
+                width: SizeConfig.widthMultiplier * 1.22,
               ),
               Expanded(
                 child: Container(
@@ -1660,19 +1988,28 @@ class CustomOptionPicker extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        color: title == label ? whiteColor : hintColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500),
+                      color: title == label ? whiteColor : hintColor,
+                      //fontSize: 14,
+                      fontSize: SizeConfig.heightMultiplier * 2.05,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               )
             ],
           ),
-          height: 39,
+          //height: 39,
+          height: SizeConfig.heightMultiplier * 5.71,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              color: title == label ? primaryColor : whiteColor,
-              border: Border.all(color: hintColor)),
+            borderRadius: BorderRadius.circular(
+              //4,
+              SizeConfig.heightMultiplier * 0.58,
+            ),
+            color: title == label ? primaryColor : whiteColor,
+            border: Border.all(
+              color: hintColor,
+            ),
+          ),
         ),
       ),
     );
