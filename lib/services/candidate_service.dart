@@ -182,7 +182,7 @@ class CandidateService {
   }
 
   Future<http.Response> getStatistics({
-  String contactId,
+    String contactId,
     DateTime startedAt0,
     DateTime startedAt1
   }) async {
