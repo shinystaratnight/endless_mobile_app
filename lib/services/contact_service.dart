@@ -176,7 +176,7 @@ class ContactService {
 
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> roles = body['roles'];
-      return roles.map((dynamic el) => Role.fromJson(el)).toList();
+      return roles.where((dynamic el) => el['__str__'].contains('client')).map((dynamic el) => Role.fromJson(el)).toList();
     } catch (e) {
       throw Exception("Failed fetching roles");
     }

@@ -231,5 +231,6 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
   Widget _buildHomeCalendar(loginService) => HomeCalendar(
         type: CalendarType.Canddate,
         userId: loginService.user != null ? loginService.user.id : null,
+        candidateId: loginService.user != null ? loginService.user.candidateId : null,
       );
 }

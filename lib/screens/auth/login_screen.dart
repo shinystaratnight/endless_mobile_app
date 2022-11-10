@@ -62,9 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
         return;
       } else if (type == RoleType.Client) {
-        List<Role> roles = await contactService.getRoles();
-        roles[0].active = true;
-        loginService.user.roles = roles;
         if (loginProvider.image == null)
           Provider.of<ContactService>(context, listen: false)
               .getContactPicture(loginService.user.userId)
@@ -72,8 +69,20 @@ class _LoginScreenState extends State<LoginScreen> {
             loginProvider.image = value;
             setState(() {});
           });
+        
+        List<Role> roles = await contactService.getRoles();
+        
+        // Verify that the contact type is correct in cases when there were some operations on roles
+        // in admin dashboard. There is no validation logic when the admin user adds/removes the roles.
+        // List<Role> roles = await contactService.getRoles();
+        if (roles.length > 0) {
+          roles[0].active = true;
+          loginService.user.roles = roles;
+          Navigator.pushNamed(context, '/client_home');
+        } else {
+          Navigator.pushNamed(context, '/candidate_home');
+        }
 
-        Navigator.pushNamed(context, '/client_home');
         return;
       }
     } catch (e) {
