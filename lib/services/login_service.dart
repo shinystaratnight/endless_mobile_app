@@ -21,6 +21,48 @@ class LoginService{
     return _user;
   }
 
+  Future<dynamic> switchAccounts()async{
+    // Map<String, dynamic> body = {
+    //   'client_id': clientId,
+    //   'username': username,
+    //   'password': password,
+    //   'grant_type': 'password'
+    // };
+    Map<String, dynamic> body = {
+      // 'client_id': clientId,
+      // 'username': username,
+      // 'password': password,
+      'grant_type': 'password'
+    };
+
+    try {
+      http.Response res =
+          await apiService.post(path: '/auth/login/', body: body);
+
+      if (res.statusCode == 400) {
+        throw 'Email or Password is not valid';
+      }
+
+      if (res.statusCode != 200) {
+        throw 'Something went wrong';
+      }
+
+      Auth auth = Auth.fromJson(json.decode(utf8.decode(res.bodyBytes),),);
+
+      apiService.auth = auth;
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('auth', res.body);
+
+      var payload = parseJwtPayLoad(auth.access_token_jwt);
+      _user = User.fromTokenPayload(payload);
+
+      return _user.type;
+    } catch (e) {
+      throw e?.toString() ?? 'Something went wrong';
+    }
+  }
+
   Future<RoleType> login(String username, String password) async {
     // Map<String, dynamic> body = {
     //   'client_id': clientId,

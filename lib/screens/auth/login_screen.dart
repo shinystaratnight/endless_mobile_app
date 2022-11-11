@@ -136,9 +136,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       Image.asset(
-                        'images/company_banner.png',
+                        'images/logo.png',
                         //width: 200,
-                        width: SizeConfig.widthMultiplier * 48.66,
+                        width: SizeConfig.widthMultiplier * 55.66,
                         // height: 44,
                       ),
                     ],

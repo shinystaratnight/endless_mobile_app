@@ -145,8 +145,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
     super.initState();
     // _calendarController = CalendarController();
     currentIndex = 3;
-    _currentDay = DateTime(DateTime.now().year, DateTime.now().month - 1,
-        DateTime.now().day);
+    _currentDay = DateTime(
+        DateTime.now().year, DateTime.now().month - 1, DateTime.now().day);
 
     if (widget.type == CalendarType.Canddate) {
       _initCandidateCalendar();
@@ -200,17 +200,21 @@ class _HomeCalendarState extends State<HomeCalendar> {
         );
 
         if (carrier != null) {
-          setState(() {
-            if (status == CarrrierStatus.Available) {
-              _candidateAvailable[date] = [carrier];
-              _candidateUnavailable.removeWhere(
-                  (key, value) => key.toString() == date.toString());
-            } else {
-              _candidateAvailable.removeWhere(
-                  (key, value) => key.toString() == date.toString());
-              _candidateUnavailable[date] = [carrier];
-            }
-          });
+          setState(
+            () {
+              if (status == CarrrierStatus.Available) {
+                _candidateAvailable[date] = [carrier];
+                _candidateUnavailable.removeWhere(
+                  (key, value) => key.toString() == date.toString(),
+                );
+              } else {
+                _candidateAvailable.removeWhere(
+                  (key, value) => key.toString() == date.toString(),
+                );
+                _candidateUnavailable[date] = [carrier];
+              }
+            },
+          );
         }
       } catch (e) {
         print(e);
@@ -229,27 +233,75 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
   Widget _buildCandidateCalendar(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        maxWidth: 1250,
-      ),
       child: ListView(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          Text('candidate'),
           TableCalendar(
+            daysOfWeekHeight: SizeConfig.heightMultiplier * 4.39,
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.04,
+              ),
+              weekendStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.04,
+                color: Colors.grey[400],
+              ),
+            ),
             availableGestures: AvailableGestures.none,
             //  simpleSwipeConfig: const SimpleSwipeConfig(
             //   verticalThreshold: 25.0,
             //   swipeDetectionBehavior: SwipeDetectionBehavior.continuousDistinct,
             // ),
-            headerStyle:
-                HeaderStyle(titleCentered: true, formatButtonVisible: false),
+            calendarStyle: CalendarStyle(
+              defaultTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+              disabledTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+              outsideTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+              selectedTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+              weekendTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+                color: Colors.grey[500],
+              ),
+            ),
+            headerStyle: HeaderStyle(
+              leftChevronMargin: EdgeInsets.only(
+                left: SizeConfig.widthMultiplier * 4.87,
+              ),
+              rightChevronMargin: EdgeInsets.only(
+                right: SizeConfig.widthMultiplier * 4.87,
+              ),
+              titleCentered: true,
+              formatButtonVisible: false,
+              titleTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.84,
+              ),
+              leftChevronIcon: Icon(
+                Icons.arrow_back_ios,
+                size: SizeConfig.heightMultiplier * 2.56,
+              ),
+              rightChevronIcon: Icon(
+                Icons.arrow_forward_ios,
+                size: SizeConfig.heightMultiplier * 2.56,
+              ),
+            ),
             // calendarFormat: CalendarFormat.month,
-            rowHeight: 40,
+            //rowHeight: 40,
+            rowHeight: SizeConfig.heightMultiplier * 5.87,
             //todo: revert to one month later for ruslanzaharov1105@gmail.com, later remove it
             focusedDay: _currentDay,
-            firstDay: DateTime.now().subtract(Duration(days: 365)),
+            firstDay: DateTime.now().subtract(
+              Duration(
+                days: 365,
+              ),
+            ),
             lastDay: Jiffy().add(years: 1).dateTime,
             currentDay: _currentDay,
 
@@ -277,12 +329,16 @@ class _HomeCalendarState extends State<HomeCalendar> {
                         decoration: BoxDecoration(
                           color: Colors.green,
                         ),
-                        padding: EdgeInsets.all(12),
+                        padding: EdgeInsets.all(
+                          //12,
+                          SizeConfig.heightMultiplier * 1.76,
+                        ),
                         child: Text(
                           translate('button.available'),
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            //fontSize: 14,
+                            fontSize: SizeConfig.heightMultiplier * 2.04,
                           ),
                         ),
                       ),
@@ -298,12 +354,16 @@ class _HomeCalendarState extends State<HomeCalendar> {
                         decoration: BoxDecoration(
                           color: Colors.red,
                         ),
-                        padding: EdgeInsets.all(12),
+                        padding: EdgeInsets.all(
+                          //12,
+                          SizeConfig.heightMultiplier * 1.76,
+                        ),
                         child: Text(
                           translate('button.unavailable'),
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            //fontSize: 14,
+                            fontSize: SizeConfig.heightMultiplier * 2.04,
                           ),
                         ),
                       ),
@@ -312,10 +372,15 @@ class _HomeCalendarState extends State<HomeCalendar> {
                   title: Text(id != null
                       ? translate('dialog.update')
                       : translate('dialog.confirm')),
-                  contentPadding: const EdgeInsets.all(8.0),
-                  titlePadding: const EdgeInsets.symmetric(
-                    horizontal: 8.0,
-                    vertical: 10.0,
+                  contentPadding: EdgeInsets.all(
+                    //8.0
+                    SizeConfig.heightMultiplier * 1.17,
+                  ),
+                  titlePadding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.heightMultiplier * 1.95,
+                    vertical: SizeConfig.heightMultiplier * 1.46,
+                    // horizontal: 8.0,
+                    // vertical: 10.0,
                   ),
                 ),
               ).then((available) => _updateAvailability(date, available, id));
@@ -331,9 +396,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
                 if (_candidateAvailable != null) {
                   if (_candidateAvailable[date] != null) {
                     return Positioned(
-                      bottom: 2,
+                      //bottom: 2,
+                      bottom: SizeConfig.heightMultiplier * 0.29,
                       child: _buildCircle(
-                        radius: 3.0,
+                        //radius: 3.0,
+                        radius: SizeConfig.heightMultiplier * 0.43,
                         color: Colors.green[400],
                       ),
                     );
@@ -343,9 +410,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
                 if (_candidateUnavailable != null) {
                   if (_candidateUnavailable[date] != null) {
                     return Positioned(
-                      bottom: 2,
+                      //bottom: 2,
+                      bottom: SizeConfig.heightMultiplier * 0.29,
                       child: _buildCircle(
-                        radius: 3.0,
+                        //radius: 3.0,
+                        radius: SizeConfig.heightMultiplier * 0.43,
                         color: Colors.red[400],
                       ),
                     );
@@ -358,12 +427,15 @@ class _HomeCalendarState extends State<HomeCalendar> {
           ),
           _buildCandidateLegend(),
           SizedBox(
-            height: 10,
+            //height: 10,
+            height: SizeConfig.heightMultiplier * 1.46,
           ),
           Material(
-            elevation: 3,
+            //elevation: 3,
+            //elevation: SizeConfig.heightMultiplier * 0.44,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              //padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.17),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,6 +445,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                       child: Wrap(
                         alignment: WrapAlignment.center,
                         runSpacing: 10,
+                        //runSpacing: SizeConfig.heightMultiplier * 1.46,
                         children: [
                           ...List.generate(
                               counterButtons.length,
@@ -404,11 +477,13 @@ class _HomeCalendarState extends State<HomeCalendar> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      //height: 20,
+                      height: SizeConfig.heightMultiplier * 2.93,
                     ),
                     _buildCustomDate(),
                     SizedBox(
-                      height: 20,
+                      //height: 20,
+                      height: SizeConfig.heightMultiplier * 2.93,
                     ),
                     if (_isLoading)
                       Center(
@@ -416,13 +491,17 @@ class _HomeCalendarState extends State<HomeCalendar> {
                       )
                     else
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        padding: EdgeInsets.symmetric(
+                          //horizontal: 15.0,
+                          horizontal: SizeConfig.widthMultiplier * 3.65,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             buildReportHeader(),
                             SizedBox(
-                              height: 10,
+                              //height: 10,
+                              height: SizeConfig.heightMultiplier * 1.46,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -434,8 +513,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
                                     child: Text(
                                       'Hourly',
                                       style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400),
+                                        //fontSize: 14,
+                                        fontSize:
+                                            SizeConfig.heightMultiplier * 2.05,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -445,8 +527,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
                                     child: Text(
                                       '${(_candidateWorkStates.hourlyWork.totalHours ?? 0).toInt()}h ${_candidateWorkStates.hourlyWork.totalMinutes ?? 0}m',
                                       style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400),
+                                        //fontSize: 14,
+                                        fontSize:
+                                            SizeConfig.heightMultiplier * 2.05,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -456,19 +541,24 @@ class _HomeCalendarState extends State<HomeCalendar> {
                                     child: Text(
                                       '\$${_candidateWorkStates.hourlyWork.totalEarned}',
                                       style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
+                                        //fontSize: 14,
+                                        fontSize:
+                                            SizeConfig.heightMultiplier * 2.05,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                             SizedBox(
-                              height: 10,
+                              //height: 10,
+                              height: SizeConfig.heightMultiplier * 1.46,
                             ),
                             calculateTotal(),
                             SizedBox(
-                              height: 20,
+                              //height: 20,
+                              height: SizeConfig.heightMultiplier * 2.93,
                             ),
                           ],
                         ),
@@ -492,7 +582,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Activity',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  //fontSize: 14,
+                  fontSize: SizeConfig.heightMultiplier * 2.05,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
@@ -501,7 +595,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Amount',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  //fontSize: 14,
+                  fontSize: SizeConfig.heightMultiplier * 2.05,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
@@ -510,7 +608,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
               alignment: Alignment.centerRight,
               child: Text(
                 'Earned',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  //fontSize: 14,
+                  fontSize: SizeConfig.heightMultiplier * 2.05,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
@@ -525,13 +627,21 @@ class _HomeCalendarState extends State<HomeCalendar> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Shifts: ${_candidateWorkStates.shiftsTotal}',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                style: TextStyle(
+                  //fontSize: 14,
+                  fontSize: SizeConfig.heightMultiplier * 2.05,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
           ),
           Text(
             'Total:  \$${_candidateWorkStates.hourlyWork.totalEarned}',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              //fontSize: 14,
+              fontSize: SizeConfig.heightMultiplier * 2.05,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       );
@@ -549,20 +659,33 @@ class _HomeCalendarState extends State<HomeCalendar> {
     ];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      padding: EdgeInsets.symmetric(
+        // horizontal: 20.0,
+        // vertical: 20.0,
+        vertical: SizeConfig.heightMultiplier * 2.93,
+        horizontal: SizeConfig.widthMultiplier * 4.87,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: data
             .map(
               (el) => Row(
                 children: [
-                  _buildCircle(radius: 8.0, color: el['color']),
+                  _buildCircle(
+                    //radius: 8.0,
+                    radius: SizeConfig.heightMultiplier * 1.17,
+                    color: el['color'],
+                  ),
                   SizedBox(
-                    width: 8.0,
+                    //width: 8.0,
+                    width: SizeConfig.widthMultiplier * 1.95,
                   ),
                   Text(
                     translate(el['label']),
-                    style: TextStyle(fontSize: 16.0),
+                    style: TextStyle(
+                      //fontSize: 16.0,
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
                   )
                 ],
               ),
@@ -585,7 +708,12 @@ class _HomeCalendarState extends State<HomeCalendar> {
     ];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      padding: EdgeInsets.symmetric(
+        // horizontal: 20.0,
+        // vertical: 20.0,
+        horizontal: SizeConfig.widthMultiplier * 4.87,
+        vertical: SizeConfig.heightMultiplier * 2.93,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: data
@@ -594,11 +722,15 @@ class _HomeCalendarState extends State<HomeCalendar> {
                 children: [
                   _buildCircle(radius: 8.0, color: el['color']),
                   SizedBox(
-                    width: 8.0,
+                    //width: 8.0,
+                    width: SizeConfig.widthMultiplier * 1.95,
                   ),
                   Text(
                     translate(el['label']),
-                    style: TextStyle(fontSize: 16.0),
+                    style: TextStyle(
+                      //fontSize: 16.0,
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
                   )
                 ],
               ),
@@ -613,7 +745,10 @@ class _HomeCalendarState extends State<HomeCalendar> {
       width: radius * 2,
       height: radius * 2,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(
+          //20,
+          SizeConfig.heightMultiplier * 2.93,
+        ),
         color: color,
       ),
     );
@@ -712,37 +847,85 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
   Widget _buildClientCalendar(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        maxWidth: 1250,
-      ),
       child: ListView(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          Text('client'),
           TableCalendar(
+            daysOfWeekHeight: SizeConfig.heightMultiplier * 4.39,
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.04,
+              ),
+              weekendStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.04,
+                color: Colors.grey[400],
+              ),
+            ),
             availableGestures: AvailableGestures.none,
-            headerStyle:
-                HeaderStyle(titleCentered: true, formatButtonVisible: false),
+            headerStyle: HeaderStyle(
+              leftChevronMargin: EdgeInsets.only(
+                left: SizeConfig.widthMultiplier * 4.87,
+              ),
+              rightChevronMargin: EdgeInsets.only(
+                right: SizeConfig.widthMultiplier * 4.87,
+              ),
+              titleCentered: true,
+              formatButtonVisible: false,
+              titleTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+              leftChevronIcon: Icon(
+                Icons.arrow_back_ios,
+                size: SizeConfig.heightMultiplier * 2.56,
+              ),
+              rightChevronIcon: Icon(
+                Icons.arrow_forward_ios,
+                size: SizeConfig.heightMultiplier * 2.56,
+              ),
+            ),
+
+            calendarStyle: CalendarStyle(
+              defaultTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+              disabledTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+              outsideTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+              selectedTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+              weekendTextStyle: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+                color: Colors.grey[500],
+              ),
+            ),
             //todo: revert to one month later for ruslanzaharov1105@gmail.com, later remove it
             focusedDay: _currentDay,
-            firstDay: DateTime.now().subtract(Duration(days: 365)),
+            firstDay: DateTime.now().subtract(
+              Duration(
+                days: 365,
+              ),
+            ),
             lastDay: Jiffy().add(years: 1).dateTime,
             currentDay: _currentDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
             onDaySelected: (date, events) {
               List<Shift> shifts = [];
-              if(_clientFulfilledShifts != null){
+              if (_clientFulfilledShifts != null) {
                 _clientFulfilledShifts.values
                     .forEach((shift) => shifts.forEach((element) {
-                  shifts.add(element);
-                }));
+                          shifts.add(element);
+                        }));
               }
-              if(_clientUnfulfilledShifts != null){
+              if (_clientUnfulfilledShifts != null) {
                 _clientUnfulfilledShifts.values
                     .forEach((shift) => shifts.forEach((element) {
-                  shifts.add(element);
-                }));
+                          shifts.add(element);
+                        }));
               }
 
               setState(() {
@@ -761,7 +944,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
                 if (_clientFulfilledShifts != null) {
                   if (_clientFulfilledShifts[date] != null) {
                     return Positioned(
-                      bottom: 2,
+                      //bottom: 2,
+                      bottom: SizeConfig.heightMultiplier * 0.29,
                       child: _buildCircle(
                         radius: SizeConfig.heightMultiplier * 0.58,
                         color: Colors.green[400],
@@ -773,7 +957,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
                 if (_clientUnfulfilledShifts != null) {
                   if (_clientUnfulfilledShifts[date] != null) {
                     return Positioned(
-                      bottom: 2,
+                      //bottom: 2,
+                      bottom: SizeConfig.heightMultiplier * 0.29,
                       child: _buildCircle(
                         radius: SizeConfig.heightMultiplier * 0.58,
                         color: Colors.red[400],
@@ -795,6 +980,13 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints = BoxConstraints(
+      maxHeight: size.height,
+      maxWidth: size.width,
+    );
+    SizeConfig().init(constraints, orientation);
     if (widget.type == CalendarType.Canddate) {
       return _buildCandidateCalendar(context);
     }
@@ -865,28 +1057,42 @@ class _HomeCalendarState extends State<HomeCalendar> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            padding: EdgeInsets.symmetric(
+              //horizontal: 15.0,
+              horizontal: SizeConfig.heightMultiplier * 3.65,
+            ),
             child: Row(
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 3.6,
-                  height: 60,
+                  //height: 60,
+                  height: SizeConfig.heightMultiplier * 8.78,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'From',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(
+                          //fontSize: 12,
+                          fontSize: SizeConfig.heightMultiplier * 1.75,
+                          color: Colors.grey,
+                        ),
                       ),
                       SizedBox(
-                        height: 3,
+                        //height: 3,
+                        height: SizeConfig.heightMultiplier * 0.43,
                       ),
                       DatePickerBoxWidget(
-                        horPad: 6,
-                        verPad: 9,
-                        fontSize: 12,
-                        imageHeight: 13,
-                        imageWidth: 13,
+                        // horPad: 6,
+                        // verPad: 9,
+                        //fontSize: 12,
+                        // imageHeight: 13,
+                        // imageWidth: 13,
+                        fontSize: SizeConfig.heightMultiplier * 1.75,
+                        imageHeight: SizeConfig.heightMultiplier * 1.75,
+                        imageWidth: SizeConfig.widthMultiplier * 2.91,
+                        horPad: SizeConfig.widthMultiplier * 1.46,
+                        verPad: SizeConfig.heightMultiplier * 1.32,
                         initialDate: fromDate,
                         onDateSelected: (DateTime startDate) {
                           DateTime _dateTime = DateTime(
@@ -903,27 +1109,37 @@ class _HomeCalendarState extends State<HomeCalendar> {
                   ),
                 ),
                 SizedBox(
-                  width: 15,
+                  //width: 15,
+                  width: SizeConfig.widthMultiplier * 3.65,
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 3.6,
-                  height: 60,
+                  //height: 60,
+                  height: SizeConfig.heightMultiplier * 8.78,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'To',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(
+                            //fontSize: 12,
+                            fontSize: SizeConfig.heightMultiplier * 1.75,
+                            color: Colors.grey),
                       ),
                       SizedBox(
                         height: 3,
                       ),
                       DatePickerBoxWidget(
-                        horPad: 6,
-                        verPad: 9,
-                        fontSize: 12,
-                        imageHeight: 13,
-                        imageWidth: 13,
+                        // horPad: 6,
+                        // verPad: 9,
+                        //fontSize: 12,
+                        // imageHeight: 13,
+                        // imageWidth: 13,
+                        fontSize: SizeConfig.heightMultiplier * 1.75,
+                        imageHeight: SizeConfig.heightMultiplier * 1.75,
+                        imageWidth: SizeConfig.widthMultiplier * 2.91,
+                        horPad: SizeConfig.widthMultiplier * 1.46,
+                        verPad: SizeConfig.heightMultiplier * 1.32,
                         initialDate: toDate,
                         onDateSelected: (DateTime startDate) {
                           DateTime _dateTime = DateTime(
@@ -940,11 +1156,15 @@ class _HomeCalendarState extends State<HomeCalendar> {
                   ),
                 ),
                 SizedBox(
-                  width: 20,
+                  //width: 20,
+                  width: SizeConfig.widthMultiplier * 4.87,
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
+                    padding: EdgeInsets.only(
+                      //top: 15.0,
+                      top: SizeConfig.heightMultiplier * 2.34,
+                    ),
                     child: InkWell(
                       onTap: () async {
                         setState(() {
@@ -957,15 +1177,28 @@ class _HomeCalendarState extends State<HomeCalendar> {
                         });
                       },
                       child: Container(
-                        height: 44,
+                        //height: 44,
+                        height: SizeConfig.heightMultiplier * 6.44,
                         decoration: BoxDecoration(
-                            color: Colors.purple,
-                            borderRadius: BorderRadius.all(Radius.circular(7)),
-                            border: Border.all(color: Colors.white)),
+                          color: Colors.purple,
+                          borderRadius: BorderRadius.all(
+                            //Radius.circular(7),
+                            Radius.circular(
+                              SizeConfig.heightMultiplier * 1.02,
+                            ),
+                          ),
+                          border: Border.all(
+                            color: Colors.white,
+                          ),
+                        ),
                         child: Center(
                           child: Text(
                             'Submit',
-                            style: TextStyle(fontSize: 13, color: Colors.white),
+                            style: TextStyle(
+                              //fontSize: 13,
+                              fontSize: SizeConfig.heightMultiplier * 1.90,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -1015,7 +1248,12 @@ class _CounterButtonState extends State<CounterButton> {
                 ? size.width / 6.6
                 : size.width / 9.2
             : size.width / 3.6,
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+        padding: EdgeInsets.symmetric(
+          // horizontal: 15,
+          // vertical: 3,
+          horizontal: SizeConfig.widthMultiplier * 3.65,
+          vertical: SizeConfig.heightMultiplier * 0.44,
+        ),
         decoration: BoxDecoration(
           color: widget.onTapped ? AppColors.darkBlue : Colors.white,
           // borderRadius: widget.index == widget.last || widget.index == 0
@@ -1040,15 +1278,14 @@ class _CounterButtonState extends State<CounterButton> {
           ),
         ),
         child: Center(
-          child: FittedBox(
-            child: Text(
-              widget.title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 14,
-                color: widget.onTapped ? Colors.white : Colors.black,
-              ),
+          child: Text(
+            widget.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              //fontSize: 14,
+              fontSize: SizeConfig.heightMultiplier * 2.22,
+              color: widget.onTapped ? Colors.white : Colors.black,
             ),
           ),
         ),

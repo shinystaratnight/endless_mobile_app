@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -14,6 +15,7 @@ import 'package:piiprent/models/candidate_model.dart';
 import 'package:piiprent/models/candidate_skill_model.dart';
 import 'package:piiprent/models/candidate_tag_model.dart';
 import 'package:piiprent/screens/change_password_screen.dart';
+import 'package:piiprent/screens/widgets/network_image_widgets.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
@@ -197,7 +199,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
             SizedBox(
-              width: SizeConfig.widthMultiplier*1.95,
+              width: SizeConfig.widthMultiplier * 1.95,
               //width: 8.0,
             ),
             Expanded(
@@ -232,7 +234,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
             SizedBox(
-              width: SizeConfig.widthMultiplier*1.95,
+              width: SizeConfig.widthMultiplier * 1.95,
               //width: 8.0,
             ),
             Expanded(
@@ -355,7 +357,11 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(e.skill.name,style: TextStyle(fontSize: SizeConfig.heightMultiplier*2.14),),
+                  Text(
+                    e.skill.name,
+                    style:
+                        TextStyle(fontSize: SizeConfig.heightMultiplier * 2.14),
+                  ),
                   ScoreBadge(score: e.score),
                 ],
               ),
@@ -444,7 +450,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
             ),
             SizedBox(
-              width: SizeConfig.widthMultiplier*1.95,
+              width: SizeConfig.widthMultiplier * 1.95,
               //width: 8.0,
             ),
             Expanded(
@@ -467,7 +473,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                     ),
                   ),
                   SizedBox(
-                    width: SizeConfig.widthMultiplier*1.95,
+                    width: SizeConfig.widthMultiplier * 1.95,
                     //width: 8.0,
                   ),
                   Expanded(
@@ -515,8 +521,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         return LayoutBuilder(
           builder: (context, constraints) {
             SizeConfig().init(constraints, orientation);
-            print('height: ${SizeConfig.heightMultiplier}');
-            print('width: ${SizeConfig.widthMultiplier}');
+
             return Scaffold(
               appBar:
                   getCandidateAppBar(translate('page.title.profile'), context),
@@ -539,7 +544,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                             ? size.width > 900
                                 ? Padding(
                                     padding: EdgeInsets.only(
-                                      top:SizeConfig.heightMultiplier*0.12,
+                                      top: SizeConfig.heightMultiplier * 0.12,
                                     ),
                                     child: _landscapeView(
                                       candidateService,
@@ -570,7 +575,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   }
 
   Widget _landscapeView(candidateService, candidate, size) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Align(
@@ -578,14 +583,15 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildProfileImage(context, candidateService, candidate, size),
+                  _buildProfileImage(
+                      context, candidateService, candidate, size),
                   _buildChangePassword(),
                 ],
               ),
             ),
           ),
           SizedBox(
-            width: SizeConfig.widthMultiplier*1.17,
+            width: SizeConfig.widthMultiplier * 1.17,
             //width: 15,
           ),
           Expanded(
@@ -594,7 +600,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: SizeConfig.heightMultiplier*1.06,
+                  height: SizeConfig.heightMultiplier * 1.06,
                   //height: 20.0,
                 ),
                 Form(
@@ -614,7 +620,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: SizeConfig.heightMultiplier*0.79,
+                  height: SizeConfig.heightMultiplier * 0.79,
                   //height: 15.0,
                 ),
                 Form(
@@ -634,12 +640,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: SizeConfig.heightMultiplier*0.79,
+                  height: SizeConfig.heightMultiplier * 0.79,
                   //height: 15.0,
                 ),
                 _buildSkills(candidate.skills),
                 SizedBox(
-                  height: SizeConfig.heightMultiplier*0.79,
+                  height: SizeConfig.heightMultiplier * 0.79,
                   //height: 15.0,
                 ),
                 _buildResidency(candidate),
@@ -672,7 +678,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             ),
           ),
           SizedBox(
-            height: SizeConfig.heightMultiplier*0.79,
+            height: SizeConfig.heightMultiplier * 0.79,
             //height: 15.0,
           ),
           Form(
@@ -692,12 +698,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             ),
           ),
           SizedBox(
-            height: SizeConfig.heightMultiplier*0.79,
+            height: SizeConfig.heightMultiplier * 0.79,
             //height: 15.0,
           ),
           _buildSkills(candidate.skills),
           SizedBox(
-            height: SizeConfig.heightMultiplier*0.79,
+            height: SizeConfig.heightMultiplier * 0.79,
             //height: 15.0,
           ),
           _buildResidency(candidate),
@@ -718,15 +724,13 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           //padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
           padding: EdgeInsets.symmetric(
               horizontal: SizeConfig.widthMultiplier * 14.59,
-              vertical: SizeConfig.heightMultiplier * 1.46
-          ),
+              vertical: SizeConfig.heightMultiplier * 1.46),
           color: Colors.blueAccent,
           textColor: Colors.white,
-          shape:
-              RoundedRectangleBorder(
-                  //borderRadius: BorderRadius.circular(20)
-                  borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*2.92)
-              ),
+          shape: RoundedRectangleBorder(
+              //borderRadius: BorderRadius.circular(20)
+              borderRadius:
+                  BorderRadius.circular(SizeConfig.heightMultiplier * 2.92)),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -739,9 +743,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               translate('button.change_password'),
               textAlign: TextAlign.center,
               style: TextStyle(
-                //fontSize: 16,
-                fontSize: SizeConfig.textMultiplier*2.34
-              ),
+                  //fontSize: 16,
+                  fontSize: SizeConfig.textMultiplier * 2.34),
             ),
           ),
         ),
@@ -783,8 +786,9 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
       candidate, Size size) {
     return Column(
       children: [
+
         SizedBox(
-      //height:20,
+          //height:20,
           height: SizeConfig.heightMultiplier * 2.42,
         ),
         Center(
@@ -795,30 +799,33 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               context,
             ),
             child: Container(
-              height: SizeConfig.heightMultiplier * 19.03,
-              width: SizeConfig.widthMultiplier * 32.63,
-              //height: size.width > 798 && size.height > 480 ? 300 : 130,
-              //width: size.width > 798 && size.height > 480 ? 300 : 130,
+              // height: SizeConfig.heightMultiplier * 18.04,
+              // width: SizeConfig.widthMultiplier * 27.03,
+              height: size.width > 950 && size.height > 450 ? 300 : 150,
+              width: size.width > 950 && size.height > 450 ? 300 : 150,
+              constraints: BoxConstraints(
+                maxWidth: 300,
+                maxHeight: 300,
+                minWidth: 120,
+                minHeight: 120,
+              ),
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: primaryColor.withOpacity(.1),
+              ),
               child: ClipRRect(
-                //borderRadius: BorderRadius.circular(60),
-                borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier*20.78),
+                borderRadius: BorderRadius.circular(
+                  // size.width > 950 && size.height > 450 ? 180 : 60
+                    SizeConfig.heightMultiplier * 20.78),
                 child: CachedNetworkImage(
-                  imageUrl: candidate.contact.userAvatarUrl(),
+                  imageUrl:  candidate.contact.userAvatarUrl(),
                   fit: BoxFit.fill,
-                  placeholder: (context, url) => Container(
-                    height: SizeConfig.heightMultiplier * 19.03,
-                    width: SizeConfig.widthMultiplier * 32.63,
-                    //height: size.width > 798 && size.height > 480 ? 300 : 130,
-                    //width: size.width > 798 && size.height > 480 ? 300 : 130,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(child: new CircularProgressIndicator()),
-                  ),
-                  errorWidget: (context, url, error) => ImageContainer(
-                    content: Center(child: new Icon(Icons.error)),
-                  ),
+                  progressIndicatorBuilder:
+                      (context, val, progress) {
+                    return ImageLoadingContainer();
+                  },
+                  errorWidget: (context, url, error) =>ImageErrorWidget(),
                 ),
               ),
             ),
@@ -844,3 +851,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     );
   }
 }
+
+
+
+
+
