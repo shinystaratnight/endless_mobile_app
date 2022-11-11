@@ -526,7 +526,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               appBar:
                   getCandidateAppBar(translate('page.title.profile'), context),
               body: FutureBuilder(
-                future: candidateService.getCandidate(loginService.user.id),
+                future: candidateService.getCandidate(loginService.user.candidateId),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(

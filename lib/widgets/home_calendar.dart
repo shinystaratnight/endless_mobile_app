@@ -29,11 +29,13 @@ class HomeCalendar extends StatefulWidget {
   final CalendarType type;
   final String userId;
   final String role;
+  final String candidateId;
 
   HomeCalendar({
     @required this.type,
     this.userId,
     this.role,
+    this.candidateId,
   });
 
   @override
@@ -66,12 +68,12 @@ class _HomeCalendarState extends State<HomeCalendar> {
   DateTime _currentDay;
 
   _initCandidateCalendar() async {
-    if (widget.userId == null) {
+    if (widget.candidateId == null) {
       return;
     }
 
     var data = await _candidateService.getStatistics(
-        contactId: widget.userId,
+        contactId: widget.candidateId,
         startedAt0: DateTime.now(),
         startedAt1: DateTime.now());
     if (data != null) {
@@ -1029,7 +1031,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
     try {
       var data = await _candidateService.getStatistics(
-          contactId: widget.userId,
+          contactId: widget.candidateId,
           startedAt0: firstDate,
           startedAt1: lastDate);
       if (data != null) {

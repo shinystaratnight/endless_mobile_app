@@ -92,7 +92,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                 ),
                 HomeCalendar(
                   type: CalendarType.Client,
-                  role: loginService.user.activeRole!=null?loginService.user.activeRole.id:'',
+                  role: loginService.user.activeRole!=null ? loginService.user.activeRole.id : '',
                 ),
               ],
             ),
