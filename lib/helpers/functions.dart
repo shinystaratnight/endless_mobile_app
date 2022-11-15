@@ -4,6 +4,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:piiprent/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../widgets/size_config.dart';
+
 Map<String, String> generateTranslations(
   List<dynamic> translations,
   String name,
@@ -60,9 +62,17 @@ void showProminentDisclosureDialog(
       return WillPopScope(
           onWillPop: () => Future.value(false),
           child: AlertDialog(
-            title: Text('Prominent disclosure'),
+            title: Text(
+              'Prominent disclosure',
+              style: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+            ),
             content: Text(
               'If you have started a job from the App then Piiprent collects your location data to track your job progress even if the app is working in background.\nThe app is not functional without location permission.',
+              style: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
               textAlign: TextAlign.justify,
             ),
             actions: <Widget>[
@@ -71,14 +81,18 @@ void showProminentDisclosureDialog(
                   Navigator.pop(context);
                   action(false);
                 },
-                child: Text('Deny'),
+                child: Text('Deny',style: TextStyle(
+                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                ),),
               ),
               MaterialButton(
                 onPressed: () {
                   Navigator.pop(context);
                   requestPermission(context, action);
                 },
-                child: Text('Agree'),
+                child: Text('Agree',style: TextStyle(
+                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                ),),
               ),
             ],
           ));
@@ -112,6 +126,9 @@ void showDenyAlertDialog(BuildContext context, Function action) {
             title: Text('Are you sure?'),
             content: Text(
               "We track your work location if you are going to work and have an active shift. You are not eligible for this work without confirmation of this permission.",
+              style: TextStyle(
+            fontSize: SizeConfig.heightMultiplier*2.34,
+            ),
               textAlign: TextAlign.justify,
             ),
             actions: <Widget>[
@@ -120,14 +137,18 @@ void showDenyAlertDialog(BuildContext context, Function action) {
                   Navigator.pop(context);
                   action(false);
                 },
-                child: Text('Close'),
+                child: Text('Close',style: TextStyle(
+                  fontSize: SizeConfig.heightMultiplier*2.34,
+                ),),
               ),
               MaterialButton(
                 onPressed: () {
                   Navigator.pop(context);
                   action(true);
                 },
-                child: Text('Allow'),
+                child: Text('Allow',style: TextStyle(
+                  fontSize: SizeConfig.heightMultiplier*2.34,
+                ),),
               ),
             ],
           ));
@@ -144,9 +165,14 @@ void showErrorDialog(BuildContext context, String title, String message,
       return WillPopScope(
         onWillPop: () => Future.value(false),
         child: AlertDialog(
-          title: Text(title ?? 'Error occurred'),
+          title: Text(title ?? 'Error occurred',style: TextStyle(
+            fontSize: SizeConfig.heightMultiplier * 2.34,
+          ),),
           content: Text(
             message ?? 'Unexpected error occurred.',
+            style: TextStyle(
+              fontSize: SizeConfig.heightMultiplier * 2.34,
+            ),
             textAlign: TextAlign.justify,
           ),
           actions: <Widget>[
@@ -155,7 +181,9 @@ void showErrorDialog(BuildContext context, String title, String message,
                 Navigator.pop(context);
                 action(null);
               },
-              child: Text('Close'),
+              child: Text('Close',style: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),),
             ),
             MaterialButton(
               onPressed: () async {
@@ -170,7 +198,9 @@ void showErrorDialog(BuildContext context, String title, String message,
                   action(null);
                 }
               },
-              child: Text('Open App settings'),
+              child: Text('Open App settings',style: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),),
             ),
           ],
         ),

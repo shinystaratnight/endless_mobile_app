@@ -1401,7 +1401,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               onTap: () {},
                               child: SizedBox(
                                 //width: 80,
-                                width: SizeConfig.widthMultiplier * 19.46,
+                                width: SizeConfig.widthMultiplier * 20.7,
                                 child: CountryCodePicker(
                                   textStyle: TextStyle(
                                     fontSize:

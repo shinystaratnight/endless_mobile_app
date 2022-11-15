@@ -2,6 +2,7 @@ import 'package:background_location/background_location.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,7 +60,7 @@ void main() async {
 
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (_) => MultiProvider(
         providers: [
           ChangeNotifierProvider(
@@ -120,6 +121,8 @@ void main() async {
   );
 }
 
+
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -127,56 +130,58 @@ class MyApp extends StatelessWidget {
 
     return LocalizationProvider(
       state: LocalizationProvider.of(context).state,
-      child: GetMaterialApp(
-        title: 'Piiprent',
-        useInheritedMediaQuery: true,
-        darkTheme: ThemeData.dark(),
-        localizationsDelegates: [
-          localizationDelegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: localizationDelegate.supportedLocales,
-        locale: localizationDelegate.currentLocale,
-        theme: new ThemeData(
-          //accentColor: Colors.blueAccent,
-          scaffoldBackgroundColor: Colors.grey[100],
-          textTheme:
-              GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
-        ),
-        debugShowCheckedModeBanner: false,
-        routes: <String, WidgetBuilder>{
-          LoginScreen.name: (BuildContext context) => LoginScreen(),
-          RegistrationScreen.name: (BuildContext context) =>
-              RegistrationScreen(),
-          '/candidate_home': (BuildContext context) => CandidateHomeScreen(),
-          '/candidate_jobs': (BuildContext context) => CandidateJobsScreen(),
-          '/candidate_job_offers': (BuildContext context) =>
-              CandidateJobOffersScreen(),
-          '/candidate_timesheets': (BuildContext context) =>
-              CandidateTimesheetsScreen(),
-          '/candidate_profile': (BuildContext context) =>
-              CandidateProfileScreen(),
-          '/client_home': (BuildContext context) => ClientHomeScreen(),
-          '/client_profile': (BuildContext context) => ClientProfileScreen(),
-          '/client_jobs': (BuildContext context) => ClientJobsScreen(),
-          '/client_timesheets': (BuildContext context) =>
-              ClientTimesheetsScreen(),
-          '/client_jobsites': (BuildContext context) => ClientJobsitesScreen(),
-          ForgotPasswordScreen.name: (BuildContext context) =>
-              ForgotPasswordScreen(),
-          '/address': (BuildContext context) => AddressScreen(),
-        },
-        home: LayoutBuilder(
-          builder: (context, constraints) {
-            return OrientationBuilder(
-              builder: (context, orientation) {
-                SizeConfig().init(constraints, orientation);
-                return PreviewScreen();
-              },
-            );
+      child: Portal(
+        child: GetMaterialApp(
+          title: 'Piiprent',
+          useInheritedMediaQuery: true,
+          darkTheme: ThemeData.dark(),
+          localizationsDelegates: [
+            localizationDelegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: localizationDelegate.supportedLocales,
+          locale: localizationDelegate.currentLocale,
+          theme: new ThemeData(
+            //accentColor: Colors.blueAccent,
+            scaffoldBackgroundColor: Colors.grey[100],
+            textTheme:
+                GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
+          ),
+          debugShowCheckedModeBanner: false,
+          routes: <String, WidgetBuilder>{
+            LoginScreen.name: (BuildContext context) => LoginScreen(),
+            RegistrationScreen.name: (BuildContext context) =>
+                RegistrationScreen(),
+            '/candidate_home': (BuildContext context) => CandidateHomeScreen(),
+            '/candidate_jobs': (BuildContext context) => CandidateJobsScreen(),
+            '/candidate_job_offers': (BuildContext context) =>
+                CandidateJobOffersScreen(),
+            '/candidate_timesheets': (BuildContext context) =>
+                CandidateTimesheetsScreen(),
+            '/candidate_profile': (BuildContext context) =>
+                CandidateProfileScreen(),
+            '/client_home': (BuildContext context) => ClientHomeScreen(),
+            '/client_profile': (BuildContext context) => ClientProfileScreen(),
+            '/client_jobs': (BuildContext context) => ClientJobsScreen(),
+            '/client_timesheets': (BuildContext context) =>
+                ClientTimesheetsScreen(),
+            '/client_jobsites': (BuildContext context) => ClientJobsitesScreen(),
+            ForgotPasswordScreen.name: (BuildContext context) =>
+                ForgotPasswordScreen(),
+            '/address': (BuildContext context) => AddressScreen(),
           },
+          home: LayoutBuilder(
+            builder: (context, constraints) {
+              return OrientationBuilder(
+                builder: (context, orientation) {
+                  SizeConfig().init(constraints, orientation);
+                  return PreviewScreen();
+                },
+              );
+            },
+          ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/models/client_contact_model.dart';
 import 'package:piiprent/screens/change_password_screen.dart';
+import 'package:piiprent/screens/widgets/network_image_widgets.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/client_app_bar.dart';
@@ -10,6 +11,7 @@ import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/profile_group.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
 import '../widgets/candidate_drawer.dart';
 import '../widgets/size_config.dart';
 
@@ -67,7 +69,7 @@ class ClientProfileScreen extends StatelessWidget {
                     child: size.width > 798 && size.height > 360
                         ? Container(
                             width: size.width,
-                            height:size.height,
+                            height: size.height,
                             child: Center(
                               child: _buildProfileWidget(
                                   context, size, contact, orientation),
@@ -216,36 +218,33 @@ class ClientProfileScreen extends StatelessWidget {
         ),
         Center(
           child: Container(
-            height: SizeConfig.heightMultiplier * 18.04,
-            width: SizeConfig.widthMultiplier * 30.33,
-            // height: size.width > 950 && size.height > 450 ? 300 : 100,
-            // width: size.width > 950 && size.height > 450 ? 300 : 100,
+            // height: SizeConfig.heightMultiplier * 18.04,
+            // width: SizeConfig.widthMultiplier * 27.03,
+            height: size.width > 950 && size.height > 450 ? 300 : 150,
+            width: size.width > 950 && size.height > 450 ? 300 : 150,
+            constraints: BoxConstraints(
+              maxWidth: 300,
+              maxHeight: 300,
+              minWidth: 120,
+              minHeight: 120,
+            ),
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: primaryColor.withOpacity(.1),
+            ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(
                   // size.width > 950 && size.height > 450 ? 180 : 60
-                  SizeConfig.heightMultiplier * 8.78),
+                  SizeConfig.heightMultiplier * 20.78),
               child: CachedNetworkImage(
                 imageUrl: contact.avatar ?? '',
                 fit: BoxFit.fill,
-                placeholder: (context, url) => Container(
-                  height: SizeConfig.heightMultiplier * 18.04,
-                  width: SizeConfig.widthMultiplier * 30.33,
-                  // height: size.width > 950 && size.height > 450 ? 300 : 100,
-                  // width: size.width > 950 && size.height > 450 ? 300 : 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: new CircularProgressIndicator(),
-                  ),
-                ),
-                errorWidget: (context, url, error) => ImageContainer(
-                  content: Container(
-                    color: Colors.grey[400],
-                    child: new Icon(Icons.error),
-                  ),
-                ),
+                progressIndicatorBuilder:
+                    (context, val, progress) {
+                  return ImageLoadingContainer();
+                },
+                errorWidget: (context, url, error) =>ImageErrorWidget(),
               ),
             ),
           ),
@@ -287,6 +286,36 @@ class ClientProfileScreen extends StatelessWidget {
           //height: 15.0,
         ),
       ],
+    );
+  }
+}
+class ImageContainer1 extends StatelessWidget {
+  const ImageContainer1({Key key, this.content}) : super(key: key);
+  final Widget content;
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      // height: SizeConfig.heightMultiplier * 18.04,
+      // width: SizeConfig.widthMultiplier * 27.03,
+      height: size.width > 950 && size.height > 450 ? 300 : 150,
+      width: size.width > 950 && size.height > 450 ? 300 : 150,
+      constraints: BoxConstraints(
+        maxWidth: 300,
+        maxHeight: 300,
+        minWidth: 120,
+        minHeight: 120,
+      ),
+
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.black,
+          width: 0.2,
+        ),
+      ),
+      child: content,
     );
   }
 }

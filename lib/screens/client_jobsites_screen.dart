@@ -9,6 +9,8 @@ import 'package:piiprent/widgets/jobsite_card.dart';
 import 'package:piiprent/widgets/list_page.dart';
 import 'package:provider/provider.dart';
 
+import '../login_provider.dart';
+
 class ClientJobsitesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,8 @@ class ClientJobsitesScreen extends StatelessWidget {
       body: ListPage<Jobsite>(
         action: jobsiteService.getJobsites,
         params: {
-          'role': loginService.user.activeRole.id,
+          'role': loginService.user.roles[
+              Provider.of<LoginProvider>(context, listen: false).switchRole].id,
         },
         getChild: (Jobsite instance, Function reset) {
           return JobsiteCard(

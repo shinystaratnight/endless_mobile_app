@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/login_provider.dart';
+import 'package:piiprent/screens/widgets/network_image_widgets.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
 import 'candidate_drawer.dart';
 
 class ClientDrawer extends StatefulWidget {
@@ -44,162 +47,173 @@ class _ClientDrawerState extends State<ClientDrawer> {
   Widget build(BuildContext context) {
     LoginService loginService = Provider.of<LoginService>(context);
     ContactService contactService = Provider.of<ContactService>(context);
-    Size size = MediaQuery.of(context).size;
-    Orientation orientation = MediaQuery.of(context).orientation;
-    SizeConfig().init(
-        BoxConstraints(maxWidth: size.width, maxHeight: size.height),
-        orientation);
 
     return Drawer(
-      child: Container(
-        decoration: BoxDecoration(color: Colors.white),
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            FutureBuilder(
-              future:
-                  contactService.getContactPicture(loginService.user.userId),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
-                  child: Center(
-                    child: Consumer<LoginProvider>(
-                      builder: (_, login, __) {
-                        return Column(
-                          children: [
-                            Container(
-                              // height: SizeConfig.heightMultiplier * 12.04,
-                              // width: SizeConfig.widthMultiplier * 27.63,
-                              height: 100,
-                              width: 100,
-                              child: login.image == null
-                                  ? ClipRRect(
-                                borderRadius: BorderRadius.circular(60),
-                                // borderRadius: BorderRadius.circular(
-                                //     SizeConfig.heightMultiplier * 20.78),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.person,
-                                    //size: 30,
-                                    size: SizeConfig.heightMultiplier *
-                                        4.78,
-                                  ),
+      child: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(color: Colors.white),
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              FutureBuilder(
+                future:
+                    contactService.getContactPicture(loginService.user.userId),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return Container(
+                    //margin: EdgeInsets.symmetric(vertical: 15),
+                    margin: EdgeInsets.symmetric(
+                        vertical: SizeConfig.heightMultiplier * 2.34),
+                    child: Center(
+                      child: Consumer<LoginProvider>(
+                        builder: (_, login, __) {
+                          return Column(
+                            children: [
+                              Container(
+                                // height: SizeConfig.heightMultiplier * 15.04,
+                                // width: SizeConfig.widthMultiplier * 22.43,
+                                height: 120,
+                                width: 120,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: primaryColor.withOpacity(.1),
                                 ),
+                                child: login.image == null
+                                    ? Icon(
+                                        CupertinoIcons.person_fill,
+                                        size: 90,
+                                        // size:
+                                        //     SizeConfig.heightMultiplier * 13.17,
+                                        color: primaryColor,
+                                      )
+                                    : ClipRRect(
+                                        //borderRadius: BorderRadius.circular(60),
+                                        borderRadius: BorderRadius.circular(
+                                          SizeConfig.heightMultiplier *
+                                              34.5 /
+                                              SizeConfig.widthMultiplier *
+                                              40.345,
+                                        ),
+                                        child: CachedNetworkImage(
+                                          imageUrl: login.image,
+                                          fit: BoxFit.fill,
+                                          progressIndicatorBuilder:
+                                              (context, val, progress) {
+                                            return ImageLoadingContainer();
+                                          },
+                                          errorWidget: (context, url, error) =>ImageErrorWidget(),
+                                        ),
+                                      ),
+                              ),
+                              SizedBox(
+                                height: SizeConfig.heightMultiplier * 1.46,
+                                //height: 10,
+                              ),
+                              Text(
+                                loginService.user != null
+                                    ? loginService.user.name
+                                    : '',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  //fontSize: 14,
+                                  fontSize: SizeConfig.heightMultiplier * 2.05,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                                maxLines: 1,
                               )
-                                  : ClipRRect(
-                                borderRadius: BorderRadius.circular(60),
-                                // borderRadius: BorderRadius.circular(
-                                //     SizeConfig.heightMultiplier * 20.78),
-                                child: CachedNetworkImage(
-                                  imageUrl: login.image,
-                                  fit: BoxFit.fill,
-                                  progressIndicatorBuilder:
-                                      (context, val, progress) {
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: progress.progress,
-                                      ),
-                                    );
-                                  },
-                                  errorWidget: (context, url, error) =>
-                                      ImageContainer(
-                                        content: Container(
-                                            color: Colors.grey[400],
-                                            child: new Icon(Icons.error)),
-                                      ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier * 1.46,
-                              //height: 10,
-                            ),
-                            Text(
-                              loginService.user != null
-                                  ? loginService.user.name
-                                  : '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                //fontSize: 14,
-                                fontSize: SizeConfig.heightMultiplier * 2.05,
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                              maxLines: 1,
-                            )
-                          ],
-                        );
-                      },
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-            !widget.dashboard
-                ? ListTile(
-                    title: Text(translate('page.title.dashboard'),
+                  );
+                },
+              ),
+              !widget.dashboard
+                  ? ListTile(
+                      title: Text(
+                        translate('page.title.dashboard'),
                         style: _textStyle.copyWith(
-                            fontSize: SizeConfig.textMultiplier * 2.64)),
-                    onTap: () => Navigator.pushNamed(context, '/client_home'),
-                  )
-                : SizedBox(),
-            !widget.dashboard
-                ? Divider(
-                    color: Colors.grey[300],
-                  )
-                : SizedBox(),
-            ListTile(
-              title: Text(translate('page.title.profile'),
+                          fontSize: SizeConfig.textMultiplier * 2.64,
+                        ),
+                      ),
+                      onTap: () => Navigator.pushNamed(context, '/client_home'),
+                    )
+                  : SizedBox(),
+              !widget.dashboard
+                  ? Divider(
+                      color: Colors.grey[300],
+                    )
+                  : SizedBox(),
+              ListTile(
+                title: Text(
+                  translate('page.title.profile'),
                   style: _textStyle.copyWith(
-                      fontSize: SizeConfig.textMultiplier * 2.64)),
-              onTap: () => Navigator.pushNamed(context, '/client_profile'),
-            ),
-            Divider(
-              color: Colors.grey[300],
-            ),
-            ListTile(
-              title: Text(translate('page.title.jobsites'),
+                    fontSize: SizeConfig.textMultiplier * 2.64,
+                  ),
+                ),
+                onTap: () => Navigator.pushNamed(context, '/client_profile'),
+              ),
+              Divider(
+                color: Colors.grey[300],
+              ),
+              ListTile(
+                title: Text(
+                  translate('page.title.jobsites'),
                   style: _textStyle.copyWith(
-                      fontSize: SizeConfig.textMultiplier * 2.64)),
-              onTap: () => Navigator.pushNamed(context, '/client_jobsites'),
-            ),
-            Divider(
-              color: Colors.grey[300],
-            ),
-            ListTile(
-              title: Text(translate('page.title.jobs'),
+                    fontSize: SizeConfig.textMultiplier * 2.64,
+                  ),
+                ),
+                onTap: () => Navigator.pushNamed(context, '/client_jobsites'),
+              ),
+              Divider(
+                color: Colors.grey[300],
+              ),
+              ListTile(
+                title: Text(
+                  translate('page.title.jobs'),
                   style: _textStyle.copyWith(
-                      fontSize: SizeConfig.textMultiplier * 2.64)),
-              onTap: () => Navigator.pushNamed(context, '/client_jobs'),
-            ),
-            Divider(
-              color: Colors.grey[300],
-            ),
-            ListTile(
-              title: Text(translate('page.title.timesheets'),
+                    fontSize: SizeConfig.textMultiplier * 2.64,
+                  ),
+                ),
+                onTap: () => Navigator.pushNamed(context, '/client_jobs'),
+              ),
+              Divider(
+                color: Colors.grey[300],
+              ),
+              ListTile(
+                title: Text(
+                  translate('page.title.timesheets'),
                   style: _textStyle.copyWith(
-                      fontSize: SizeConfig.textMultiplier * 2.64)),
-              onTap: () => Navigator.pushNamed(context, '/client_timesheets'),
-            ),
-            Divider(
-              color: Colors.grey[300],
-            ),
-            ListTile(
-              title: Text(translate('button.logout'),
+                    fontSize: SizeConfig.textMultiplier * 2.64,
+                  ),
+                ),
+                onTap: () => Navigator.pushNamed(context, '/client_timesheets'),
+              ),
+              Divider(
+                color: Colors.grey[300],
+              ),
+              ListTile(
+                title: Text(
+                  translate('button.logout'),
                   style: _textStyle.copyWith(
-                      fontSize: SizeConfig.textMultiplier * 2.64)),
-              onTap: () => {
-                loginService
-                    .logout()
-                    .then((bool success) => Navigator.pushNamed(context, '/'))
-              },
-            ),
-            Divider(
-              color: Colors.grey[300],
-            ),
-          ],
+                    fontSize: SizeConfig.textMultiplier * 2.64,
+                  ),
+                ),
+                onTap: () => {
+                  loginService
+                      .logout()
+                      .then((bool success) => Navigator.pushNamed(context, '/'))
+                },
+              ),
+              Divider(
+                color: Colors.grey[300],
+              ),
+            ],
+          ),
         ),
       ),
     );

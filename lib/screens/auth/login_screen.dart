@@ -1,4 +1,5 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -49,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       RoleType type = await loginService.login(_username, _password);
+      //await Provider.of<ContactService>(context,listen: false).switchAccount();
 
       if (type == RoleType.Candidate) {
         if (loginProvider.image == null)
@@ -69,12 +71,13 @@ class _LoginScreenState extends State<LoginScreen> {
             loginProvider.image = value;
             setState(() {});
           });
-        
+
         List<Role> roles = await contactService.getRoles();
-        
+
         // Verify that the contact type is correct in cases when there were some operations on roles
         // in admin dashboard. There is no validation logic when the admin user adds/removes the roles.
         // List<Role> roles = await contactService.getRoles();
+
         if (roles.length > 0) {
           roles[0].active = true;
           loginService.user.roles = roles;
@@ -92,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+
   @override
   void initState() {
     SystemChrome.setPreferredOrientations([
@@ -139,16 +143,33 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.topRight,
                         child: SafeArea(
                           bottom: false,
-                          child: LanguageSelect(
-                            color: Colors.grey[500],
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0,right: 15),
+                            child: LanguageSelect(
+                              color: Colors.grey[500],
+                            ),
                           ),
                         ),
                       ),
-                      Image.asset(
-                        'images/company_banner.png',
-                        //width: 200,
-                        width: SizeConfig.widthMultiplier * 48.66,
-                        // height: 44,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'icon/icon.png',
+                            width: SizeConfig.widthMultiplier*21.89,
+                            height: SizeConfig.heightMultiplier*9.51,
+                            // width: 90,
+                            // height: 65,
+                          ),
+                          Image.asset(
+                            'icon/logo.png',
+                            // width: 200,
+                            // height: 80,
+                            height: SizeConfig.heightMultiplier*11.71,
+                            width: SizeConfig.widthMultiplier*48.66,
+                          ),
+
+                        ],
                       ),
                     ],
                   ),
@@ -218,12 +239,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       EdgeInsets.only(top: SizeConfig.heightMultiplier * 8.20),
                   //padding: EdgeInsets.only(left: 15, right: 15, top: 15),
                   padding: EdgeInsets.only(
-                      left: SizeConfig.widthMultiplier*3.65,
-                      right: SizeConfig.widthMultiplier*3.65,
-                      top: SizeConfig.heightMultiplier*2.19,
+                    left: SizeConfig.widthMultiplier * 3.65,
+                    right: SizeConfig.widthMultiplier * 3.65,
+                    top: SizeConfig.heightMultiplier * 2.19,
                   ),
                   width: MediaQuery.of(context).size.width - 32,
-                  constraints: BoxConstraints(maxWidth: 550, maxHeight: 550),
+                  constraints: BoxConstraints(maxWidth: 550, maxHeight: 600),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -231,11 +252,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           translate('button.login'),
                           style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.bold,
-                            //fontSize: 24,
-                            fontSize: SizeConfig.heightMultiplier*3.51
-                          ),
+                              color: primaryColor,
+                              fontWeight: FontWeight.bold,
+                              //fontSize: 24,
+                              fontSize: SizeConfig.heightMultiplier * 3.51),
                         ),
                         SizedBox(
                           //height: 32,
@@ -250,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(
                           // height: 5,
-                          height:SizeConfig.heightMultiplier * 0.58,
+                          height: SizeConfig.heightMultiplier * 0.58,
                         ),
                         CustomTextFieldWIthoutLabel(
                           passowrd: true,
@@ -271,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(
                           //height: 15,
-                          height: SizeConfig.heightMultiplier*2.34,
+                          height: SizeConfig.heightMultiplier * 2.34,
                         ),
                         InkWell(
                           onTap: () {
@@ -283,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                               color: primaryColor,
                               //fontSize: 14,
-                              fontSize: SizeConfig.heightMultiplier*2.04,
+                              fontSize: SizeConfig.heightMultiplier * 2.04,
                             ),
                           ),
                         ),

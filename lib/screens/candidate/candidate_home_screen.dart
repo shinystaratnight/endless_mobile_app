@@ -13,6 +13,7 @@ import 'package:piiprent/widgets/candidate_drawer.dart';
 import 'package:piiprent/widgets/home_calendar.dart';
 import 'package:piiprent/widgets/home_screen_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -105,8 +106,15 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
     NotificationService notificationService =
         Provider.of<NotificationService>(context);
     LoginService loginService = Provider.of<LoginService>(context);
-    Orientation orientation = MediaQuery.of(context).orientation;
+
     Size size = MediaQuery.of(context).size;
+    Orientation orientation = MediaQuery.of(context).orientation;
+    BoxConstraints constraints = BoxConstraints(
+      maxHeight: size.height,
+      maxWidth: size.width,
+    );
+    SizeConfig().init(constraints, orientation);
+
     return Scaffold(
       drawer: CandidateDrawer(dashboard: true),
       appBar: getCandidateAppBar(translate('page.title.dashboard'), context),
@@ -119,26 +127,24 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
               mainAxisAlignment:
                   orientation == Orientation.landscape && size.width > 1000
                       ? MainAxisAlignment.center
-                      :
-                  MainAxisAlignment.start,
+                      : MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 26,
+                  //height: 26,
+                  height: SizeConfig.heightMultiplier * 2.20,
                 ),
                 orientation == Orientation.landscape && size.width > 1000
                     ? Align(
                         alignment: Alignment.center,
                         child: _buildProfileRow(notificationService),
                       )
-                    :
-                _buildProfileRow(notificationService),
+                    : _buildProfileRow(notificationService),
                 orientation == Orientation.landscape && size.width > 1000
                     ? Align(
                         alignment: Alignment.center,
                         child: _buildJobsRow(notificationService),
                       )
-                    :
-                _buildJobsRow(notificationService),
+                    : _buildJobsRow(notificationService),
                 if (orientation == Orientation.landscape && size.width > 1000)
                   Align(
                     alignment: Alignment.center,
@@ -166,11 +172,12 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
               child: HomeScreenButton(
                 color: Colors.blue[700],
                 icon: Icon(
-                  Icons.person,
+                  Icons.checklist,
                   color: Colors.blue[700],
                 ),
-                path: '/candidate_profile',
-                text: translate('page.title.profile'),
+                //path: '/candidate_profile',
+                path: '',
+                text: translate('page.title.inventory'),
               ),
             ),
             Expanded(
