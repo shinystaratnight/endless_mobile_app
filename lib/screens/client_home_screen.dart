@@ -47,7 +47,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                           ),
                           path: '/client_profile',
                           text: translate('page.title.profile'),
-                        )),
+                        ),),
                     Expanded(
                       flex: 1,
                       child: HomeScreenButton(
@@ -92,7 +92,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                 ),
                 HomeCalendar(
                   type: CalendarType.Client,
-                  role: loginService.user.activeRole!=null ? loginService.user.activeRole.id : '',
+                 // role: loginService.user!=null ? loginService.user.activeRole.id : '',
                 ),
               ],
             ),

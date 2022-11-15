@@ -27,6 +27,18 @@ class ContactService {
     }
   }
 
+  Future<bool> switchAccount() async {
+    http.Response res = await apiService.get(path: '/auth/restore_session/');
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(res.body);
+      print("switch Account:: ============== >>> $body");
+      return true;
+    } else {
+      throw Exception("User with this email doesn't exist");
+    }
+  }
+
   Future<String> changePassowrd({
     String oldPass,
     String newPass,
@@ -176,7 +188,12 @@ class ContactService {
 
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> roles = body['roles'];
-      return roles.where((dynamic el) => el['__str__'].contains('client')).map((dynamic el) => Role.fromJson(el)).toList();
+      return roles.map((dynamic el) => Role.fromJson(el))
+          .toList();
+      // return roles
+      //     .where((dynamic el) => el['__str__'].contains('client'))
+      //     .map((dynamic el) => Role.fromJson(el))
+      //     .toList();
     } catch (e) {
       throw Exception("Failed fetching roles");
     }

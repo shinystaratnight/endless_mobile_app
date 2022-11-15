@@ -57,12 +57,12 @@ class JobsiteCard extends StatelessWidget {
                     Icons.location_on,
                     color: Colors.blue,
                     //size: 25,
-                    size: SizeConfig.heightMultiplier * 3.22,
+                    size: SizeConfig.heightMultiplier * 3.12,
                   ),
                   Text(
                     jobsite.address,
                     style: TextStyle(
-                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                      fontSize: SizeConfig.heightMultiplier * 2.23,
                     ),
                   ),
                 ],

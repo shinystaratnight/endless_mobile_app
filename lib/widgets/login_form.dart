@@ -71,7 +71,7 @@ class _LoginFormState extends State<LoginForm> {
     LoginService loginService = Provider.of<LoginService>(context);
     ContactService contactService = Provider.of<ContactService>(context);
 
-    loginService.getUser().then((RoleType role) {
+    loginService.getUser(context).then((RoleType role) {
       if (role == RoleType.Candidate) {
         Navigator.of(context).push(
           MaterialPageRoute(

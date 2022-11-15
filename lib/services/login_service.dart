@@ -1,15 +1,18 @@
 import 'dart:convert';
 
 import 'package:background_location/background_location.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/helpers/jwt_decode.dart';
+import 'package:piiprent/login_provider.dart';
 import 'package:piiprent/models/auth_model.dart';
 import 'package:piiprent/models/role_model.dart';
 import 'package:piiprent/models/user_model.dart';
 import 'package:piiprent/services/api_service.dart';
 import 'package:piiprent/services/contact_service.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService{
@@ -21,47 +24,47 @@ class LoginService{
     return _user;
   }
 
-  Future<dynamic> switchAccounts()async{
-    // Map<String, dynamic> body = {
-    //   'client_id': clientId,
-    //   'username': username,
-    //   'password': password,
-    //   'grant_type': 'password'
-    // };
-    Map<String, dynamic> body = {
-      // 'client_id': clientId,
-      // 'username': username,
-      // 'password': password,
-      'grant_type': 'password'
-    };
-
-    try {
-      http.Response res =
-          await apiService.post(path: '/auth/login/', body: body);
-
-      if (res.statusCode == 400) {
-        throw 'Email or Password is not valid';
-      }
-
-      if (res.statusCode != 200) {
-        throw 'Something went wrong';
-      }
-
-      Auth auth = Auth.fromJson(json.decode(utf8.decode(res.bodyBytes),),);
-
-      apiService.auth = auth;
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('auth', res.body);
-
-      var payload = parseJwtPayLoad(auth.access_token_jwt);
-      _user = User.fromTokenPayload(payload);
-
-      return _user.type;
-    } catch (e) {
-      throw e?.toString() ?? 'Something went wrong';
-    }
-  }
+  // Future<dynamic> switchAccounts()async{
+  //   // Map<String, dynamic> body = {
+  //   //   'client_id': clientId,
+  //   //   'username': username,
+  //   //   'password': password,
+  //   //   'grant_type': 'password'
+  //   // };
+  //   Map<String, dynamic> body = {
+  //     // 'client_id': clientId,
+  //     // 'username': username,
+  //     // 'password': password,
+  //     'grant_type': 'password'
+  //   };
+  //
+  //   try {
+  //     http.Response res =
+  //         await apiService.post(path: '/auth/login/', body: body);
+  //
+  //     if (res.statusCode == 400) {
+  //       throw 'Email or Password is not valid';
+  //     }
+  //
+  //     if (res.statusCode != 200) {
+  //       throw 'Something went wrong';
+  //     }
+  //
+  //     Auth auth = Auth.fromJson(json.decode(utf8.decode(res.bodyBytes),),);
+  //
+  //     apiService.auth = auth;
+  //
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     prefs.setString('auth', res.body);
+  //
+  //     var payload = parseJwtPayLoad(auth.access_token_jwt);
+  //     _user = User.fromTokenPayload(payload);
+  //
+  //     return _user.type;
+  //   } catch (e) {
+  //     throw e?.toString() ?? 'Something went wrong';
+  //   }
+  // }
 
   Future<RoleType> login(String username, String password) async {
     // Map<String, dynamic> body = {
@@ -105,7 +108,8 @@ class LoginService{
     }
   }
 
-  Future<RoleType> getUser() async {
+  Future<RoleType> getUser(BuildContext context) async {
+    LoginProvider loginService = Provider.of<LoginProvider>(context,listen: false);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String authEncoded = (prefs.getString('auth') ?? '');
@@ -137,11 +141,17 @@ class LoginService{
           _user = User.fromTokenPayload(payload);
         }
 
-        if (user.type == RoleType.Client) {
+        //if (user.type == RoleType.Client) {
           List<Role> roles = await contactService.getRoles();
-          roles[0].active = true;
-          user.roles = roles;
-        }
+          roles[loginService.switchRole].active = true;
+          _user.type = getRole(roles[loginService.switchRole].name);
+
+          print('_user.type: ==== ${_user.type}');
+
+          user.roles = [];
+
+          user.roles.addAll(roles??[]);
+        //}
 
         return _user.type;
       } else {

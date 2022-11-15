@@ -56,6 +56,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   final ImagePicker _picker = ImagePicker();
   Uint8List _imageBytes;
 
+  String imageUrl='';
+
   _onTapImage(
     CandidateService candidateService,
     Candidate candidate,
@@ -512,9 +514,17 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   }
 
   @override
+  void initState() {
+
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     CandidateService candidateService = Provider.of<CandidateService>(context);
-    LoginService loginService = Provider.of<LoginService>(context);
+    LoginService loginService= Provider.of<LoginService>(context);
+
     Size size = MediaQuery.of(context).size;
     return OrientationBuilder(
       builder: (context, orientation) {
@@ -535,7 +545,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   }
 
                   Candidate candidate = snapshot.data;
-
+                  imageUrl = candidate.contact.userAvatarUrl();
                   return SafeArea(
                     child: SingleChildScrollView(
                       child: Padding(
@@ -814,12 +824,20 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                 shape: BoxShape.circle,
                 color: primaryColor.withOpacity(.1),
               ),
-              child: ClipRRect(
+              child: imageUrl == null
+                  ? Icon(
+                CupertinoIcons.person_fill,
+                size: 90,
+                // size:
+                // SizeConfig.heightMultiplier * 13.17,
+                color: primaryColor,
+              )
+                  :ClipRRect(
                 borderRadius: BorderRadius.circular(
                   // size.width > 950 && size.height > 450 ? 180 : 60
                     SizeConfig.heightMultiplier * 20.78),
                 child: CachedNetworkImage(
-                  imageUrl:  candidate.contact.userAvatarUrl(),
+                  imageUrl:  imageUrl,
                   fit: BoxFit.fill,
                   progressIndicatorBuilder:
                       (context, val, progress) {

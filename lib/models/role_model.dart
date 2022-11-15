@@ -16,7 +16,7 @@ class Role {
   factory Role.fromJson(Map<String, dynamic> json) {
     return Role(
       id: json['id'],
-      name: (json['__str__'] as String).replaceAll('client - ', ''),
+      name: (json['__str__'] as String).split('-')[0].trim(),
       companyId: json['company_id'],
       clientContactId: json['client_contact_id'],
     );

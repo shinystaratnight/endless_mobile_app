@@ -4,12 +4,17 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get/get.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/mixins/change_language.dart';
+import 'package:piiprent/services/login_service.dart';
+import 'package:piiprent/widgets/size_config.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_portal/flutter_portal.dart';
+import '../services/contact_service.dart';
 
 class LanguageSelect extends StatefulWidget with ChangeLanguage {
-
   Color _color;
-  LanguageSelect(
-      {color = Colors.white,}) {
+  LanguageSelect({
+    color = Colors.white,
+  }) {
     _color = color;
   }
 
@@ -37,20 +42,35 @@ class _LanguageSelectState extends State<LanguageSelect> {
   Widget build(BuildContext context) {
     return CustomPopupMenu(
       showArrow: false,
-
       child: Container(
-        child: Icon(Icons.language, color: Colors.grey),
-        padding: EdgeInsets.all(20),
+        child: Icon(
+          Icons.language,
+          color: Colors.grey,
+          size: SizeConfig.heightMultiplier * 3.82,
+        ),
+        // margin: EdgeInsets.only(
+        //    // bottom: SizeConfig.heightMultiplier * 2.93,
+        //     right: SizeConfig.heightMultiplier * 2.93),
+        // padding: EdgeInsets.all(SizeConfig.heightMultiplier * 2.93),
       ),
       menuBuilder: () => StatefulBuilder(builder: (context, setState) {
         return Container(
-          width: 167,
-          height: 198,
+          width: SizeConfig.widthMultiplier * 40.63,
+          height: SizeConfig.heightMultiplier * 29.1,
+          // width: 167,
+          // height: 198,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-              border: Border.all(color: Color(0XFFD3DEEA), width: 1),
-              color: whiteColor,
-              borderRadius: BorderRadius.circular(12)),
+            border: Border.all(
+              color: Color(0XFFD3DEEA),
+              width: 1,
+            ),
+            color: whiteColor,
+            borderRadius: BorderRadius.circular(
+              //12,
+              SizeConfig.heightMultiplier * 1.76,
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: List.generate(4, (index) => index)
@@ -77,13 +97,18 @@ class _LanguageSelectState extends State<LanguageSelect> {
                               codes[index]
                           ? primaryColor.withOpacity(.1)
                           : whiteColor,
-                      height: 49,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      //height: 49,
+                      height: SizeConfig.heightMultiplier * 7.17,
+                      padding: EdgeInsets.symmetric(
+                        //horizontal: 20,
+                        horizontal: SizeConfig.widthMultiplier * 4.87,
+                      ),
                       child: Row(
                         children: <Widget>[
                           Icon(
                             Icons.radio_button_off,
-                            size: 15,
+                            //size: 15,
+                            size: SizeConfig.heightMultiplier * 2.19,
                             color:
                                 Localizations.localeOf(context).languageCode ==
                                         codes[index]
@@ -92,18 +117,26 @@ class _LanguageSelectState extends State<LanguageSelect> {
                           ),
                           Expanded(
                             child: Container(
-                              margin: EdgeInsets.only(left: 10),
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              margin: EdgeInsets.only(
+                                //left: 10,
+                                left: SizeConfig.widthMultiplier * 2.43,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                //vertical: 10,
+                                vertical: SizeConfig.heightMultiplier * 1.46,
+                              ),
                               child: Text(
                                 lans[index],
                                 style: TextStyle(
-                                    color: Localizations.localeOf(context)
-                                                .languageCode ==
-                                            codes[index]
-                                        ? primaryColor
-                                        : hintColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
+                                  color: Localizations.localeOf(context)
+                                              .languageCode ==
+                                          codes[index]
+                                      ? primaryColor
+                                      : hintColor,
+                                  //fontSize: 16,
+                                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),
@@ -117,7 +150,8 @@ class _LanguageSelectState extends State<LanguageSelect> {
         );
       }),
       pressType: PressType.singleClick,
-      verticalMargin: -10,
+      //verticalMargin: -10,
+      verticalMargin: -(SizeConfig.heightMultiplier * 1.46),
       controller: _controller,
     );
 
@@ -129,3 +163,5 @@ class _LanguageSelectState extends State<LanguageSelect> {
     // );
   }
 }
+
+

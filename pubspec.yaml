@@ -69,6 +69,7 @@ dependencies:
   linear_progress_bar: ^1.1.0
   modal_bottom_sheet: ^2.1.2
   device_preview: ^1.1.0
+  flutter_portal: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -100,6 +101,7 @@ flutter:
     - images/
     - images/icons/
     - assets/i18n/
+    - icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

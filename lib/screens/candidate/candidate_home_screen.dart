@@ -131,7 +131,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
               children: [
                 SizedBox(
                   //height: 26,
-                  height: SizeConfig.heightMultiplier * 3.80,
+                  height: SizeConfig.heightMultiplier * 2.20,
                 ),
                 orientation == Orientation.landscape && size.width > 1000
                     ? Align(
@@ -172,11 +172,12 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
               child: HomeScreenButton(
                 color: Colors.blue[700],
                 icon: Icon(
-                  Icons.person,
+                  Icons.checklist,
                   color: Colors.blue[700],
                 ),
-                path: '/candidate_profile',
-                text: translate('page.title.profile'),
+                //path: '/candidate_profile',
+                path: '',
+                text: translate('page.title.inventory'),
               ),
             ),
             Expanded(

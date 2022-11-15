@@ -58,8 +58,8 @@ class ImagePlaceHolder extends StatelessWidget {
       child: Center(
         child: Icon(
           CupertinoIcons.person_fill,
-          //size: 90,
-          size: SizeConfig.heightMultiplier * 13.17,
+          size: 90,
+          //size: SizeConfig.heightMultiplier * 13.17,
           color: primaryColor,
         ),
       ),

@@ -29,7 +29,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
       listen: false,
     );
 
-    final role = await loginService.getUser();
+
+
+    final role = await loginService.getUser(context);
 
     print('image before login: ${loginProvider.image}');
 
@@ -43,7 +45,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
           setState(() {});
         });
       print('image after login (Candidate): ${loginProvider.image}');
-      Navigator.pushNamed(context, '/candidate_home');
+      Navigator.pushReplacementNamed(context, '/candidate_home');
 
     } else if (role == RoleType.Client) {
       if (loginProvider.image == null)
@@ -55,10 +57,10 @@ class _PreviewScreenState extends State<PreviewScreen> {
           setState(() {});
         });
       print('image after login (Client): ${loginProvider.image}');
-      Navigator.pushNamed(context, '/client_home');
+      Navigator.pushReplacementNamed(context, '/client_home');
 
     } else {
-      Navigator.pushNamed(context, LoginScreen.name);
+      Navigator.pushReplacementNamed(context, LoginScreen.name);
     }
   }
 
@@ -88,6 +90,10 @@ class _PreviewScreenState extends State<PreviewScreen> {
     _getSettings();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/screens/candidate_notification_screen.dart';
 import 'package:piiprent/widgets/language-select.dart';
+import 'package:piiprent/widgets/size_config.dart';
+
+import '../screens/widgets/menu.dart';
 
 Widget getCandidateAppBar(
   String title,
@@ -11,7 +14,9 @@ Widget getCandidateAppBar(
   Widget leading,
 }) {
   return AppBar(
+
     actions: [
+      SwitchAccount(),
       LanguageSelect(
       ),
       showNotification
@@ -47,7 +52,9 @@ Widget getCandidateAppBar(
             )
           : SizedBox(),
     ],
-    title: Text(title),
+    title: Text(title,style: TextStyle(
+      fontSize: SizeConfig.heightMultiplier*2.34
+    ),),
     bottom: tabs != null ? TabBar(tabs: tabs) : null,
     leading: leading != null ? leading : null,
   );

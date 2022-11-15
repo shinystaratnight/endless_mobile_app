@@ -90,9 +90,9 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
                                         child: login.image == null
                                             ? Icon(
                                           CupertinoIcons.person_fill,
-                                          //size: 90,
-                                          size:
-                                          SizeConfig.heightMultiplier * 13.17,
+                                          size: 90,
+                                          // size:
+                                          // SizeConfig.heightMultiplier * 13.17,
                                           color: primaryColor,
                                         )
                                             : ClipRRect(

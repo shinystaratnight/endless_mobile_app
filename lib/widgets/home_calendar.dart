@@ -10,10 +10,13 @@ import 'package:piiprent/models/shift_model.dart';
 import 'package:piiprent/services/candidate_service.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/widgets/size_config.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../login_provider.dart';
 import '../models/candidate_work_statistics.dart';
 import '../screens/timesheets_details/widgets/date_picker_box_widget.dart';
+import '../services/login_service.dart';
 
 enum CalendarType {
   Canddate,
@@ -28,13 +31,13 @@ enum CarrrierStatus {
 class HomeCalendar extends StatefulWidget {
   final CalendarType type;
   final String userId;
-  final String role;
+  // final String role;
   final String candidateId;
 
   HomeCalendar({
     @required this.type,
     this.userId,
-    this.role,
+    // this.role,
     this.candidateId,
   });
 
@@ -44,6 +47,7 @@ class HomeCalendar extends StatefulWidget {
 
 class _HomeCalendarState extends State<HomeCalendar> {
   CandidateService _candidateService = CandidateService();
+  LoginService _loginService = LoginService();
   JobService _jobService = JobService();
   var _calendarController;
 
@@ -110,7 +114,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
   _initClientCalendar() async {
     try {
       List<Shift> shifts = await _jobService.getClientShifts({
-        'role': widget.role,
+        'role': _loginService.user.roles[Provider.of<LoginProvider>(context,listen:false).switchRole],
       });
       var data = await _candidateService.getStatistics(
           contactId: widget.userId,
@@ -1253,7 +1257,7 @@ class _CounterButtonState extends State<CounterButton> {
         padding: EdgeInsets.symmetric(
           // horizontal: 15,
           // vertical: 3,
-          horizontal: SizeConfig.widthMultiplier * 3.65,
+          //horizontal: SizeConfig.widthMultiplier * 3.65,
           vertical: SizeConfig.heightMultiplier * 0.44,
         ),
         decoration: BoxDecoration(
@@ -1285,8 +1289,9 @@ class _CounterButtonState extends State<CounterButton> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              //fontSize: 14,
-              fontSize: SizeConfig.heightMultiplier * 2.22,
+              //fontSize: 16,
+              fontSize: SizeConfig.heightMultiplier * 1.76
+              ,
               color: widget.onTapped ? Colors.white : Colors.black,
             ),
           ),
