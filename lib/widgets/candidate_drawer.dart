@@ -220,7 +220,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
                           ),
                         ),
                         onTap: () => {
-                          loginService.logout().then((bool success) =>
+                          loginService.logout(context: context).then((bool success) =>
                               Navigator.pushNamed(context, '/'))
                         },
                       ),

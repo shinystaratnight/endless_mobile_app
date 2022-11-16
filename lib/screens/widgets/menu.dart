@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:piiprent/models/role_model.dart';
 import 'package:piiprent/screens/widgets/primary_button.dart';
@@ -11,6 +12,8 @@ import '../../constants.dart';
 import '../../login_provider.dart';
 import '../../services/contact_service.dart';
 import '../../widgets/size_config.dart';
+import '../auth/login_screen.dart';
+import '../preview_screen.dart';
 import 'network_image_widgets.dart';
 
 class SwitchAccount extends StatefulWidget {
@@ -44,8 +47,14 @@ class _SwitchAccountState extends State<SwitchAccount> {
           //elevation: 12,
           elevation: SizeConfig.heightMultiplier * 1.76,
           child: Container(
-            height: SizeConfig.heightMultiplier * 42.46,
+            height: loginService.user.roles != null
+                ? (loginService.user.roles.length * 100).toDouble()
+                : 150,
             width: SizeConfig.widthMultiplier * 36.50,
+            constraints: BoxConstraints(
+              maxHeight: 900,
+              minHeight: 150,
+            ),
             // height: 290,
             // width: 150,
             child: Column(
@@ -67,22 +76,31 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                       ? Colors.white
                                       : Colors.blueAccent.withOpacity(0.2),
                               child: ListTile(
-                                onTap: () {
+                                onTap: () async {
                                   setState(() => _showMenu = false);
-                                  for (int i = 0;
-                                      i < loginService.user.roles.length;
-                                      i++) {
-                                    if (i != index) {
-                                      loginService.user.roles[i].active = false;
-                                    } else {
-                                      loginService.user.roles[i].active = true;
+                                  if (Provider.of<LoginProvider>(context,
+                                              listen: false)
+                                          .switchRole !=
+                                      index) {
+                                    for (int i = 0;
+                                        i < loginService.user.roles.length;
+                                        i++) {
+                                      if (i != index) {
+                                        loginService.user.roles[i].active =
+                                            false;
+                                      } else {
+                                        loginService.user.roles[i].active =
+                                            true;
+                                      }
                                     }
+                                    //await deleteImageFromCache(Provider.of<LoginProvider>(context,listen: false).image);
+                                    //PaintingBinding.instance.imageCache.clear();
+                                    Provider.of<LoginProvider>(context,
+                                            listen: false)
+                                        .switchRole = index;
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, '/', (route) => false);
                                   }
-                                  Provider.of<LoginProvider>(context,
-                                          listen: false)
-                                      .switchRole = index;
-                                  Navigator.pushNamedAndRemoveUntil(
-                                      context, '/', (route) => false);
                                 },
                                 //minLeadingWidth: 60,
                                 minLeadingWidth:
@@ -103,74 +121,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                       //width: 8,
                                       width: SizeConfig.widthMultiplier * 1.95,
                                     ),
-                                    FutureBuilder(
-                                      future: contactService.getContactPicture(
-                                          loginService.user.userId),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot snapshot) {
-                                        return Container(
-                                          //margin: EdgeInsets.symmetric(vertical: 15),
-                                          margin: EdgeInsets.symmetric(
-                                            vertical:
-                                                SizeConfig.heightMultiplier *
-                                                    2.34,
-                                          ),
-                                          child: Consumer<LoginProvider>(
-                                            builder: (_, login, __) {
-                                              return Container(
-                                                height: SizeConfig
-                                                        .heightMultiplier *
-                                                    6.86,
-                                                width:
-                                                    SizeConfig.widthMultiplier *
-                                                        9.73,
-                                                // height: 40,
-                                                // width: 40,
-                                                clipBehavior: Clip.antiAlias,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.white,
-                                                ),
-                                                child: login.image == null
-                                                    ? Icon(
-                                                        CupertinoIcons
-                                                            .person_fill,
-                                                        // size: 90,
-                                                        size: SizeConfig
-                                                                .heightMultiplier *
-                                                            4.06,
-                                                        color: primaryColor,
-                                                      )
-                                                    : ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(60),
-                                                        // borderRadius: BorderRadius.circular(
-                                                        //   SizeConfig.heightMultiplier *
-                                                        //       34.5 /
-                                                        //       SizeConfig.widthMultiplier *
-                                                        //       40.345,
-                                                        // ),
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          imageUrl: login.image,
-                                                          fit: BoxFit.fill,
-                                                          progressIndicatorBuilder:
-                                                              (context, val,
-                                                                  progress) {
-                                                            return ImageLoadingContainer();
-                                                          },
-                                                          errorWidget: (context,
-                                                                  url, error) =>
-                                                              ImageErrorWidget(),
-                                                        ),
-                                                      ),
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
-                                    ),
+                                    AccountImage(),
                                   ],
                                 ),
                                 title: Text(
@@ -206,34 +157,39 @@ class _SwitchAccountState extends State<SwitchAccount> {
                             );
                           },
                         ),
+                        SizedBox(
+                          //height: 4,
+                          height: SizeConfig.heightMultiplier * 0.59,
+                        ),
+                        Divider(),
+                        SizedBox(
+                          //height: 4,
+                          height: SizeConfig.heightMultiplier * 0.59,
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                right: SizeConfig.widthMultiplier * 14.60),
+                            child: PrimaryButton(
+                              btnText: 'Logout',
+                              buttonColor: Colors.indigo,
+                              onPressed: () {
+                                loginService.logout(context: context).then(
+                                      (bool success) =>
+                                          Navigator.pushNamed(context, '/'),
+                                    );
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          //height: 10,
+                          height: SizeConfig.heightMultiplier * 1.46,
+                        ),
                       ],
                     ),
                   ),
-                ),
-                SizedBox(
-                  //height: 4,
-                  height: SizeConfig.heightMultiplier * 0.59,
-                ),
-                Divider(),
-                SizedBox(
-                  //height: 4,
-                  height: SizeConfig.heightMultiplier * 0.59,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: PrimaryButton(
-                    btnText: 'Logout',
-                    buttonColor: Colors.indigo,
-                    onPressed: () {
-                      loginService.logout().then(
-                            (bool success) => Navigator.pushNamed(context, '/'),
-                          );
-                    },
-                  ),
-                ),
-                SizedBox(
-                  //height: 10,
-                  height: SizeConfig.heightMultiplier * 1.46,
                 ),
               ],
             ),
@@ -241,58 +197,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
         ),
         child: InkWell(
           onTap: () => setState(() => _showMenu = true),
-          child: FutureBuilder(
-            future: contactService.getContactPicture(loginService.user.userId),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              return Container(
-                //margin: EdgeInsets.symmetric(vertical: 15),
-                margin: EdgeInsets.symmetric(
-                  vertical: SizeConfig.heightMultiplier * 2.34,
-                ),
-                child: Consumer<LoginProvider>(
-                  builder: (_, login, __) {
-                    return Container(
-                      height: SizeConfig.heightMultiplier * 6.86,
-                      width: SizeConfig.widthMultiplier * 9.73,
-                      // height: 40,
-                      // width: 40,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: login.image == null
-                          ? Icon(
-                              CupertinoIcons.person_fill,
-                              //  size: 90,
-                              size: SizeConfig.heightMultiplier * 4.06,
-                              color: primaryColor,
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(30),
-                              // borderRadius: BorderRadius.circular(
-                              //   SizeConfig.heightMultiplier *
-                              //       34.5 /
-                              //       SizeConfig.widthMultiplier *
-                              //       40.345,
-                              // ),
-                              child: CachedNetworkImage(
-                                imageUrl: login.image,
-                                fit: BoxFit.fill,
-                                progressIndicatorBuilder:
-                                    (context, val, progress) {
-                                  return ImageLoadingContainer();
-                                },
-                                errorWidget: (context, url, error) =>
-                                    ImageErrorWidget(),
-                              ),
-                            ),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
+          child: AccountImage(),
         ),
       ),
     );
@@ -357,6 +262,85 @@ class _ModalEntry extends StatelessWidget {
           child: child,
         ),
       ),
+    );
+  }
+}
+
+class AccountImage extends StatefulWidget {
+  const AccountImage({Key key}) : super(key: key);
+
+  @override
+  State<AccountImage> createState() => _AccountImageState();
+}
+
+class _AccountImageState extends State<AccountImage> {
+  LoginService loginService;
+  @override
+  initState() {
+    loginService = Provider.of<LoginService>(context, listen: false);
+    debugPrint('roles: ============= ${loginService.user.roles}');
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ContactService contactService = Provider.of<ContactService>(context);
+    return FutureBuilder(
+      future: contactService.getContactPicture(loginService.user.userId),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Container(
+          //margin: EdgeInsets.symmetric(vertical: 15),
+          margin: EdgeInsets.symmetric(
+            vertical: SizeConfig.heightMultiplier * 2.34,
+          ),
+          child: Consumer<LoginProvider>(
+            builder: (_, login, __) {
+              return Container(
+                height: SizeConfig.heightMultiplier * 6.86,
+                width: SizeConfig.widthMultiplier * 9.73,
+                // height: 40,
+                // width: 40,
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+                child: login.image == null || login.image == ''
+                    ? Icon(
+                        CupertinoIcons.person_fill,
+                        // size: 90,
+                        size: SizeConfig.heightMultiplier * 4.06,
+                        color: primaryColor,
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        // borderRadius: BorderRadius.circular(
+                        //   SizeConfig.heightMultiplier *
+                        //       34.5 /
+                        //       SizeConfig.widthMultiplier *
+                        //       40.345,
+                        // ),
+                        child: CachedNetworkImage(
+                          imageUrl: login.image,
+                          fit: BoxFit.fill,
+                          cacheManager: login.cacheManager,
+                          progressIndicatorBuilder: (context, val, progress) {
+                            return ImageLoadingContainer();
+                          },
+                          errorWidget: (context, url, error) =>
+                              ImageErrorWidget(),
+                        ),
+                      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

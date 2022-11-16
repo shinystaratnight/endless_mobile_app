@@ -15,6 +15,8 @@ import 'package:piiprent/services/contact_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../screens/auth/login_screen.dart';
+
 class LoginService{
   final ApiService apiService = ApiService.create();
   final ContactService contactService = ContactService();
@@ -133,7 +135,7 @@ class LoginService{
             var payload = parseJwtPayLoad(auth.access_token_jwt);
             _user = User.fromTokenPayload(payload);
           } else {
-            await logout();
+            await logout(context: context);
             return null;
           }
         } else {
@@ -158,7 +160,7 @@ class LoginService{
         return null;
       }
     } catch (e) {
-      await logout();
+      await logout(context: context);
       return null;
     }
   }
@@ -188,12 +190,13 @@ class LoginService{
     }
   }
 
-  Future<bool> logout() async {
+  Future<bool> logout({@required BuildContext context}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     BackgroundLocation.stopLocationService();
     prefs.clear();
     _user = null;
     apiService.auth = null;
+    await deleteImageFromCache(context: context);
     return true;
   }
 }
