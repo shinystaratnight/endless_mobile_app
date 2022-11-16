@@ -1,5 +1,4 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -26,6 +25,11 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
+Future deleteImageFromCache({@required BuildContext context}) async {
+  await Provider.of<LoginProvider>(context, listen: false).cacheManager.emptyCache();
+  //await DefaultCacheManager().emptyCache();
+}
+
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<NavigatorState> key = new GlobalKey<NavigatorState>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -42,6 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
     LoginProvider loginProvider =
         Provider.of<LoginProvider>(context, listen: false);
     // _formKey.currentState.save();
+    //await _deleteImageFromCache(loginProvider.image);
+    PaintingBinding.instance.imageCache.clear();
 
     setState(() {
       _fetching = true;
@@ -144,7 +150,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: SafeArea(
                           bottom: false,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0,right: 15),
+                            padding:
+                                const EdgeInsets.only(top: 10.0, right: 15),
                             child: LanguageSelect(
                               color: Colors.grey[500],
                             ),
@@ -156,8 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Image.asset(
                             'icon/icon.png',
-                            width: SizeConfig.widthMultiplier*21.89,
-                            height: SizeConfig.heightMultiplier*9.51,
+                            width: SizeConfig.widthMultiplier * 21.89,
+                            height: SizeConfig.heightMultiplier * 9.51,
                             // width: 90,
                             // height: 65,
                           ),
@@ -165,10 +172,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             'icon/logo.png',
                             // width: 200,
                             // height: 80,
-                            height: SizeConfig.heightMultiplier*11.71,
-                            width: SizeConfig.widthMultiplier*48.66,
+                            height: SizeConfig.heightMultiplier * 11.71,
+                            width: SizeConfig.widthMultiplier * 48.66,
                           ),
-
                         ],
                       ),
                     ],

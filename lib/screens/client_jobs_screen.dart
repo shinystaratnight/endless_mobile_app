@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:piiprent/login_provider.dart';
 import 'package:piiprent/models/job_model.dart';
 import 'package:piiprent/services/job_service.dart';
 import 'package:piiprent/services/login_service.dart';
@@ -22,7 +23,7 @@ class ClientJobsScreen extends StatelessWidget {
         child: ListPage<Job>(
           action: jobService.getClientJobs,
           params: {
-            'role': loginService.user.activeRole.id,
+            'role': loginService.user.roles[Provider.of<LoginProvider>(context).switchRole].id,
           },
           getChild: (Job instance, Function reset) {
             return ClientJobCard(

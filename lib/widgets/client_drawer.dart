@@ -102,7 +102,8 @@ class _ClientDrawerState extends State<ClientDrawer> {
                                               (context, val, progress) {
                                             return ImageLoadingContainer();
                                           },
-                                          errorWidget: (context, url, error) =>ImageErrorWidget(),
+                                          errorWidget: (context, url, error) =>
+                                              ImageErrorWidget(),
                                         ),
                                       ),
                               ),
@@ -204,9 +205,9 @@ class _ClientDrawerState extends State<ClientDrawer> {
                   ),
                 ),
                 onTap: () => {
-                  loginService
-                      .logout()
-                      .then((bool success) => Navigator.pushNamed(context, '/'))
+                  loginService.logout(context: context).then(
+                        (bool success) => Navigator.pushNamed(context, '/'),
+                      ),
                 },
               ),
               Divider(

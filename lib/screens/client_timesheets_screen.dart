@@ -12,6 +12,7 @@ import 'package:piiprent/widgets/filter_dialog_button.dart';
 import 'package:piiprent/widgets/list_page.dart';
 import 'package:provider/provider.dart';
 
+import '../login_provider.dart';
 import '../widgets/size_config.dart';
 
 class ClientTimesheetsScreen extends StatelessWidget {
@@ -89,7 +90,7 @@ class ClientTimesheetsScreen extends StatelessWidget {
               action: timesheetService.getUnapprovedTimesheets,
               updateStream: _updateStream.stream,
               params: {
-                'role': loginService.user.activeRole.id,
+                'role': loginService.user.roles[Provider.of<LoginProvider>(context).switchRole].id,
               },
               getChild: (Timesheet instance, Function reset) {
                 return ClientTimesheetCard(
@@ -102,7 +103,7 @@ class ClientTimesheetsScreen extends StatelessWidget {
               action: timesheetService.getHistoryTimesheets,
               updateStream: _updateStream.stream,
               params: {
-                'role': loginService.user.activeRole.id,
+                'role':  loginService.user.roles[Provider.of<LoginProvider>(context).switchRole].id,
               },
               getChild: (Timesheet instance, Function reset) {
                 return ClientTimesheetCard(

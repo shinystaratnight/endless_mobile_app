@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/screens/auth/login_screen.dart';
 import 'package:piiprent/services/company_service.dart';
@@ -113,4 +114,18 @@ class _PreviewScreenState extends State<PreviewScreen> {
       ),
     );
   }
+}
+
+
+
+class CustomCacheManager {
+  static const key = 'customCacheKey';
+  static CacheManager instance = CacheManager(
+    Config(
+      key,
+      stalePeriod: const Duration(days: 7),
+      maxNrOfCacheObjects: 20,
+      fileService: HttpFileService(),
+    ),
+  );
 }

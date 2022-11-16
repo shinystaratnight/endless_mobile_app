@@ -38,16 +38,18 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                 Row(
                   children: [
                     Expanded(
-                        flex: 1,
-                        child: HomeScreenButton(
+                      flex: 1,
+                      child: HomeScreenButton(
+                        color: Colors.blue[700],
+                        icon: Icon(
+                          Icons.checklist,
                           color: Colors.blue[700],
-                          icon: Icon(
-                            Icons.person,
-                            color: Colors.blue[700],
-                          ),
-                          path: '/client_profile',
-                          text: translate('page.title.profile'),
-                        ),),
+                        ),
+                        //path: '/candidate_profile',
+                        path: '',
+                        text: translate('page.title.inventory'),
+                      ),
+                    ),
                     Expanded(
                       flex: 1,
                       child: HomeScreenButton(

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:piiprent/screens/preview_screen.dart';
 
 class LoginProvider extends ChangeNotifier{
-
+  var cacheManager =CustomCacheManager.instance;
   int _switchRole=0;
   int get switchRole => _switchRole;
 

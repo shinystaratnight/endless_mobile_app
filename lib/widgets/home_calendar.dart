@@ -978,7 +978,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
             ),
           ),
           _buildTable(_shifts),
-          _buildClientLegend(),
+          // _buildClientLegend(),
         ],
       ),
     );
