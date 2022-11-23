@@ -34,6 +34,7 @@ class CandidateTimesheetsScreen extends StatelessWidget {
         action: timesheetService.getCandidateTimesheets,
         updateStream: _updateStream.stream,
         getChild: (Timesheet instance, Function reset) {
+
           return TimesheetCard(
             company: instance.company,
             position: instance.position(localizationDelegate.currentLocale),

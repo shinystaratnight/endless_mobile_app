@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/helpers/functions.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class TimeAddWidget extends StatelessWidget {
   const TimeAddWidget(this.hintText, this.dateTime, {Key key})
@@ -11,7 +12,10 @@ class TimeAddWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding:EdgeInsets.only(
+          //bottom: 16.0,
+          bottom:SizeConfig.heightMultiplier*2.34,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -19,7 +23,8 @@ class TimeAddWidget extends StatelessWidget {
             hintText + ': ',
             style: TextStyle(
               color: AppColors.grey,
-              fontSize: 12,
+              //fontSize: 12,
+              fontSize: SizeConfig.heightMultiplier*1.76,
             ),
           ),
           Row(
@@ -30,7 +35,8 @@ class TimeAddWidget extends StatelessWidget {
                     : dateTime.toString(),
                 style: TextStyle(
                   color: AppColors.lightBlack,
-                  fontSize: 14,
+                  //fontSize: 14,
+                  fontSize: SizeConfig.heightMultiplier*2.05,
                 ),
               ),
             ],

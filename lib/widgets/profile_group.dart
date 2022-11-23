@@ -40,11 +40,11 @@ class _ProfileGroupState extends State<ProfileGroup> {
             //height: 44.0,
             //padding: const EdgeInsets.symmetric(horizontal: 16.0),
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.widthMultiplier * 3.89),
+                horizontal: SizeConfig.widthMultiplier * 3.89,),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 //Radius.circular(25.0),
-                Radius.circular(SizeConfig.heightMultiplier*3.66),
+                Radius.circular(SizeConfig.heightMultiplier*3.66,),
               ),
               border: Border.all(
                 width: 1,

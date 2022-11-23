@@ -12,7 +12,10 @@ class MoreButton extends StatelessWidget {
   _buildWrapper(child) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+        padding: EdgeInsets.only(
+          //bottom: 8.0,
+          bottom: SizeConfig.heightMultiplier * 1.17,
+        ),
         child: child,
       ),
     );
@@ -20,9 +23,10 @@ class MoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    Orientation orientation = MediaQuery.of(context).orientation;
-    BoxConstraints constraints = BoxConstraints(maxHeight: size.height,maxWidth: size.width);
+    // Size size = MediaQuery.of(context).size;
+    // Orientation orientation = MediaQuery.of(context).orientation;
+    // BoxConstraints constraints =
+    //     BoxConstraints(maxHeight: size.height, maxWidth: size.width);
     if (!isShow) {
       return SizedBox();
     }
@@ -39,7 +43,12 @@ class MoreButton extends StatelessWidget {
         return _buildWrapper(
           ElevatedButton(
             onPressed: onPressed,
-            child: Text(translate('button.load'),style: TextStyle(fontSize: SizeConfig.heightMultiplier*2.34),),
+            child: Text(
+              translate('button.load'),
+              style: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+            ),
           ),
         );
       },

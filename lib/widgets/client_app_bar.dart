@@ -16,9 +16,14 @@ Widget getClientAppBar(
   return AppBar(
     actions: [
       Consumer<LoginService>(
-          builder: (_,loginService,__) {
-            return Visibility(visible: loginService.user.roles!=null,child: SwitchAccount());
-          }
+        builder: (_, loginService, __) {
+          return Visibility(
+            visible: loginService.user != null
+                ? loginService.user.roles != null
+                : false,
+            child: SwitchAccount(),
+          );
+        },
       ),
       Padding(
         padding: const EdgeInsets.only(right: 8.0),

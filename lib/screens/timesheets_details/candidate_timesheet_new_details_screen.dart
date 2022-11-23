@@ -12,6 +12,7 @@ import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:piiprent/widgets/skill_activity_table.dart';
 import 'package:provider/provider.dart';
 
@@ -87,9 +88,6 @@ class _CandidateTimesheetNewDetailsScreenState
       _shiftEnd: widget.shiftEnd
     };
 
-
-
-
     super.initState();
   }
 
@@ -155,9 +153,10 @@ class _CandidateTimesheetNewDetailsScreenState
         });
       }
       setState(() => _updated = result);
+      Get.back();
     } catch (e) {
       print(e);
-     // Get.snackbar(e.toString(), '');
+      // Get.snackbar(e.toString(), '');
       setState(() {
         _error = e;
       });
@@ -171,9 +170,10 @@ class _CandidateTimesheetNewDetailsScreenState
     TimesheetService timesheetService = Provider.of<TimesheetService>(context);
     SkillActivityService skillActivityService =
         Provider.of<SkillActivityService>(context);
-     print('breakstart: $_breakStart');
-     print('breakend: $_breakEnd');
-     print('breakstart - breakend: ${_times[_breakStart].difference(_times[_breakEnd])}');
+    print('breakstart: $_breakStart');
+    print('breakend: $_breakEnd');
+    print(
+        'breakstart - breakend: ${_times[_breakStart].difference(_times[_breakEnd])}');
     // List<SkillActivity> data = snapshot.data;
     return Scaffold(
       appBar: getCandidateAppBar(
@@ -183,9 +183,10 @@ class _CandidateTimesheetNewDetailsScreenState
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.keyboard_arrow_left,
-                size: 36.0,
+                //size: 36.0,
+                size: SizeConfig.heightMultiplier * 5.27,
               ),
               onPressed: () {
                 Navigator.pop(context, _updated);
@@ -202,14 +203,15 @@ class _CandidateTimesheetNewDetailsScreenState
             Text(
               'General Information',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: SizeConfig.heightMultiplier * 2.34,
                 fontFamily: GoogleFonts.roboto().fontFamily,
                 fontWeight: FontWeight.w500,
                 color: AppColors.lightBlack,
               ),
             ),
             SizedBox(
-              height: 12,
+              //height: 12,
+              height: SizeConfig.heightMultiplier * 1.76,
             ),
             GeneralInformationWidget(
               // imageIcon: 'images/icons/ic_profile.svg',
@@ -217,28 +219,32 @@ class _CandidateTimesheetNewDetailsScreenState
               value: widget.name,
             ),
             GeneralInformationWidget(
-                // imageIcon: 'images/icons/ic_building.svg',
-                name: 'COMPANY',
-                value: widget.companyStr),
+              // imageIcon: 'images/icons/ic_building.svg',
+              name: 'COMPANY',
+              value: widget.companyStr,
+            ),
             // GeneralInformationWidget(
             //     // imageIcon: 'images/icons/ic_work.svg',
             //     name: 'JOBSITE',
             //     value: widget.jobsite),
             GeneralInformationWidget(
-                // imageIcon: 'images/icons/ic_building.svg',
-                name: 'ADDRESS',
-                value: widget.address),
+              // imageIcon: 'images/icons/ic_building.svg',
+              name: 'ADDRESS',
+              value: widget.address,
+            ),
             GeneralInformationWidget(
-                // imageIcon: 'images/icons/ic_support.svg',
-                name: 'POSITION',
-                value: widget.position),
+              // imageIcon: 'images/icons/ic_support.svg',
+              name: 'POSITION',
+              value: widget.position,
+            ),
             GeneralInformationWidget(
               // imageIcon: 'images/icons/ic_calendar.svg',
               name: 'SHIFT DATE',
               value: DateFormat('MMM dd, yyyy').format(widget.shiftDate),
             ),
             SizedBox(
-              height: 12,
+              //height: 12,
+              height: SizeConfig.heightMultiplier * 1.75,
             ),
             if (widget.status == 4 || widget.status == 5)
               Row(
@@ -248,18 +254,22 @@ class _CandidateTimesheetNewDetailsScreenState
                     'Time',
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: 16,
+                      //fontSize: 16,
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
                       fontFamily: GoogleFonts.roboto().fontFamily,
                       color: AppColors.lightBlack,
                     ),
                   ),
-                  if (widget.status == 4 || widget.status == 5)
+                  //if (widget.status == 4 || widget.status == 5)
+                  if (widget.status == 4)
                     _times[_shiftEnd] != null
                         ? Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(3.0),
+                                //padding: const EdgeInsets.all(3.0),
+                                padding: EdgeInsets.all(
+                                    SizeConfig.heightMultiplier * 0.44),
                                 child: InkWell(
                                   onTap: () async {
                                     var result = await Get.to(
@@ -274,16 +284,19 @@ class _CandidateTimesheetNewDetailsScreenState
                                   child: Icon(
                                     Icons.edit,
                                     color: AppColors.green,
-                                    size: 18,
+                                    //size: 18,
+                                    size: SizeConfig.heightMultiplier * 2.64,
                                   ),
                                 ),
                               ),
                               SizedBox(
-                                width: 16,
+                                //width: 16,
+                                width: SizeConfig.widthMultiplier * 3.89,
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 3.0,
+                                padding: EdgeInsets.symmetric(
+                                  //vertical: 3.0,
+                                  vertical: SizeConfig.heightMultiplier * 0.44,
                                 ),
                                 child: InkWell(
                                   onTap: () =>
@@ -291,7 +304,8 @@ class _CandidateTimesheetNewDetailsScreenState
                                   child: Icon(
                                     Icons.delete,
                                     color: AppColors.red,
-                                    size: 18,
+                                    //size: 18,
+                                    size: SizeConfig.heightMultiplier * 2.64,
                                   ),
                                 ),
                               ),
@@ -309,13 +323,19 @@ class _CandidateTimesheetNewDetailsScreenState
                               }
                             },
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 3),
+                              padding: EdgeInsets.symmetric(
+                                // horizontal: 8.0,
+                                // vertical: 3,
+                                horizontal: SizeConfig.widthMultiplier * 1.95,
+                                vertical: SizeConfig.heightMultiplier * 0.44,
+                              ),
                               child: Text(
                                 'ADD',
                                 style: TextStyle(
                                   color: AppColors.blue,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 14,
+                                  //fontSize: 14,
+                                  fontSize: SizeConfig.heightMultiplier * 2.05,
                                 ),
                               ),
                             ),
@@ -326,7 +346,8 @@ class _CandidateTimesheetNewDetailsScreenState
               Column(
                 children: [
                   SizedBox(
-                    height: 18,
+                    //size: 18,
+                    height: SizeConfig.heightMultiplier * 2.64,
                   ),
                   TimeAddWidget('START TIME', _times[_shiftStart]),
                   TimeAddWidget('END TIME', _times[_shiftEnd]),
@@ -335,10 +356,11 @@ class _CandidateTimesheetNewDetailsScreenState
                 ],
               ),
             SizedBox(
-              height: 24,
+              //height: 24,
+              height: SizeConfig.heightMultiplier * 3.51,
             ),
             SkillActivityTable(
-                hasActions: widget.status == 4 || widget.status == 5,
+                hasActions: widget.status == 4,
                 service: skillActivityService,
                 skill: widget.positionId,
                 timesheet: widget.id,
@@ -348,12 +370,16 @@ class _CandidateTimesheetNewDetailsScreenState
                 ? Column(
                     children: [
                       Container(
-                        padding: const EdgeInsets.only(bottom: 8.0),
+                        padding: EdgeInsets.only(
+                          //bottom: 8.0,
+                          bottom: SizeConfig.heightMultiplier * 1.17,
+                        ),
                         child: Center(
                           child: Text(
                             translate('message.pre_shift_check'),
                             style: TextStyle(
                               color: Colors.grey,
+                              fontSize: SizeConfig.heightMultiplier * 2.34,
                             ),
                           ),
                         ),
@@ -367,7 +393,9 @@ class _CandidateTimesheetNewDetailsScreenState
                                 _declinePreShiftCheck(timesheetService),
                             disabled: _fetching,
                             color: Colors.red[400],
-                            horizontalPadding: 50,
+                            //horizontalPadding: 50,
+                            horizontalPadding:
+                                SizeConfig.widthMultiplier * 12.17,
                           ),
                           FormSubmitButton(
                             label: translate('button.accept'),
@@ -375,7 +403,9 @@ class _CandidateTimesheetNewDetailsScreenState
                                 _acceptPreShiftCheck(timesheetService),
                             disabled: _fetching,
                             color: Colors.green[400],
-                            horizontalPadding: 50,
+                            //horizontalPadding: 50,
+                            horizontalPadding:
+                                SizeConfig.widthMultiplier * 12.17,
                           ),
                         ],
                       ),
@@ -392,13 +422,34 @@ class _CandidateTimesheetNewDetailsScreenState
                     ),
                   )
                 : Container(),
+            widget.status == 5
+                ? Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Approval Pending',
+                      style: TextStyle(
+                        fontSize: SizeConfig.heightMultiplier * 2.34,
+                        fontFamily: GoogleFonts.roboto().fontFamily,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.blue,
+                      ),
+                    ),
+                  )
+                : Container(),
             _error != null
                 ? Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    padding: EdgeInsets.symmetric(
+                      //vertical: 8.0,
+                      vertical: SizeConfig.heightMultiplier * 1.17,
+                    ),
                     child: Text(
                       _error,
-                      style: TextStyle(color: Colors.red[400]),
-                    ))
+                      style: TextStyle(
+                        color: Colors.red[400],
+                        fontSize: SizeConfig.heightMultiplier * 2.34,
+                      ),
+                    ),
+                  )
                 : SizedBox(),
           ],
         ),

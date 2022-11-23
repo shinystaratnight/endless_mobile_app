@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/widgets/form_field.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class AddressField extends StatefulWidget {
   final Function onSaved;
@@ -36,9 +37,17 @@ class _AddressFieldState extends State<AddressField> {
           setStream: _addressStreamController.stream,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: EdgeInsets.symmetric(
+            //horizontal: 8.0,
+            horizontal:SizeConfig.widthMultiplier*1.94,
+          ),
           child: ElevatedButton(
-            child: Text('Choose Address'),
+            child: Text(
+              'Choose Address',
+              style: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+            ),
             onPressed: () {
               Navigator.pushNamed(context, '/address').then((value) {
                 if (value != null) {

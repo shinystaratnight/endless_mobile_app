@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/client_app_bar.dart';
 import 'package:piiprent/widgets/client_drawer.dart';
 import 'package:piiprent/widgets/home_calendar.dart';
 import 'package:piiprent/widgets/home_screen_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
-import 'package:provider/provider.dart';
-
 import '../widgets/size_config.dart';
 
 class ClientHomeScreen extends StatefulWidget {
@@ -18,7 +15,7 @@ class ClientHomeScreen extends StatefulWidget {
 class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
-    LoginService loginService = Provider.of<LoginService>(context);
+
     Size size = MediaQuery.of(context).size;
     Orientation orientation = MediaQuery.of(context).orientation;
     BoxConstraints constraints = BoxConstraints(maxHeight: size.height,maxWidth: size.width,);

@@ -7,11 +7,10 @@ import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
-
 import '../constants.dart';
 import '../screens/widgets/network_image_widgets.dart';
 
-//String img;
+
 
 class CandidateDrawer extends StatefulWidget {
   final bool dashboard;
@@ -28,6 +27,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
   bool _isLoading = true;
   @override
   void initState() {
+
     _loginService = Provider.of<LoginService>(context, listen: false);
 
     if (Provider.of<LoginProvider>(context, listen: false).image == null)
@@ -38,6 +38,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
         setState(() {});
       });
     setState(() {
+
       _isLoading = false;
     });
     super.initState();
@@ -67,6 +68,14 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
                             .getContactPicture(loginService.user.userId),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
+                          String name = '';
+                          if(loginService.user != null){
+                            name = loginService.user.name;
+                            var nameParts = name.split(' ');
+                            if( nameParts.length > 2 ){
+                              name = nameParts[0] +' '+ nameParts[1];
+                            }
+                          }
                           return Container(
                             //margin: EdgeInsets.symmetric(vertical: 15),
                             margin: EdgeInsets.symmetric(
@@ -120,9 +129,7 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
                                         //height: 10,
                                       ),
                                       Text(
-                                        loginService.user != null
-                                            ? loginService.user.name
-                                            : '',
+                                        name,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           //fontSize: 14,

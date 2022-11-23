@@ -3,6 +3,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/helpers/enums.dart';
 import 'package:piiprent/widgets/filter_dialog.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class FilterDialogButton extends StatefulWidget {
   final String from;
@@ -49,23 +50,29 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
           Icon(
             Icons.filter_list,
             color: Colors.blue,
+            size: SizeConfig.heightMultiplier * 3.66,
           ),
 
           // TODO: implement showing functionality
           hasData
               ? Positioned(
-                  top: -2.0,
-                  right: -2.0,
+                  top: -(SizeConfig.heightMultiplier * 0.29),
+                  right: -(SizeConfig.widthMultiplier * 0.49),
+                  // top: -2.0,
+                  // right: -2.0,
                   child: Container(
                     alignment: Alignment.topRight,
-                    height: 12.0,
-                    width: 12.0,
+                    height: SizeConfig.heightMultiplier * 1.76,
+                    width: SizeConfig.widthMultiplier * 2.92,
+                    // height: 12.0,
+                    // width: 12.0,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.red[300],
                       border: Border.all(
                         color: Colors.white,
-                        width: 3.0,
+                        //width: 3.0,
+                        width: SizeConfig.widthMultiplier * 0.73,
                       ),
                     ),
                   ),
@@ -103,21 +110,41 @@ class _FilterDialogButtonState extends State<FilterDialogButton> {
             onPressed: () {
               Navigator.of(context).pop(FilterDialogResult.Clear);
             },
-            child: Text(translate('button.clear')),
+            child: Text(
+              translate('button.clear'),
+              style: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop(FilterDialogResult.Submit);
             },
             // color: Colors.blueAccent,
-            child: Text(translate('button.submit')),
+            child: Text(
+              translate('button.submit'),
+              style: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+            ),
           ),
         ],
-        title: Text(translate('dialog.choose_dates')),
-        contentPadding: const EdgeInsets.all(8.0),
-        titlePadding: const EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
+        title: Text(
+          translate('dialog.choose_dates'),
+          style: TextStyle(
+            fontSize: SizeConfig.heightMultiplier * 2.34,
+          ),
+        ),
+        contentPadding: EdgeInsets.all(
+          //8.0,
+          SizeConfig.heightMultiplier*1.17,
+        ),
+        titlePadding:EdgeInsets.symmetric(
+          horizontal:SizeConfig.widthMultiplier*1.94,
+          vertical:SizeConfig.heightMultiplier*1.46,
+          // horizontal: 8.0,
+          // vertical: 10.0,
         ),
         content: FilterDialog(
           from: _from,

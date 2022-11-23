@@ -8,6 +8,7 @@ import 'package:piiprent/models/skill_activity_model.dart';
 import 'package:piiprent/screens/candidate_skill_activity_screen.dart';
 import 'package:piiprent/screens/timesheets_details/widgets/time_add_widget.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class SkillActivityTable extends StatefulWidget {
   final bool hasActions;
@@ -54,7 +55,6 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
         'skill': widget.skill,
       });
 
-
       setState(() {
         _fetching = false;
         _error = null;
@@ -86,8 +86,6 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     var localizationDelegate = LocalizedApp.of(context).delegate;
@@ -98,7 +96,10 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
           List<SkillActivity> data = snapshot.data;
           return _fetching
               ? Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                  margin: EdgeInsets.symmetric(
+                    //vertical: 20,
+                    vertical: SizeConfig.heightMultiplier * 2.93,
+                  ),
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -113,7 +114,8 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                 'Activity',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 16,
+                                  //fontSize: 16,
+                                  fontSize: SizeConfig.heightMultiplier * 2.34,
                                   fontFamily: GoogleFonts.roboto().fontFamily,
                                   color: AppColors.lightBlack,
                                 ),
@@ -137,13 +139,22 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                   });
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 3),
+                                  padding: EdgeInsets.symmetric(
+                                    // horizontal: 8.0,
+                                    // vertical: 3,
+                                    horizontal:
+                                        SizeConfig.widthMultiplier * 1.95,
+                                    vertical:
+                                        SizeConfig.heightMultiplier * 0.44,
+                                  ),
                                   child: Text(
                                     'ADD',
                                     style: TextStyle(
                                       color: AppColors.blue,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 14,
+                                      //fontSize: 14,
+                                      fontSize:
+                                          SizeConfig.heightMultiplier * 2.05,
                                     ),
                                   ),
                                 ),
@@ -152,7 +163,8 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                           )
                         : SizedBox(),
                     SizedBox(
-                      height: 16,
+                      //height: 16,
+                      height: SizeConfig.heightMultiplier * 2.34,
                     ),
                     ListView.builder(
                       itemBuilder: (context, index) => Column(children: [
@@ -168,7 +180,8 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                   : "",
                               style: TextStyle(
                                 color: AppColors.lightBlack,
-                                fontSize: 14,
+                                //fontSize: 14,
+                                fontSize: SizeConfig.heightMultiplier * 2.05,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -177,7 +190,10 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.all(3.0),
+                                        padding: EdgeInsets.all(
+                                          //3.0,
+                                          SizeConfig.heightMultiplier * 0.44,
+                                        ),
                                         child: InkWell(
                                           onTap: () async {
                                             Navigator.of(context)
@@ -203,16 +219,23 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                           child: Icon(
                                             Icons.edit,
                                             color: AppColors.green,
-                                            size: 18,
+                                            //size: 18,
+                                            size: SizeConfig.heightMultiplier *
+                                                2.85,
                                           ),
                                         ),
                                       ),
                                       SizedBox(
-                                        width: 16,
+                                        //width: 16,
+                                        width:
+                                            SizeConfig.widthMultiplier * 3.89,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 3.0,
+                                        padding: EdgeInsets.symmetric(
+                                          // vertical: 3.0,
+                                          vertical:
+                                              SizeConfig.heightMultiplier *
+                                                  0.44,
                                         ),
                                         child: InkWell(
                                           onTap: () {
@@ -224,7 +247,9 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                           child: Icon(
                                             Icons.delete,
                                             color: AppColors.red,
-                                            size: 18,
+                                            //size: 18,
+                                            size: SizeConfig.heightMultiplier *
+                                                2.85,
                                           ),
                                         ),
                                       ),
@@ -233,7 +258,10 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                 : SizedBox()
                           ],
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(
+                          //height: 20,
+                          height: SizeConfig.heightMultiplier * 2.93,
+                        ),
                         TimeAddWidget('AMOUNT', data[index].value.toString())
                       ]),
                       shrinkWrap: true,
@@ -243,14 +271,21 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                       itemCount: data.length,
                     ),
                     SizedBox(
-                      height: 16,
+                      //height: 16,
+                      height: SizeConfig.heightMultiplier * 2.34,
                     ),
                     _error != null
                         ? Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
+                            padding: EdgeInsets.only(
+                              //bottom: 8.0,
+                              bottom: SizeConfig.heightMultiplier * 1.17,
+                            ),
                             child: Text(
                               translate('message.has_error'),
-                              style: TextStyle(color: Colors.red[400]),
+                              style: TextStyle(
+                                color: Colors.red[400],
+                                fontSize: SizeConfig.heightMultiplier * 2.34,
+                              ),
                             ),
                           )
                         : SizedBox()

@@ -8,6 +8,7 @@ import 'package:piiprent/services/notification_service.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
 
 class JobCard extends StatefulWidget {
@@ -91,12 +92,17 @@ class _JobCardState extends State<JobCard> {
           children: [
             Text(
               widget.jobOffer.company,
-              style: TextStyle(fontSize: 22.0, color: Colors.white),
+              style: TextStyle(
+                //fontSize: 22.0,
+                fontSize: SizeConfig.heightMultiplier * 3.22,
+                color: Colors.white,
+              ),
             ),
             Text(
               widget.jobOffer.position,
               style: TextStyle(
-                fontSize: 16.0,
+                //fontSize: 16.0,
+                fontSize: SizeConfig.heightMultiplier * 2.34,
                 color: Colors.white,
               ),
             )
@@ -114,13 +120,18 @@ class _JobCardState extends State<JobCard> {
                       Icon(
                         Icons.access_time,
                         color: Colors.blue,
+                        size: SizeConfig.heightMultiplier * 3.66,
                       ),
                       SizedBox(
-                        width: 5.0,
+                        //width: 5.0,
+                        width: SizeConfig.widthMultiplier * 1.22,
                       ),
                       Text(
                         DateFormat.jm().format(widget.jobOffer.datetime),
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
                       ),
                     ],
                   ),
@@ -129,14 +140,19 @@ class _JobCardState extends State<JobCard> {
                       Icon(
                         Icons.date_range,
                         color: Colors.blue,
+                        size: SizeConfig.heightMultiplier * 3.66,
                       ),
                       SizedBox(
-                        width: 5.0,
+                        //width: 5.0,
+                        width: SizeConfig.widthMultiplier * 1.22,
                       ),
                       Text(
                         DateFormat('dd/MM/yyyy')
                             .format(widget.jobOffer.datetime),
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
                       ),
                     ],
                   ),
@@ -150,10 +166,14 @@ class _JobCardState extends State<JobCard> {
                   Icon(
                     Icons.location_on,
                     color: Colors.blue,
+                    size: SizeConfig.heightMultiplier * 3.66,
                   ),
                   Text(
                     widget.jobOffer.location,
-                    style: TextStyle(color: Colors.blue),
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
                   ),
                 ],
               ),
@@ -174,7 +194,10 @@ class _JobCardState extends State<JobCard> {
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
+                            padding: EdgeInsets.only(
+                              //top: 10.0,
+                              top:SizeConfig.heightMultiplier*1.46,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -190,7 +213,8 @@ class _JobCardState extends State<JobCard> {
                                   },
                                   disabled: (_fetching && index == 1),
                                   color: Colors.green[400],
-                                  horizontalPadding: 20,
+                                  //horizontalPadding: 20,
+                                  horizontalPadding:SizeConfig.widthMultiplier*4.86,
                                 ),
                                 FormSubmitButton(
                                   label: translate('button.reject'),
@@ -204,7 +228,8 @@ class _JobCardState extends State<JobCard> {
                                   },
                                   disabled: (_fetching && index == 2),
                                   color: Colors.red[400],
-                                  horizontalPadding: 20,
+                                  //horizontalPadding: 20,
+                                  horizontalPadding:SizeConfig.widthMultiplier*4.86,
                                 ),
                               ],
                             ),

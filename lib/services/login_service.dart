@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:background_location/background_location.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../screens/auth/login_screen.dart';
 
-class LoginService{
+class LoginService {
   final ApiService apiService = ApiService.create();
   final ContactService contactService = ContactService();
   User _user;
@@ -68,13 +67,18 @@ class LoginService{
   //   }
   // }
 
-  Future<RoleType> login(String username, String password) async {
+  Future<RoleType> login(
+      {@required BuildContext context,
+      @required String username,
+      @required String password}) async {
     // Map<String, dynamic> body = {
     //   'client_id': clientId,
     //   'username': username,
     //   'password': password,
     //   'grant_type': 'password'
     // };
+    LoginProvider loginService =
+        Provider.of<LoginProvider>(context, listen: false);
     Map<String, dynamic> body = {
       'client_id': clientId,
       'username': username,
@@ -103,7 +107,13 @@ class LoginService{
 
       var payload = parseJwtPayLoad(auth.access_token_jwt);
       _user = User.fromTokenPayload(payload);
+      List<Role> roles = await contactService.getRoles();
+      roles[0].active = true;
+      _user.type = getRole(roles[0].name);
 
+      user.roles = [];
+
+      user.roles.addAll(roles ?? []);
       return _user.type;
     } catch (e) {
       throw e?.toString() ?? 'Something went wrong';
@@ -111,7 +121,8 @@ class LoginService{
   }
 
   Future<RoleType> getUser(BuildContext context) async {
-    LoginProvider loginService = Provider.of<LoginProvider>(context,listen: false);
+    LoginProvider loginService =
+        Provider.of<LoginProvider>(context, listen: false);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String authEncoded = (prefs.getString('auth') ?? '');
@@ -144,15 +155,13 @@ class LoginService{
         }
 
         //if (user.type == RoleType.Client) {
-          List<Role> roles = await contactService.getRoles();
-          roles[loginService.switchRole].active = true;
-          _user.type = getRole(roles[loginService.switchRole].name);
+        List<Role> roles = await contactService.getRoles();
+        roles[loginService.switchRole].active = true;
+        _user.type = getRole(roles[loginService.switchRole].name);
 
-          print('_user.type: ==== ${_user.type}');
+        user.roles = [];
 
-          user.roles = [];
-
-          user.roles.addAll(roles??[]);
+        user.roles.addAll(roles ?? []);
         //}
 
         return _user.type;

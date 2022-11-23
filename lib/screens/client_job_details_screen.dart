@@ -118,7 +118,10 @@ class _ClientJobDetailsScreenState extends State<ClientJobDetailsScreen> {
                   TableRow(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(
+                          //8.0,
+                          SizeConfig.heightMultiplier*1.17,
+                        ),
                         child: Center(
                           child: Text(
                             translate('message.no_data'),

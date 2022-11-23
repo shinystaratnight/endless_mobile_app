@@ -10,6 +10,7 @@ import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
@@ -42,7 +43,8 @@ class _LoginFormState extends State<LoginForm> {
     });
 
     try {
-      RoleType type = await loginService.login(_username, _password);
+      RoleType type = await loginService.login(
+          context: context, username: _username, password: _password);
 
       if (type == RoleType.Candidate) {
         debugPrint('type :: $type');
@@ -88,7 +90,10 @@ class _LoginFormState extends State<LoginForm> {
     });
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: EdgeInsets.symmetric(
+        //horizontal: 12.0,
+        horizontal: SizeConfig.widthMultiplier * 2.92,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -110,7 +115,8 @@ class _LoginFormState extends State<LoginForm> {
             ),
             FormMessage(type: MessageType.Error, message: _formError),
             SizedBox(
-              height: 16,
+              //height: 16,
+              height: SizeConfig.heightMultiplier * 2.34,
             ),
             FormSubmitButton(
               disabled: _fetching,
@@ -118,31 +124,45 @@ class _LoginFormState extends State<LoginForm> {
               label: translate('button.login'),
             ),
             SizedBox(
-              height: 10,
+              //height: 10,
+              height: SizeConfig.heightMultiplier * 1.46,
             ),
             GestureDetector(
               onTap: () => Navigator.pushNamed(context, '/forgot_password'),
               child: Text(
                 translate('link.forgot_password'),
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                ),
               ),
             ),
             SizedBox(
-              height: 16,
+              //height: 16,
+              height: SizeConfig.heightMultiplier * 2.34,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(translate('text.login_page'),
-                    style: TextStyle(color: Colors.grey[700])),
+                Text(
+                  translate('text.login_page'),
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                  ),
+                ),
                 SizedBox(
-                  width: 5,
+                  //width: 5,
+                  width:SizeConfig.widthMultiplier*1.22,
                 ),
                 GestureDetector(
                   onTap: widget.onRegister,
                   child: Text(
                     translate('link.register_here'),
-                    style: TextStyle(color: Colors.blueAccent),
+                    style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
                   ),
                 ),
               ],

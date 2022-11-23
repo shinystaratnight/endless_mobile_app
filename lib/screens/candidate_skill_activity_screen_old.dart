@@ -11,6 +11,8 @@ import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/size_config.dart';
+
 class CandidateSkillActivityScreenOld extends StatefulWidget {
   final String timesheet;
   final String skill;
@@ -77,6 +79,9 @@ class _CandidateSkillActivityScreenOldState
           translate(
             'page.title.create_skill_activity',
           ),
+          style: TextStyle(
+            fontSize: SizeConfig.heightMultiplier*2.34,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -131,7 +136,8 @@ class _CandidateSkillActivityScreenOldState
                   message: _error,
                 ),
                 SizedBox(
-                  height: 15.0,
+                  //height: 15.0,
+                  height:SizeConfig.heightMultiplier*2.34,
                 ),
                 FormSubmitButton(
                   disabled: _fetching,

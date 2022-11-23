@@ -66,30 +66,38 @@ class _ListPageState<T> extends State<ListPage<T>> {
 
           if (data.length == 0) {
             return Center(
-              child: Text(translate('message.no_data')),
+              child: Text(
+                translate('message.no_data'),
+                style: TextStyle(
+                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                ),
+              ),
             );
           }
 
           return RefreshIndicator(
-            child:ListView.builder(
-                    itemCount: data.length + 1,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (index == data.length) {
-                        return MoreButton(
-                          isShow: _listService.canFetchMore,
-                          stream: _listService.fetchStream,
-                          onPressed: () => _listService.fetchMore(),
-                        );
-                      }
+            child: ListView.builder(
+              itemCount: data.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == data.length) {
+                  return MoreButton(
+                    isShow: _listService.canFetchMore,
+                    stream: _listService.fetchStream,
+                    onPressed: () => _listService.fetchMore(),
+                  );
+                }
 
-                      T instance = data[index];
+                T instance = data[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: widget.getChild(instance, _listService.reset),
-                      );
-                    },
+                return Padding(
+                  padding: EdgeInsets.all(
+                    //16.0,
+                    SizeConfig.heightMultiplier*2.34,
                   ),
+                  child: widget.getChild(instance, _listService.reset),
+                );
+              },
+            ),
             onRefresh: () => _listService.reset(),
           );
 
@@ -122,7 +130,9 @@ class _ListPageState<T> extends State<ListPage<T>> {
 
         if (snapshot.hasError) {
           return Container(
-            child: Text(translate('message.has_error')),
+            child: Text(translate('message.has_error'),style: TextStyle(
+              fontSize: SizeConfig.heightMultiplier*2.34,
+            ),),
           );
         }
 

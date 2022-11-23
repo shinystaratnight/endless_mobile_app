@@ -8,6 +8,7 @@ import 'package:piiprent/services/skill_activity_service.dart';
 import 'package:piiprent/services/worktype_service.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
 
 class CandidateSkillActivityScreen extends StatefulWidget {
@@ -123,14 +124,20 @@ class _CandidateSkillActivityScreenState
 
     return Scaffold(
         appBar: AppBar(
-            title: Text(translate('page.title.create_skill_activity')),
+            title: Text(
+              translate('page.title.create_skill_activity'),
+              style: TextStyle(
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
+            ),
             centerTitle: false,
             leading: Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.keyboard_arrow_left,
-                    size: 36.0,
+                    //size: 36.0,
+                    size: SizeConfig.heightMultiplier * 5.27,
                   ),
                   onPressed: () {
                     Get.back();
@@ -140,9 +147,10 @@ class _CandidateSkillActivityScreenState
             ),
             actions: [
               IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.check,
-                  size: 26.0,
+                  //size: 26.0,
+                  size: SizeConfig.heightMultiplier * 3.80,
                 ),
                 onPressed: () {
                   _onSubmit(skillActivityService, context);
@@ -154,8 +162,14 @@ class _CandidateSkillActivityScreenState
             : Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                    height: 67,
+                    margin: EdgeInsets.symmetric(
+                      // vertical: 16,
+                      // horizontal: 16,
+                      vertical: SizeConfig.heightMultiplier * 2.34,
+                      horizontal: SizeConfig.widthMultiplier * 3.89,
+                    ),
+                    //height: 67,
+                    height: SizeConfig.heightMultiplier * 9.81,
                     decoration: BoxDecoration(
                       color: Color(0xffEEF6FF),
                       border: Border.all(
@@ -163,10 +177,16 @@ class _CandidateSkillActivityScreenState
                         color: Color(0xffD3DEEA),
                       ),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(5.0), //         <--- border radius here
+                        Radius.circular(
+                          //5.0,
+                          SizeConfig.heightMultiplier*0.73,
+                        ), //         <--- border radius here
                       ),
                     ),
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(
+                      //20,
+                      SizeConfig.heightMultiplier * 2.93,
+                    ),
                     width: double.infinity,
                     child: DropdownButton(
                       isExpanded: true,
@@ -174,12 +194,22 @@ class _CandidateSkillActivityScreenState
                       hint: Text(
                         hint,
                         maxLines: 1,
-                        style: TextStyle(color: Colors.black, fontSize: 16),
+                        style: TextStyle(
+                          color: Colors.black,
+                          //fontSize: 16,
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
                       ),
                       items: data.map((e) {
                         return DropdownMenuItem(
                             child: Text(
-                                e.name(localizationDelegate.currentLocale)),
+                              e.name(
+                                localizationDelegate.currentLocale,
+                              ),
+                              style: TextStyle(
+                                fontSize: SizeConfig.heightMultiplier*2.34,
+                              ),
+                            ),
                             value: e.id);
                       }).toList(),
                       onChanged: (value) {
@@ -195,51 +225,67 @@ class _CandidateSkillActivityScreenState
                     ),
                   ),
                   Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      width: double.infinity,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Color(0xffEEF6FF),
-                        border: Border.all(
-                          width: 1,
-                          color: Color(0xffD3DEEA),
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                              5.0), //         <--- border radius here
-                        ),
+                    margin: EdgeInsets.symmetric(
+                      // horizontal: 16,
+                      // vertical: 10,
+                      horizontal: SizeConfig.widthMultiplier * 3.89,
+                      vertical: SizeConfig.heightMultiplier * 1.46,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      //horizontal: 10,
+                      horizontal: SizeConfig.widthMultiplier * 2.43,
+                    ),
+                    width: double.infinity,
+                    //height: 60,
+                    height: SizeConfig.heightMultiplier * 8.78,
+                    decoration: BoxDecoration(
+                      color: Color(0xffEEF6FF),
+                      border: Border.all(
+                        width: 1,
+                        color: Color(0xffD3DEEA),
                       ),
-                      child: TextFormField(
-                        onChanged: (String value) {
-                          _value = double.parse(value);
-                        },
-                        controller: amountTextController,
-                        decoration: InputDecoration(
-                            hintText: translate('field.skill_activity_amount'),
-                            enabledBorder: InputBorder.none,
-                            border: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none),
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 18,
-                        ),
-                      )),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          //5.0,
+                          SizeConfig.heightMultiplier*0.73,
+                        ), //         <--- border radius here
+                      ),
+                    ),
+                    child: TextFormField(
+                      onChanged: (String value) {
+                        _value = double.parse(value);
+                      },
+                      controller: amountTextController,
+                      decoration: InputDecoration(
+                          hintText: translate('field.skill_activity_amount'),
+                          enabledBorder: InputBorder.none,
+                          border: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none),
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        //fontSize: 18,
+                        fontSize: SizeConfig.heightMultiplier * 2.64,
+                      ),
+                    ),
+                  ),
                   FormMessage(
                     type: MessageType.Error,
                     message: _error,
                   ),
                   SizedBox(
-                    height: 15.0,
+                    //height: 15.0,
+                    height: SizeConfig.heightMultiplier * 2.34,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(
+                      //horizontal: 16,
+                      horizontal: SizeConfig.widthMultiplier * 3.89,
+                    ),
                     width: double.infinity,
                     child: FormSubmitButton(
                       label: translate('button.submit'),

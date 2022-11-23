@@ -50,15 +50,18 @@ class _HomeScreenButtonState extends State<HomeScreenButton> {
                     ? Container(
                         //margin: const EdgeInsets.only(right: 10.0),
                         margin: EdgeInsets.only(
-                            right: SizeConfig.widthMultiplier * 2.43),
-                        padding:
-                            EdgeInsets.all(SizeConfig.heightMultiplier * 0.73),
+                          right: SizeConfig.widthMultiplier * 2.43,
+                        ),
+                        padding: EdgeInsets.all(
+                          SizeConfig.heightMultiplier * 0.73,
+                        ),
                         //padding: const EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           //borderRadius: BorderRadius.circular(25.0),
                           borderRadius: BorderRadius.circular(
-                              SizeConfig.heightMultiplier * 3.66),
+                            SizeConfig.heightMultiplier * 3.66,
+                          ),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.3),
@@ -87,14 +90,22 @@ class _HomeScreenButtonState extends State<HomeScreenButton> {
               color: widget.color,
               //borderRadius: BorderRadius.all(Radius.circular(10.0)),
               borderRadius: BorderRadius.all(
-                Radius.circular(SizeConfig.heightMultiplier * 1.46),
+                Radius.circular(
+                  SizeConfig.heightMultiplier * 1.46,
+                ),
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 3,
-                  blurRadius: 5,
-                  offset: Offset(0, 2),
+                  spreadRadius: SizeConfig.heightMultiplier * 0.44,
+                  blurRadius: SizeConfig.heightMultiplier * 0.73,
+                  // spreadRadius: 3,
+                  // blurRadius: 5,
+                  offset: Offset(
+                    0,
+                    //2,
+                    SizeConfig.heightMultiplier * 0.29,
+                  ),
                 ),
               ],
             ),
@@ -105,20 +116,23 @@ class _HomeScreenButtonState extends State<HomeScreenButton> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data) {
                       return Positioned(
-                        top: 3.0,
-                        right: 3.0,
+                        top: SizeConfig.heightMultiplier * 0.44,
+                        right: SizeConfig.widthMultiplier * 0.73,
+                        // top: 3.0,
+                        // right: 3.0,
                         child: Container(
                           alignment: Alignment.topRight,
                           // height: 16.0,
                           // width: 16.0,
-                          height: SizeConfig.heightMultiplier*2.34,
-                          width: SizeConfig.widthMultiplier*3.89,
+                          height: SizeConfig.heightMultiplier * 2.34,
+                          width: SizeConfig.widthMultiplier * 3.89,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.red[300],
                             border: Border.all(
                               color: Colors.white,
-                              width: 3.0,
+                              //width: 3.0,
+                              width: SizeConfig.widthMultiplier * 0.73,
                             ),
                           ),
                         ),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/validator.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class AsyncDropdown<T> extends StatefulWidget {
   const AsyncDropdown({
@@ -149,7 +150,10 @@ class _AsyncDropdownState<T> extends State<AsyncDropdown> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(
+        //8.0,
+        SizeConfig.heightMultiplier*1.17,
+      ),
       child: widget.multiple == true
           ? _multipleDropDown()
           : _singleValueDropdown(),

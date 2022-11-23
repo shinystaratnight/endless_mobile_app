@@ -205,7 +205,10 @@ class ClientTimesheetCard extends StatelessWidget {
                           fontSize: SizeConfig.heightMultiplier * 2.34,
                         ),
                       ),
-                      SizedBox(width: 5.0),
+                      SizedBox(
+                        //width: 5.0,
+                        width:SizeConfig.widthMultiplier*1.22,
+                      ),
                       Text(
                         translate('timesheet.break_to'),
                         style: TextStyle(
@@ -213,7 +216,10 @@ class ClientTimesheetCard extends StatelessWidget {
                           fontSize: SizeConfig.heightMultiplier * 2.34,
                         ),
                       ),
-                      SizedBox(width: 5.0),
+                      SizedBox(
+                        //width: 5.0,
+                        width:SizeConfig.widthMultiplier*1.22,
+                      ),
                       Text(
                         timesheet.breakEnd != null
                             ? DateFormat.jm().format(timesheet.breakEnd)

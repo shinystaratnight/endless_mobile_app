@@ -25,8 +25,9 @@ class DetailsRecord extends StatelessWidget {
               children: [
                 Text(
                   label + ":",
-                  style:
-                      TextStyle(fontSize: SizeConfig.heightMultiplier * 2.34),
+                  style: TextStyle(
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                  ),
                 ),
                 SizedBox(
                   //width: 8.0,
@@ -42,8 +43,13 @@ class DetailsRecord extends StatelessWidget {
                                 fontSize: SizeConfig.heightMultiplier * 2.34,
                               ),
                             ),
-                            SizedBox(width: 8.0),
-                            Expanded(child: this.button)
+                            SizedBox(
+                              //width: 8.0,
+                              width:SizeConfig.widthMultiplier*1.94,
+                            ),
+                            Expanded(
+                              child: this.button,
+                            )
                           ]
                         : [
                             Expanded(

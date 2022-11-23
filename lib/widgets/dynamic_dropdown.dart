@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 import 'form_field.dart';
 
@@ -31,19 +32,23 @@ class _DynamicDropdownState extends State<DynamicDropdown> {
           ),
           _isOpen
               ? Container(
-                  height: 200,
+                  //height: 200,
+                  height:SizeConfig.heightMultiplier*29.28,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 3,
-                          blurRadius: 5,
+                          spreadRadius:SizeConfig.heightMultiplier*0.44,
+                          blurRadius:SizeConfig.heightMultiplier*0.73,
+                          // spreadRadius: 3,
+                          // blurRadius: 5,
                           offset: Offset(0, 2),
                         ),
                       ],
                       borderRadius: BorderRadius.circular(
-                        8.0,
+                        //8.0,
+                        SizeConfig.heightMultiplier*1.17,
                       ),
                       border: Border.all(
                           width: 1,
@@ -60,7 +65,9 @@ class _DynamicDropdownState extends State<DynamicDropdown> {
                           children: data
                               .map(
                                 (data) => ListTile(
-                                  title: Text(data.name),
+                                  title: Text(data.name,style: TextStyle(
+                                    fontSize: SizeConfig.heightMultiplier*2.34,
+                                  ),),
                                   onTap: () => widget.onChange(data.id),
                                 ),
                               )

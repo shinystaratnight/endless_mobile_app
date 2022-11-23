@@ -9,6 +9,8 @@ import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/page_container.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/size_config.dart';
+
 class ChangePasswordScreen extends StatefulWidget {
   @override
   _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
@@ -67,7 +69,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     LoginService loginService = Provider.of<LoginService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(translate('page.title.change_password'))),
+      appBar: AppBar(title: Text(translate('page.title.change_password'),style: TextStyle(
+        fontSize: SizeConfig.heightMultiplier*2.34,
+      ),),),
       body: SingleChildScrollView(
         child: PageContainer(
           child: Form(
@@ -104,7 +108,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   message: _message,
                 ),
                 SizedBox(
-                  height: 15.0,
+                  //height: 15.0,
+                  height: SizeConfig.heightMultiplier*2.34,
                 ),
                 FormSubmitButton(
                   disabled: _fetching,

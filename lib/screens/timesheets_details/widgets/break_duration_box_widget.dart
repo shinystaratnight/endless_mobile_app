@@ -4,6 +4,8 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:piiprent/helpers/colors.dart';
 
+import '../../../widgets/size_config.dart';
+
 class BreakDurationBoxWidget extends StatelessWidget {
   BreakDurationBoxWidget({this.initialTime, this.onTimeSelected, Key key})
       : super(key: key);
@@ -35,7 +37,12 @@ class BreakDurationBoxWidget extends StatelessWidget {
           }
         },
         child: Ink(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          padding: EdgeInsets.symmetric(
+            // horizontal: 16,
+            // vertical: 18,
+            horizontal: SizeConfig.widthMultiplier * 3.89,
+            vertical: SizeConfig.heightMultiplier * 2.86,
+          ),
           decoration: BoxDecoration(
             color: AppColors.lightBlue,
             border: Border.all(
@@ -50,15 +57,21 @@ class BreakDurationBoxWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Obx(
-                    () => Text(
+                () => Text(
                   selectedBreakTimeStr.value,
-                  style: TextStyle(fontSize: 16, color: AppColors.lightBlack),
+                  style: TextStyle(
+                    //fontSize: 16,
+                    fontSize:SizeConfig.heightMultiplier*2.34,
+                    color: AppColors.lightBlack,
+                  ),
                 ),
               ),
               SvgPicture.asset(
                 "images/icons/ic_time_duration.svg",
-                height: 24,
-                width: 24,
+                height:SizeConfig.heightMultiplier*3.51,
+                width:SizeConfig.widthMultiplier*5.84,
+                // height: 24,
+                // width: 24,
               ),
             ],
           ),

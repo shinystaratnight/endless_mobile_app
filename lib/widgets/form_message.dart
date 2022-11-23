@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class FormMessage extends StatelessWidget {
   final MessageType type;
@@ -16,11 +17,17 @@ class FormMessage extends StatelessWidget {
 
     if (message != null) {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(
+          //8.0,
+          SizeConfig.heightMultiplier * 1.17,
+        ),
         child: Center(
           child: Text(
             this.message,
-            style: TextStyle(color: color),
+            style: TextStyle(
+              color: color,
+              fontSize: SizeConfig.heightMultiplier * 2.34,
+            ),
           ),
         ),
       );

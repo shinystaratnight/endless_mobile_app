@@ -87,6 +87,9 @@ void main() async {
           Provider<CandidateService>(
             create: (_) => CandidateService(),
           ),
+          // ChangeNotifierProvider(
+          //   create: (_) => CloseSwitchMenu(),
+          // ),
           Provider<NotificationService>(
             create: (_) => NotificationService(),
           ),
@@ -121,8 +124,6 @@ void main() async {
   );
 }
 
-
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -134,7 +135,6 @@ class MyApp extends StatelessWidget {
         child: GetMaterialApp(
           title: 'Piiprent',
           useInheritedMediaQuery: true,
-          darkTheme: ThemeData.dark(),
           localizationsDelegates: [
             localizationDelegate,
             GlobalMaterialLocalizations.delegate,
@@ -167,7 +167,8 @@ class MyApp extends StatelessWidget {
             '/client_jobs': (BuildContext context) => ClientJobsScreen(),
             '/client_timesheets': (BuildContext context) =>
                 ClientTimesheetsScreen(),
-            '/client_jobsites': (BuildContext context) => ClientJobsitesScreen(),
+            '/client_jobsites': (BuildContext context) =>
+                ClientJobsitesScreen(),
             ForgotPasswordScreen.name: (BuildContext context) =>
                 ForgotPasswordScreen(),
             '/address': (BuildContext context) => AddressScreen(),

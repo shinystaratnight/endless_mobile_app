@@ -6,6 +6,8 @@ import 'package:google_place/google_place.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/widgets/form_field.dart';
 
+import '../widgets/size_config.dart';
+
 class AddressScreen extends StatefulWidget {
   const AddressScreen({Key key}) : super(key: key);
 
@@ -58,9 +60,12 @@ class _AddressScreenState extends State<AddressScreen> {
                         child: Icon(
                           Icons.pin_drop,
                           color: Colors.white,
+                          size: SizeConfig.heightMultiplier*3.66,
                         ),
                       ),
-                      title: Text(predictions[index].description),
+                      title: Text(predictions[index].description,style: TextStyle(
+                        fontSize: SizeConfig.heightMultiplier*2.34,
+                      ),),
                       onTap: () async {
                         var address = predictions[index];
                         this.googlePlace.details.getJson(address.placeId).then(

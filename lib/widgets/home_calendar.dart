@@ -114,7 +114,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
   _initClientCalendar() async {
     try {
       List<Shift> shifts = await _jobService.getClientShifts({
-        'role': _loginService.user.roles[Provider.of<LoginProvider>(context,listen:false).switchRole],
+        'role': _loginService.user.roles[
+            Provider.of<LoginProvider>(context, listen: false).switchRole],
       });
       var data = await _candidateService.getStatistics(
           contactId: widget.userId,
@@ -392,6 +393,27 @@ class _HomeCalendarState extends State<HomeCalendar> {
               ).then((available) => _updateAvailability(date, available, id));
             },
             calendarBuilders: CalendarBuilders(
+              todayBuilder:
+                  (BuildContext context, DateTime day, DateTime focusedDay) =>
+                      Container(
+                height: SizeConfig.heightMultiplier * 6.59,
+                width: SizeConfig.widthMultiplier * 10.95,
+                // height: 45,
+                // width: 45,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.blueAccent.withOpacity(0.6),
+                ),
+                child: Center(
+                  child: Text(
+                    '${day.day}',
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
               outsideBuilder:
                   (BuildContext context, DateTime day, DateTime focusedDay) =>
                       SizedBox(),
@@ -406,7 +428,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                       bottom: SizeConfig.heightMultiplier * 0.29,
                       child: _buildCircle(
                         //radius: 3.0,
-                        radius: SizeConfig.heightMultiplier * 0.43,
+                        radius: SizeConfig.heightMultiplier * 0.53,
                         color: Colors.green[400],
                       ),
                     );
@@ -652,54 +674,54 @@ class _HomeCalendarState extends State<HomeCalendar> {
         ],
       );
 
-  Widget _buildClientLegend() {
-    var data = [
-      {
-        'color': Colors.green[400],
-        'label': translate('button.available'),
-      },
-      {
-        'color': Colors.red[400],
-        'label': translate('button.unavailable'),
-      }
-    ];
-
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        // horizontal: 20.0,
-        // vertical: 20.0,
-        vertical: SizeConfig.heightMultiplier * 2.93,
-        horizontal: SizeConfig.widthMultiplier * 4.87,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: data
-            .map(
-              (el) => Row(
-                children: [
-                  _buildCircle(
-                    //radius: 8.0,
-                    radius: SizeConfig.heightMultiplier * 1.17,
-                    color: el['color'],
-                  ),
-                  SizedBox(
-                    //width: 8.0,
-                    width: SizeConfig.widthMultiplier * 1.95,
-                  ),
-                  Text(
-                    translate(el['label']),
-                    style: TextStyle(
-                      //fontSize: 16.0,
-                      fontSize: SizeConfig.heightMultiplier * 2.34,
-                    ),
-                  )
-                ],
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
+  // Widget _buildClientLegend() {
+  //   var data = [
+  //     {
+  //       'color': Colors.green[400],
+  //       'label': translate('button.available'),
+  //     },
+  //     {
+  //       'color': Colors.red[400],
+  //       'label': translate('button.unavailable'),
+  //     }
+  //   ];
+  //
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(
+  //       // horizontal: 20.0,
+  //       // vertical: 20.0,
+  //       vertical: SizeConfig.heightMultiplier * 2.93,
+  //       horizontal: SizeConfig.widthMultiplier * 4.87,
+  //     ),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: data
+  //           .map(
+  //             (el) => Row(
+  //               children: [
+  //                 _buildCircle(
+  //                   //radius: 8.0,
+  //                   radius: SizeConfig.heightMultiplier * 1.17,
+  //                   color: el['color'],
+  //                 ),
+  //                 SizedBox(
+  //                   //width: 8.0,
+  //                   width: SizeConfig.widthMultiplier * 1.95,
+  //                 ),
+  //                 Text(
+  //                   translate(el['label']),
+  //                   style: TextStyle(
+  //                     //fontSize: 16.0,
+  //                     fontSize: SizeConfig.heightMultiplier * 2.34,
+  //                   ),
+  //                 )
+  //               ],
+  //             ),
+  //           )
+  //           .toList(),
+  //     ),
+  //   );
+  // }
 
   Widget _buildCandidateLegend() {
     var data = [
@@ -726,7 +748,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
             .map(
               (el) => Row(
                 children: [
-                  _buildCircle(radius: 8.0, color: el['color']),
+                  _buildCircle(
+                    //radius: 8.0,
+                    radius: SizeConfig.heightMultiplier * 1.17,
+                    color: el['color'],
+                  ),
                   SizedBox(
                     //width: 8.0,
                     width: SizeConfig.widthMultiplier * 1.95,
@@ -1128,12 +1154,14 @@ class _HomeCalendarState extends State<HomeCalendar> {
                       Text(
                         'To',
                         style: TextStyle(
-                            //fontSize: 12,
-                            fontSize: SizeConfig.heightMultiplier * 1.75,
-                            color: Colors.grey),
+                          //fontSize: 12,
+                          fontSize: SizeConfig.heightMultiplier * 1.75,
+                          color: Colors.grey,
+                        ),
                       ),
                       SizedBox(
-                        height: 3,
+                        //height: 3,
+                        height:SizeConfig.heightMultiplier*0.44,
                       ),
                       DatePickerBoxWidget(
                         // horPad: 6,
@@ -1290,8 +1318,7 @@ class _CounterButtonState extends State<CounterButton> {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               //fontSize: 16,
-              fontSize: SizeConfig.heightMultiplier * 1.76
-              ,
+              fontSize: SizeConfig.heightMultiplier * 2.34,
               color: widget.onTapped ? Colors.white : Colors.black,
             ),
           ),

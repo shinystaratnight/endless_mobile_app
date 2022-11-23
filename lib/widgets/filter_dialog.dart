@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:piiprent/widgets/form_field.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class FilterDialog extends StatefulWidget {
   final DateTime from;
@@ -102,12 +103,20 @@ class _FilterDialogState extends State<FilterDialog> {
           // alignment: WrapAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(
+                //right: 8.0,
+                right: SizeConfig.widthMultiplier * 1.94,
+              ),
               child: ElevatedButton(
                 // backgroundColor: Colors.blue,
                 onPressed: _setToday,
-                child: Text(translate('dialog.today'),
-                    style: TextStyle(color: Colors.white)),
+                child: Text(
+                  translate('dialog.today'),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                  ),
+                ),
               ),
             ),
             // SizedBox(
@@ -115,48 +124,80 @@ class _FilterDialogState extends State<FilterDialog> {
             // ),
 
             Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(
+                //right: 8.0,
+                right: SizeConfig.widthMultiplier * 1.94,
+              ),
               child: ElevatedButton(
                 // backgroundColor: Colors.blue,
                 onPressed: _setYesterday,
-                child: Text(translate('dialog.yesterday'),
-                    style: TextStyle(color: Colors.white)),
+                child: Text(
+                  translate('dialog.yesterday'),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                  ),
+                ),
               ),
             ),
             // SizedBox(
             //   width: 8.0,
             // ),
             Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(
+                //right: 8.0,
+                right: SizeConfig.widthMultiplier * 1.94,
+              ),
               child: ElevatedButton(
                 // backgroundColor: Colors.blue,
                 onPressed: _setThisWeek,
-                child: Text(translate('dialog.this_week'),
-                    style: TextStyle(color: Colors.white)),
+                child: Text(
+                  translate('dialog.this_week'),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                  ),
+                ),
               ),
             ),
             // SizedBox(
             //   width: 8.0,
             // ),
             Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(
+                //right: 8.0,
+                right: SizeConfig.widthMultiplier * 1.94,
+              ),
               child: ElevatedButton(
                 // backgroundColor: Colors.blue,
                 onPressed: _setLastWeek,
-                child: Text(translate('dialog.last_week'),
-                    style: TextStyle(color: Colors.white)),
+                child: Text(
+                  translate('dialog.last_week'),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                  ),
+                ),
               ),
             ),
             // SizedBox(
             //   width: 8.0,
             // ),
             Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(
+                //right: 8.0,
+                right: SizeConfig.widthMultiplier * 1.94,
+              ),
               child: ElevatedButton(
                 // backgroundColor: Colors.blue,
                 onPressed: _setThisMonth,
-                child: Text(translate('dialog.this_month'),
-                    style: TextStyle(color: Colors.white)),
+                child: Text(
+                  translate('dialog.this_month'),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                  ),
+                ),
               ),
             ),
             // SizedBox(
@@ -165,8 +206,13 @@ class _FilterDialogState extends State<FilterDialog> {
             ElevatedButton(
               // backgroundColor: Colors.blue,
               onPressed: _setLastMonth,
-              child: Text(translate('dialog.last_month'),
-                  style: TextStyle(color: Colors.white)),
+              child: Text(
+                translate('dialog.last_month'),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: SizeConfig.heightMultiplier*2.34,
+                ),
+              ),
             )
           ],
         ),

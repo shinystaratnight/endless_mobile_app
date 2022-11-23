@@ -49,8 +49,10 @@
 <!--        <meta-data -->
 <!--            android:name="com.google.android.geo.API_KEY" -->
 <!--            android:value="AIzaSyCD0O5t8CBhVmB5w0ogHkxF2eez8Yr6_0Q"/>-->
+<!--        <meta-data android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="AIzaSyDOj0wPyqDVGkenZ1nTixXxgdbDzB9vYCc"/> -->
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDOj0wPyqDVGkenZ1nTixXxgdbDzB9vYCc"/>
+            android:value="AIzaSyDrF1ZZgrP1HkZ-utiBQ3i1vz6a0flgdPo"/>
 
     </application>
 <!--    <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">-->
