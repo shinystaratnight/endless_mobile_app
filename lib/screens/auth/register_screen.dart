@@ -221,9 +221,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.green[400],
-            content: const Text(
+            content: Text(
               'You are registered!',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white,fontSize: SizeConfig.heightMultiplier*2.34),
             ),
           ),
         );

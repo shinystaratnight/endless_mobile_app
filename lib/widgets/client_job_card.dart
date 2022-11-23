@@ -201,7 +201,7 @@ class ClientJobCard extends StatelessWidget {
                           // width: 20.0,
                           //margin: const EdgeInsets.only(left: 8.0),
                           margin: EdgeInsets.only(
-                              left: SizeConfig.widthMultiplier * 1.94),
+                              left: SizeConfig.widthMultiplier * 1.94,),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -214,7 +214,7 @@ class ClientJobCard extends StatelessWidget {
                             job.workers.toString(),
                             style: TextStyle(
                                 color: Colors.blue,
-                                fontSize: SizeConfig.heightMultiplier * 2.34),
+                                fontSize: SizeConfig.heightMultiplier * 2.34,),
                           ),
                         )
                       ],

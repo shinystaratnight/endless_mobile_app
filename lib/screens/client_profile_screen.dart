@@ -236,7 +236,7 @@ class ClientProfileScreen extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(
                   // size.width > 950 && size.height > 450 ? 180 : 60
-                  SizeConfig.heightMultiplier * 20.78),
+                  SizeConfig.heightMultiplier * 20.78,),
               child: CachedNetworkImage(
                 imageUrl: contact.avatar ?? '',
                 fit: BoxFit.fill,

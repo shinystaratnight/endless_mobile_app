@@ -10,7 +10,7 @@ class ImageLoadingContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+
     return Container(
       // // height: SizeConfig.heightMultiplier * 18.04,
       // // width: SizeConfig.widthMultiplier * 27.03,
@@ -38,7 +38,7 @@ class ImagePlaceHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+
     return Container(
       // // height: SizeConfig.heightMultiplier * 18.04,
       // // width: SizeConfig.widthMultiplier * 27.03,

@@ -8,9 +8,7 @@ import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
-
 import '../constants.dart';
-import 'candidate_drawer.dart';
 
 class ClientDrawer extends StatefulWidget {
   final bool dashboard;
@@ -67,6 +65,14 @@ class _ClientDrawerState extends State<ClientDrawer> {
                     child: Center(
                       child: Consumer<LoginProvider>(
                         builder: (_, login, __) {
+                          String name = '';
+                          if(loginService.user != null){
+                            name = loginService.user.name;
+                            var nameParts = name.split(' ');
+                            if( nameParts.length > 2 ){
+                              name = nameParts[0] +' '+ nameParts[1];
+                            }
+                          }
                           return Column(
                             children: [
                               Container(
@@ -112,9 +118,7 @@ class _ClientDrawerState extends State<ClientDrawer> {
                                 //height: 10,
                               ),
                               Text(
-                                loginService.user != null
-                                    ? loginService.user.name
-                                    : '',
+                                name,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   //fontSize: 14,

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../login_provider.dart';
 import '../services/contact_service.dart';
+import '../widgets/size_config.dart';
 
 class PreviewScreen extends StatefulWidget {
   @override
@@ -34,7 +35,11 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     final role = await loginService.getUser(context);
 
-    print('image before login: ${loginProvider.image}');
+   // if(role!=null){
+      print('==================================================');
+      print('checking role here: ${role==null?'null':role.name}');
+    print('==================================================');
+    // }
 
     if (role == RoleType.Candidate) {
       if (loginProvider.image == null)
@@ -107,7 +112,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
           children: [
             Image.asset('images/company_banner.png'),
             _showErrorMessage
-                ? Text('Please turn on internet')
+                ? Text('Please turn on internet',style: TextStyle(
+              fontSize: SizeConfig.heightMultiplier*2.34,
+            ),)
                 : CircularProgressIndicator(),
           ],
         ),

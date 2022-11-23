@@ -10,6 +10,8 @@ import 'package:piiprent/widgets/list_page.dart';
 import 'package:piiprent/widgets/timesheet_card.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/size_config.dart';
+
 class CandidateNotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,21 @@ class CandidateNotificationScreen extends StatelessWidget {
                   Tab(
                     child: Row(
                       children: [
-                        Icon(Icons.local_offer),
+                        Icon(
+                          Icons.local_offer,
+                          size: SizeConfig.heightMultiplier * 3.66,
+                        ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(translate('page.title.job_offers')),
+                          padding: EdgeInsets.symmetric(
+                            //horizontal: 8.0,
+                            horizontal:SizeConfig.widthMultiplier*1.95,
+                          ),
+                          child: Text(
+                            translate('page.title.job_offers'),
+                            style: TextStyle(
+                              fontSize: SizeConfig.heightMultiplier*2.34,
+                            ),
+                          ),
                         )
                       ],
                     ),
@@ -37,10 +50,21 @@ class CandidateNotificationScreen extends StatelessWidget {
                   Tab(
                     child: Row(
                       children: [
-                        Icon(Icons.query_builder),
+                        Icon(
+                          Icons.query_builder,
+                          size: SizeConfig.heightMultiplier * 3.66,
+                        ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(translate('page.title.timesheets')),
+                          padding:EdgeInsets.symmetric(
+                            //horizontal: 8.0,
+                            horizontal:SizeConfig.widthMultiplier*1.95,
+                          ),
+                          child: Text(
+                            translate('page.title.timesheets'),
+                            style: TextStyle(
+                            fontSize: SizeConfig.heightMultiplier*2.34,
+                          ),
+                          ),
                         )
                       ],
                     ),

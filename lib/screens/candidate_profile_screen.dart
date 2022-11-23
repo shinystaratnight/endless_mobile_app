@@ -10,10 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/validator.dart';
-import 'package:piiprent/models/average_scores_model.dart';
 import 'package:piiprent/models/candidate_model.dart';
 import 'package:piiprent/models/candidate_skill_model.dart';
-import 'package:piiprent/models/candidate_tag_model.dart';
 import 'package:piiprent/screens/change_password_screen.dart';
 import 'package:piiprent/screens/widgets/network_image_widgets.dart';
 import 'package:piiprent/services/candidate_service.dart';
@@ -23,10 +21,7 @@ import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
 import 'package:piiprent/widgets/profile_group.dart';
 import 'package:piiprent/widgets/score_badge.dart';
-import 'package:piiprent/widgets/stars.dart';
 import 'package:provider/provider.dart';
-
-import '../widgets/candidate_drawer.dart';
 import '../widgets/size_config.dart';
 
 class CandidateProfileScreen extends StatefulWidget {
@@ -56,7 +51,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   final ImagePicker _picker = ImagePicker();
   Uint8List _imageBytes;
 
-  String imageUrl='';
+  String imageUrl = '';
 
   _onTapImage(
     CandidateService candidateService,
@@ -94,9 +89,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.green[400],
-            content: const Text(
+            content: Text(
               'Avatar updated',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: SizeConfig.heightMultiplier * 2.34,
+              ),
             ),
           ),
         );
@@ -160,7 +158,16 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
 
   Widget _listItem({Widget child}) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
+      margin: EdgeInsets.fromLTRB(
+        // 16.0,
+        // 4.0,
+        // 16.0,
+        // 4.0,
+        SizeConfig.widthMultiplier * 3.89,
+        SizeConfig.heightMultiplier * 0.58,
+        SizeConfig.widthMultiplier * 3.89,
+        SizeConfig.heightMultiplier * 0.58,
+      ),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -168,9 +175,11 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
           ),
         ),
       ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8.0,
-        vertical: 8.0,
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeConfig.widthMultiplier * 1.95,
+        vertical: SizeConfig.heightMultiplier * 1.17,
+        // horizontal: 8.0,
+        // vertical: 8.0,
       ),
       child: child,
     );
@@ -373,68 +382,68 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     );
   }
 
-  Widget _buildScore(AverageScores averageScores) {
-    return ProfileGroup(
-      title: translate('group.title.score'),
-      content: [
-        _listItem(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(translate('skill.average_test')),
-              Stars(
-                active: averageScores.recruitmentScore,
-              )
-            ],
-          ),
-        ),
-        _listItem(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(translate('skill.client_feedback')),
-              Stars(
-                active: averageScores.clientFeedback,
-              )
-            ],
-          ),
-        ),
-        _listItem(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(translate('skill.reliability')),
-              Stars(
-                active: averageScores.reliability,
-              )
-            ],
-          ),
-        ),
-        _listItem(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(translate('skill.loyality')),
-              Stars(
-                active: averageScores.loyality,
-              )
-            ],
-          ),
-        ),
-        _listItem(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(translate('skill.avarage_skill')),
-              Stars(
-                active: averageScores.skillScore,
-              )
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildScore(AverageScores averageScores) {
+  //   return ProfileGroup(
+  //     title: translate('group.title.score'),
+  //     content: [
+  //       _listItem(
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(translate('skill.average_test')),
+  //             Stars(
+  //               active: averageScores.recruitmentScore,
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //       _listItem(
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(translate('skill.client_feedback')),
+  //             Stars(
+  //               active: averageScores.clientFeedback,
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //       _listItem(
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(translate('skill.reliability')),
+  //             Stars(
+  //               active: averageScores.reliability,
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //       _listItem(
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(translate('skill.loyality')),
+  //             Stars(
+  //               active: averageScores.loyality,
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //       _listItem(
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(translate('skill.avarage_skill')),
+  //             Stars(
+  //               active: averageScores.skillScore,
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildResidency(Candidate candidate) {
     return ProfileGroup(
@@ -495,35 +504,33 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     );
   }
 
-  Widget _buildTags(List<CandidateTag> tags) {
-    return ProfileGroup(
-      title: translate('group.title.tags'),
-      content: tags
-          .map(
-            (e) => _listItem(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(e.tag.name),
-                ],
-              ),
-            ),
-          )
-          .toList(),
-    );
-  }
+  // Widget _buildTags(List<CandidateTag> tags) {
+  //   return ProfileGroup(
+  //     title: translate('group.title.tags'),
+  //     content: tags
+  //         .map(
+  //           (e) => _listItem(
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Text(e.tag.name),
+  //               ],
+  //             ),
+  //           ),
+  //         )
+  //         .toList(),
+  //   );
+  // }
 
   @override
   void initState() {
-
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     CandidateService candidateService = Provider.of<CandidateService>(context);
-    LoginService loginService= Provider.of<LoginService>(context);
+    LoginService loginService = Provider.of<LoginService>(context);
 
     Size size = MediaQuery.of(context).size;
     return OrientationBuilder(
@@ -536,7 +543,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               appBar:
                   getCandidateAppBar(translate('page.title.profile'), context),
               body: FutureBuilder(
-                future: candidateService.getCandidate(loginService.user.candidateId),
+                future: candidateService
+                    .getCandidate(loginService.user.candidateId),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(
@@ -549,7 +557,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                   return SafeArea(
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                        padding: EdgeInsets.only(
+                          left:SizeConfig.widthMultiplier*3.89,
+                          right:SizeConfig.widthMultiplier*3.89,
+                          // left: 15.0,
+                          // right: 15.0,
+                        ),
                         child: orientation == Orientation.landscape
                             ? size.width > 900
                                 ? Padding(
@@ -796,7 +809,6 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
       candidate, Size size) {
     return Column(
       children: [
-
         SizedBox(
           //height:20,
           height: SizeConfig.heightMultiplier * 2.42,
@@ -826,26 +838,26 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               ),
               child: imageUrl == null
                   ? Icon(
-                CupertinoIcons.person_fill,
-                size: 90,
-                // size:
-                // SizeConfig.heightMultiplier * 13.17,
-                color: primaryColor,
-              )
-                  :ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  // size.width > 950 && size.height > 450 ? 180 : 60
-                    SizeConfig.heightMultiplier * 20.78),
-                child: CachedNetworkImage(
-                  imageUrl:  imageUrl,
-                  fit: BoxFit.fill,
-                  progressIndicatorBuilder:
-                      (context, val, progress) {
-                    return ImageLoadingContainer();
-                  },
-                  errorWidget: (context, url, error) =>ImageErrorWidget(),
-                ),
-              ),
+                      CupertinoIcons.person_fill,
+                      size: 90,
+                      // size:
+                      // SizeConfig.heightMultiplier * 13.17,
+                      color: primaryColor,
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          // size.width > 950 && size.height > 450 ? 180 : 60
+                          SizeConfig.heightMultiplier * 20.78),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.fill,
+                        progressIndicatorBuilder: (context, val, progress) {
+                          return ImageLoadingContainer();
+                        },
+                        errorWidget: (context, url, error) =>
+                            ImageErrorWidget(),
+                      ),
+                    ),
             ),
           ),
         ),
@@ -869,8 +881,3 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     );
   }
 }
-
-
-
-
-

@@ -73,19 +73,23 @@ class _FieldState extends State<Field> {
         Expanded(
           flex: 1,
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(
+                //8.0,
+                SizeConfig.heightMultiplier*1.17,
+            ),
             child: TextFormField(
               controller: myController,
               decoration: InputDecoration(
-                  labelText:
-                      '${widget.label} ${widget.validator == requiredValidator ? '*' : ''}',
-                  labelStyle: TextStyle(fontSize: SizeConfig.textMultiplier*2.34),
-                  border: UnderlineInputBorder(
-                    borderSide: widget.readOnly == true
-                        ? BorderSide.none
-                        : BorderSide(),
-                  )),
-
+                labelText:
+                    '${widget.label} ${widget.validator == requiredValidator ? '*' : ''}',
+                labelStyle: TextStyle(
+                  fontSize: SizeConfig.textMultiplier * 2.34,
+                ),
+                border: UnderlineInputBorder(
+                  borderSide:
+                      widget.readOnly == true ? BorderSide.none : BorderSide(),
+                ),
+              ),
               onChanged: widget.onChanged,
               onTap: widget.datepicker
                   ? () {
@@ -117,7 +121,7 @@ class _FieldState extends State<Field> {
                 color: widget.datepicker || widget.readOnly
                     ? Colors.grey[600]
                     : Colors.black,
-                fontSize: SizeConfig.textMultiplier*2.34
+                fontSize: SizeConfig.textMultiplier * 2.34,
               ),
             ),
           ),

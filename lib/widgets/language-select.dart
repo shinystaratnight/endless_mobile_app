@@ -4,11 +4,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:get/get.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/mixins/change_language.dart';
-import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/size_config.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_portal/flutter_portal.dart';
-import '../services/contact_service.dart';
 
 class LanguageSelect extends StatefulWidget with ChangeLanguage {
   Color _color;

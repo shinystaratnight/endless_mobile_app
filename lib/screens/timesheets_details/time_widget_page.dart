@@ -6,6 +6,7 @@ import 'package:piiprent/screens/timesheets_details/widgets/date_picker_box_widg
 import 'package:piiprent/screens/timesheets_details/widgets/time_hint_widget.dart';
 
 import '../../constants.dart';
+import '../../widgets/size_config.dart';
 import '../../widgets/toast.dart';
 import 'widgets/break_duration_box_widget.dart';
 import 'widgets/time_picker_box_widget.dart';
@@ -30,7 +31,6 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
   Duration breakDuration;
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -38,14 +38,20 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Time'),
+        title: Text(
+          'Time',
+          style: TextStyle(
+            fontSize: SizeConfig.heightMultiplier * 1.34,
+          ),
+        ),
         centerTitle: false,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.keyboard_arrow_left,
-                size: 36.0,
+                //size: 36.0,
+                size: SizeConfig.heightMultiplier * 5.27,
               ),
               onPressed: () {
                 Get.back();
@@ -55,9 +61,10 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.check,
-              size: 26.0,
+              //size: 26.0,
+              size: SizeConfig.heightMultiplier * 3.81,
             ),
             onPressed: () {
               validateInputs();
@@ -66,11 +73,19 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        padding: EdgeInsets.symmetric(
+          // vertical: 20,
+          // horizontal: 16,
+          vertical: SizeConfig.heightMultiplier * 2.93,
+          horizontal: SizeConfig.widthMultiplier * 3.89,
+        ),
         child: Column(
           children: [
             TimeHintWidget('START TIME'),
-            SizedBox(height: 12),
+            SizedBox(
+              //height: 12,
+              height: SizeConfig.heightMultiplier * 1.76,
+            ),
             Row(
               children: [
                 DatePickerBoxWidget(
@@ -86,7 +101,10 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
                     widget.times[_shiftStart] = _dateTime;
                   },
                 ),
-                SizedBox(width: 16),
+                SizedBox(
+                  //width: 16,
+                  width: SizeConfig.widthMultiplier * 3.89,
+                ),
                 TimePickerBoxWidget(
                   initialDateTime: widget.times[_shiftStart],
                   onTimeSelected: (DateTime startTime) {
@@ -103,9 +121,15 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            SizedBox(
+              //height: 16,
+              height: SizeConfig.heightMultiplier * 1.34,
+            ),
             TimeHintWidget('END TIME'),
-            SizedBox(height: 12),
+            SizedBox(
+              //height: 12,
+              height: SizeConfig.heightMultiplier * 1.76,
+            ),
             Row(
               children: [
                 DatePickerBoxWidget(
@@ -122,7 +146,10 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
                     print('_shiftEndDate:: ${widget.times[_shiftEnd]}');
                   },
                 ),
-                SizedBox(width: 16),
+                SizedBox(
+                  //width: 16,
+                  width: SizeConfig.widthMultiplier * 3.89,
+                ),
                 TimePickerBoxWidget(
                   initialDateTime: widget.times[_shiftEnd],
                   onTimeSelected: (DateTime endTime) {
@@ -139,9 +166,15 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(
+              //height: 20,
+              height: SizeConfig.heightMultiplier * 2.93,
+            ),
             TimeHintWidget('BREAK TIME'),
-            SizedBox(height: 12),
+            SizedBox(
+              //height: 12,
+              height: SizeConfig.heightMultiplier * 1.76,
+            ),
             Row(
               children: [
                 BreakDurationBoxWidget(
@@ -153,24 +186,32 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
                     );
                   },
                 ),
-                SizedBox(width: 16),
+                SizedBox(
+                  //width: 16,
+                  width: SizeConfig.widthMultiplier * 3.89,
+                ),
                 Expanded(
                   child: SizedBox(),
                 ),
               ],
             ),
-            SizedBox(height: 40),
+            SizedBox(
+              //height: 40,
+              height:SizeConfig.heightMultiplier*5.86,
+            ),
             Container(
               width: double.infinity,
               child: MaterialButton(
                 onPressed: () {
                   validateInputs();
                 },
-                height: 40,
+                //height: 40,
+                height:SizeConfig.heightMultiplier*5.86,
                 child: Text(
                   'SUBMIT',
                   style: TextStyle(
-                    fontSize: 14,
+                    //fontSize: 14,
+                    fontSize:SizeConfig.heightMultiplier*2.05,
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
                   ),
@@ -273,18 +314,21 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
         ),
       );
     }
-    var shiftDuration = widget.times[_shiftEnd].difference(widget.times[_shiftStart]);
-    var breakLength = widget.times[_breakEnd].difference(widget.times[_breakStart]);
+    var shiftDuration =
+        widget.times[_shiftEnd].difference(widget.times[_shiftStart]);
+    var breakLength =
+        widget.times[_breakEnd].difference(widget.times[_breakStart]);
 
     print('break length: $breakLength');
     print('shift duration: $shiftDuration');
-    if (!(shiftDuration>breakLength)) {
+    if (!(shiftDuration > breakLength)) {
       // Get.snackbar('Break should not Exceed Shift End Time',
       //     'Shift end:${times[_shiftEnd].hour}:${times[_shiftEnd].minute}    Break end: ${times[_breakEnd].hour}:${times[_breakEnd].minute}');
-       toast('Break time can\'t be more than or equal to ( ${shiftDuration.toString().split(':')[0]} ) hours');
+      toast(
+          'Break time can\'t be more than or equal to ( ${shiftDuration.toString().split(':')[0]} ) hours');
       return;
     }
 
- Get.back(result: widget.times);
+    Get.back(result: widget.times);
   }
 }

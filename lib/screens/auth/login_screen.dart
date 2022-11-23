@@ -26,8 +26,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 Future deleteImageFromCache({@required BuildContext context}) async {
-  await Provider.of<LoginProvider>(context, listen: false).cacheManager.emptyCache();
-  //await DefaultCacheManager().emptyCache();
+  Provider.of<LoginProvider>(context, listen: false).image = null;
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -55,7 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      RoleType type = await loginService.login(_username, _password);
+      RoleType type = await loginService.login(
+          context: context, username: _username, password: _password);
       //await Provider.of<ContactService>(context,listen: false).switchAccount();
 
       if (type == RoleType.Candidate) {
@@ -150,32 +150,39 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: SafeArea(
                           bottom: false,
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 10.0, right: 15),
+                            //padding: EdgeInsets.only(top: 10.0, right: 15),
+                            padding: EdgeInsets.only(
+                              top: SizeConfig.heightMultiplier * 1.46,
+                              right: SizeConfig.widthMultiplier * 3.65,
+                            ),
                             child: LanguageSelect(
                               color: Colors.grey[500],
                             ),
                           ),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'icon/icon.png',
-                            width: SizeConfig.widthMultiplier * 21.89,
-                            height: SizeConfig.heightMultiplier * 9.51,
-                            // width: 90,
-                            // height: 65,
-                          ),
-                          Image.asset(
-                            'icon/logo.png',
-                            // width: 200,
-                            // height: 80,
-                            height: SizeConfig.heightMultiplier * 11.71,
-                            width: SizeConfig.widthMultiplier * 48.66,
-                          ),
-                        ],
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: SizeConfig.heightMultiplier * 1.46),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'icon/icon.png',
+                              width: SizeConfig.widthMultiplier * 21.89,
+                              height: SizeConfig.heightMultiplier * 9.51,
+                              // width: 90,
+                              // height: 65,
+                            ),
+                            Image.asset(
+                              'icon/logo.png',
+                              // width: 200,
+                              // height: 80,
+                              height: SizeConfig.heightMultiplier * 11.71,
+                              width: SizeConfig.widthMultiplier * 42.66,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -206,7 +213,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       SizedBox(
-                        width: 5,
+                        //width: 5,
+                        width: SizeConfig.widthMultiplier * 1.22,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -258,10 +266,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           translate('button.login'),
                           style: TextStyle(
-                              color: primaryColor,
-                              fontWeight: FontWeight.bold,
-                              //fontSize: 24,
-                              fontSize: SizeConfig.heightMultiplier * 3.51),
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold,
+                            //fontSize: 24,
+                            fontSize: SizeConfig.heightMultiplier * 3.51,
+                          ),
                         ),
                         SizedBox(
                           //height: 32,

@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/helpers/colors.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class DatePickerBoxWidget extends StatefulWidget {
   DatePickerBoxWidget(
@@ -52,7 +53,11 @@ class _DatePickerBoxWidgetState extends State<DatePickerBoxWidget> {
         },
         child: Ink(
           padding: EdgeInsets.symmetric(
-              horizontal: widget.horPad ?? 16, vertical: widget.verPad ?? 18),
+            horizontal: widget.horPad != null ?(SizeConfig.widthMultiplier *
+                (widget.horPad / 4.11)) :16,
+            vertical: widget.verPad != null?(SizeConfig.heightMultiplier *
+                (widget.verPad / 6.83)):18,
+          ),
           decoration: BoxDecoration(
             color: AppColors.lightBlue,
             border: Border.all(
@@ -70,13 +75,27 @@ class _DatePickerBoxWidgetState extends State<DatePickerBoxWidget> {
                 () => Text(
                   dateStr.value,
                   style: TextStyle(
-                      fontSize: widget.fontSize ?? 16, color: AppColors.lightBlack),
+                    //fontSize:16,
+                    fontSize: widget.fontSize != null
+                        ? (SizeConfig.heightMultiplier *
+                            (widget.fontSize / 6.83))
+                        : SizeConfig.heightMultiplier * 2.34,
+                    color: AppColors.lightBlack,
+                  ),
                 ),
               ),
               SvgPicture.asset(
                 "images/icons/ic_date.svg",
-                height: widget.imageHeight ?? 20,
-                width: widget.imageWidth ?? 18,
+                height: widget.imageHeight != null
+                    ? (SizeConfig.heightMultiplier *
+                        (widget.imageHeight / 6.83))
+                    : 20,
+                width: widget.imageWidth != null
+                    ? (SizeConfig.widthMultiplier *
+                    (widget.imageHeight / 4.11))
+                    : 20,
+                // height: widget.imageHeight ?? 20,
+                // width: widget.imageWidth ?? 18,
               ),
             ],
           ),

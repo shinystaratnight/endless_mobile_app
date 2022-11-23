@@ -112,10 +112,13 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
     return Column(
       children: [
         Table(
-          columnWidths: const <int, TableColumnWidth>{
+          columnWidths: <int, TableColumnWidth>{
             0: FlexColumnWidth(),
             1: IntrinsicColumnWidth(),
-            2: FixedColumnWidth(48),
+            2: FixedColumnWidth(
+              //48,
+              SizeConfig.widthMultiplier * 11.68,
+            ),
           },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           border: TableBorder(
@@ -179,7 +182,10 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
                   TableRow(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(
+                          //8.0,
+                          SizeConfig.heightMultiplier * 1.17,
+                        ),
                         child: Center(
                           child: Text(
                             translate('message.no_data'),
@@ -230,8 +236,9 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
                           child: Text(
                             translate('message.has_error'),
                             style: TextStyle(
-                                color: Colors.red[400],
-                                fontSize: SizeConfig.heightMultiplier * 2.34),
+                              color: Colors.red[400],
+                              fontSize: SizeConfig.heightMultiplier * 2.34,
+                            ),
                           ),
                         )
                       : SizedBox(),

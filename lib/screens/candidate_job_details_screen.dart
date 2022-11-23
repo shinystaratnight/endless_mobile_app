@@ -12,6 +12,8 @@ import 'package:piiprent/widgets/candidate_app_bar.dart';
 import 'package:piiprent/widgets/details_record.dart';
 import 'package:piiprent/widgets/group_title.dart';
 
+import '../widgets/size_config.dart';
+
 class CandidateJobDetailsScreen extends StatefulWidget {
   final JobOffer jobOffer;
 
@@ -83,34 +85,44 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
       appBar: getCandidateAppBar(translate('page.title.job'), context),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(
+            //16.0,
+            SizeConfig.heightMultiplier*2.34,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(
-                height: 25.0,
+                //height: 25.0,
+                height: SizeConfig.heightMultiplier * 3.66,
               ),
               Text(
                 widget.jobOffer.position,
-                style: TextStyle(fontSize: 22.0),
+                style: TextStyle(
+                  //fontSize: 22.0,
+                  fontSize: SizeConfig.heightMultiplier * 3.22,
+                ),
                 textAlign: TextAlign.center,
               ),
               Text(
                 widget.jobOffer.company,
                 style: TextStyle(
-                  fontSize: 18.0,
+                  //fontSize: 18.0,
+                  fontSize:SizeConfig.heightMultiplier*2.64,
                   color: Colors.grey[500],
                 ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               // TODO: Add tags
               // GroupTitle(title: 'Tags'),
               GroupTitle(title: translate('group.title.job_information')),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               DetailsRecord(
                 label: translate('field.site_supervisor'),
@@ -130,7 +142,8 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 value: widget.jobOffer.notes,
               ),
               SizedBox(
-                height: 15.0,
+                //height: 15.0,
+                height:SizeConfig.heightMultiplier*2.34,
               ),
               // MaterialButton(
               //   color: Colors.white,
@@ -156,7 +169,9 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
               // ),
               MaterialButton(
                 color: Colors.white,
-                child: Text(translate('button.direct_me')),
+                child: Text(translate('button.direct_me'),style: TextStyle(
+                  fontSize: SizeConfig.heightMultiplier*2.34,
+                ),),
                 onPressed: () async {
                   final availableMaps = await MapLauncher.installedMaps;
                   print(availableMaps);
@@ -169,8 +184,10 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 },
               ),
               SizedBox(
-                height: 350.0,
-                width: 20.0,
+                // height: 350.0,
+                // width: 20.0,
+                height:SizeConfig.heightMultiplier*51.24,
+                width:SizeConfig.widthMultiplier*4.87,
                 child: GoogleMap(
                   cameraTargetBounds: CameraTargetBounds.unbounded,
                   // indoorViewEnabled: true,

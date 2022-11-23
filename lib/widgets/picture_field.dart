@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:piiprent/helpers/validator.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class PictureField extends StatefulWidget {
   const PictureField({
@@ -48,8 +49,10 @@ class _PictureFieldState extends State<PictureField> {
 
   Widget emptyPicture() {
     return Container(
-      width: 100,
-      height: 100,
+      width: SizeConfig.widthMultiplier * 24.33,
+      height: SizeConfig.heightMultiplier * 14.64,
+      // width: 100,
+      // height: 100,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         color: Colors.white,
@@ -58,7 +61,8 @@ class _PictureFieldState extends State<PictureField> {
       child: Center(
         child: Icon(
           Icons.person,
-          size: 48,
+          //size: 48,
+          size: SizeConfig.heightMultiplier * 7.03,
           color: Colors.grey,
         ),
       ),
@@ -67,8 +71,10 @@ class _PictureFieldState extends State<PictureField> {
 
   Widget picturePreview() {
     return Container(
-      height: 100,
-      width: 100,
+      width: SizeConfig.widthMultiplier * 24.33,
+      height: SizeConfig.heightMultiplier * 14.64,
+      // width: 100,
+      // height: 100,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         color: Colors.white,
@@ -86,17 +92,24 @@ class _PictureFieldState extends State<PictureField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(
+        //8.0,
+        SizeConfig.heightMultiplier * 1.17,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: EdgeInsets.only(
+              //bottom: 8.0,
+              bottom: SizeConfig.heightMultiplier * 1.17,
+            ),
             child: Text(
               '${widget.label} ${widget.validator == requiredValidator ? '*' : ''}',
               style: TextStyle(
-                fontSize: 16,
+                //fontSize: 16,
+                fontSize: SizeConfig.heightMultiplier * 2.34,
                 color: Colors.grey[600],
               ),
             ),
@@ -128,23 +141,31 @@ class _PictureFieldState extends State<PictureField> {
                 },
               ),
               SizedBox(
-                width: 16,
+                //width: 16,
+                width: SizeConfig.widthMultiplier * 3.89,
               ),
               ElevatedButton(
                 onPressed: _takePicture,
                 child: Text(
                   translate('button.take_photo'),
+                  style: TextStyle(
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                  ),
                 ),
               )
             ],
           ),
           if (_error != null)
             Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: EdgeInsets.only(
+                //top: 8.0,
+                top: SizeConfig.heightMultiplier*1.17,
+              ),
               child: Text(
                 _error,
                 style: TextStyle(
-                  fontSize: 12,
+                  //fontSize: 12,
+                  fontSize:SizeConfig.heightMultiplier*1.76,
                   color: Colors.red,
                 ),
               ),

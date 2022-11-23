@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/validator.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class FormSelect extends StatefulWidget {
   final List<Option> options;
@@ -88,7 +89,10 @@ class _FormSelectState extends State<FormSelect> {
       onTap: () => _selectOption(option),
       child: Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(
+          //8.0,
+          SizeConfig.heightMultiplier * 1.17,
+        ),
         decoration: BoxDecoration(
           color: _value == option || _multipleValue.contains(option)
               ? Colors.blue
@@ -99,7 +103,10 @@ class _FormSelectState extends State<FormSelect> {
                 : Colors.grey,
           ),
           borderRadius: BorderRadius.all(
-            Radius.circular(4.0),
+            Radius.circular(
+              //4.0,
+              SizeConfig.heightMultiplier * 0.58,
+            ),
           ),
         ),
         child: Row(
@@ -109,7 +116,8 @@ class _FormSelectState extends State<FormSelect> {
               child: Text(
                 translate(option.label),
                 style: TextStyle(
-                  fontSize: 16.0,
+                  //fontSize: 16.0,
+                  fontSize: SizeConfig.heightMultiplier * 2.34,
                   color: _value == option || _multipleValue.contains(option)
                       ? Colors.white
                       : Colors.grey[900],
@@ -130,15 +138,27 @@ class _FormSelectState extends State<FormSelect> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+          padding: EdgeInsets.only(
+            left: SizeConfig.widthMultiplier * 1.94,
+            right: SizeConfig.widthMultiplier * 1.94,
+            top: SizeConfig.heightMultiplier * 1.17,
+            // left: 8.0,
+            // right: 8.0,
+            // top: 8.0,
+          ),
           alignment: Alignment.centerLeft,
           child: Text(
             '${widget.title} ${widget.validator == requiredValidator ? '*' : ''}', //
-            style: TextStyle(color: Colors.grey[600], fontSize: 16.0),
+            style: TextStyle(
+              color: Colors.grey[600],
+              //fontSize: 16.0,
+              fontSize: SizeConfig.heightMultiplier * 2.34,
+            ),
           ),
         ),
         SizedBox(
-          height: 4.0,
+          //height: 4.0,
+          height: SizeConfig.heightMultiplier * 0.58,
         ),
         FormField(
           onSaved: (String initValue) {
@@ -169,16 +189,33 @@ class _FormSelectState extends State<FormSelect> {
             return null;
           },
           builder: (FormFieldState state) => Container(
-            margin:
-                hasScroll ? const EdgeInsets.symmetric(horizontal: 8.0) : null,
+            margin: hasScroll
+                ? EdgeInsets.symmetric(
+                    //horizontal: 8.0,
+                    horizontal: SizeConfig.widthMultiplier * 1.94,
+                  )
+                : null,
             padding: hasScroll
-                ? const EdgeInsets.all(4.0)
-                : const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 4.0),
+                ? EdgeInsets.all(
+                    //4.0,
+                    SizeConfig.heightMultiplier * 0.58,
+                  )
+                : EdgeInsets.only(
+                    left: SizeConfig.widthMultiplier * 0.97,
+                    right: SizeConfig.widthMultiplier * 0.97,
+                    bottom: SizeConfig.heightMultiplier * 0.58,
+                    // left: 4.0,
+                    // right: 4.0,
+                    // bottom: 4.0,
+                  ),
             decoration: BoxDecoration(
               border: hasScroll ? Border.all(color: Colors.grey[400]) : null,
               borderRadius: hasScroll
                   ? BorderRadius.all(
-                      Radius.circular(4.0),
+                      Radius.circular(
+                        //4.0,
+                        SizeConfig.heightMultiplier * 0.58,
+                      ),
                     )
                   : null,
             ),
@@ -192,7 +229,10 @@ class _FormSelectState extends State<FormSelect> {
                     children: e.map((e) {
                       return Expanded(
                         child: Container(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: EdgeInsets.all(
+                            //4.0,
+                            SizeConfig.heightMultiplier * 0.58,
+                          ),
                           child: _buildOption(e),
                         ),
                       );
@@ -205,11 +245,15 @@ class _FormSelectState extends State<FormSelect> {
         ),
         if (_error != null)
           Padding(
-            padding: const EdgeInsets.only(left: 8.0),
+            padding: EdgeInsets.only(
+              //left: 8.0,
+              left: SizeConfig.widthMultiplier * 1.94,
+            ),
             child: Text(
               _error,
               style: TextStyle(
-                fontSize: 12,
+                //fontSize: 12,
+                fontSize:SizeConfig.heightMultiplier*1.76,
                 color: Colors.red,
               ),
             ),

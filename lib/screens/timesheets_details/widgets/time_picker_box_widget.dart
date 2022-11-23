@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:piiprent/helpers/colors.dart';
 
+import '../../../widgets/size_config.dart';
+
 class TimePickerBoxWidget extends StatelessWidget {
   TimePickerBoxWidget(
       {Key key, this.onTimeSelected, this.initialTime, this.initialDateTime})
@@ -43,7 +45,12 @@ class TimePickerBoxWidget extends StatelessWidget {
           }
         },
         child: Ink(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          padding: EdgeInsets.symmetric(
+            // horizontal: 16,
+            // vertical: 18,
+            horizontal:SizeConfig.widthMultiplier*3.89,
+            vertical:SizeConfig.heightMultiplier*2.64,
+          ),
           decoration: BoxDecoration(
             color: AppColors.lightBlue,
             border: Border.all(
@@ -58,15 +65,19 @@ class TimePickerBoxWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Obx(
-                    () => Text(
+                () => Text(
                   selectedTimeStr.value,
-                  style: TextStyle(fontSize: 16, color: AppColors.lightBlack),
+                  style: TextStyle(
+                    //fontSize: 16,
+                    fontSize: SizeConfig.heightMultiplier * 2.34,
+                    color: AppColors.lightBlack,
+                  ),
                 ),
               ),
               SvgPicture.asset(
                 "images/icons/ic_time.svg",
-                height: 20,
-                width: 20,
+                height: SizeConfig.heightMultiplier * 2.93,
+                width: SizeConfig.widthMultiplier * 4.86,
               ),
             ],
           ),

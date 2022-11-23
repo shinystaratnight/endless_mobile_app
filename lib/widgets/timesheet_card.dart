@@ -5,6 +5,7 @@ import 'package:piiprent/constants.dart';
 import 'package:piiprent/screens/timesheets_details/candidate_timesheet_new_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
 import 'package:piiprent/widgets/list_card_record.dart';
+import 'package:piiprent/widgets/size_config.dart';
 
 class TimesheetCard extends StatelessWidget {
   final String company;
@@ -79,29 +80,47 @@ class TimesheetCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(
-                      Radius.circular(4.0),
+                      Radius.circular(
+                        //4.0,
+                        SizeConfig.heightMultiplier * 0.58,
+                      ),
                     ),
                   ),
-                  padding: const EdgeInsets.all(4.0),
-                  margin: const EdgeInsets.only(bottom: 4.0),
+                  padding: EdgeInsets.all(
+                    //4.0,
+                    SizeConfig.heightMultiplier * 0.58,
+                  ),
+                  margin: EdgeInsets.only(
+                    //4.0,
+                    bottom: SizeConfig.heightMultiplier * 0.58,
+                  ),
                   child: Text(
                     '${TimesheetStatus[status]}',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      //fontSize: 16.0,
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
                       color: status == 3 ? Colors.red[300] : Colors.green[300],
                     ),
                   ),
                 ),
                 Text(
                   company,
-                  style: TextStyle(fontSize: 22.0, color: Colors.white),
+                  style: TextStyle(
+                    //fontSize: 22.0,
+                    fontSize: SizeConfig.heightMultiplier * 3.22,
+                    color: Colors.white,
+                  ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width - (40 + 32),
+                  width: MediaQuery.of(context).size.width -
+                      (SizeConfig.widthMultiplier * 17.52),
                   child: Text(
                     clientContact + clientContact,
                     // overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      color: Colors.white, //fontSize: 16.0,
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
                   ),
                 ),
                 Row(
@@ -109,14 +128,19 @@ class TimesheetCard extends StatelessWidget {
                     Icon(
                       Icons.location_on,
                       color: Colors.white,
-                      size: 16.0,
+                      //size: 16.0,
+                      size: SizeConfig.heightMultiplier * 2.34,
                     ),
                     SizedBox(
-                      width: 5.0,
+                      //width: 5.0,
+                      width: SizeConfig.widthMultiplier * 1.22,
                     ),
                     Text(
                       address,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: Colors.white, //fontSize: 16.0,
+                        fontSize: SizeConfig.heightMultiplier * 2.34,
+                      ),
                     )
                   ],
                 )
@@ -132,18 +156,30 @@ class TimesheetCard extends StatelessWidget {
                 children: [
                   Text(
                     translate('timesheet.shift_started_at'),
-                    style: TextStyle(color: Colors.blueAccent),
+                    style: TextStyle(
+                      color: Colors.blueAccent, //fontSize: 16.0,
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
                   ),
                   Row(
                     children: [
                       Text(
                         DateFormat('dd/MM/yyyy').format(shiftDate),
-                        style: TextStyle(color: Colors.blueAccent),
+                        style: TextStyle(
+                          color: Colors.blueAccent, //fontSize: 16.0,
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
                       ),
-                      SizedBox(width: 5.0),
+                      SizedBox(
+                        //width: 5.0,
+                        width: SizeConfig.widthMultiplier * 1.22,
+                      ),
                       Text(
                         DateFormat.jm().format(shiftStart),
-                        style: TextStyle(color: Colors.blueAccent),
+                        style: TextStyle(
+                          color: Colors.blueAccent, //fontSize: 16.0,
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
                       )
                     ],
                   )
@@ -157,7 +193,10 @@ class TimesheetCard extends StatelessWidget {
                       children: [
                         Text(
                           translate('timesheet.break'),
-                          style: TextStyle(color: Colors.blueAccent),
+                          style: TextStyle(
+                            color: Colors.blueAccent, //fontSize: 16.0,
+                            fontSize: SizeConfig.heightMultiplier * 2.34,
+                          ),
                         ),
                         Row(
                           children: [
@@ -165,19 +204,34 @@ class TimesheetCard extends StatelessWidget {
                               breakStart == null
                                   ? ''
                                   : DateFormat.jm().format(breakStart),
-                              style: TextStyle(color: Colors.blueAccent),
+                              style: TextStyle(
+                                color: Colors.blueAccent, //fontSize: 16.0,
+                                fontSize: SizeConfig.heightMultiplier * 2.34,
+                              ),
                             ),
-                            SizedBox(width: 5.0),
+                            SizedBox(
+                              //width: 5.0,
+                              width: SizeConfig.widthMultiplier * 1.22,
+                            ),
                             Text(
                               translate('timesheet.break_to'),
-                              style: TextStyle(color: Colors.blueAccent),
+                              style: TextStyle(
+                                color: Colors.blueAccent, //fontSize: 16.0,
+                                fontSize: SizeConfig.heightMultiplier * 2.34,
+                              ),
                             ),
-                            SizedBox(width: 5.0),
+                            SizedBox(
+                              //width: 5.0,
+                              width: SizeConfig.widthMultiplier * 1.22,
+                            ),
                             Text(
                               breakEnd == null
                                   ? ''
                                   : DateFormat.jm().format(breakEnd),
-                              style: TextStyle(color: Colors.blueAccent),
+                              style: TextStyle(
+                                color: Colors.blueAccent, //fontSize: 16.0,
+                                fontSize: SizeConfig.heightMultiplier * 2.34,
+                              ),
                             )
                           ],
                         )
@@ -192,14 +246,20 @@ class TimesheetCard extends StatelessWidget {
                 children: [
                   Text(
                     translate('timesheet.shift_ended_at'),
-                    style: TextStyle(color: Colors.blueAccent),
+                    style: TextStyle(
+                      color: Colors.blueAccent, //fontSize: 16.0,
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
                   ),
                   shiftEnd != null
                       ? Row(
                           children: [
                             Text(
                               DateFormat.jm().format(shiftEnd),
-                              style: TextStyle(color: Colors.blueAccent),
+                              style: TextStyle(
+                                color: Colors.blueAccent, //fontSize: 16.0,
+                                fontSize: SizeConfig.heightMultiplier * 2.34,
+                              ),
                             ),
                           ],
                         )

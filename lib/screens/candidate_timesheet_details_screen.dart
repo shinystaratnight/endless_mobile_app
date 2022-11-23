@@ -12,6 +12,8 @@ import 'package:piiprent/widgets/group_title.dart';
 import 'package:piiprent/widgets/skill_activity_table_old.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/size_config.dart';
+
 class CandidateTimesheetDetailsScreen extends StatefulWidget {
   final String position;
   final String jobsite;
@@ -153,16 +155,21 @@ class _CandidateTimesheetDetailsScreenState
         children: [
           Icon(
             Icons.edit,
-            size: 18.0,
+            //size: 18.0,
+            size: SizeConfig.heightMultiplier * 2.64,
             color: Colors.blue,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 4.0),
+            padding: EdgeInsets.only(
+              //left: 4.0,
+              left: SizeConfig.widthMultiplier * 0.97,
+            ),
             child: Text(
               translate('button.change'),
               style: TextStyle(
                 color: Colors.blue,
-                fontSize: 14.0,
+                //fontSize: 14.0,
+                fontSize: SizeConfig.heightMultiplier * 2.05,
               ),
             ),
           ),
@@ -259,8 +266,16 @@ class _CandidateTimesheetDetailsScreenState
             ? Row(
                 children: [
                   Container(
-                    child: Text(translate('timesheet.break')),
-                    margin: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      translate('timesheet.break'),
+                      style: TextStyle(
+                        fontSize: SizeConfig.heightMultiplier * 2.34,
+                      ),
+                    ),
+                    margin: EdgeInsets.only(
+                      //left: 8.0,
+                      left:SizeConfig.heightMultiplier*1.94,
+                    ),
                   ),
                   Switch(
                     value: _withBreak,

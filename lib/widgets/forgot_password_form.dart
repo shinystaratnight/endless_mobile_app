@@ -6,6 +6,7 @@ import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/widgets/form_field.dart';
 import 'package:piiprent/widgets/form_message.dart';
 import 'package:piiprent/widgets/form_submit_button.dart';
+import 'package:piiprent/widgets/size_config.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPasswordForm extends StatefulWidget {
@@ -57,7 +58,10 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
     ContactService contactService = Provider.of<ContactService>(context);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+      padding: EdgeInsets.symmetric(
+        //horizontal: 18.0,
+        horizontal:SizeConfig.widthMultiplier*3.89,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -83,13 +87,17 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
               label: translate('button.submit'),
             ),
             SizedBox(
-              height: 10,
+              //height: 10,
+              height: SizeConfig.heightMultiplier * 1.46,
             ),
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Text(
                 translate('link.back_to_login'),
-                style: TextStyle(color: Colors.grey[700]),
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                ),
               ),
             ),
           ],

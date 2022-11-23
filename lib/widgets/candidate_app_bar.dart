@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:piiprent/screens/candidate_notification_screen.dart';
 import 'package:piiprent/services/login_service.dart';
@@ -16,15 +15,18 @@ Widget getCandidateAppBar(
   Widget leading,
 }) {
   return AppBar(
-
     actions: [
       Consumer<LoginService>(
-        builder: (_,loginService,__) {
-          return Visibility(visible: loginService.user.roles!=null,child: SwitchAccount());
-        }
+        builder: (_, loginService, __) {
+          return Visibility(
+            visible: loginService.user != null
+                ? loginService.user.roles != null
+                : false,
+            child: SwitchAccount(),
+          );
+        },
       ),
-      LanguageSelect(
-      ),
+      LanguageSelect(),
       showNotification
           ? Stack(
               alignment: Alignment.center,
@@ -58,9 +60,10 @@ Widget getCandidateAppBar(
             )
           : SizedBox(),
     ],
-    title: Text(title,style: TextStyle(
-      fontSize: SizeConfig.heightMultiplier*2.34
-    ),),
+    title: Text(
+      title,
+      style: TextStyle(fontSize: SizeConfig.heightMultiplier * 2.34),
+    ),
     bottom: tabs != null ? TabBar(tabs: tabs) : null,
     leading: leading != null ? leading : null,
   );
