@@ -5,6 +5,7 @@ import 'package:piiprent/widgets/size_config.dart';
 class CustomTextFieldWIthoutLabel extends StatelessWidget {
   final String hint;
   final ValueChanged<String> onChanged;
+  final ValueChanged<String> onSubmit;
   final TextEditingController controller;
   final Function validator;
   final bool passowrd;
@@ -13,6 +14,7 @@ class CustomTextFieldWIthoutLabel extends StatelessWidget {
     Key key,
     this.hint,
     this.onChanged,
+    this.onSubmit,
     this.controller,
     this.validator,
     this.passowrd,
@@ -26,6 +28,7 @@ class CustomTextFieldWIthoutLabel extends StatelessWidget {
       obscureText: passowrd ?? false,
       validator: validator,
       onChanged: onChanged,
+      onFieldSubmitted: onSubmit == null ? (){} : onSubmit,
       style: TextStyle(
         color: activeTextColor,
         //fontSize: 16,

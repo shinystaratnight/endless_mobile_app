@@ -7,13 +7,11 @@ import 'package:provider/provider.dart';
 
 import '../screens/widgets/menu.dart';
 
-Widget getCandidateAppBar(
-  String title,
-  BuildContext context, {
-  bool showNotification = true,
-  List<Tab> tabs,
-  Widget leading,
-}) {
+Widget getCandidateAppBar(String title, BuildContext context,
+    {bool showNotification = true,
+    List<Tab> tabs,
+    Widget leading,
+    bool isPadding = false}) {
   return AppBar(
     actions: [
       Consumer<LoginService>(
@@ -26,7 +24,9 @@ Widget getCandidateAppBar(
           );
         },
       ),
-      LanguageSelect(),
+      Padding(
+          padding: isPadding ? EdgeInsets.only(right: 10) : EdgeInsets.zero,
+          child: LanguageSelect()),
       showNotification
           ? Stack(
               alignment: Alignment.center,

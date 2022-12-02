@@ -175,7 +175,7 @@ class _CandidateHomeScreenState extends State<CandidateHomeScreen> {
                   Icons.checklist,
                   color: Colors.blue[700],
                 ),
-                //path: '/candidate_profile',
+                // path: '/candidate_profile',
                 path: '',
                 text: translate('page.title.inventory'),
               ),

@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/login_provider.dart';
+import 'package:piiprent/screens/candidate/candidate_acceptance_form.dart';
+import 'package:piiprent/screens/tools/tools_step_screen.dart';
 import 'package:piiprent/services/contact_service.dart';
 import 'package:piiprent/services/login_service.dart';
 import 'package:piiprent/widgets/size_config.dart';
@@ -216,6 +218,32 @@ class _CandidateDrawerState extends State<CandidateDrawer> {
                         onTap: () => Navigator.pushNamed(
                             context, '/candidate_timesheets'),
                       ),
+                      // Divider(
+                      //   color: Colors.grey[300],
+                      // ),
+                      // ListTile(
+                      //   title: Text("Inventory",
+                      //    /* translate('page.title.timesheets'),*/
+                      //     style: _textStyle.copyWith(
+                      //       fontSize: SizeConfig.textMultiplier * 2.64,
+                      //     ),
+                      //   ),
+                      //   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>CandidateAcceptanceForm()))/*Navigator.pushNamed(
+                      //       context, '/CandidateAcceptandeForm')*/,
+                      // ),
+                      // Divider(
+                      //   color: Colors.grey[300],
+                      // ),
+                      // ListTile(
+                      //   title: Text("Tools",
+                      //     /* translate('page.title.timesheets'),*/
+                      //     style: _textStyle.copyWith(
+                      //       fontSize: SizeConfig.textMultiplier * 2.64,
+                      //     ),
+                      //   ),
+                      //   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>ToolsStepScreen()))/*Navigator.pushNamed(
+                      //       context, '/CandidateAcceptandeForm')*/,
+                      // ),
                       Divider(
                         color: Colors.grey[300],
                       ),

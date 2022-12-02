@@ -282,6 +282,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             _username = v;
                           },
                           validator: emailValidator,
+                          onSubmit: (val){
+                            // if(_password != null || _password != ""){
+                            //   _onLogin(loginService, contactService);
+                            // }
+                          },
                         ),
                         SizedBox(
                           // height: 5,
@@ -292,6 +297,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           hint: translate('field.password'),
                           onChanged: (v) {
                             _password = v;
+                          },
+                          onSubmit: (val){
+                            _onLogin(loginService, contactService);
                           },
                         ),
                         Spacer(),

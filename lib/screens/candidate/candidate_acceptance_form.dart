@@ -55,6 +55,7 @@ class _CandidateAcceptanceFormState extends State<CandidateAcceptanceForm> {
 
   var _phoneCountryCode;
   CompanyService companyService;
+
   Future _loadFormSettings() async {
     try {
       form = await this
@@ -135,7 +136,7 @@ class _CandidateAcceptanceFormState extends State<CandidateAcceptanceForm> {
                           color: Colors.black.withOpacity(.1),
                           offset: Offset(0, -2),
                           //blurRadius: 12,
-                          blurRadius:SizeConfig.heightMultiplier*1.76,
+                          blurRadius: SizeConfig.heightMultiplier * 1.76,
                         ),
                       ],
                       color: Colors.white,
@@ -172,11 +173,16 @@ class _CandidateAcceptanceFormState extends State<CandidateAcceptanceForm> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    //size: 24,
-                    size: SizeConfig.heightMultiplier * 3.51,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      right: SizeConfig.widthMultiplier * 1.95,
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      //size: 24,
+                      size: SizeConfig.heightMultiplier * 3.51,
+                    ),
                   ),
                 ),
               ],
@@ -242,8 +248,9 @@ class _CandidateAcceptanceFormState extends State<CandidateAcceptanceForm> {
                                 child: LinearProgressBar(
                                   maxSteps: 9,
                                   minHeight: 10,
-                                  progressType: LinearProgressBar
-                                      .progressTypeLinear, // Use Linear progress
+                                  progressType:
+                                      LinearProgressBar.progressTypeLinear,
+                                  // Use Linear progress
                                   currentStep: currentStep,
                                   progressColor: Color(0xff2196F3),
                                   backgroundColor: Color(0xffEEF6FF),
@@ -512,6 +519,7 @@ class _CandidateAcceptanceFormState extends State<CandidateAcceptanceForm> {
     '5 - 10 km',
     '> 10 km',
   ];
+
   buildHowFarWork() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -523,7 +531,7 @@ class _CandidateAcceptanceFormState extends State<CandidateAcceptanceForm> {
         ),
         SizedBox(
           //height: 400,
-          height: SizeConfig.heightMultiplier*58.56,
+          height: SizeConfig.heightMultiplier * 58.56,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -533,7 +541,7 @@ class _CandidateAcceptanceFormState extends State<CandidateAcceptanceForm> {
                   (index) => Padding(
                     padding: EdgeInsets.only(
                       //top: 5.0,
-                      top:SizeConfig.heightMultiplier*0.87,
+                      top: SizeConfig.heightMultiplier * 0.87,
                     ),
                     child: WhiteShadowContainer(
                       title: farWorks[index],
@@ -604,6 +612,7 @@ class _CandidateAcceptanceFormState extends State<CandidateAcceptanceForm> {
     'Estonian',
     'Other',
   ];
+
   buildLanguages() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -856,7 +865,7 @@ class _CandidateAcceptanceFormState extends State<CandidateAcceptanceForm> {
                           onTap: () {},
                           child: SizedBox(
                             //width: 80,
-                            width: SizeConfig.widthMultiplier * 19.46,
+                            width: SizeConfig.widthMultiplier * 20.05,
                             child: CountryCodePicker(
                               dialogSize: Size(
                                   MediaQuery.of(context).size.width - 40,
@@ -1133,6 +1142,7 @@ class WhiteShadowContainer extends StatefulWidget {
   final Function(int) onChanged;
   final String title;
   final int value;
+
   @override
   State<WhiteShadowContainer> createState() => _WhiteShadowContainerState();
 }

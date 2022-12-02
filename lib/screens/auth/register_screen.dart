@@ -419,8 +419,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
               ),
               actions: [
-                LanguageSelect(
-                  color: whiteColor,
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: LanguageSelect(
+                    color: whiteColor,
+                  ),
                 )
               ],
             ),
