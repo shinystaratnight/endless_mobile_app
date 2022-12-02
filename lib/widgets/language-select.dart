@@ -41,7 +41,7 @@ class _LanguageSelectState extends State<LanguageSelect> {
       child: Container(
         child: Icon(
           Icons.language,
-          color: Colors.grey,
+          color: Colors.white,
           size: SizeConfig.heightMultiplier * 3.82,
         ),
         // margin: EdgeInsets.only(

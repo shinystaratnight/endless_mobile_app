@@ -532,10 +532,10 @@ class _HomeCalendarState extends State<HomeCalendar> {
                               height: SizeConfig.heightMultiplier * 1.46,
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                  flex: 3,
+                                  // flex: 3,
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -550,8 +550,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
                                   ),
                                 ),
                                 Expanded(
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    alignment: Alignment.center,
                                     child: Text(
                                       '${(_candidateWorkStates.hourlyWork.totalHours ?? 0).toInt()}h ${_candidateWorkStates.hourlyWork.totalMinutes ?? 0}m',
                                       style: TextStyle(
@@ -564,7 +564,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                                   ),
                                 ),
                                 Expanded(
-                                  child: Align(
+                                  child: Container(
                                     alignment: Alignment.centerRight,
                                     child: Text(
                                       '\$${_candidateWorkStates.hourlyWork.totalEarned}',
@@ -602,10 +602,10 @@ class _HomeCalendarState extends State<HomeCalendar> {
   }
 
   Widget buildReportHeader() => Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            flex: 3,
+            // flex: 3,
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -619,8 +619,9 @@ class _HomeCalendarState extends State<HomeCalendar> {
             ),
           ),
           Expanded(
+            // flex: 1,
             child: Align(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.center,
               child: Text(
                 'Amount',
                 style: TextStyle(
@@ -632,6 +633,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
             ),
           ),
           Expanded(
+            // flex: 1,
             child: Align(
               alignment: Alignment.centerRight,
               child: Text(
@@ -647,11 +649,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
         ],
       );
   Widget calculateTotal() => Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            flex: 3,
-            child: Align(
+            // flex: 3,
+            child: Container(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Shifts: ${_candidateWorkStates.shiftsTotal}',
@@ -663,12 +665,18 @@ class _HomeCalendarState extends State<HomeCalendar> {
               ),
             ),
           ),
-          Text(
-            'Total:  \$${_candidateWorkStates.hourlyWork.totalEarned}',
-            style: TextStyle(
-              //fontSize: 14,
-              fontSize: SizeConfig.heightMultiplier * 2.05,
-              fontWeight: FontWeight.w600,
+          Expanded(
+            child: Container(
+              // padding: EdgeInsets.only(right: 20),
+              alignment: Alignment.centerRight,
+              child: Text(
+                'Total:  \$${_candidateWorkStates.hourlyWork.totalEarned}',
+                style: TextStyle(
+                  //fontSize: 14,
+                  fontSize: SizeConfig.heightMultiplier * 2.05,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ),
         ],
@@ -1314,7 +1322,7 @@ class _CounterButtonState extends State<CounterButton> {
         child: Center(
           child: Text(
             widget.title,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               //fontSize: 16,

@@ -86,6 +86,8 @@ class LoginService {
       'grant_type': 'password'
     };
 
+    debugPrint("LOGIN BODY : "+body.toString());
+
     try {
       http.Response res =
           await apiService.post(path: '/auth/login/', body: body);
