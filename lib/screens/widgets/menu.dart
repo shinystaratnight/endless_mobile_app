@@ -572,15 +572,31 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                 //top: 5.0,
                                 top: SizeConfig.heightMultiplier * 0.61,
                               ),
-                              child: Text(
-                                '${role.name}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  //fontSize: 14,
-                                  fontSize: SizeConfig.heightMultiplier * 2.05,
-                                  color: Colors.grey,
-                                ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '${role.name}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      //fontSize: 14,
+                                      fontSize: SizeConfig.heightMultiplier * 2.05,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    '${loginService.user.companyName}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      //fontSize: 14,
+                                      fontSize: SizeConfig.heightMultiplier * 2.05,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),

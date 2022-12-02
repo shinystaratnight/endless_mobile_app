@@ -10,6 +10,7 @@ class User {
   String userId;
   List<Role> roles;
   String candidateId;
+  String companyName;
 
   User({
     this.name,
@@ -19,6 +20,7 @@ class User {
     this.id,
     this.userId,
     this.candidateId,
+    this.companyName
   });
 
   factory User.fromTokenPayload(Map<String, dynamic> payload) {
@@ -36,6 +38,7 @@ class User {
       id: contact['contact_id'],
       userId: contact['id'],
       candidateId: contact['candidate_contact'],
+      companyName: contact["company"]
     );
   }
 
@@ -68,3 +71,4 @@ RoleType getRole(String contactType) {
       throw 'Unknown role';
   }
 }
+
