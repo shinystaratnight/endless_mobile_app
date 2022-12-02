@@ -17,25 +17,25 @@ class ClientJobCard extends StatelessWidget {
     IconData icon;
     Color color;
 
-    switch (status) {
-      case JobStatus.Unfilled:
-        {
-          icon = Icons.close;
-          color = Colors.red[400];
-          break;
-        }
-      case JobStatus.Fullfilled:
-        {
-          icon = Icons.check_circle;
-          color = Colors.green[400];
-          break;
-        }
-      default:
-        {
-          icon = Icons.remove_circle;
-          color = Colors.grey[400];
-        }
-    }
+    // switch (status) {
+    //   case JobStatus.Unfilled:
+    //     {
+    //       icon = Icons.close;
+    //       color = Colors.red[400];
+    //       break;
+    //     }
+    //   case JobStatus.Fullfilled:
+    //     {
+    //       icon = Icons.check_circle;
+    //       color = Colors.green[400];
+    //       break;
+    //     }
+    //   default:
+    //     {
+    //       icon = Icons.remove_circle;
+    //       color = Colors.grey[400];
+    //     }
+    // }
 
     return Container(
       margin: EdgeInsets.symmetric(
@@ -246,7 +246,7 @@ class ClientJobCard extends StatelessWidget {
                 ],
               ),
             ),
-            ListCardRecord(
+           /* ListCardRecord(
               last: true,
               content: Row(
                 children: [
@@ -266,7 +266,7 @@ class ClientJobCard extends StatelessWidget {
                   )
                 ],
               ),
-            ),
+            ),*/
           ],
         ),
       ),
