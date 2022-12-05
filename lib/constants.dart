@@ -12,6 +12,7 @@ import 'package:piiprent/helpers/enums.dart';
 // const String googleApiKey = 'AIzaSyBqirIAPcDQ3kNaDyAk_qgFOn_oQmkMTg4';
 
 // Piiprent
+///todo: change base url
 const String companyId = 'bbeed8cd-1b64-4c88-b0ae-5723bdd44ac3';
 const String clientId = 'MMtPUqBFwBDo3kVEQl6mzVm6e8h5OHclTsDcraUj';
 const String apiUrl = 'https://api.piipai.com';

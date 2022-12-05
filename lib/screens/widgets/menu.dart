@@ -431,14 +431,25 @@ class SwitchAccount extends StatefulWidget {
 }
 
 class _SwitchAccountState extends State<SwitchAccount> {
-  //
 
   LoginService loginService;
+  List<String> type = [];
 
   @override
   initState() {
     loginService = Provider.of<LoginService>(context, listen: false);
+    Future.delayed(Duration(seconds: 1));
+    getType();
     super.initState();
+  }
+
+  getType() {
+    for (int i = 0; i < loginService.user.roles.length; i++) {
+      if(loginService.user.roles[i].name.toString() != "manager"){
+        type.add(loginService.user.roles[i].name.toString());
+      }
+    }
+    print("TYPE :$type \n Length ${type.length}");
   }
 
   @override
@@ -454,15 +465,14 @@ class _SwitchAccountState extends State<SwitchAccount> {
       itemBuilder: (context) {
         return List.generate(
           loginService.user.roles != null
-              ? loginService.user.roles.length + 1
+              ? type.length/*loginService.user.roles.length*/ + 1
               : 0,
           (index) {
             Role role;
             if (index != loginService.user.roles.length) {
               role = loginService.user.roles[index];
             }
-
-            return index == loginService.user.roles.length
+            return index == type.length/*loginService.user.roles.length*/
                 ? PopupMenuItem(
                     padding: EdgeInsets.zero,
                     child: Column(
@@ -512,170 +522,109 @@ class _SwitchAccountState extends State<SwitchAccount> {
                           : Colors.blueAccent.withOpacity(0.2),
                       child: Column(
                         children: [
-                          ListTile(
-                            minLeadingWidth: SizeConfig.widthMultiplier * 14.60,
-                            onTap: () async {
-                              if (Provider.of<LoginProvider>(context, listen: false)
-                                      .switchRole !=
-                                  index) {
-                                for (int i = 0;
-                                    i < loginService.user.roles.length;
-                                    i++) {
-                                  if (i != index) {
-                                    loginService.user.roles[i].active = false;
-                                  } else {
-                                    loginService.user.roles[i].active = true;
-                                  }
-                                }
-                                Provider.of<LoginProvider>(context, listen: false)
-                                    .switchRole = index;
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, '/', (route) => false);
-                              }
-                            },
-                            //minLeadingWidth: 60,
-                            leading: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                (role.active == null || role.active == false)
-                                    ? Icon(
-                                        Icons.radio_button_off,
-                                      )
-                                    : Icon(
-                                        Icons.radio_button_checked,
-                                        color: Colors.indigo,
+                          role.name.toLowerCase() != "manager".toLowerCase()
+                              ? ListTile(
+                                  minLeadingWidth:
+                                      SizeConfig.widthMultiplier * 14.60,
+                                  onTap: () async {
+                                    if (Provider.of<LoginProvider>(context,
+                                                listen: false)
+                                            .switchRole !=
+                                        index) {
+                                      for (int i = 0;
+                                          i < loginService.user.roles.length;
+                                          i++) {
+                                        if (i != index) {
+                                          loginService.user.roles[i].active =
+                                              false;
+                                        } else {
+                                          loginService.user.roles[i].active =
+                                              true;
+                                        }
+                                      }
+                                      Provider.of<LoginProvider>(context,
+                                              listen: false)
+                                          .switchRole = index;
+                                      Navigator.pushNamedAndRemoveUntil(
+                                          context, '/', (route) => false);
+                                    }
+                                  },
+                                  //minLeadingWidth: 60,
+                                  leading: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      (role.active == null ||
+                                              role.active == false)
+                                          ? Icon(
+                                              Icons.radio_button_off,
+                                            )
+                                          : Icon(
+                                              Icons.radio_button_checked,
+                                              color: Colors.indigo,
+                                            ),
+                                      SizedBox(
+                                        // width: 4,
+                                        width:
+                                            SizeConfig.widthMultiplier * 1.95,
                                       ),
-                                SizedBox(
-                                  // width: 4,
-                                  width: SizeConfig.widthMultiplier * 1.95,
-                                ),
-                                AccountImage(),
-                              ],
-                            ),
-                            title: Container(
-                              // decoration: BoxDecoration(border: Border.all()),
-                              // width: 50,
-                              child: Text(
-                                loginService.user.name,
-                                textAlign: TextAlign.start,
-                                overflow: TextOverflow.visible,
-                                // maxLines: 2,
-                                style: TextStyle(
-                                    //fontSize: 16,
-                                    fontSize: SizeConfig.heightMultiplier * 2.34,
-                                    color: Colors.indigo,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                            subtitle: Padding(
-                              padding: EdgeInsets.only(
-                                //top: 5.0,
-                                top: SizeConfig.heightMultiplier * 0.61,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    '${role.name}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      //fontSize: 14,
-                                      fontSize: SizeConfig.heightMultiplier * 2.05,
-                                      color: Colors.grey,
-                                    ),
+                                      AccountImage(),
+                                    ],
                                   ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    '${loginService.user.companyName}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      //fontSize: 14,
-                                      fontSize: SizeConfig.heightMultiplier * 2.05,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-
-                         /* InkWell(
-                            onTap: (){
-                              if (Provider.of<LoginProvider>(context, listen: false)
-                                  .switchRole !=
-                                  index) {
-                                for (int i = 0;
-                                i < loginService.user.roles.length;
-                                i++) {
-                                  if (i != index) {
-                                    loginService.user.roles[i].active = false;
-                                  } else {
-                                    loginService.user.roles[i].active = true;
-                                  }
-                                }
-                                Provider.of<LoginProvider>(context, listen: false)
-                                    .switchRole = index;
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, '/', (route) => false);
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                (role.active == null || role.active == false)
-                                    ? Icon(
-                                  Icons.radio_button_off,
-                                )
-                                    : Icon(
-                                  Icons.radio_button_checked,
-                                  color: Colors.indigo,
-                                ),
-                                SizedBox(
-                                  // width: 4,
-                                  width: SizeConfig.widthMultiplier * 1.95,
-                                ),
-                                AccountImage(),
-                                Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(border: Border.all()),
-                                      width: 50,
-                                      child: Text(
-                                        loginService.user.name,
-                                        textAlign: TextAlign.start,
-                                        // overflow: TextOverflow.visible,
-                                        maxLines: 1,
-                                        style: TextStyle(
+                                  title: Container(
+                                    // decoration: BoxDecoration(border: Border.all()),
+                                    // width: 50,
+                                    child: Text(
+                                      loginService.user.name,
+                                      textAlign: TextAlign.start,
+                                      overflow: TextOverflow.visible,
+                                      // maxLines: 2,
+                                      style: TextStyle(
                                           //fontSize: 16,
-                                          //   fontSize: SizeConfig.heightMultiplier * 2.34,
-                                            color: Colors.indigo,
-                                            fontWeight: FontWeight.w700),
-                                      ),
+                                          fontSize:
+                                              SizeConfig.heightMultiplier *
+                                                  2.34,
+                                          color: Colors.indigo,
+                                          fontWeight: FontWeight.w700),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        //top: 5.0,
-                                        top: SizeConfig.heightMultiplier * 0.61,
-                                      ),
-                                      child: Text(
-                                        '${role.name}',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          //fontSize: 14,
-                                          fontSize: SizeConfig.heightMultiplier * 2.05,
-                                          color: Colors.grey,
+                                  ),
+                                  subtitle: Padding(
+                                    padding: EdgeInsets.only(
+                                      //top: 5.0,
+                                      top: SizeConfig.heightMultiplier * 0.61,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          '${role.name}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            //fontSize: 14,
+                                            fontSize:
+                                                SizeConfig.heightMultiplier *
+                                                    2.05,
+                                            color: Colors.grey,
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  ],
+                                        SizedBox(width: 5),
+                                        Text(
+                                          '${loginService.user.companyName}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            //fontSize: 14,
+                                            fontSize:
+                                                SizeConfig.heightMultiplier *
+                                                    2.05,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 )
-                              ],
-
-                            ),
-                          )*/
+                              : SizedBox(height: 0),
                         ],
                       ),
                     ),
