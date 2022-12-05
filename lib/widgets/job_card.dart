@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/job_offer_model.dart';
+import 'package:piiprent/screens/candidate/candidate_home_screen.dart';
 import 'package:piiprent/screens/candidate_job_details_screen.dart';
 import 'package:piiprent/services/job_offer_service.dart';
 import 'package:piiprent/services/notification_service.dart';
@@ -36,12 +38,15 @@ class _JobCardState extends State<JobCard> {
       _fetching = true;
     });
     try {
-      await jobOfferService.accept(widget.jobOffer.id);
+      bool accept = await jobOfferService.accept(widget.jobOffer.id);
       await notificationService.checkJobOfferNotifications();
-
+      if (accept) {
+        Get.offAll(()=>CandidateHomeScreen());
+      }
       if (widget.update != null) {
         widget.update();
       }
+
     } catch (e) {
       print(e);
       setState(() {
@@ -76,16 +81,18 @@ class _JobCardState extends State<JobCard> {
   Widget build(BuildContext context) {
     JobOfferService jobOfferService = Provider.of<JobOfferService>(context);
     NotificationService notificationService =
-        Provider.of<NotificationService>(context);
+    Provider.of<NotificationService>(context);
 
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => CandidateJobDetailsScreen(
-            jobOffer: widget.jobOffer,
+      onTap: () =>
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  CandidateJobDetailsScreen(
+                    jobOffer: widget.jobOffer,
+                  ),
+            ),
           ),
-        ),
-      ),
       child: ListCard(
         header: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,11 +175,14 @@ class _JobCardState extends State<JobCard> {
                     color: Colors.blue,
                     size: SizeConfig.heightMultiplier * 3.66,
                   ),
-                  Text(
-                    widget.jobOffer.location,
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                  SizedBox(
+                    width: Get.width - 80,
+                    child: Text(
+                      widget.jobOffer.location,
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: SizeConfig.heightMultiplier * 2.34,
+                      ),
                     ),
                   ),
                 ],
@@ -180,64 +190,66 @@ class _JobCardState extends State<JobCard> {
             ),
             widget.offer
                 ? Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                width: 1.0,
-                                color: Colors.blue,
-                                style: BorderStyle.solid,
-                              ),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              //top: 10.0,
-                              top:SizeConfig.heightMultiplier*1.46,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                FormSubmitButton(
-                                  label: translate('button.accept'),
-                                  onPressed: () {
-                                    index = 1;
-                                    setState(() {});
-                                    return _acceptJobOffer(
-                                      jobOfferService,
-                                      notificationService,
-                                    );
-                                  },
-                                  disabled: (_fetching && index == 1),
-                                  color: Colors.green[400],
-                                  //horizontalPadding: 20,
-                                  horizontalPadding:SizeConfig.widthMultiplier*4.86,
-                                ),
-                                FormSubmitButton(
-                                  label: translate('button.reject'),
-                                  onPressed: () {
-                                    index = 2;
-                                    setState(() {});
-                                    return _declineJobOffer(
-                                      jobOfferService,
-                                      notificationService,
-                                    );
-                                  },
-                                  disabled: (_fetching && index == 2),
-                                  color: Colors.red[400],
-                                  //horizontalPadding: 20,
-                                  horizontalPadding:SizeConfig.widthMultiplier*4.86,
-                                ),
-                              ],
-                            ),
-                          ),
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: 1.0,
+                          color: Colors.blue,
+                          style: BorderStyle.solid,
                         ),
-                      )
-                    ],
-                  )
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        //top: 10.0,
+                        top: SizeConfig.heightMultiplier * 1.46,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          FormSubmitButton(
+                            label: translate('button.accept'),
+                            onPressed: () {
+                              index = 1;
+                              setState(() {});
+                              return _acceptJobOffer(
+                                jobOfferService,
+                                notificationService,
+                              );
+                            },
+                            disabled: (_fetching && index == 1),
+                            color: Colors.green[400],
+                            //horizontalPadding: 20,
+                            horizontalPadding: SizeConfig.widthMultiplier *
+                                4.86,
+                          ),
+                          FormSubmitButton(
+                            label: translate('button.reject'),
+                            onPressed: () {
+                              index = 2;
+                              setState(() {});
+                              return _declineJobOffer(
+                                jobOfferService,
+                                notificationService,
+                              );
+                            },
+                            disabled: (_fetching && index == 2),
+                            color: Colors.red[400],
+                            //horizontalPadding: 20,
+                            horizontalPadding: SizeConfig.widthMultiplier *
+                                4.86,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            )
                 : SizedBox(),
           ],
         ),
