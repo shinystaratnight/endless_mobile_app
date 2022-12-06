@@ -245,6 +245,7 @@ class _SkillActivityTableOldState extends State<SkillActivityTableOld> {
                   widget.hasActions && !_fetching
                       ? ElevatedButton(
                           onPressed: () {
+                            ///add approve button
                             Navigator.of(context)
                                 .push(
                               MaterialPageRoute(

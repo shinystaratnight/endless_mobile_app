@@ -68,9 +68,27 @@ class _ClientTimesheetDetailsScreenState
       _signatureStream.add(_controller.isEmpty);
     });
     _evaluated = widget.timesheet.evaluated;
+    // double rat = double.parse(widget.timesheet.score.toString());
+    // int rating = int.parse(rat.toString().split(".").first);
+    // print("rating  " + rating.toString());
+    // if (rating < 1) {
+    //   _evaluationScore = 0;
+    // } else if (rating == 1 && rating < 2) {
+    //   _evaluationScore = 1;
+    // } else if (rating >= 2 && rating < 3) {
+    //   _evaluationScore = 2;
+    // } else if (rating >= 3 && rating < 4) {
+    //   _evaluationScore = 3;
+    // } else if (rating >= 4 && rating < 5) {
+    //   _evaluationScore = 4;
+    // } else if (rating >= 5 && rating < 6) {
+    //   _evaluationScore = 5;
+    // }
+
     _evaluationScore = widget.timesheet.evaluation;
     super.initState();
   }
+
 
   _changeTime(DateTime time, String key) {
     setState(() {
@@ -115,7 +133,8 @@ class _ClientTimesheetDetailsScreenState
 
       setState(() {
         _evaluated = result;
-        _evaluationScore = score;
+       _evaluationScore = score;
+
       });
     } catch (e) {
       print(e);
