@@ -444,10 +444,11 @@ class _SwitchAccountState extends State<SwitchAccount> {
 
   getType() {
     for (int i = 0; i < loginService.user.roles.length; i++) {
-      if (loginService.user.roles[i].name.toString() != "manager") {
+      if (loginService.user.roles[i].name.toString() !=
+          "manager") {
         type.add(loginService.user.roles[i].name.toString());
       }else{
-        type.add(loginService.user.roles[i].name.toString());
+        // type.add(loginService.user.roles[i].name.toString());
       }
     }
     print("TYPE :$type \n Length ${type.length}");
