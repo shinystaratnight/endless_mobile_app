@@ -11,6 +11,7 @@ import '../../widgets/toast.dart';
 import 'widgets/break_duration_box_widget.dart';
 import 'widgets/time_picker_box_widget.dart';
 
+// ignore: must_be_immutable
 class TimeSheetWidgetPage extends StatefulWidget {
   TimeSheetWidgetPage(this.times, {Key key}) : super(key: key);
   Map<String, DateTime> times;

@@ -447,7 +447,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
       if (loginService.user.roles[i].name.toString() != "manager") {
         type.add(loginService.user.roles[i].name.toString());
       }else{
-        // type.add(loginService.user.roles[i].name.toString());
+        type.add(loginService.user.roles[i].name.toString());
       }
     }
     print("TYPE :$type \n Length ${type.length}");
@@ -602,7 +602,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                           width: Get.width/2.2,
                                           // decoration: BoxDecoration(border: Border.all()),
                                           child: Text(
-                                            /*'${role.name}'*/"${role.name},${loginService.user.companyName}",
+                                            /*'${role.name}'*/"${role.name},${role.roleUserName}",
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
