@@ -68,6 +68,7 @@ class _ClientTimesheetDetailsScreenState
       _signatureStream.add(_controller.isEmpty);
     });
     _evaluated = widget.timesheet.evaluated;
+    _evaluated = widget.timesheet.evaluated;
     // double rat = double.parse(widget.timesheet.score.toString());
     // int rating = int.parse(rat.toString().split(".").first);
     // print("rating  " + rating.toString());
@@ -544,7 +545,8 @@ class _ClientTimesheetDetailsScreenState
                         }
 
                         return FormSubmitButton(
-                          label: translate('button.submit'),
+                          ///add approve button
+                          label: translate('button.approve'),
                           onPressed: () => _submitForm(
                             timesheetService,
                             _controller,
