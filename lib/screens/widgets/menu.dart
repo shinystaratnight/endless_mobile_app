@@ -217,6 +217,7 @@ import '../../models/role_model.dart';
 import '../../services/contact_service.dart';
 import '../../services/login_service.dart';
 import '../../widgets/size_config.dart';
+import 'package:http/http.dart' as http;
 
 // class CloseSwitchMenu extends ChangeNotifier {
 //   bool _closeMenu = false;
@@ -433,21 +434,34 @@ class SwitchAccount extends StatefulWidget {
 class _SwitchAccountState extends State<SwitchAccount> {
   LoginService loginService;
   List<String> type = [];
+  RoleSwitchUser roleSwitchUser;
+  List<String> names = [];
 
   @override
   initState() {
     loginService = Provider.of<LoginService>(context, listen: false);
     Future.delayed(Duration(seconds: 1));
     getType();
+    assignRoleApi();
     super.initState();
+  }
+
+  assignRoleApi() async {
+    await ContactService().switchAccount().then((value) {
+      names = [];
+      for (int i = 0; i < value.length; i++) {
+        // name.add(value[i].companyContactRel.str);
+        names.add(value[i].companyContactRel.str.split(":").last.toString().trim());
+      }
+      print("NAME : $names");
+    });
   }
 
   getType() {
     for (int i = 0; i < loginService.user.roles.length; i++) {
-      if (loginService.user.roles[i].name.toString() !=
-          "manager") {
+      if (loginService.user.roles[i].name.toString() != "manager") {
         type.add(loginService.user.roles[i].name.toString());
-      }else{
+      } else {
         // type.add(loginService.user.roles[i].name.toString());
       }
     }
@@ -594,51 +608,23 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                       //top: 5.0,
                                       top: SizeConfig.heightMultiplier * 0.61,
                                     ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          width: Get.width/2.2,
-                                          // decoration: BoxDecoration(border: Border.all()),
-                                          child: Text(
-                                            /*'${role.name}'*/"${role.name},${role.roleUserName}",
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              //fontSize: 14,
-                                              fontSize:
-                                                  SizeConfig.heightMultiplier *
-                                                      2.05,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
+                                    child: Container(
+                                      alignment: Alignment.topLeft,
+                                      width: Get.width / 2.2,
+                                      // decoration: BoxDecoration(border: Border.all()),
+                                      child: Text(
+                                        /*'${role.name}'*/
+                                        roleAndName(index, names, loginService),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          //fontSize: 14,
+                                          fontSize:
+                                              SizeConfig.heightMultiplier *
+                                                  2.05,
+                                          color: Colors.grey,
                                         ),
-                                        // SizedBox(width: 5),
-                                        // Container(
-                                        //   // decoration: BoxDecoration(
-                                        //   //   border: Border.all(),
-                                        //   // ),
-                                        //   width: role.name.toLowerCase() ==
-                                        //           "candidate" || role.name.toLowerCase() ==
-                                        //       "manager"
-                                        //       ? Get.width / 3.4
-                                        //       : Get.width / 3,
-                                        //   child: Text(
-                                        //     '${loginService.user.companyName}',
-                                        //     maxLines: 2,
-                                        //     overflow: TextOverflow.ellipsis,
-                                        //     style: TextStyle(
-                                        //       //fontSize: 14,
-                                        //       fontSize:
-                                        //           SizeConfig.heightMultiplier *
-                                        //               2.05,
-                                        //       color: Colors.grey,
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 )
@@ -655,6 +641,14 @@ class _SwitchAccountState extends State<SwitchAccount> {
       ),
     );
   }
+}
+
+String roleAndName(index, name, loginService) {
+  String n = name[index].contains(loginService.user.name)
+      ? name[index].replaceAll("${loginService.user.name}", ",")
+      : (name[index].split("-").first + ",");
+  String c = "${loginService.user.companyName}";
+  return n + c;
 }
 
 class AccountImage extends StatefulWidget {
