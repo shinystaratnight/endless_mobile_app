@@ -105,7 +105,7 @@ class Timesheet {
       signatureScheme: company['supervisor_approved_scheme'] == 'SIGNATURE',
       supervisorSignature: json['supervisor_signature'],
       evaluation:
-          json['evaluated'] ? json['evaluation']['evaluation_score'] : 1,
+          json['evaluated'] ? json['evaluation']['evaluation_score'] : 5,
       candidateId: candidateContact['id'],
       timezone: json['time_zone'],
       wageType: json['wage_type'],
