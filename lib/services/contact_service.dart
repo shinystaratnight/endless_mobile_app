@@ -27,13 +27,13 @@ class ContactService {
     }
   }
 
-  Future<bool> switchAccount() async {
+  Future switchAccount() async {
     http.Response res = await apiService.get(path: '/auth/restore_session/');
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(res.body);
-      print("switch Account:: ============== >>> $body");
-      return true;
+      List<dynamic> roles = body["data"]["roles"];
+      return roles.map((dynamic el) => RoleSwitchUser.fromJson(el)).toList();
     } else {
       throw Exception("User with this email doesn't exist");
     }
@@ -184,12 +184,12 @@ class ContactService {
 
   Future getRoles() async {
     try {
+      // switchAccount();
       http.Response res = await apiService.get(path: '/core/users/roles/');
 
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       List<dynamic> roles = body['roles'];
-      return roles.map((dynamic el) => Role.fromJson(el))
-          .toList();
+      return roles.map((dynamic el) => Role.fromJson(el)).toList();
       // return roles
       //     .where((dynamic el) => el['__str__'].contains('client'))
       //     .map((dynamic el) => Role.fromJson(el))
