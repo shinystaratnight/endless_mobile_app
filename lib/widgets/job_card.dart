@@ -168,24 +168,27 @@ class _JobCardState extends State<JobCard> {
             ),
             ListCardRecord(
               last: true,
-              content: Row(
-                children: [
-                  Icon(
-                    Icons.location_on,
-                    color: Colors.blue,
-                    size: SizeConfig.heightMultiplier * 3.66,
-                  ),
-                  SizedBox(
-                    width: Get.width - 80,
-                    child: Text(
-                      widget.jobOffer.location,
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: SizeConfig.heightMultiplier * 2.34,
+              content: Container(
+                // decoration: BoxDecoration(border: Border.all(color: Colors.red)),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.blue,
+                      size: SizeConfig.heightMultiplier * 3.66,
+                    ),
+                    SizedBox(
+                      width: Get.width - 85,
+                      child: Text(
+                        widget.jobOffer.location,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             widget.offer

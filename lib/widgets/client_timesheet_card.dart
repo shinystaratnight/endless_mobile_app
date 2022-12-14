@@ -71,12 +71,18 @@ class ClientTimesheetCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  timesheet.candidateName,
-                  style: TextStyle(
-                    //fontSize: 22.0,
-                    fontSize: SizeConfig.heightMultiplier * 3.22,
-                    color: Colors.white,
+                SizedBox(
+                  width: SizeConfig.heightMultiplier * 3,
+                  child: FittedBox(
+                    child: Text(
+                      timesheet.candidateName,
+                      maxLines: 1,
+                      style: TextStyle(
+                        //fontSize: 22.0,
+                        fontSize: SizeConfig.heightMultiplier * 3,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
                 Text(
@@ -207,7 +213,7 @@ class ClientTimesheetCard extends StatelessWidget {
                       ),
                       SizedBox(
                         //width: 5.0,
-                        width:SizeConfig.widthMultiplier*1.22,
+                        width: SizeConfig.widthMultiplier * 1.22,
                       ),
                       Text(
                         translate('timesheet.break_to'),
@@ -218,7 +224,7 @@ class ClientTimesheetCard extends StatelessWidget {
                       ),
                       SizedBox(
                         //width: 5.0,
-                        width:SizeConfig.widthMultiplier*1.22,
+                        width: SizeConfig.widthMultiplier * 1.22,
                       ),
                       Text(
                         timesheet.breakEnd != null
