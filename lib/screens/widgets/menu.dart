@@ -541,7 +541,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                           true
                               ? ListTile(
                                   minLeadingWidth:
-                                      SizeConfig.widthMultiplier * 14.60,
+                                  SizeConfig.widthMultiplier * 14.9,
                                   onTap: () async {
                                     if (Provider.of<LoginProvider>(context,
                                                 listen: false)
@@ -612,17 +612,19 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                       alignment: Alignment.topLeft,
                                       width: Get.width / 2.2,
                                       // decoration: BoxDecoration(border: Border.all()),
-                                      child: Text(
-                                        /*'${role.name}'*/
-                                        roleAndName(index, names, loginService),
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          //fontSize: 14,
-                                          fontSize:
-                                              SizeConfig.heightMultiplier *
-                                                  2.05,
-                                          color: Colors.grey,
+                                      child: FittedBox(
+                                        child: Text(
+                                          /*'${role.name}'*/
+                                          roleAndName(index, names, loginService),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            //fontSize: 14,
+                                            fontSize:
+                                                SizeConfig.heightMultiplier *
+                                                    2.05,
+                                            color: Colors.grey,
+                                          ),
                                         ),
                                       ),
                                     ),
