@@ -414,7 +414,7 @@ class _CandidateTimesheetNewDetailsScreenState
                     ],
                   )
                 : Container(),
-            widget.status == 4 || widget.status == 5
+            widget.status == 4 /*|| widget.status == 5*/
                 ? SizedBox(
                     width: double.infinity,
                     child: FormSubmitButton(
