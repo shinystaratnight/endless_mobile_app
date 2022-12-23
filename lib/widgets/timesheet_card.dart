@@ -115,7 +115,7 @@ class TimesheetCard extends StatelessWidget {
                   width: MediaQuery.of(context).size.width -
                       (SizeConfig.widthMultiplier * 17.52),
                   child: Text(
-                    clientContact + clientContact,
+                    clientContact,
                     // overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.white, //fontSize: 16.0,
