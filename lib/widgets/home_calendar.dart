@@ -1259,11 +1259,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
 class CounterButton extends StatefulWidget {
   const CounterButton(
       {Key key,
-      this.title,
-      this.onPressed,
-      this.onTapped,
-      this.index,
-      this.last})
+        this.title,
+        this.onPressed,
+        this.onTapped,
+        this.index,
+        this.last})
       : super(key: key);
   final String title;
   final Function() onPressed;
@@ -1285,10 +1285,10 @@ class _CounterButtonState extends State<CounterButton> {
         setState(() {});
       },
       child: Container(
-        width: size.width > 650
+        width: /*((size.width * (widget.title.length / 25)))*/size.width > 650
             ? size.width < 1355
-                ? size.width / 6.6
-                : size.width / 9.2
+            ? size.width / 6.6
+            : size.width / 9.2
             : size.width / 3.6,
         padding: EdgeInsets.symmetric(
           // horizontal: 15,
@@ -1320,14 +1320,17 @@ class _CounterButtonState extends State<CounterButton> {
           ),
         ),
         child: Center(
-          child: Text(
-            widget.title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              //fontSize: 16,
-              fontSize: SizeConfig.heightMultiplier * 2.34,
-              color: widget.onTapped ? Colors.white : Colors.black,
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Text(
+              widget.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                //fontSize: 16,
+                // fontSize: SizeConfig.heightMultiplier * 2.34,
+                color: widget.onTapped ? Colors.white : Colors.black,
+              ),
             ),
           ),
         ),
