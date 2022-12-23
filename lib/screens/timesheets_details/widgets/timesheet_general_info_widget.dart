@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/widgets/size_config.dart';
@@ -8,9 +9,10 @@ class GeneralInformationWidget extends StatelessWidget {
   final String imageIcon;
   final String name;
   final String value;
+  double width;
 
-  const GeneralInformationWidget(
-      {this.imageIcon, this.name, this.value, Key key})
+   GeneralInformationWidget(
+      {this.imageIcon, this.name, this.value, Key key,this.width})
       : super(key: key);
 
   @override
@@ -21,7 +23,7 @@ class GeneralInformationWidget extends StatelessWidget {
         bottom:SizeConfig.heightMultiplier*2.36,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (imageIcon != null)
             SvgPicture.asset(
@@ -46,14 +48,19 @@ class GeneralInformationWidget extends StatelessWidget {
               fontSize: SizeConfig.heightMultiplier * 1.76,
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              color: AppColors.lightBlack,
-              //fontSize: 14,
-              fontSize: SizeConfig.heightMultiplier * 2.05,
-              fontFamily: GoogleFonts.roboto().fontFamily,
-              fontWeight: FontWeight.w400,
+          Container(
+            // decoration: BoxDecoration(border: Border.all()),
+            alignment: Alignment.topLeft,
+            width:width ??Get.width * 0.7,
+            child: Text(
+              value,
+              style: TextStyle(
+                color: AppColors.lightBlack,
+                //fontSize: 14,
+                fontSize: SizeConfig.heightMultiplier * 2.05,
+                fontFamily: GoogleFonts.roboto().fontFamily,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ],
