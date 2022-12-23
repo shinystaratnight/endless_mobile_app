@@ -677,9 +677,12 @@ class _AccountImageState extends State<AccountImage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return Container(
           //margin: EdgeInsets.symmetric(vertical: 15),
-          margin: EdgeInsets.symmetric(
-            vertical: SizeConfig.heightMultiplier * 2.34,
-          ),
+          // margin: EdgeInsets.symmetric(
+          //   vertical: 12/*SizeConfig.heightMultiplier * 2.34*/,
+          // ),
+          margin: EdgeInsets.only(top: 3,right: 5),
+          height: 28,
+          width: 28,
           child: Consumer<LoginProvider>(
             builder: (_, login, __) {
               return Container(
