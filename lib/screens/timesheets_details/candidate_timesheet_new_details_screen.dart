@@ -204,7 +204,7 @@ class _CandidateTimesheetNewDetailsScreenState
             Text(
               'General Information',
               style: TextStyle(
-                fontSize: SizeConfig.heightMultiplier * 2.34,
+                fontSize: SizeConfig.heightMultiplier * 3.22,
                 fontFamily: GoogleFonts.roboto().fontFamily,
                 fontWeight: FontWeight.w500,
                 color: AppColors.lightBlack,
@@ -257,7 +257,7 @@ class _CandidateTimesheetNewDetailsScreenState
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       //fontSize: 16,
-                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                      fontSize: SizeConfig.heightMultiplier *  3.22,
                       fontFamily: GoogleFonts.roboto().fontFamily,
                       color: AppColors.lightBlack,
                     ),

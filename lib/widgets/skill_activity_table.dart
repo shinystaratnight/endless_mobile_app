@@ -105,6 +105,8 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                   ),
                 )
               : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     widget.hasActions
                         ? Row(
@@ -166,6 +168,17 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                       //height: 16,
                       height: SizeConfig.heightMultiplier * 2.34,
                     ),
+                    Text(
+                      'Activities',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        //fontSize: 16,
+                        fontSize: SizeConfig.heightMultiplier * 3.22,
+                        fontFamily: GoogleFonts.roboto().fontFamily,
+                        color: AppColors.lightBlack,
+                      ),
+                    ),
+                    SizedBox(height: 10),
                     ListView.builder(
                       itemBuilder: (context, index) => Column(children: [
                         Row(
