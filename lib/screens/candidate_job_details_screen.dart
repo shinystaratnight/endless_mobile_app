@@ -174,12 +174,13 @@ class _CandidateJobDetailsScreenState extends State<CandidateJobDetailsScreen> {
                 ),),
                 onPressed: () async {
                   final availableMaps = await MapLauncher.installedMaps;
-                  print(availableMaps);
+                  print("availableMaps : $availableMaps");
 
                   await availableMaps.first.showMarker(
                     coords: Coords(double.parse(widget.jobOffer.latitude),
                         double.parse(widget.jobOffer.longitude)),
                     title: widget.jobOffer.company,
+
                   );
                 },
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:piiprent/models/jobsite_model.dart';
 import 'package:piiprent/screens/client_jobsite_details_screen.dart';
@@ -59,10 +60,14 @@ class JobsiteCard extends StatelessWidget {
                     //size: 25,
                     size: SizeConfig.heightMultiplier * 3.12,
                   ),
-                  Text(
-                    jobsite.address,
-                    style: TextStyle(
-                      fontSize: SizeConfig.heightMultiplier * 2.23,
+                  Container(
+                    width: Get.width * 0.78,
+                    // decoration: BoxDecoration(border: Border.all()),
+                    child: Text(
+                      jobsite.address,
+                      style: TextStyle(
+                        fontSize: SizeConfig.heightMultiplier * 2.23,
+                      ),
                     ),
                   ),
                 ],

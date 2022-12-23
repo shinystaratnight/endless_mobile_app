@@ -135,11 +135,14 @@ class TimesheetCard extends StatelessWidget {
                       //width: 5.0,
                       width: SizeConfig.widthMultiplier * 1.22,
                     ),
-                    Text(
-                      address,
-                      style: TextStyle(
-                        color: Colors.white, //fontSize: 16.0,
-                        fontSize: SizeConfig.heightMultiplier * 2.34,
+                    SizedBox(
+                      width: SizeConfig.widthMultiplier * 68,
+                      child: Text(
+                        address,
+                        style: TextStyle(
+                          color: Colors.white, //fontSize: 16.0,
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
                       ),
                     )
                   ],

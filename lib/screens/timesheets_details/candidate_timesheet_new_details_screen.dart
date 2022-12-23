@@ -218,6 +218,7 @@ class _CandidateTimesheetNewDetailsScreenState
               // imageIcon: 'images/icons/ic_profile.svg',
               name: 'SUPERVISIOR',
               value: widget.name,
+              width: Get.width * 0.65,
             ),
             GeneralInformationWidget(
               // imageIcon: 'images/icons/ic_building.svg',
