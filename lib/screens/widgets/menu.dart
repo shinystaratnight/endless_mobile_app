@@ -540,8 +540,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                         children: [
                           true
                               ? ListTile(
-                                  minLeadingWidth:
-                                  SizeConfig.widthMultiplier * 14.9,
+                                  // minLeadingWidth: SizeConfig.widthMultiplier * 14.9,
                                   onTap: () async {
                                     if (Provider.of<LoginProvider>(context,
                                                 listen: false)
@@ -566,64 +565,59 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                     }
                                   },
                                   //minLeadingWidth: 60,
-                                  leading: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      (role.active == null ||
-                                              role.active == false)
-                                          ? Icon(
-                                              Icons.radio_button_off,
-                                            )
-                                          : Icon(
-                                              Icons.radio_button_checked,
-                                              color: Colors.indigo,
-                                            ),
-                                      SizedBox(
-                                        // width: 4,
-                                        width:
-                                            SizeConfig.widthMultiplier * 1.95,
-                                      ),
-                                      AccountImage(),
-                                    ],
-                                  ),
-                                  title: Container(
-                                    // decoration: BoxDecoration(border: Border.all()),
-                                    // width: 50,
-                                    child: Text(
-                                      loginService.user.name,
-                                      textAlign: TextAlign.start,
-                                      overflow: TextOverflow.visible,
-                                      // maxLines: 2,
-                                      style: TextStyle(
-                                          //fontSize: 16,
-                                          fontSize:
-                                              SizeConfig.heightMultiplier *
-                                                  2.34,
+                                  leading: (role.active == null ||
+                                          role.active == false)
+                                      ? Icon(
+                                          Icons.radio_button_off,
+                                        )
+                                      : Icon(
+                                          Icons.radio_button_checked,
                                           color: Colors.indigo,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.only(
-                                      //top: 5.0,
-                                      top: SizeConfig.heightMultiplier * 0.61,
-                                    ),
+                                        ),
+                                  title: Transform.translate(
+                                    offset: Offset(-16, 0),
                                     child: Container(
-                                      alignment: Alignment.topLeft,
-                                      width: Get.width / 2.2,
                                       // decoration: BoxDecoration(border: Border.all()),
-                                      child: FittedBox(
-                                        child: Text(
-                                          /*'${role.name}'*/
-                                          roleAndName(index, names, loginService),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            //fontSize: 14,
+                                      // width: 50,
+                                      child: Text(
+                                        loginService.user.name,
+                                        textAlign: TextAlign.start,
+                                        overflow: TextOverflow.visible,
+                                        // maxLines: 2,
+                                        style: TextStyle(
+                                            //fontSize: 16,
                                             fontSize:
                                                 SizeConfig.heightMultiplier *
-                                                    2.05,
-                                            color: Colors.grey,
+                                                    2.34,
+                                            color: Colors.indigo,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ),
+                                  subtitle: Transform.translate(
+                                    offset: Offset(-16, 0),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        //top: 5.0,
+                                        top: SizeConfig.heightMultiplier * 0.61,
+                                      ),
+                                      child: Container(
+                                        alignment: Alignment.topLeft,
+                                        width: Get.width / 2.2,
+                                        // decoration: BoxDecoration(border: Border.all()),
+                                        child: FittedBox(
+                                          child: Text(
+                                            /*'${role.name}'*/
+                                            roleAndName(index, names, loginService),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              //fontSize: 14,
+                                              fontSize:
+                                                  SizeConfig.heightMultiplier *
+                                                      2.05,
+                                              color: Colors.grey,
+                                            ),
                                           ),
                                         ),
                                       ),
