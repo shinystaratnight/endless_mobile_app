@@ -178,7 +178,7 @@ class _JobCardState extends State<JobCard> {
                       size: SizeConfig.heightMultiplier * 3.66,
                     ),
                     SizedBox(
-                      width: Get.width - 85,
+                      width: Get.width - 90,
                       child: Text(
                         widget.jobOffer.location,
                         style: TextStyle(
