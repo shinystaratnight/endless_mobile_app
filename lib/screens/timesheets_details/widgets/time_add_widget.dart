@@ -14,7 +14,7 @@ class TimeAddWidget extends StatelessWidget {
     return Padding(
       padding:EdgeInsets.only(
           //bottom: 16.0,
-          bottom:SizeConfig.heightMultiplier*2.34,
+          bottom:SizeConfig.heightMultiplier*1.2,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

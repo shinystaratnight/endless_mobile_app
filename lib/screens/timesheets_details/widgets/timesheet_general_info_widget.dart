@@ -20,7 +20,7 @@ class GeneralInformationWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(
         //bottom: 17,
-        bottom:SizeConfig.heightMultiplier*2.36,
+        bottom:SizeConfig.heightMultiplier*1.2,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

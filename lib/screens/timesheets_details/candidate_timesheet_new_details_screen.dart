@@ -346,10 +346,23 @@ class _CandidateTimesheetNewDetailsScreenState
               ),
             if (_times[_shiftEnd] != null)
               Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (!(widget.status == 4 || widget.status == 5))
+                  Text(
+                    'Time',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      //fontSize: 16,
+                      fontSize: SizeConfig.heightMultiplier *  3.22,
+                      fontFamily: GoogleFonts.roboto().fontFamily,
+                      color: AppColors.lightBlack,
+                    ),
+                  ),
                   SizedBox(
                     //size: 18,
-                    height: SizeConfig.heightMultiplier * 2.64,
+                    height: SizeConfig.heightMultiplier * 1.5,
                   ),
                   TimeAddWidget('START TIME', _times[_shiftStart]),
                   TimeAddWidget('END TIME', _times[_shiftEnd]),
