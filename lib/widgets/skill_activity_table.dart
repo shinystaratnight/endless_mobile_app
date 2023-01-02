@@ -166,10 +166,10 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                         : SizedBox(),
                     SizedBox(
                       //height: 16,
-                      height: SizeConfig.heightMultiplier * 2.34,
+                      height: SizeConfig.heightMultiplier -5 ,
                     ),
                     Text(
-                      'Activities',
+                      "Activities",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         //fontSize: 16,
@@ -273,7 +273,7 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                         ),
                         SizedBox(
                           //height: 20,
-                          height: SizeConfig.heightMultiplier * 2.93,
+                          height: SizeConfig.heightMultiplier,
                         ),
                         TimeAddWidget('AMOUNT', data[index].value.toString())
                       ]),
