@@ -576,7 +576,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                           color: Colors.indigo,
                                         ),
                                   title: Transform.translate(
-                                    offset: Offset(-16, 0),
+                                    offset: Offset(-30, 0),
                                     child: Container(
                                       // decoration: BoxDecoration(border: Border.all()),
                                       // width: 50,
@@ -596,7 +596,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                     ),
                                   ),
                                   subtitle: Transform.translate(
-                                    offset: Offset(-16, 0),
+                                    offset: Offset(-30, 0),
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                         //top: 5.0,
@@ -608,7 +608,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                         // decoration: BoxDecoration(border: Border.all()),
                                         child: FittedBox(
                                           child: Text(
-                                            '${role.name}'
+                                            '${role.name}, ${loginService.user.companyName}'
                                            /* roleAndName(index, names, loginService)*/,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
