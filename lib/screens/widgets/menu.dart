@@ -451,8 +451,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
       names = [];
       for (int i = 0; i < value.length; i++) {
         // name.add(value[i].companyContactRel.str);
-        names.add(
-            value[i].companyContactRel.str.split(":").last.toString().trim());
+        names.add(value[i].companyContactRel.str.split(":").last.toString().trim());
       }
       print("NAME : $names");
     });
@@ -541,7 +540,8 @@ class _SwitchAccountState extends State<SwitchAccount> {
                         children: [
                           true
                               ? ListTile(
-                                  // minLeadingWidth: SizeConfig.widthMultiplier * 14.9,
+                                  minLeadingWidth:
+                                  SizeConfig.widthMultiplier * 14.9,
                                   onTap: () async {
                                     if (Provider.of<LoginProvider>(context,
                                                 listen: false)
@@ -576,7 +576,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                           color: Colors.indigo,
                                         ),
                                   title: Transform.translate(
-                                    offset: Offset(-16, 0),
+                                    offset: Offset(-30, 0),
                                     child: Container(
                                       // decoration: BoxDecoration(border: Border.all()),
                                       // width: 50,
@@ -596,7 +596,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                     ),
                                   ),
                                   subtitle: Transform.translate(
-                                    offset: Offset(-16, 0),
+                                    offset: Offset(-30, 0),
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                         //top: 5.0,
@@ -608,9 +608,8 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                         // decoration: BoxDecoration(border: Border.all()),
                                         child: FittedBox(
                                           child: Text(
-                                            /*'${role.name}'*/
-                                            roleAndName(
-                                                index, names, loginService),
+                                            '${role.name}, ${loginService.user.companyName}'
+                                           /* roleAndName(index, names, loginService)*/,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -682,7 +681,7 @@ class _AccountImageState extends State<AccountImage> {
           // margin: EdgeInsets.symmetric(
           //   vertical: 12/*SizeConfig.heightMultiplier * 2.34*/,
           // ),
-          margin: EdgeInsets.only(top: 3, right: 5),
+          margin: EdgeInsets.only(top: 3,right: 5),
           height: 28,
           width: 28,
           child: Consumer<LoginProvider>(
@@ -704,12 +703,8 @@ class _AccountImageState extends State<AccountImage> {
                         size: SizeConfig.heightMultiplier * 4.06,
                         color: primaryColor,
                       )
-                    : Container(
-                        // borderRadius: BorderRadius.circular(60),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
                         // borderRadius: BorderRadius.circular(
                         //   SizeConfig.heightMultiplier *
                         //       34.5 /
@@ -718,7 +713,7 @@ class _AccountImageState extends State<AccountImage> {
                         // ),
                         child: CachedNetworkImage(
                           imageUrl: login.image,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                           cacheManager: login.cacheManager,
                           progressIndicatorBuilder: (context, val, progress) {
                             return Loading();
