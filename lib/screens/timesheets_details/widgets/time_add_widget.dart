@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/helpers/functions.dart';
 import 'package:piiprent/widgets/size_config.dart';
@@ -19,12 +20,16 @@ class TimeAddWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(
-            hintText + ': ',
-            style: TextStyle(
-              color: AppColors.grey,
-              //fontSize: 12,
-              fontSize: SizeConfig.heightMultiplier*1.76,
+          Container(
+            width: Get.width * 0.18,
+            // decoration: BoxDecoration(border: Border.all()),
+            child: Text(
+              hintText + ': ',
+              style: TextStyle(
+                color: AppColors.grey,
+                fontSize: 12,
+                // fontSize: SizeConfig.heightMultiplier*1.76,
+              ),
             ),
           ),
           Row(
