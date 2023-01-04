@@ -553,7 +553,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                           true
                               ? ListTile(
                                   minLeadingWidth:
-                                  SizeConfig.widthMultiplier * 14.9,
+                                      SizeConfig.widthMultiplier * 14.9,
                                   onTap: () async {
                                     if (Provider.of<LoginProvider>(context,
                                                 listen: false)
@@ -693,7 +693,7 @@ class _AccountImageState extends State<AccountImage> {
           // margin: EdgeInsets.symmetric(
           //   vertical: 12/*SizeConfig.heightMultiplier * 2.34*/,
           // ),
-          margin: EdgeInsets.only(top: 3,right: 5),
+          margin: EdgeInsets.only(top: 3, right: 5),
           height: 28,
           width: 28,
           child: Consumer<LoginProvider>(
