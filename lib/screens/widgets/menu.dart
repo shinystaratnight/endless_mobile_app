@@ -619,7 +619,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                         width: Get.width / 2.2,
                                         // decoration: BoxDecoration(border: Border.all()),
                                         child: FittedBox(
-                                          child: Text('${restoreName[index]},${restoreCompany[index]}'
+                                          child: Text('${restoreName[index]}, ${restoreCompany[index]}'
                                            /* '${role.name}, ${role.roleUserName}'*/
                                            /* roleAndName(index, names, loginService)*/,
                                             maxLines: 1,
