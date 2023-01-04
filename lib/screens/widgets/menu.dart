@@ -433,40 +433,52 @@ class SwitchAccount extends StatefulWidget {
 
 class _SwitchAccountState extends State<SwitchAccount> {
   LoginService loginService;
-  List<String> type = [];
-  RoleSwitchUser roleSwitchUser;
-  List<String> names = [];
+  // List<String> type = [];
+  // RoleSwitchUser roleSwitchUser;
+  // List<String> names = [];
+  List<String> restoreName =[];
+  List<String> restoreCompany =[];
 
   @override
   initState() {
     loginService = Provider.of<LoginService>(context, listen: false);
     Future.delayed(Duration(seconds: 1));
-    getType();
+    // getType();
     assignRoleApi();
     super.initState();
   }
 
   assignRoleApi() async {
     await ContactService().switchAccount().then((value) {
-      names = [];
+      // names = [];
+      restoreName =[];
+      restoreCompany = [];
+
       for (int i = 0; i < value.length; i++) {
         // name.add(value[i].companyContactRel.str);
-        names.add(value[i].companyContactRel.str.split(":").last.toString().trim());
+        // names.add(value[i].companyContactRel.str.split(":").last.toString().trim());
+        if(value[i].name != "manager"){
+          restoreName.add(value[i].name);
+          restoreCompany.add(value[i].companyContactRel.company.name);
+        }
+
       }
-      print("NAME : $names");
+      // print("NAME : $names");
+      print("restoreName : $restoreName");
+      print("restoreCompany : $restoreCompany");
     });
   }
 
-  getType() {
-    for (int i = 0; i < loginService.user.roles.length; i++) {
-      if (loginService.user.roles[i].name.toString() != "manager") {
-        type.add(loginService.user.roles[i].name.toString());
-      } else {
-        // type.add(loginService.user.roles[i].name.toString());
-      }
-    }
-    print("TYPE :$type \n Length ${type.length}");
-  }
+  // getType() {
+  //   for (int i = 0; i < loginService.user.roles.length; i++) {
+  //     if (loginService.user.roles[i].name.toString() != "manager") {
+  //       type.add(loginService.user.roles[i].name.toString());
+  //     } else {
+  //       // type.add(loginService.user.roles[i].name.toString());
+  //     }
+  //   }
+  //   print("TYPE :$type \n Length ${type.length}");
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -481,14 +493,14 @@ class _SwitchAccountState extends State<SwitchAccount> {
       itemBuilder: (context) {
         return List.generate(
           loginService.user.roles != null
-              ? type.length /*loginService.user.roles.length*/ + 1
+              ? restoreName.length /*loginService.user.roles.length*/ + 1
               : 0,
           (index) {
             Role role;
             if (index != loginService.user.roles.length) {
               role = loginService.user.roles[index];
             }
-            return index == type.length /*loginService.user.roles.length*/
+            return index == restoreName.length /*loginService.user.roles.length*/
                 ? PopupMenuItem(
                     padding: EdgeInsets.zero,
                     child: Column(
@@ -607,8 +619,8 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                         width: Get.width / 2.2,
                                         // decoration: BoxDecoration(border: Border.all()),
                                         child: FittedBox(
-                                          child: Text(
-                                            '${role.name}, ${loginService.user.companyName}'
+                                          child: Text('${restoreName[index]},${restoreCompany[index]}'
+                                           /* '${role.name}, ${role.roleUserName}'*/
                                            /* roleAndName(index, names, loginService)*/,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
