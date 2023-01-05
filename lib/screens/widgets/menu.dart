@@ -459,9 +459,9 @@ class _SwitchAccountState extends State<SwitchAccount> {
         // names.add(value[i].companyContactRel.str.split(":").last.toString().trim());
         if(value[i].name != "manager"){
           restoreName.add(value[i].name);
-          restoreCompany.add(value[i].companyContactRel.company.name);
+          // print(value[i].companyContactRel.company.name.toString());
+          restoreCompany.add("${value[i].companyContactRel.company.name.toString().split("Ã").first}${value[i].companyContactRel.company.name.toString().contains("Ã")?"Ã":""}");
         }
-
       }
       // print("NAME : $names");
       print("restoreName : $restoreName");
