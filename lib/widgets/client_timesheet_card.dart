@@ -71,20 +71,18 @@ class ClientTimesheetCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: SizeConfig.heightMultiplier * 3,
-                  child: FittedBox(
-                    child: Text(
-                      timesheet.candidateName,
-                      maxLines: 1,
-                      style: TextStyle(
-                        //fontSize: 22.0,
-                        fontSize: SizeConfig.heightMultiplier * 3,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                // SizedBox(
+                //   // width: SizeConfig.heightMultiplier * 3,
+                //     child: Text(
+                //       timesheet.candidateName,
+                //       maxLines: 1,
+                //       style: TextStyle(
+                //         fontSize: 12.0,
+                //         // fontSize: SizeConfig.heightMultiplier * 3,
+                //         color: Colors.white,
+                //       ),
+                //     ),
+                // ),
                 Text(
                   "${translate('timesheet.position')} - ${timesheet.position(localizationDelegate.currentLocale)}",
                   style: TextStyle(
