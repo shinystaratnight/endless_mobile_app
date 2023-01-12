@@ -42,7 +42,7 @@ class _TimeSheetWidgetPageState extends State<TimeSheetWidgetPage> {
         title: Text(
           'Time',
           style: TextStyle(
-            fontSize: SizeConfig.heightMultiplier * 1.34,
+            fontSize: SizeConfig.heightMultiplier * 2.64,
           ),
         ),
         centerTitle: false,
