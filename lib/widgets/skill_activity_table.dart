@@ -184,7 +184,7 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                     //if (widget.status == 4 || widget.status == 5)
                     if (widget.status == 4)
                       widget.times[widget.shiftEnd] != null
-                          ? Row(mainAxisSize: MainAxisSize.min, children: [
+                          ? /*Row(mainAxisSize: MainAxisSize.min, children: [
                               Padding(
                                 //padding: const EdgeInsets.all(3.0),
                                 padding: EdgeInsets.all(
@@ -231,7 +231,29 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                   ),
                                 ),
                               )
-                            ])
+                            ])*/Padding(
+                        //padding: const EdgeInsets.all(3.0),
+                        padding: EdgeInsets.all(
+                            SizeConfig.heightMultiplier * 0.44),
+                        child: InkWell(
+                          onTap: () async {
+                            var result = await Get.to(() =>
+                                TimeSheetWidgetPage(widget.times));
+                            if (result is Map) {
+                              setState(() {
+                                widget.times = result;
+                                print('updateTimes: ${widget.times}');
+                              });
+                            }
+                          },
+                          child: Icon(
+                            Icons.edit,
+                            color: AppColors.green,
+                            //size: 18,
+                            size: SizeConfig.heightMultiplier * 2.64,
+                          ),
+                        ),
+                      )
                           : data.length == 0
                               ? InkWell(
                                   onTap: () async {
