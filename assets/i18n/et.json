@@ -154,5 +154,13 @@
     "residency.unknown": "Teadmata",
     "residency.citizen": "Kodanik",
     "residency.permanent_resident": "Alaline elanik",
-    "residency.temporary_resident": "Ajutine elanik"
+    "residency.temporary_resident": "Ajutine elanik",
+    "timeSheetStatus.status.new": "Uus",
+    "timeSheetStatus.status.preShiftCheckPending": "Vahetuse-eelne kontroll on ootel",
+    "timeSheetStatus.status.preShiftCheckConfirmed": "Käiguvahetuseelne kontroll kinnitatud",
+    "timeSheetStatus.status.preShiftCheckFailed": "Nihutamiseelne kontroll ebaõnnestus",
+    "timeSheetStatus.status.submitPending": "Esitamine on ootel",
+    "timeSheetStatus.status.approvalPending": "Heakskiit on ootel",
+    "timeSheetStatus.status.superVisorModified": "Juhendaja muudetud",
+    "timeSheetStatus.status.approved": "Kinnitatud"
 }

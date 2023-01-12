@@ -151,6 +151,14 @@
     "stepper.general": "General info",
     "stepper.additional": "Additional info",
     "stepper.financial": "Financial info",
-    "stepper.industry": "Industry & skills"
+    "stepper.industry": "Industry & skills",
+    "timeSheetStatus.status.new": "New",
+    "timeSheetStatus.status.preShiftCheckPending": "Pre-Shift check pending",
+    "timeSheetStatus.status.preShiftCheckConfirmed": "Pre-Shift check confirmed",
+    "timeSheetStatus.status.preShiftCheckFailed": "Pre-Shift check failed",
+    "timeSheetStatus.status.submitPending": "Submit pending",
+    "timeSheetStatus.status.approvalPending": "Approval pending",
+    "timeSheetStatus.status.superVisorModified": "Supervisor modified",
+    "timeSheetStatus.status.approved": "Approved"
 }
 

@@ -145,5 +145,13 @@
     "group.title.jobsite_information": "Jobsite information",
     "group.title.fulfilled": "Fulfilled",
     "group.title.unfulfilled": "Unfulfilled",
-    "group.title.skill_activities": "Skill Activities"
+    "group.title.skill_activities": "Skill Activities",
+    "timeSheetStatus.status.new": "Uusi",
+    "timeSheetStatus.status.preShiftCheckPending": "Pre-Shift-tarkastus odottaa",
+    "timeSheetStatus.status.preShiftCheckConfirmed": "Vaihtoa edeltävä tarkistus vahvistettu",
+    "timeSheetStatus.status.preShiftCheckFailed": "Vaihtoa edeltävä tarkistus epäonnistui",
+    "timeSheetStatus.status.submitPending": "Lähetys odottaa",
+    "timeSheetStatus.status.approvalPending": "Hyväksyntä odottaa",
+    "timeSheetStatus.status.superVisorModified": "Valvojaa muokattu",
+    "timeSheetStatus.status.approved": "Hyväksytty"
 }

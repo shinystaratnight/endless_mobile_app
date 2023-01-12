@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:piiprent/helpers/enums.dart';
 
 // Laviin
@@ -34,15 +35,16 @@ const Map<String, String> languageMap = {
   'FI': 'fi'
 };
 
-const Map<int, String> TimesheetStatus = {
-  0: "New",
-  1: "Pre-Shift check pending",
-  2: "Pre-Shift check confirmed",
-  3: "Pre-Shift check failed",
-  4: "Submit pending",
-  5: "Approval pending",
-  6: "Supervisor modified",
-  7: "Approved",
+// ignore: non_constant_identifier_names
+Map<int, String> TimesheetStatus = {
+  0: "timeSheetStatus.status.new",
+  1: "timeSheetStatus.status.preShiftCheckPending",
+  2: "timeSheetStatus.status.preShiftCheckConfirmed",
+  3: "timeSheetStatus.status.preShiftCheckFailed",
+  4: "timeSheetStatus.status.submitPending",
+  5: "timeSheetStatus.status.approvalPending",
+  6: "timeSheetStatus.status.superVisorModified",
+  7: "timeSheetStatus.status.approved",
 };
 
 const Map<int, String> Residency = {

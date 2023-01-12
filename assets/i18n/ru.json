@@ -154,5 +154,13 @@
     "residency.unknown": "Не определен",
     "residency.citizen": "Гражданин",
     "residency.permanent_resident": "Постоянное проживание",
-    "residency.temporary_resident": "Временное проживание"
+    "residency.temporary_resident": "Временное проживание",
+    "timeSheetStatus.status.new": "Новый",
+    "timeSheetStatus.status.preShiftCheckPending": "Ожидается предсменная проверка",
+    "timeSheetStatus.status.preShiftCheckConfirmed": "Проверка перед сменой подтверждена",
+    "timeSheetStatus.status.preShiftCheckFailed": "Проверка перед сменой не удалась",
+    "timeSheetStatus.status.submitPending": "Отправить в ожидании",
+    "timeSheetStatus.status.approvalPending": "Ожидается подтверждение",
+    "timeSheetStatus.status.superVisorModified": "Супервизор изменен",
+    "timeSheetStatus.status.approved": "Одобренный"
 }

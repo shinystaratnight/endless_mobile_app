@@ -95,7 +95,7 @@ class TimesheetCard extends StatelessWidget {
                     bottom: SizeConfig.heightMultiplier * 0.58,
                   ),
                   child: Text(
-                    '${TimesheetStatus[status]}',
+                    '${translate(TimesheetStatus[status])}',
                     style: TextStyle(
                       //fontSize: 16.0,
                       fontSize: SizeConfig.heightMultiplier * 2.34,
