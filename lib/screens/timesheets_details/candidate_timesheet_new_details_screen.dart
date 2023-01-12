@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:piiprent/constants.dart';
 import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/helpers/enums.dart';
+import 'package:piiprent/models/skill_activity_model.dart';
 import 'package:piiprent/screens/timesheets_details/selected_time_details.dart';
 import 'package:piiprent/screens/timesheets_details/widgets/time_add_widget.dart';
 import 'package:piiprent/services/skill_activity_service.dart';
@@ -63,6 +64,8 @@ class _CandidateTimesheetNewDetailsScreenState
     extends State<CandidateTimesheetNewDetailsScreen> {
   bool _updated = false;
   bool _fetching = false;
+  bool _activityAdded = false;
+
 
   SelectedTimeDetails selectedTimeDetails = SelectedTimeDetails();
 
@@ -87,10 +90,25 @@ class _CandidateTimesheetNewDetailsScreenState
       _breakEnd: widget.breakEnd ?? _breakTime,
       _shiftEnd: widget.shiftEnd
     };
-
+    _getActivity();
     super.initState();
   }
 
+
+  _getActivity()async{
+    List<SkillActivity> data =
+    await SkillActivityService().getSkillActivitiesByTimesheet({
+      'timesheet': widget.id,
+      'skill': widget.positionId,
+    });
+    if(data.length == 0){
+      _activityAdded = false;
+      print("Activity : not added");
+    }else{
+      _activityAdded = true;
+      print("Activity : added");
+    }
+  }
   _acceptPreShiftCheck(TimesheetService timesheetService) async {
     try {
       setState(() => _fetching = true);
@@ -118,50 +136,66 @@ class _CandidateTimesheetNewDetailsScreenState
   }
 
   _submitForm(TimesheetService timesheetService, bool isDelete) async {
-    if (_times.values.contains(null)) {
-      //Get.snackbar("Select Time", '');
-      toast("Select Time");
-      return;
+
+    List<SkillActivity> data =
+    await SkillActivityService().getSkillActivitiesByTimesheet({
+      'timesheet': widget.id,
+      'skill': widget.positionId,
+    });
+
+    if(data.length != 0){
+      toast('Activities submitting');
+      Get.back();
     }
 
-    try {
-      setState(() => _fetching = true);
-      setState(() {
-        _error = null;
-      });
-      Map<String, String> body;
-      body = _times.map((key, value) =>
-          MapEntry(key, isDelete ? null : value.toUtc().toString()));
-      if (isDelete == false) {
-        body['hours'] = 'true';
+    else{
+      if (_times.values.contains(null)) {
+        //Get.snackbar("Select Time", '');
+        toast("Select Time");
+        return;
       }
 
-      if (isDelete == false) {
-        toast('Time and activities submitting');
-      }
+      try {
+        setState(() => _fetching = true);
+        setState(() {
+          _error = null;
 
-      bool result = await timesheetService.submitTimesheet(widget.id, body);
-      if (result && isDelete) {
-        _times.forEach((key, value) {
-          if (key != _shiftStart) {
-            if (key == _breakStart || key == _breakEnd) {
-              _times[key] = _times[_shiftStart].add(Duration(hours: 2));
-            } else {
-              _times[key] = null;
-            }
-          }
         });
+        Map<String, String> body;
+        body = _times.map((key, value) =>
+            MapEntry(key, isDelete ? null : value.toUtc().toString()));
+        if (isDelete == false) {
+          body['hours'] = 'true';
+        }
+
+        if (isDelete == false) {
+          toast('Time and activities submitting');
+        }
+
+        bool result = await timesheetService.submitTimesheet(widget.id, body);
+        if (result && isDelete) {
+          _times.forEach((key, value) {
+            if (key != _shiftStart) {
+              if (key == _breakStart || key == _breakEnd) {
+                _times[key] = _times[_shiftStart].add(Duration(hours: 2));
+              } else {
+                _times[key] = null;
+              }
+            }
+          });
+        }
+        setState(() => _updated = result);
+
+        Get.back();
+      } catch (e) {
+        print(e);
+        // Get.snackbar(e.toString(), '');
+        setState(() {
+          _error = e;
+        });
+      } finally {
+        setState(() => _fetching = false);
       }
-      setState(() => _updated = result);
-      Get.back();
-    } catch (e) {
-      print(e);
-      // Get.snackbar(e.toString(), '');
-      setState(() {
-        _error = e;
-      });
-    } finally {
-      setState(() => _fetching = false);
     }
   }
 
@@ -395,6 +429,8 @@ class _CandidateTimesheetNewDetailsScreenState
               shiftEnd: _shiftEnd,
               shiftStart: _shiftStart,
               status: widget.status,
+              submitted: _activityAdded,
+
             ),
 
             widget.status == 1 && !_updated

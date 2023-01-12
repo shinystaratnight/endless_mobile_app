@@ -15,6 +15,7 @@ import 'package:piiprent/services/timesheet_service.dart';
 import 'package:piiprent/widgets/size_config.dart';
 import 'package:piiprent/widgets/toast.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SkillActivityTable extends StatefulWidget {
   final bool hasActions;
@@ -31,6 +32,8 @@ class SkillActivityTable extends StatefulWidget {
   final String breakEnd;
   final String breakStart;
   final Function onSubmit;
+  final bool submitted;
+
 
   SkillActivityTable({
     this.hasActions,
@@ -46,6 +49,7 @@ class SkillActivityTable extends StatefulWidget {
     this.breakEnd,
     this.breakStart,
     this.onSubmit,
+    this.submitted,
   });
 
   @override
@@ -338,7 +342,7 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         widget.hasActions
-                            ? (data.length == 0 && !widget.isTimeAdded)
+                            ? (/*data.length == 0*/!widget.submitted && !widget.isTimeAdded)
                                 ? Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -367,7 +371,8 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                                       timesheet:
                                                           widget.timesheet,
                                                       companyId:
-                                                          widget.companyId),
+                                                          widget.companyId,
+                                                  ),
                                             ),
                                           )
                                               .then((dynamic result) {
@@ -465,7 +470,8 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                                                             companyId: widget
                                                                 .companyId,
                                                             skillActivityModel:
-                                                                data[index]),
+                                                                data[index],
+                                                      ),
                                                   ),
                                                 )
                                                     .then((dynamic result) {
