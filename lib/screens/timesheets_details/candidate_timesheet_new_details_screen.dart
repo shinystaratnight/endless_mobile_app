@@ -430,7 +430,6 @@ class _CandidateTimesheetNewDetailsScreenState
               shiftStart: _shiftStart,
               status: widget.status,
               submitted: _activityAdded,
-
             ),
 
             widget.status == 1 && !_updated
