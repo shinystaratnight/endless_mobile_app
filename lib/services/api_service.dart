@@ -42,7 +42,7 @@ class ApiService {
     _updateByToken(headers);
     debugPrint('GET URL:: $uri');
     var res = await http.get(uri, headers: headers);
-    debugPrint('GET URL:: $uri Response:: ${res.body}');
+    debugPrint('\n ======= \n GET URL:: $uri \nHeader : ${headers.toString()} \n\nResponse:: ${res.body}');
     return res;
   }
 

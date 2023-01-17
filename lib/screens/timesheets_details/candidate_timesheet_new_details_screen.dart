@@ -143,12 +143,14 @@ class _CandidateTimesheetNewDetailsScreenState
       'skill': widget.positionId,
     });
 
-    if(data.length != 0){
-      // toast('Activities submitting');
-      Get.back();
-    }
+    // if(data.length != 0){
+    //   // toast('Activities submitting');
+    //   Get.back();
+    // }
 
-    else{
+    // else
+    {
+
       if (_times.values.contains(null)) {
         //Get.snackbar("Select Time", '');
         toast("Select Time");
