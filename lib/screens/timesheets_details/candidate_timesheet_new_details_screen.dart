@@ -144,7 +144,7 @@ class _CandidateTimesheetNewDetailsScreenState
     });
 
     if(data.length != 0){
-      toast('Activities submitting');
+      // toast('Activities submitting');
       Get.back();
     }
 
