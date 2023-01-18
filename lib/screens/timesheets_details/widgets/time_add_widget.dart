@@ -5,10 +5,11 @@ import 'package:piiprent/helpers/functions.dart';
 import 'package:piiprent/widgets/size_config.dart';
 
 class TimeAddWidget extends StatelessWidget {
-  const TimeAddWidget(this.hintText, this.dateTime, {Key key})
+   TimeAddWidget(this.hintText, this.dateTime, {this.width,Key key})
       : super(key: key);
   final String hintText;
   final dynamic dateTime;
+  double width;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class TimeAddWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            width: Get.width * 0.18,
+            width:width ??  Get.width * 0.18,
             // decoration: BoxDecoration(border: Border.all()),
             child: Text(
               hintText + ': ',
