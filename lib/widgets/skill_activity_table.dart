@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:piiprent/helpers/colors.dart';
 import 'package:piiprent/models/skill_activity_model.dart';
@@ -113,11 +114,11 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Activity',
+                                "Activities",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   //fontSize: 16,
-                                  fontSize: SizeConfig.heightMultiplier * 2.34,
+                                  fontSize: SizeConfig.heightMultiplier * 3.22,
                                   fontFamily: GoogleFonts.roboto().fontFamily,
                                   color: AppColors.lightBlack,
                                 ),
@@ -168,7 +169,7 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                       //height: 16,
                       height: SizeConfig.heightMultiplier -5 ,
                     ),
-                    Text(
+                    !widget.hasActions ?Text(
                       "Activities",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -177,7 +178,7 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                         fontFamily: GoogleFonts.roboto().fontFamily,
                         color: AppColors.lightBlack,
                       ),
-                    ),
+                    ) :SizedBox(),
                     SizedBox(height: 10),
                     ListView.builder(
                       itemBuilder: (context, index) => Column(children: [
@@ -275,7 +276,7 @@ class _SkillActivityTableState extends State<SkillActivityTable> {
                           //height: 20,
                           height: SizeConfig.heightMultiplier,
                         ),
-                        TimeAddWidget('AMOUNT', data[index].value.toString())
+                        TimeAddWidget('AMOUNT', data[index].value.toString(),width: Get.width * 0.14,)
                       ]),
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
