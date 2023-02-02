@@ -433,11 +433,12 @@ class SwitchAccount extends StatefulWidget {
 
 class _SwitchAccountState extends State<SwitchAccount> {
   LoginService loginService;
+
   // List<String> type = [];
   // RoleSwitchUser roleSwitchUser;
   // List<String> names = [];
-  List<String> restoreName =[];
-  List<String> restoreCompany =[];
+  List<String> restoreName = [];
+  List<String> restoreCompany = [];
 
   @override
   initState() {
@@ -451,31 +452,40 @@ class _SwitchAccountState extends State<SwitchAccount> {
   assignRoleApi() async {
     await ContactService().switchAccount().then((value) {
       // names = [];
-      restoreName =[];
+      restoreName = [];
       restoreCompany = [];
 
       for (int i = 0; i < value.length; i++) {
         // name.add(value[i].companyContactRel.str);
         // names.add(value[i].companyContactRel.str.split(":").last.toString().trim());
-        if(value[i].name != "manager"){
+        if (value[i].name != "manager") {
           restoreName.add(value[i].name);
           // print(value[i].companyContactRel.company.name.toString());
-          if(value[i].companyContactRel.company.name.toString().contains("Ã")){
-            restoreCompany.add("${value[i].companyContactRel.company.name.toString().split("Ã").first}${value[i].companyContactRel.company.name.toString().contains("Ã")?"Ü":""}");
-          }else{
-            if(value[i].companyContactRel.company.name.toString().contains("Ü")){
-              restoreCompany.add("${value[i].companyContactRel.company.name.toString().split("Ü").first}${"Ü"}");
-            }else{
-              restoreCompany.add("${value[i].companyContactRel.company.name.toString()}");
-            }
-          }
-
+          print(
+              "======> ${value[i].companyContactRel.company.name.toString()}");
+          restoreCompany.add(removeLastChar(
+              value[i].companyContactRel.company.name.toString()));
+          // if (/*value[i].companyContactRel.company.name.toString().contains("Ã")*/ value[i].companyContactRel.company.name[value[i].companyContactRel.company.name.toString().length - 2] == "Ã") {
+          //  restoreCompany.add(removeLastChar(value[i].companyContactRel.company.name.toString())
+          //       /*"${value[i].companyContactRel.company.name.toString().split("Ã").first}${value[i].companyContactRel.company.name.toString().contains("Ã") ? "Ü" : ""}"*/);
+          // } else {
+          //   if (value[i].companyContactRel.company.name.toString().contains("Ü")) {
+          //     restoreCompany.add("${value[i].companyContactRel.company.name.toString().split("Ü").first}${"Ü"}");
+          //   } else {
+          //     restoreCompany.add("${value[i].companyContactRel.company.name.toString()}");
+          //   }
+          // }
         }
       }
       // print("NAME : $names");
       print("restoreName : $restoreName");
       print("restoreCompany : $restoreCompany");
     });
+  }
+
+  static String removeLastChar(String s) {
+    print(s.substring(0, s.length - 1));
+    return (s == null || s.length == 0) ? null : (s.substring(0, s.length - 1));
   }
 
   // getType() {
@@ -492,7 +502,9 @@ class _SwitchAccountState extends State<SwitchAccount> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
+
       offset: Offset(MediaQuery.of(context).size.width, 0),
+      elevation: 0,
       position: PopupMenuPosition.under,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -509,27 +521,32 @@ class _SwitchAccountState extends State<SwitchAccount> {
             if (index != loginService.user.roles.length) {
               role = loginService.user.roles[index];
             }
-            return index == restoreName.length /*loginService.user.roles.length*/
+            return index ==
+                    restoreName.length /*loginService.user.roles.length*/
                 ? PopupMenuItem(
                     padding: EdgeInsets.zero,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        Container(
                           //height: 4,
                           height: SizeConfig.heightMultiplier * 0.59,
+                          // width: Get.width,
                         ),
                         Divider(),
                         SizedBox(
                           //height: 4,
                           height: SizeConfig.heightMultiplier * 0.59,
+                          // width: Get.width,
                         ),
                         Align(
                           alignment: Alignment.center,
                           child: Padding(
-                            padding: EdgeInsets.only(
-                                right: SizeConfig.widthMultiplier * 14.60),
+                            padding: EdgeInsets.all(1),
+                            // padding: EdgeInsets.only(
+                            //     right: SizeConfig.widthMultiplier * 14.60),
                             child: PrimaryButton(
+                              height: SizeConfig.heightMultiplier * 5.2,
                               btnText: 'Logout',
                               buttonColor: Colors.indigo,
                               onPressed: () {
@@ -605,12 +622,12 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                         loginService.user.name,
                                         textAlign: TextAlign.start,
                                         overflow: TextOverflow.visible,
-                                        // maxLines: 2,
+                                        maxLines: 1,
                                         style: TextStyle(
                                             //fontSize: 16,
                                             fontSize:
                                                 SizeConfig.heightMultiplier *
-                                                    2.34,
+                                                    2.20,
                                             color: Colors.indigo,
                                             fontWeight: FontWeight.w700),
                                       ),
@@ -627,19 +644,18 @@ class _SwitchAccountState extends State<SwitchAccount> {
                                         alignment: Alignment.topLeft,
                                         width: Get.width / 2.2,
                                         // decoration: BoxDecoration(border: Border.all()),
-                                        child: FittedBox(
-                                          child: Text('${restoreName[index]}, ${restoreCompany[index]}'
-                                           /* '${role.name}, ${role.roleUserName}'*/
-                                           /* roleAndName(index, names, loginService)*/,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              //fontSize: 14,
-                                              fontSize:
-                                                  SizeConfig.heightMultiplier *
-                                                      2.05,
-                                              color: Colors.grey,
-                                            ),
+                                        child: Text(
+                                          '${restoreName[index]}, ${restoreCompany[index]}'
+                                          /* '${role.name}, ${role.roleUserName}'*/
+                                          /* roleAndName(index, names, loginService)*/,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            //fontSize: 14,
+                                            fontSize:
+                                                SizeConfig.heightMultiplier *
+                                                    1.95,
+                                            color: Colors.grey,
                                           ),
                                         ),
                                       ),

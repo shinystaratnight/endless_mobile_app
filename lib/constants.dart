@@ -14,11 +14,17 @@ import 'package:piiprent/helpers/enums.dart';
 
 // Piiprent
 ///todo: change base url
-// const String apiUrl = 'https://api.piipai.com';
+// ///new
+// const String apiUrl = 'http://piiprent.piipai.com/';
 // const String origin = 'https://piiprent.piipai.com';
 
-const String apiUrl = 'https://api.piipaitest.com';
-const String origin = 'https://piiprent.piipaitest.com';
+///old
+
+const String apiUrl = 'https://api.piipai.com';
+const String origin = 'https://piiprent.piipai.com';
+
+// const String apiUrl = 'https://api.piipaitest.com';
+// const String origin = 'https://piiprent.piipaitest.com';
 
 const String companyId = 'bbeed8cd-1b64-4c88-b0ae-5723bdd44ac3';
 const String clientId = 'MMtPUqBFwBDo3kVEQl6mzVm6e8h5OHclTsDcraUj';

@@ -7,14 +7,15 @@ class PrimaryButton extends StatelessWidget {
   final String btnText;
   final VoidCallback onPressed;
   final Color buttonColor;
+  final double height;
   const PrimaryButton(
-      {Key key, this.btnText, this.onPressed, this.loading, this.buttonColor})
+      {Key key, this.btnText, this.onPressed, this.loading, this.buttonColor,this.height})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: SizeConfig.heightMultiplier * 6.29,
+      height: height ?? SizeConfig.heightMultiplier * 6.29,
       width: SizeConfig.widthMultiplier * 39.90,
       // height: 43,
       // width: 164,
