@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:intl/intl.dart';
 import 'package:piiprent/models/job_model.dart';
 import 'package:piiprent/screens/client_job_details_screen.dart';
 import 'package:piiprent/widgets/list_card.dart';
@@ -54,7 +55,7 @@ class ClientJobCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.all(
           //Radius.circular(4.0),
-          Radius.circular( SizeConfig.textMultiplier * 0.58),
+          Radius.circular(SizeConfig.textMultiplier * 0.58),
         ),
       ),
       child: Row(
@@ -112,163 +113,144 @@ class ClientJobCard extends StatelessWidget {
           ),
         ),
       ),
-      child: ListCard(
-        header: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    job.jobsite,
-                    style: TextStyle(
-                      //fontSize: 18.0,
-                      fontSize: SizeConfig.textMultiplier * 2.64,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.textMultiplier * 1.17,
-                    //height: 8.0,
-                  ),
-                  Text(
-                    job.contact,
-                    style: TextStyle(
-                      //fontSize: 16.0,
-                      fontSize: SizeConfig.textMultiplier * 2.34,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Flex(
-              direction: Axis.horizontal,
-              mainAxisSize: MainAxisSize.max,
+      child: Column(
+        children: [
+          ListCard(
+            header: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: SizeConfig.widthMultiplier * 1.94,
-                        vertical: SizeConfig.textMultiplier * 0.29,
-                        // horizontal: 8.0,
-                        // vertical: 2.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            //14.0,
-                            SizeConfig.heightMultiplier * 2.05,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        job.status,
-                        style: TextStyle(
-                          //fontSize: 14.0,
-                          fontSize: SizeConfig.heightMultiplier * 2.05,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: SizeConfig.textMultiplier * 1.17,
-                      //height: 8.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          translate('table.workers'),
-                          style: TextStyle(
-                            //fontSize: 14.0,
-                            fontSize: SizeConfig.heightMultiplier * 2.05,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Container(
-                          height: SizeConfig.heightMultiplier * 2.93,
-                          width: SizeConfig.widthMultiplier * 4.87,
-                          // height: 20.0,
-                          // width: 20.0,
-                          //margin: const EdgeInsets.only(left: 8.0),
-                          margin: EdgeInsets.only(
-                              left: SizeConfig.widthMultiplier * 1.94,),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(
-                              //25.0,
-                              SizeConfig.heightMultiplier * 3.66,
-                            ),
-                          ),
-                          child: Text(
-                            job.workers.toString(),
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: SizeConfig.heightMultiplier * 2.34,),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                )
+                Text(
+                  job.jobsite,
+                  style: TextStyle(
+                    //fontSize: 18.0,
+                    fontSize: SizeConfig.textMultiplier * 2.64,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
-          ],
-        ),
-        body: Column(
-          children: [
-            ListCardRecord(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    translate('timesheet.position'),
-                    style: TextStyle(
-                      fontSize: SizeConfig.heightMultiplier * 2.34,
-                    ),
+            body: Column(
+              children: [
+                ListCardRecord(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        translate('job.supervisor'),
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                      Text(
+                        job.contact,
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    job.translations['position']['en'],
-                    style: TextStyle(
-                      fontSize: SizeConfig.heightMultiplier * 2.34,
-                    ),
+                ),
+                ListCardRecord(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        translate('job.address'),
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                      Text(
+                        job.address,
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                ListCardRecord(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${translate('field.start_date')}:",
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                      Text(
+                        DateFormat('dd/MM/yyyy').format(job.workStartDate),
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                ListCardRecord(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                       translate('job.workers'),
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                      Text(
+                        job.workers.toString(),
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                ListCardRecord(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        translate('job.position'),
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                      Text(
+                        job.translations['position']['en'],
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                ListCardRecord(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        translate('job.status'),
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                      Text(
+                        job.status,
+                        style: TextStyle(
+                          fontSize: SizeConfig.heightMultiplier * 2.34,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-           /* ListCardRecord(
-              last: true,
-              content: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: _buildStatus(
-                      'Today',
-                      job.isFulFilledToday,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: _buildStatus(
-                      'Tomorrow',
-                      job.isFulfilled,
-                    ),
-                  )
-                ],
-              ),
-            ),*/
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

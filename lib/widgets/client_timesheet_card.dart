@@ -10,10 +10,12 @@ import 'package:piiprent/widgets/size_config.dart';
 class ClientTimesheetCard extends StatelessWidget {
   final Timesheet timesheet;
   final Function update;
+  final bool unapprovedCard;
 
   ClientTimesheetCard({
     this.timesheet,
     this.update,
+    @required this.unapprovedCard,
   });
 
   @override
@@ -84,7 +86,7 @@ class ClientTimesheetCard extends StatelessWidget {
                 //     ),
                 // ),
                 Text(
-                  "${translate('timesheet.position')} - ${timesheet.position(localizationDelegate.currentLocale)}",
+                  " ${timesheet.position(localizationDelegate.currentLocale)}",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: SizeConfig.heightMultiplier * 2.34),
@@ -128,21 +130,6 @@ class ClientTimesheetCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                timesheet.signatureScheme && timesheet.status == 5
-                    ? Container(
-                        padding: EdgeInsets.only(
-                          //top: 8.0,
-                          top: SizeConfig.heightMultiplier * 1.17,
-                        ),
-                        child: Text(
-                          "(${translate('timesheet.signature_required')})",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: SizeConfig.heightMultiplier * 2.34,
-                          ),
-                        ),
-                      )
-                    : SizedBox(),
               ],
             )
           ],
@@ -150,11 +137,12 @@ class ClientTimesheetCard extends StatelessWidget {
         body: Column(
           children: [
             ListCardRecord(
+              padding: EdgeInsets.symmetric(vertical: SizeConfig.heightMultiplier * 0.7),
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    translate('timesheet.shift_started_at'),
+                    "${translate('timesheet.shift_started_at')}:",
                     style: TextStyle(
                       color: Colors.blueAccent,
                       fontSize: SizeConfig.heightMultiplier * 2.34,
@@ -188,11 +176,12 @@ class ClientTimesheetCard extends StatelessWidget {
               ),
             ),
             ListCardRecord(
+              padding: EdgeInsets.symmetric(vertical: SizeConfig.heightMultiplier * 0.7),
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    translate('timesheet.break'),
+                    translate('timeSheet.breakTime'),
                     style: TextStyle(
                       color: Colors.blueAccent,
                       fontSize: SizeConfig.heightMultiplier * 2.34,
@@ -239,12 +228,13 @@ class ClientTimesheetCard extends StatelessWidget {
               ),
             ),
             ListCardRecord(
-              last: true,
+              padding: EdgeInsets.symmetric(vertical: SizeConfig.heightMultiplier * 0.7),
+              last: !unapprovedCard,
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    translate('timesheet.shift_ended_at'),
+                    "${translate('timesheet.shift_ended_at')}:",
                     style: TextStyle(
                       color: Colors.blueAccent,
                       fontSize: SizeConfig.heightMultiplier * 2.34,
@@ -266,6 +256,37 @@ class ClientTimesheetCard extends StatelessWidget {
                 ],
               ),
             ),
+            unapprovedCard
+                ? ListCardRecord(
+              padding: EdgeInsets.symmetric(vertical: SizeConfig.heightMultiplier * 0.7),
+                    last: true,
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          translate('timeSheet.actionNeeded'),
+                          style: TextStyle(
+                            color: Colors.blueAccent,
+                            fontSize: SizeConfig.heightMultiplier * 2.34,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              timesheet.signatureScheme && timesheet.status == 5
+                                  ? "${translate('timesheet.signature_required')}"
+                                  : timesheet.signatureScheme.toString(),
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: SizeConfig.heightMultiplier * 2.34,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                : SizedBox(),
           ],
         ),
       ),

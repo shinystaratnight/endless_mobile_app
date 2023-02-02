@@ -162,5 +162,13 @@
     "timeSheetStatus.status.submitPending": "Esitamine on ootel",
     "timeSheetStatus.status.approvalPending": "Heakskiit on ootel",
     "timeSheetStatus.status.superVisorModified": "Juhendaja muudetud",
-    "timeSheetStatus.status.approved": "Kinnitatud"
+    "timeSheetStatus.status.approved": "Kinnitatud",
+
+    "timeSheet.breakTime": "Vaheaeg:",
+    "timeSheet.actionNeeded": "Vajalik tegevus:",
+    "job.supervisor": "Juhendaja:",
+    "job.address": "Aadress:",
+    "job.workers":  "Töölised:",
+    "job.position":  "töökoht:",
+    "job.status":  "Töö staatus:"
 }

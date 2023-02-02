@@ -21,6 +21,7 @@ class Job {
   final String notes;
   final DateTime workStartDate;
   final List<dynamic> tags;
+  final String address;
 
   static List<String> requestFields = const [
     'id',
@@ -49,6 +50,7 @@ class Job {
     this.notes,
     this.workStartDate,
     this.tags,
+    this.address
   });
 
   factory Job.fromJson(Map<String, dynamic> json) {
@@ -72,6 +74,7 @@ class Job {
       workStartDate: DateTime.parse(
           '${json['work_start_date']}T${json['default_shift_starting_time']}'),
       tags: json['tags'].map((el) => el['name']).toList(),
+      address:"${json['jobsite']["address"]["street_address"]} ${json['jobsite']["address"]["postal_code"]} ${json['jobsite']["address"]["state"]["__str__"]}"
     );
   }
 

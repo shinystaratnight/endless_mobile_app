@@ -153,5 +153,13 @@
     "timeSheetStatus.status.submitPending": "Lähetys odottaa",
     "timeSheetStatus.status.approvalPending": "Hyväksyntä odottaa",
     "timeSheetStatus.status.superVisorModified": "Valvojaa muokattu",
-    "timeSheetStatus.status.approved": "Hyväksytty"
+    "timeSheetStatus.status.approved": "Hyväksytty",
+
+    "timeSheet.breakTime": "Tauon aika:",
+    "timeSheet.actionNeeded": "Toimenpiteitä tarvitaan:",
+    "job.supervisor": "Valvoja:",
+    "job.address": "Osoite:",
+    "job.workers":  "Työntekijät:",
+    "job.position":  "tehtävänimike:",
+    "job.status":  "Työtilanne:"
 }

@@ -162,5 +162,13 @@
     "timeSheetStatus.status.submitPending": "Отправить в ожидании",
     "timeSheetStatus.status.approvalPending": "Ожидается подтверждение",
     "timeSheetStatus.status.superVisorModified": "Супервизор изменен",
-    "timeSheetStatus.status.approved": "Одобренный"
+    "timeSheetStatus.status.approved": "Одобренный",
+
+    "timeSheet.breakTime": "Перерыв:",
+    "timeSheet.actionNeeded": "Требуется действие:",
+    "job.supervisor": "Руководитель:",
+    "job.address": "Адрес:",
+    "job.workers":  "Рабочие:",
+    "job.position":  "Место работы:",
+    "job.status":  "Рабочий статус:"
 }

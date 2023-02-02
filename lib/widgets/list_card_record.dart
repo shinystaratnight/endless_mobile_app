@@ -4,8 +4,9 @@ import 'package:piiprent/widgets/size_config.dart';
 class ListCardRecord extends StatelessWidget {
   final Widget content;
   final bool last;
+  final EdgeInsetsGeometry padding;
 
-  ListCardRecord({this.content, this.last = false});
+  ListCardRecord({this.content, this.last = false, this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class ListCardRecord extends StatelessWidget {
     SizeConfig().init(constraints, orientation);
     return Container(
       //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-      padding: EdgeInsets.only(
+      padding: padding ?? EdgeInsets.only(
           top: SizeConfig.heightMultiplier * 1.46,
           bottom: SizeConfig.heightMultiplier * 1.46),
       decoration: last

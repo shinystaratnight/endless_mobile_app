@@ -96,6 +96,7 @@ class ClientTimesheetsScreen extends StatelessWidget {
                 return ClientTimesheetCard(
                   timesheet: instance,
                   update: reset,
+                  unapprovedCard: true,
                 );
               },
             ),
@@ -109,6 +110,7 @@ class ClientTimesheetsScreen extends StatelessWidget {
                 return ClientTimesheetCard(
                   timesheet: instance,
                   update: reset,
+                  unapprovedCard: false,
                 );
               },
             ),

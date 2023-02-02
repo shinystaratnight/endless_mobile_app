@@ -28,46 +28,31 @@ class JobsiteCard extends StatelessWidget {
         ),
       ),
       child: ListCard(
-        header: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              jobsite.name,
-              style: TextStyle(
-                //fontSize: 22.0,
-                fontSize: SizeConfig.heightMultiplier * 3.22,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              jobsite.company,
-              style: TextStyle(
-                //fontSize: 16.0,
-                fontSize: SizeConfig.heightMultiplier * 2.34,
-                color: Colors.white,
-              ),
-            )
-          ],
+        header: Text(
+          jobsite.name,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            //fontSize: 22.0,
+            fontSize: SizeConfig.heightMultiplier * 3.22,
+            color: Colors.white,
+          ),
         ),
         body: Column(
           children: [
             ListCardRecord(
               content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.location_on,
-                    color: Colors.blue,
-                    //size: 25,
-                    size: SizeConfig.heightMultiplier * 3.12,
+                  Text(
+                    translate('job.address'),
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
+                    ),
                   ),
-                  Container(
-                    width: Get.width * 0.78,
-                    // decoration: BoxDecoration(border: Border.all()),
-                    child: Text(
-                      jobsite.address,
-                      style: TextStyle(
-                        fontSize: SizeConfig.heightMultiplier * 2.23,
-                      ),
+                  Text(
+                    jobsite.address,
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 2.34,
                     ),
                   ),
                 ],
@@ -78,7 +63,7 @@ class JobsiteCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    translate('field.start_date'),
+              "${translate('field.start_date')}",
                     style: TextStyle(
                       fontSize: SizeConfig.heightMultiplier * 2.34,
                     ),
@@ -100,7 +85,7 @@ class JobsiteCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    translate('field.end_date'),
+                    "${translate('field.end_date')}:",
                     style: TextStyle(
                       fontSize: SizeConfig.heightMultiplier * 2.34,
                     ),

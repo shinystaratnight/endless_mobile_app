@@ -159,6 +159,16 @@
     "timeSheetStatus.status.submitPending": "Submit pending",
     "timeSheetStatus.status.approvalPending": "Approval pending",
     "timeSheetStatus.status.superVisorModified": "Supervisor modified",
-    "timeSheetStatus.status.approved": "Approved"
+    "timeSheetStatus.status.approved": "Approved",
+
+    "timeSheet.breakTime": "Break time:",
+    "timeSheet.actionNeeded": "Action needed:",
+    "job.supervisor": "Supervisor:",
+    "job.address": "Address:",
+    "job.workers":  "Workers:",
+    "job.position":  "job position:",
+    "job.status":  "Job status:"
+
+
 }
 
